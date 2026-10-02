@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="ActionResourceDefinitions">
+        <node id="root">
+            <children>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerGrit"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hb92cce98g1ecag551ag8629g29b86e5b8806" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="hdc1c56adgf05dg569ag900cgae56bdaf67e3" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Never"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
+                    <attribute id="UUID" type="guid" value="394e2bf5-5b54-433d-b80e-187b89119d90"/>
+                </node>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerFlintlockAmmo"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h59247562g97d5g5328gb92cgc40a691449d6" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="h3dd3ac2dg0f1bg537fg90dag3efac0bcf7f8" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
+                    <attribute id="IsHidden" type="bool" value="true"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="UUID" type="guid" value="c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"/>
+                </node>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerBlunderbussAmmo"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hd15dec2bg442eg5b67gae9dg9a8f904f50a8" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="h06431e21g75fbg505fga4b0gd438d071bf5b" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
+                    <attribute id="IsHidden" type="bool" value="true"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="UUID" type="guid" value="7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"/>
+                </node>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerMusketAmmo"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hd0616debgd485g57aeg82d7g45798f9014a9" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="ha6242459g9908g5797gaa4bgf43cc12e9fdf" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
+                    <attribute id="IsHidden" type="bool" value="true"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="UUID" type="guid" value="6c4658a0-74d6-4bec-851f-d91ee914484d"/>
+                </node>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerCraftCharges"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hcca1f6e2g2be7g585cga49bg43f4bab1ac9d" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="hdba6e3b8gda0dg516fg8106gfeb8848fd33d" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
+                    <attribute id="UUID" type="guid" value="12cef629-750a-4b08-8fa3-16351faa8f77"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

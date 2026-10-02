@@ -1,10 +1,14 @@
-# bg3-Gunner-Class
-This is a mod for Baldur's Gate 3 implementing a Gunner class, the ability to craft firearms, etc.
+# bg3-Gunslinger-Class
+This is a mod for Baldur's Gate 3 implementing a Gunslinger class, the ability to craft firearms, etc.
 
 ## Requirements
 
 - [BG3 Script Extender](https://github.com/Norbyte/bg3se/releases)
 - **Optional:** [5e Spells](https://www.nexusmods.com/baldursgate3/mods/125), for the Arcane Gunsman spell options marked as coming from that mod.
+
+## Modding Wiki
+
+- [Baldur's Gate 3 Modding Wiki](https://wiki.bg3.community/Tutorials)
 
 ## Firearms
 
@@ -413,3 +417,47 @@ These are thematic recommendations, not a finalized class spell list. The 5e Spe
 | 3rd | Counterspell, Haste, Lightning Bolt, Protection from Energy | Ashardalon's Stride, Erupting Earth, Flame Arrows, Thunder Step |
 | 4th | Fire Shield, Ice Storm | Shadow of Moil, Storm Sphere, Vitriolic Sphere |
 | 5th | Cone of Cold, Conjure Volley | Holy Weapon, Swift Quiver, Synaptic Static |
+
+## Implementation Notes / Known Limitations
+
+This mod is implemented entirely through BG3's stats/.lsx data format (no custom Script Extender (BG3SE) scripting or Osiris story scripts). A few parts of the design above don't have a clean 1:1 vanilla equivalent, so they were implemented as documented, best-effort approximations. These are called out below so they're easy to find and revisit.
+
+**Firearms, ammo and misfires**
+
+- Firearm weapons (`WPN_GSL_Flintlock`, `WPN_GSL_Blunderbuss`, `WPN_GSL_Musket`) reuse the vanilla Hand Crossbow / Heavy Crossbow mesh, icon and projectile via BG3's stats `using` inheritance rather than shipping custom 3D models. A small `RootTemplates/_merged.lsx` override gives each firearm its own in-world item template (so it displays as "Flintlock"/"Blunderbuss"/"Musket" with the correct stats rather than as a vanilla crossbow), but the visuals themselves are the vanilla crossbow assets.
+- Natural-1 misfires are fully implemented: a shared `GSL_Firearm_Misfire_Passive` detects a critical miss on a firearm attack and applies the `GSL_MISFIRE` status, which imposes disadvantage and a large damage penalty until repaired or until a long rest. The Rapid Repair grit ability clears it with a Sleight of Hand check, matching the README.
+- Ammo capacity (3/2/1 bullets) is tracked with hidden per-weapon action resources (`GunslingerFlintlockAmmo`, `GunslingerBlunderbussAmmo`, `GunslingerMusketAmmo`) that restore on rest, and four "Reload" spells (`Shout_GSL_Reload_*`) are granted to every Gunslinger at level 1 to manually refill them (bonus action per weapon, or a full action for both dual-wielded flintlocks). However, BG3's stats system has no clean, scripting-free hook to automatically deduct a bullet from these resources every time the weapon's normal attack action is used — that would need Script Extender/Osiris integration, which is out of scope for this stats-only generator. In practice, ammunition is enforced on the honor system via the Reload spells and the resource display, not automatically consumed per shot.
+
+**Crafting**
+
+- Starting at level 2, three `Shout_GSL_Craft*` spells (Flintlock/Blunderbuss/Musket) spend one Gunsmithing Charge (`GunslingerCraftCharges`, restores on long rest) and an action to place a new firearm directly into the caster's inventory via `SummonInInventory`.
+- The README's "Assembly Kit" (fusing an existing magical weapon's properties onto a firearm) is **not implemented**. BG3's native item-fusion mechanism (`ItemCombos.txt`) requires the two specific source/result stat entries to be known ahead of time, which doesn't generalize to "any magical weapon the player happens to find." Implementing this properly would need Script Extender scripting to read and re-apply an arbitrary weapon's boosts at runtime.
+
+**Grit abilities**
+
+- All 8 base grit abilities (Merciless Shot, Line 'em Up, Rapid Shot, Bite the Bullet, Shot in the Dark, Rapid Repair, Tinkerer, Fanning Fire) are implemented as `GunslingerGrit`-gated spells, unlocked two at a time via `SelectPassives` at level 3 as the README specifies.
+- **Tinkerer** is simplified to a flat damage-die bump on the equipped firearm rather than the three-way capacity/damage/range menu in the README, since that needs per-item state tracking with no simple spell-functor equivalent.
+- **Fanning Fire** is simplified to granting one extra free firearm attack rather than the full variable 2–4 attack ladder with scaling penalties.
+- The 4 Desperado-exclusive grit abilities (Desperado's Luck, Double Load, Close Call, Last Word) are implemented as automatically-granted features at the appropriate subclass levels rather than additional pool picks, since the README doesn't specify how they interact with the shared 2-per-tier selection pool.
+  - **Desperado's Luck** is simplified to a flat, non-interactive +1d4 bonus applied once per turn to firearm attack rolls, rather than a "spend grit after seeing you missed" reroll interrupt (no confirmed vanilla reroll-after-roll functor).
+
+**Feats**
+
+- **Close-Quarters Gunner**: BG3 has no literal "disadvantage on ranged attacks while an enemy is within 5 ft" penalty to cancel, so only the push-on-hit rider is implemented (`Force(1.5, OriginToTarget)` on a firearm hit).
+- **Longarm Specialist**: similarly, there's no built-in long-range disadvantage to ignore; approximated as Advantage on firearm attacks beyond 60 ft, which produces the same practical benefit.
+- **Called Shot**: the README's 3-way choice (reduce speed / deny reactions / impose disadvantage) has no in-combat UI hook to let the player pick an option per use, so this always applies the "disadvantage on the target's next attack" option.
+- **Spellshot Adept**: the bonus damage rider is simplified to a fixed Force-damage bonus instead of matching "the school of the spell just cast," since that needs per-school damage-type tracking with no simple functor equivalent.
+
+**Arcane Gunsman**
+
+- **Arcane Reload** (level 7) is a flavor-only marker spell/passive; it does not actually tick ammunition down automatically each round, for the same reason described under Ammo above.
+- The recommended Arcane Gunsman spell lists substitute a small number of spells that could not be confirmed to exist under the exact vanilla/5e-mod names in the README (e.g. Shield, Lightning Bolt, Fire Shield, Ice Storm, Cone of Cold, Conjure Volley, Tasha's Mind Whip, Holy Weapon, Swift Quiver, and Synaptic Static), in favor of grep-verified alternatives of a similar level and theme (for example Color Spray, Fireball, Fear, Gust of Wind, and the Mephit fire-breath zone spell in place of the base-game spells above). These spell lists are explicitly marked in the README as "thematic recommendations, not a finalized class spell list," so this substitution is intended to be revisited/tuned rather than treated as final.
+
+**5e Spells compatibility addon**
+
+- `GunslingerClass_5eSpellsCompat` ships its own `Progressions.lsx` rows sharing the same `TableUUID`/`Level` as the base Arcane Gunsman progression table, on the assumption that BG3 merges same-table/same-level Progression rows contributed by separate mods (adding their `Selectors`/spell options together) when both mods are enabled. This is a common community modding pattern but was not verified in-engine in this environment; if it doesn't merge as expected, the compat addon's extra spell options may not appear without manually combining the two Progression rows.
+
+**General**
+
+- No packaging/build step (e.g. producing a `.pak` via `divine.exe`) is included; this repository contains the unpacked mod source tree under `Source/`, matching the structure of the example mods in `examples/`. Packaging for distribution is left to the modder using standard BG3 modding tools (see the [Modding Wiki](https://wiki.bg3.community/Tutorials)).
+- All `.lsx`/localization XML files parse cleanly and all passive/spell/status cross-references resolve (validated with `validate_xml.py` at the repo root).

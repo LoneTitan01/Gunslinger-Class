@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+		<version major="4" minor="0" revision="9" build="322"/>
+		<region id="Feats">
+				<node id="root">
+						<children>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_Gunner"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_Gunner_Proficiency;GSL_Feat_Gunner_Dexterity"/>
+								<attribute id="UUID" type="guid" value="b30c4b62-0ad2-4769-939f-d04f270700e3"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_QuickReload"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_QuickReload_Marker;GSL_Feat_QuickReload_Dexterity"/>
+								<attribute id="UUID" type="guid" value="b910173e-dae1-46e6-8790-4a84d64d6864"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_GritAdept"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_GritAdept_MaxGrit"/>
+								<attribute id="Selectors" type="LSString" value="SelectPassives(8ac43a03-77f4-433d-952a-82ad94fe929f,1,GritAbility)"/>
+								<attribute id="UUID" type="guid" value="03c74083-a4b6-477c-b797-788624cabd3c"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_CloseQuartersGunner"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_CloseQuartersGunner_Push;GSL_Feat_CloseQuartersGunner_Dexterity"/>
+								<attribute id="UUID" type="guid" value="d58674cf-121e-44a9-a802-ba3077d1c5f4"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_LongarmSpecialist"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_LongarmSpecialist_Range;GSL_Feat_LongarmSpecialist_Dexterity"/>
+								<attribute id="UUID" type="guid" value="f20dadf3-d7f8-425d-83ed-8e59f6efa25e"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_CalledShot"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_CalledShot_Rider;GSL_Feat_CalledShot_Dexterity"/>
+								<attribute id="UUID" type="guid" value="04332095-54b9-4321-a796-2ed5c51cae04"/>
+							</node>
+							<node id="Feat">
+								<attribute id="Name" type="FixedString" value="GSL_Feat_SpellshotAdept"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_SpellshotAdept_Magical;GSL_Feat_SpellshotAdept_Rider;GSL_Feat_SpellshotAdept_RiderDamage;GSL_Feat_SpellshotAdept_Intelligence"/>
+								<attribute id="UUID" type="guid" value="9076dc36-67b5-4ba4-a11a-eacffd697a2e"/>
+							</node>
+						</children>
+				</node>
+		</region>
+</save>
