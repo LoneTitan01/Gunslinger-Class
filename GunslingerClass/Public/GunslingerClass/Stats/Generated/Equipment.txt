@@ -1,11 +1,11 @@
 new equipment "EQP_GunslingerClass"
-add initialweaponset "Ranged"
+add initialweaponset "Melee"
 add equipmentgroup
-add equipment entry "WPN_GSL_Flintlock"
+add equipment entry "WPN_Shortsword"
 add equipmentgroup
 add equipment entry "ARM_Boots_Leather"
 add equipmentgroup
-add equipment entry "ARM_Leather_Body_Rogue"
+add equipment entry "ARM_Leather_Body"
 add equipmentgroup
 add equipment entry "OBJ_Potion_Healing"
 add equipmentgroup

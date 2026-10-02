@@ -10,7 +10,7 @@
                     <attribute id="Description" type="TranslatedString" handle="hdc1c56adgf05dg569ag900cgae56bdaf67e3" version="1"/>
                     <attribute id="DiceType" type="uint32" value="0"/>
                     <attribute id="MaxLevel" type="uint32" value="0"/>
-                    <attribute id="ReplenishType" type="FixedString" value="Never"/>
+                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
                     <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
                     <attribute id="UUID" type="guid" value="394e2bf5-5b54-433d-b80e-187b89119d90"/>
                 </node>
@@ -20,10 +20,19 @@
                     <attribute id="Description" type="TranslatedString" handle="h3dd3ac2dg0f1bg537fg90dag3efac0bcf7f8" version="1"/>
                     <attribute id="DiceType" type="uint32" value="0"/>
                     <attribute id="MaxLevel" type="uint32" value="0"/>
-                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
-                    <attribute id="IsHidden" type="bool" value="true"/>
-                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="ReplenishType" type="FixedString" value="ShortRest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
                     <attribute id="UUID" type="guid" value="c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"/>
+                </node>
+                <node id="ActionResourceDefinition">
+                    <attribute id="Name" type="FixedString" value="GunslingerOffhandFlintlockAmmo"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h3e01a812g44b2g4a59g9e79g10f1d0a34c8b" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="h947f1d20g4a6bg4d12g8c61g5a9f2c0b4d8e" version="1"/>
+                    <attribute id="DiceType" type="uint32" value="0"/>
+                    <attribute id="MaxLevel" type="uint32" value="0"/>
+                    <attribute id="ReplenishType" type="FixedString" value="ShortRest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
+                    <attribute id="UUID" type="guid" value="6ba4dcd7-6927-4e6d-a79f-7f997840c51c"/>
                 </node>
                 <node id="ActionResourceDefinition">
                     <attribute id="Name" type="FixedString" value="GunslingerBlunderbussAmmo"/>
@@ -31,9 +40,8 @@
                     <attribute id="Description" type="TranslatedString" handle="h06431e21g75fbg505fga4b0gd438d071bf5b" version="1"/>
                     <attribute id="DiceType" type="uint32" value="0"/>
                     <attribute id="MaxLevel" type="uint32" value="0"/>
-                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
-                    <attribute id="IsHidden" type="bool" value="true"/>
-                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="ReplenishType" type="FixedString" value="ShortRest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
                     <attribute id="UUID" type="guid" value="7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"/>
                 </node>
                 <node id="ActionResourceDefinition">
@@ -42,9 +50,8 @@
                     <attribute id="Description" type="TranslatedString" handle="ha6242459g9908g5797gaa4bgf43cc12e9fdf" version="1"/>
                     <attribute id="DiceType" type="uint32" value="0"/>
                     <attribute id="MaxLevel" type="uint32" value="0"/>
-                    <attribute id="ReplenishType" type="FixedString" value="Rest"/>
-                    <attribute id="IsHidden" type="bool" value="true"/>
-                    <attribute id="ShowOnActionResourcePanel" type="bool" value="false"/>
+                    <attribute id="ReplenishType" type="FixedString" value="ShortRest"/>
+                    <attribute id="ShowOnActionResourcePanel" type="bool" value="true"/>
                     <attribute id="UUID" type="guid" value="6c4658a0-74d6-4bec-851f-d91ee914484d"/>
                 </node>
                 <node id="ActionResourceDefinition">

@@ -6,13 +6,8 @@
             <children>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Gunslinger Crafting"/>
-                    <attribute id="Spells" type="LSString" value="Shout_GSL_CraftFlintlock,Shout_GSL_CraftBlunderbuss,Shout_GSL_CraftMusket"/>
+                    <attribute id="Spells" type="LSString" value="Shout_GSL_Craft"/>
                     <attribute id="UUID" type="guid" value="f4516c47-47e6-4977-a887-17452b1395b1"/>
-                </node>
-                <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Gunslinger Reload"/>
-                    <attribute id="Spells" type="LSString" value="Shout_GSL_Reload_Flintlock,Shout_GSL_Reload_Blunderbuss,Shout_GSL_Reload_Musket,Shout_GSL_Reload_DualFlintlock"/>
-                    <attribute id="UUID" type="guid" value="ad9500fe-a489-4eff-9658-cbd82c1edfb8"/>
                 </node>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Cantrips"/>

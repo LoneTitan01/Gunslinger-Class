@@ -1,0 +1,258 @@
+{
+  "icon": "GSL_FanningFire",
+  "seed": 5934775844987748426,
+  "text": "A single fantasy RPG ability icon: a revolver-like antique flintlock pistol with a fan-shaped arc of three bold muzzle flashes. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+  "prompt_id": "c14ed63c-d408-402d-954e-df21393e0978",
+  "state": "completed",
+  "api_prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "flux1-dev.safetensors",
+        "weight_dtype": "fp8_e4m3fn"
+      }
+    },
+    "2": {
+      "class_type": "DualCLIPLoader",
+      "inputs": {
+        "clip_name1": "clip_l.safetensors",
+        "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "flux",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "A single fantasy RPG ability icon: a revolver-like antique flintlock pistol with a fan-shaped arc of three bold muzzle flashes. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "FluxGuidance",
+      "inputs": {
+        "guidance": 3.5,
+        "conditioning": [
+          "4",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "4",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "8": {
+      "class_type": "KSampler",
+      "inputs": {
+        "seed": 5934775844987748426,
+        "steps": 24,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1,
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "8",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "LoadBackgroundRemovalModel",
+      "inputs": {
+        "bg_removal_name": "birefnet.safetensors"
+      }
+    },
+    "11": {
+      "class_type": "RemoveBackground",
+      "inputs": {
+        "bg_removal_model": [
+          "10",
+          0
+        ],
+        "image": [
+          "9",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "InvertMask",
+      "inputs": {
+        "mask": [
+          "11",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "JoinImageWithAlpha",
+      "inputs": {
+        "image": [
+          "9",
+          0
+        ],
+        "alpha": [
+          "12",
+          0
+        ]
+      }
+    },
+    "14": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Gunslinger/masters/GSL_FanningFire",
+        "images": [
+          "13",
+          0
+        ]
+      }
+    },
+    "15": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": 380,
+        "height": 380,
+        "crop": "disabled",
+        "image": [
+          "13",
+          0
+        ]
+      }
+    },
+    "16": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Gunslinger/tooltip/GSL_FanningFire",
+        "images": [
+          "15",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": 144,
+        "height": 144,
+        "crop": "disabled",
+        "image": [
+          "13",
+          0
+        ]
+      }
+    },
+    "18": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Gunslinger/controller/GSL_FanningFire",
+        "images": [
+          "17",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": 64,
+        "height": 64,
+        "crop": "disabled",
+        "image": [
+          "13",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Gunslinger/hotbar/GSL_FanningFire",
+        "images": [
+          "19",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "upscale_method": "lanczos",
+        "width": 48,
+        "height": 48,
+        "crop": "disabled",
+        "image": [
+          "13",
+          0
+        ]
+      }
+    },
+    "22": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "Gunslinger/resource/GSL_FanningFire",
+        "images": [
+          "21",
+          0
+        ]
+      }
+    }
+  },
+  "files": [
+    "Z:\\Personal\\Gunslinger-Class\\artwork\\comfyui\\generated\\masters\\GSL_FanningFire.png",
+    "Z:\\Personal\\Gunslinger-Class\\artwork\\comfyui\\generated\\tooltip\\GSL_FanningFire.png",
+    "Z:\\Personal\\Gunslinger-Class\\artwork\\comfyui\\generated\\controller\\GSL_FanningFire.png",
+    "Z:\\Personal\\Gunslinger-Class\\artwork\\comfyui\\generated\\hotbar\\GSL_FanningFire.png",
+    "Z:\\Personal\\Gunslinger-Class\\artwork\\comfyui\\generated\\resource\\GSL_FanningFire.png"
+  ]
+}

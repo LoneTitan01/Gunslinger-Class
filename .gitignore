@@ -1,2 +1,11 @@
 # Ignore examples Folder
 examples/
+
+# Packaging staging output (stage_packages.py)
+Main_Staging/
+5e_Compat_Staging/
+Packages/
+*.pak
+
+# ComfyUI generated icon candidates (not packaged mod assets)
+# artwork/comfyui/generated/

@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <save>
-    <version major="4" minor="0" revision="6" build="5"/>
+    <version major="4" minor="0" revision="9" build="331"/>
     <region id="Config">
         <node id="root">
             <children>
                 <node id="Dependencies">
                     <children>
                         <node id="ModuleShortDesc">
-                            <attribute id="Folder" type="LSWString" value="5eSpells"/>
+                            <attribute id="Folder" type="LSString" value="5eSpells"/>
                             <attribute id="MD5" type="LSString" value=""/>
-                            <attribute id="Name" type="FixedString" value="5e Spells"/>
+                            <attribute id="Name" type="LSString" value="5eSpells"/>
                             <attribute id="UUID" type="FixedString" value="fb5f528d-4d48-4bf2-a668-2274d3cfba96"/>
+                            <attribute id="Version64" type="int64" value="36028797018963968"/>
+                        </node>
+                        <node id="ModuleShortDesc">
+                            <attribute id="Folder" type="LSString" value="GunslingerClass"/>
+                            <attribute id="MD5" type="LSString" value=""/>
+                            <attribute id="Name" type="LSString" value="GunslingerClass"/>
+                            <attribute id="UUID" type="FixedString" value="27bc37d3-66c2-436d-8d69-f7407a1e676e"/>
                             <attribute id="Version64" type="int64" value="36028797018963968"/>
                         </node>
                     </children>
                 </node>
                 <node id="ModuleInfo">
-                    <attribute id="Author" type="LSWString" value="Gunslinger Class Mod"/>
+                    <attribute id="Author" type="LSString" value="Gunslinger Class Mod"/>
                     <attribute id="CharacterCreationLevelName" type="FixedString" value=""/>
-                    <attribute id="Description" type="LSWString" value="Optional add-on: adds 5e Spells mod spell options to the Arcane Gunsman spell list. Requires both GunslingerClass and the 5e Spells mod."/>
-                    <attribute id="Folder" type="LSWString" value="GunslingerClass_5eSpellsCompat"/>
-                    <attribute id="GMTemplate" type="FixedString" value=""/>
+                    <attribute id="Description" type="LSString" value="Optional add-on: adds 5e Spells mod spell options to the Arcane Gunsman spell list. Requires both GunslingerClass and the 5e Spells mod."/>
+                    <attribute id="Folder" type="LSString" value="GunslingerClass_5eSpellsCompat"/>
                     <attribute id="LobbyLevelName" type="FixedString" value=""/>
                     <attribute id="MD5" type="LSString" value=""/>
                     <attribute id="MainMenuBackgroundVideo" type="FixedString" value=""/>
-                    <attribute id="MenuEntryName" type="FixedString" value=""/>
-                    <attribute id="Name" type="FixedString" value="GunslingerClass_5eSpellsCompat"/>
+                    <attribute id="MenuLevelName" type="FixedString" value=""/>
+                    <attribute id="Name" type="LSString" value="GunslingerClass_5eSpellsCompat"/>
                     <attribute id="NumPlayers" type="uint8" value="4"/>
                     <attribute id="PhotoBooth" type="FixedString" value=""/>
                     <attribute id="StartupLevelName" type="FixedString" value=""/>
-                    <attribute id="Tags" type="LSWString" value=""/>
+                    <attribute id="Tags" type="LSString" value=""/>
                     <attribute id="Type" type="FixedString" value="Add-on"/>
                     <attribute id="UUID" type="FixedString" value="4c7bf010-5c39-442f-9ffe-6f0fea69ae04"/>
                     <attribute id="Version64" type="int64" value="36028797018963968"/>
-                </node>
-                <node id="PublishVersion">
-                    <attribute id="Version64" type="int64" value="36028797018963968"/>
-                </node>
-                <node id="Scripts"/>
-                <node id="TargetModes">
                     <children>
-                        <node id="Target">
-                            <attribute id="Object" type="FixedString" value="Story"/>
+                        <node id="PublishVersion">
+                            <attribute id="Version64" type="int64" value="36028797018963968"/>
+                        </node>
+                        <node id="TargetModes">
+                            <children>
+                                <node id="Target">
+                                    <attribute id="Object" type="FixedString" value="Story"/>
+                                </node>
+                            </children>
                         </node>
                     </children>
                 </node>

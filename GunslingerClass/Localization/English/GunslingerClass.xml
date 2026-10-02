@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentList>
+        <content contentuid="hb92cce98g1ecag551ag8629g29b86e5b8806" version="1">Grit</content>
+        <content contentuid="hdc1c56adgf05dg569ag900cgae56bdaf67e3" version="1">A gunslinger's pool of nerve and daring. Spend Grit to fuel trick shots and desperate gambits. Grit is restored to its maximum after a long rest, and you regain 1 point whenever you score a critical hit or reduce a creature to 0 hit points with a firearm attack.</content>
+        <content contentuid="h59247562g97d5g5328gb92cgc40a691449d6" version="1">Flintlock Cylinder</content>
+        <content contentuid="h3dd3ac2dg0f1bg537fg90dag3efac0bcf7f8" version="1">Shots loaded in your main-hand flintlock. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="h3e01a812g44b2g4a59g9e79g10f1d0a34c8b" version="1">Offhand Flintlock Cylinder</content>
+        <content contentuid="h947f1d20g4a6bg4d12g8c61g5a9f2c0b4d8e" version="1">Shots loaded in your offhand flintlock. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hd15dec2bg442eg5b67gae9dg9a8f904f50a8" version="1">Blunderbuss Shot</content>
+        <content contentuid="h06431e21g75fbg505fga4b0gd438d071bf5b" version="1">Shots loaded in your equipped blunderbuss. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hd0616debgd485g57aeg82d7g45798f9014a9" version="1">Musket Cartridge</content>
+        <content contentuid="ha6242459g9908g5797gaa4bgf43cc12e9fdf" version="1">Shots loaded in your equipped musket. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hcca1f6e2g2be7g585cga49bg43f4bab1ac9d" version="1">Gunsmithing Charges</content>
+        <content contentuid="hdba6e3b8gda0dg516fg8106gfeb8848fd33d" version="1">The number of firearms and gunsmithing kits you can assemble from raw materials before you must rest and restock components. Restores to maximum after a long rest.</content>
+        <content contentuid="h2d64fb40gecc2g56cfg83c8ge48b80e74c1a" version="1">Gunslinger</content>
+        <content contentuid="h42e78561gf8c0g5553gbe74gf8eaa40968ea" version="1">A firearm-focused duelist who fuels trick shots and desperate gambits with Grit, a pool of nerve and daring that recharges after a long rest.</content>
+        <content contentuid="h3426a5b2gfc09g439bg9e7dg5fba7af1a607" version="1">Grit Recovery</content>
+        <content contentuid="h09ae87ecgaf05g403dga3e6g755069659a6b" version="1">Regain one Grit point when a firearm attack critically hits or reduces a creature to 0 hit points.</content>
+        <content contentuid="h89c95599gd041g4989g9669g1a79faefb1f8" version="1">Grit Abilities</content>
+        <content contentuid="hccf67ca5g7e59g453cg926fgbadababbbc05" version="1">Choose from the grit abilities unlocked by your Gunslinger levels.</content>
+        <content contentuid="he1255b27g0099g4e4fga984gcea34703c58f" version="1">Spell Slots</content>
+        <content contentuid="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1">Arcane Gunsman spell slots, restored after a long rest.</content>
+        <content contentuid="h997cc641g4d65g559fgb8c4g6e4ac4ddcd8c" version="1">Specialization</content>
+        <content contentuid="h8b16777ege486g53ecg8ccfge41d591d2882" version="1">A patient sharpshooter who specializes in accurate, high-range attacks that deal heavy damage. Strongest when enemies are kept at a distance.</content>
+        <content contentuid="h474ae6fbge0f8g50fbg9153g1013fc35955b" version="1">Marksman</content>
+        <content contentuid="h84a5ae4cg444cg571egb3d8ge0df9d849549" version="1">Marksman</content>
+        <content contentuid="h62a4ed3ag313cg5413gbb5cg52ae8ee964e3" version="1">A bold gunfighter who makes greater use of Grit, spending it on special effects and versatile combat techniques.</content>
+        <content contentuid="h4b3872ddg6a21g5396g8709g70e68bcc379c" version="1">Desperado</content>
+        <content contentuid="h68e3af46g0e28g5b06g8f2cg3dc59fdf32e6" version="1">Desperado</content>
+        <content contentuid="h4dc4990bg35eeg5a26gbaf1gdecb89eb6cd3" version="1">A spellcasting gunfighter who imbues shots with magical effects. Intelligence is the Arcane Gunsman's spellcasting ability.</content>
+        <content contentuid="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1">ArcaneGunsman</content>
+        <content contentuid="hc5873587g2542g5f10gb920g8ef237599f1d" version="1">ArcaneGunsman</content>
+        <content contentuid="h9780c102g240ag52efga3d4gb13e793b2538" version="1">Gunner</content>
+        <content contentuid="hc813199fg372fg5d65g9726gbf91f9de4f02" version="1">Gain proficiency with firearms (they use the Sling proficiency group). Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="hd2151e63gd92fg5f28g8a51g47b2555d2fc5" version="1">Firearm Proficiency</content>
+        <content contentuid="h8fe49679gc007g5b01g8776g6de2ec0fcd7c" version="1">You are proficient with firearms.</content>
+        <content contentuid="h822d05e0ge91bg5508gb51fg170bec80fd06" version="1">Firearm Training</content>
+        <content contentuid="hbca83974ga19eg577cga666g8d33a1f10697" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h152bfd65g7a13g5210g848egf4b3e6c5ade7" version="1">Quick Reload</content>
+        <content contentuid="h81d8a202gd9d4g5471g873cg64069f5a17d2" version="1">When dual-wielding two Flintlocks, you can reload both as a bonus action instead of an action. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h8f5e4ffag0bb9g5041gb895g914d3ce3104a" version="1">Quick Reload</content>
+        <content contentuid="h63669565gd150g54a6ga29bg14d2e584f6a7" version="1">You can reload dual-wielded Flintlocks as a bonus action.</content>
+        <content contentuid="hb2be8eb9ga022g57a2g8d81g580b18f771c2" version="1">Quick Hands</content>
+        <content contentuid="h2ec284b9gefa5g5d71g9312g091ef6f06039" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="hb3ef2296g5489g5323g804fgbc950b19f840" version="1">Grit Adept</content>
+        <content contentuid="h057a18e6gf320g5384g8f0cg935604752fc1" version="1">Increase your maximum grit points by 2 and choose one grit ability available to a level 3 Gunslinger.</content>
+        <content contentuid="h15bd841dgfae1g5147gb414g0ce21b37f52f" version="1">Grit Adept</content>
+        <content contentuid="hb50a250ag92d2g5df8ga2e3gc45d95e4917c" version="1">Increases your maximum grit points by 2.</content>
+        <content contentuid="hfe3fc1adgd09fg528dg9c17g07a9c9ded6a6" version="1">Close-Quarters Gunner</content>
+        <content contentuid="h66b30a07g43c0g5a3agbc41ga9802954ac42" version="1">Blunderbuss attacks do not suffer penalties from nearby enemies. Once per turn, hitting a creature within 15 feet with a firearm can push it 5 feet. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h50bb50edgd484g5a95gbcfcg1273431e8b4c" version="1">Close-Quarters Gunner</content>
+        <content contentuid="h82212626ge6ccg563cg95d1g231dd57825d0" version="1">Once per turn, a firearm hit against a creature within 15 feet pushes it 5 feet.</content>
+        <content contentuid="h34a62d26g3dabg5ed2gaaf6g8a1383bf7efb" version="1">Steady Hands</content>
+        <content contentuid="h4d4b0115ge158g5dafgba1eg26e231e3952a" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h39d746fcgef1eg5e46gbf97gb2a8b39788e2" version="1">Longarm Specialist</content>
+        <content contentuid="h1dda5dd0g4202g5414g85b2ge2bdc0ff9ae1" version="1">Musket attacks ignore long-range penalties and gain 20 feet of normal range. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h59aaf8a3g5c11g500aga433gd1f52205f1b3" version="1">Longarm Specialist</content>
+        <content contentuid="hd5c74955gd9dbg5a53gbcfbgf81b55d714f6" version="1">Your musket attacks ignore long-range penalties.</content>
+        <content contentuid="he363c076g6a22g5ba8g9cb8ge57da773fdd7" version="1">Long Range Training</content>
+        <content contentuid="h559e6207g14c3g5bf9g82d5gc45aa514884a" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h87f20920gbd0fg5f9ega347g9fca442b57ad" version="1">Called Shot</content>
+        <content contentuid="h63755c1bg1d36g5c3bg8deeg2be5897f57e7" version="1">Once per turn, when you hit a creature with a firearm from at least 30 feet away, it suffers Disadvantage on its next attack before the end of its next turn. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="he888357dg677fg5ed9gbf20g36ea7f66d135" version="1">Called Shot</content>
+        <content contentuid="heb0bf59agc5ebg5bccgb4c1gce3b66b7d955" version="1">Disadvantage on your next attack roll.</content>
+        <content contentuid="h32940c53g07deg5162g8e10g7b22025bcf4b" version="1">Called Shot</content>
+        <content contentuid="hde2089a1g083bg58c6gbe7agcae08f66d776" version="1">Once per turn, a firearm hit from 30 feet or more away gives the target Disadvantage on its next attack roll.</content>
+        <content contentuid="hc5fa9067ge726g5d16gb6e0g651d8e55989f" version="1">Marksman's Eye</content>
+        <content contentuid="h8b4fb956g2cccg5daag81dfg7900a636ac15" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h22be4009g1753g5ce0gb5a9g434c53fd8d23" version="1">Spellshot Adept</content>
+        <content contentuid="h0ffdc689g958fg583eg9b51gb8d30604e2f9" version="1">Your firearm attacks count as magical. Once per turn after casting a spell, your next firearm hit deals an extra 1d4 force damage. Increase your Intelligence score by 1, to a maximum of 20.</content>
+        <content contentuid="h343f06f4g032dg50e5gb244g0ef356191cc1" version="1">Spellshot</content>
+        <content contentuid="hd21dc251gbb07g59e5g91feg4c49a09507b5" version="1">Your firearm attacks count as magical.</content>
+        <content contentuid="h2fe64534g03adg5fbdgabecg564403bb298a" version="1">Spellshot Charged</content>
+        <content contentuid="he71d0c39gb3f1g5bacgb76dg8d2484248a0d" version="1">Your next firearm hit this turn deals an extra 1d4 Force damage.</content>
+        <content contentuid="h017f038dg644eg5818gbf70g1413605fad0f" version="1">Spellshot Adept</content>
+        <content contentuid="hd7bbfdebg51c3g51d1gb1c6gb4892e6f30ff" version="1">Once per turn, after you cast a spell, your next firearm hit deals an extra 1d4 Force damage.</content>
+        <content contentuid="h1cefb2dagb9fbg5590gaf37g85bee738e876" version="1">Spellshot Adept</content>
+        <content contentuid="h3111a0d2g8b4eg5c39gbc24g1f319ce402ee" version="1">Deals the stored Spellshot bonus damage.</content>
+        <content contentuid="h631f08b1g749ag5440gbdfegde10a9264afe" version="1">Arcane Marksmanship</content>
+        <content contentuid="h45a24d1eg7178g59fegab4fgb70c077dc727" version="1">Increases your Intelligence score by 1.</content>
+        <content contentuid="h247dbfadg7a74g54a7ga7cfgfc42b8d919ed" version="1">Merciless Shot</content>
+        <content contentuid="hc2fb951agcca1g5d76ga1bag82239a48037c" version="1">Unlocks the Merciless Shot grit ability.</content>
+        <content contentuid="h47e712e3g6093g5244g9b7egbd961ca6a71a" version="1">Merciless Shot</content>
+        <content contentuid="hbd9f7ccdg6efag577agb117g7e3939ef1f8d" version="1">Your next firearm attack deals extra damage.</content>
+        <content contentuid="hdfef9eeag71eeg5d1eg8d24gcedc2c925e8c" version="1">Merciless Shot</content>
+        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and make a firearm attack as an action. Each grit point adds half the weapon attack's damage. Consumes one bullet.</content>
+        <content contentuid="hde7e2926g15bfg5332g8e16ga25ae7cef4c6" version="1">Line 'em Up</content>
+        <content contentuid="hbce4e343g1a96g51acg800fga65933f05925" version="1">Unlocks the Line 'em Up grit ability.</content>
+        <content contentuid="h754e9698ga877g5ad9gbae6g65979d3ce3a3" version="1">Line 'em Up</content>
+        <content contentuid="h03055657g5991g5c20g94d1g024a02226283" version="1">Spend an action and 2 grit points. Enemies in a 20-foot line take half your firearm's weapon damage, or a quarter on a successful Dexterity save. Save DC: 8 + Dexterity modifier + proficiency bonus.</content>
+        <content contentuid="h3246abc9g2b62g5a28g8dd9gd3bedfa41609" version="1">Rapid Shot</content>
+        <content contentuid="h87f37c94g6910g5a30g82ecgc1dd7877f402" version="1">Unlocks the Rapid Shot grit ability.</content>
+        <content contentuid="h9e36cb7agbea2g5843gba93g160ad88227ca" version="1">Rapid Shot</content>
+        <content contentuid="h59be6cb2g6da7g53cfg8bb1g2b4b8e32ec0b" version="1">You can make another firearm attack as a bonus action.</content>
+        <content contentuid="h5dab5e6bg99d5g533dg83fbgfdd630d0f7b7" version="1">Rapid Shot</content>
+        <content contentuid="hec4e9afbg19a5g5af8gbd32g2735c2b99b0d" version="1">Spend 1 grit point to fire again as a bonus action.</content>
+        <content contentuid="h04796cd4g6294g5c71gac0bg46b07c90ba93" version="1">Bite the Bullet</content>
+        <content contentuid="h0e138025gbac2g5889gb433gf971bb126fd6" version="1">Unlocks the Bite the Bullet grit ability.</content>
+        <content contentuid="hafb61727gc03bg5958g90b3ga9044bdf035b" version="1">Bite the Bullet</content>
+        <content contentuid="hfb5aa873gb36eg58a3gaf03gf7b7b26b7d97" version="1">Choose 1, 2, or 3 grit points as a bonus action. Gain temporary hit points equal to the grit spent multiplied by your proficiency bonus. Temporary hit points do not stack.</content>
+        <content contentuid="h23345878g373eg5e32gb6dbgc9ea48ec8971" version="1">Shot in the Dark</content>
+        <content contentuid="hf107b388ga4efg5f00gbf38g1d99812fb35d" version="1">Unlocks the Shot in the Dark grit ability.</content>
+        <content contentuid="h206052b1gafcfg5a4bg8a02g22064a972674" version="1">Shot in the Dark</content>
+        <content contentuid="h58020396gc5cdg5f36g9031g5d29039ab1a6" version="1">You have Darkvision and ignore the Blinded condition for your next shot.</content>
+        <content contentuid="h9d0667c8gfdaeg5a1cg9463g1ff7de4976e7" version="1">Shot in the Dark</content>
+        <content contentuid="ha1e675dcg7790g5669ga976gd79d71c200f2" version="1">As a bonus action, spend 1 grit point to gain Darkvision out to 60 feet and ignore Blindness for your next shot.</content>
+        <content contentuid="h5926aed9gaee2g591agb986g656004d615c9" version="1">Rapid Repair</content>
+        <content contentuid="h5955813dg09f5g53b7g87bdg91ad7b4c0f4e" version="1">Unlocks the Rapid Repair grit ability.</content>
+        <content contentuid="h9589d1fbg4953g55b2gbc01g0b1a85bdda5b" version="1">Rapid Repair</content>
+        <content contentuid="h9d3c6ac3gb952g5b62g9a7cg5e1501afdda3" version="1">Spend 1 grit point and make a Sleight of Hand check to clear a misfired firearm.</content>
+        <content contentuid="hc29dc490gb036g5e94g88d9g2fd21e9adb3b" version="1">Tinkerer</content>
+        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Unlocks the Tinkerer grit ability.</content>
+        <content contentuid="h03b1cfcdg87e0g5463g8af1g19f2c517dafc" version="1">Tinkered</content>
+        <content contentuid="h6c338bfdg0868g56f2g8a71g5d185ecb6dbb" version="1">Your firearm has been modified and deals extra damage until your next long rest.</content>
+        <content contentuid="h5cf5a27cg1592g56b4g93a5gc048e11b9ce6" version="1">Tinkerer</content>
+        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend a bonus action and 1 grit point to modify the primary or secondary firearm. Choose capacity, damage dice, or range. Each physical gun keeps one modification until a long rest; a new modification replaces its previous one.</content>
+        <content contentuid="h4d7604b0g70abg5e29gb0deg24235336a21b" version="1">Fanning Fire</content>
+        <content contentuid="h01862009g89e3g5610gbd73g7cbde620cac9" version="1">Unlocks the Fanning Fire grit ability.</content>
+        <content contentuid="h977c48c0g18eeg521cgb9f0g167ce6452355" version="1">Fanning Fire</content>
+        <content contentuid="hb22e7e37g4ba5g52d3gb4ecgfa4d425420c6" version="1">You can make two extra firearm attacks this turn at -2 to hit.</content>
+        <content contentuid="h3178086bg4305g5971g85e1g0a37f8a4c60d" version="1">Fanning Fire</content>
+        <content contentuid="haa822b5cged83g566egb8e6gef6bbe8dd09b" version="1">Spend 1-3 grit points and an action to fire 2-4 shots. Each shot has an attack-roll penalty equal to grit spent and consumes one bullet. You must have ammunition for the entire volley.</content>
+        <content contentuid="hfdbc6d02gcb7ag56abgaa91g2ea5a90e644d" version="1">Desperado's Luck</content>
+        <content contentuid="h94a64143g6490g531cg90d2g35e4bd2f635b" version="1">Once per turn, when a firearm attack would miss, spend 1 grit point to add 1d4 to the roll. This interrupt does not spend a Reaction point.</content>
+        <content contentuid="h9ff329b1gf028g5572g8be4gf801282dd29e" version="1">Second Attack</content>
+        <content contentuid="h40c7e0efg541ag5499gafe0g0477e6b5cec7" version="1">You can attack twice, instead of once, whenever you take the Attack action.</content>
+        <content contentuid="h3b5cddd1g217eg53baga9fdg40216cf13fa3" version="1">Weapon Damaged</content>
+        <content contentuid="h49e57206gfd40g54edgbfd8ga997830c330d" version="1">This firearm has been damaged beyond a simple field repair. Several hours at the workbench are needed for it to fire again.</content>
+        <content contentuid="h40f837d1g07eeg5799g9499gf09ad6bff804" version="1">Double Load</content>
+        <content contentuid="h25cce658g804dg561dgb58cg48280491a5a1" version="1">Spend an action, 1 grit point, and two bullets to make a firearm attack dealing 1.5x weapon damage. A natural 1 destroys this physical gun until a long rest. Rapid Repair cannot restore it.</content>
+        <content contentuid="hc0ecaab8g4357g5f07g8475g5c5ea510dede" version="1">Double Load</content>
+        <content contentuid="hca40d7e3g5210g5ffcg97e8g7e414213dcfa" version="1">Unlocks the Double Load grit ability.</content>
+        <content contentuid="hb1c3fc87gbe52g5aabg8358g288168bb88af" version="1">Close Call</content>
+        <content contentuid="h0a71eea9g6fafg5f5fg8d51g0eebfa2882cb" version="1">+2 Armor Class against the triggering attack.</content>
+        <content contentuid="hd4802716g567dg5be5gb997gc6edb4df8fce" version="1">Close Call</content>
+        <content contentuid="h097c4619ga7e9g54c3gb9d6g6994e1343dcc" version="1">As a reaction, spend 1 grit point to gain +2 AC against an attack. If it misses, make a firearm attack against the attacker.</content>
+        <content contentuid="h5512b895g0359g5f61gbd22g2e6be07c6c4b" version="1">Close Call</content>
+        <content contentuid="h0980456eg2126g5e0aga897gaefb8d6b0096" version="1">Unlocks the Close Call grit ability.</content>
+        <content contentuid="h2edb9dc2g395bg5a39gac97gfd7757788007" version="1">Last Word</content>
+        <content contentuid="h0e487865g269fg5d91g8c99gc4df280202d2" version="1">Once per long rest, when damage would reduce you to 0 hit points, spend 3 grit points to be stabilized at 1 hit point instead, then immediately make one firearm attack.</content>
+        <content contentuid="hb837ad61gc723g5b12gacf2g4e03699a648e" version="1">Last Word (Spent)</content>
+        <content contentuid="h53bfe59cg5cf7g5e4egbeaeg29ac8d00fb1c" version="1">Last Word has already been used this long rest.</content>
+        <content contentuid="hd7aaf651g3a0ag505dgbbf6g396a115e4586" version="1">Last Word</content>
+        <content contentuid="h8e995049g0155g5826g8334gf5311ed4f3f9" version="1">Unlocks the Last Word grit ability.</content>
+        <content contentuid="h58deeaf2g7fd6g5cb9gb53dg96830c2e0103" version="1">Lock-on</content>
+        <content contentuid="h44889be1g11d9g55e9ga059g1fc78391eb85" version="1">Add your proficiency bonus to damage against a targeted enemy.</content>
+        <content contentuid="h1f5b1232ge771g5078ga86eg3ab18359e742" version="1">Long Shot</content>
+        <content contentuid="h3ada472ega21fg5255g8a7bg39be21cc02c2" version="1">Deal additional damage based on the distance to your target.</content>
+        <content contentuid="h82b2b368gb4e7g5db6ga986gb2ed358f3cdc" version="1">Stable Shot</content>
+        <content contentuid="h814cafeag14ccg5516gb149g4af6f6b3a298" version="1">Advantage on your next firearm attack this turn.</content>
+        <content contentuid="hecb315c0gee58g5b97ga583g28d080dc2c93" version="1">Stable Shot</content>
+        <content contentuid="hd925b749g0648g5f38g86bcg38cc2eefac9e" version="1">As a class action, sacrifice 20 feet of movement to gain Advantage on your next firearm attack this turn.</content>
+        <content contentuid="hfe429d72g1c5eg5e3fg93fdg722ba2e9dc16" version="1">Stable Shot</content>
+        <content contentuid="h81f3620dgb400g55c5g95abg94ca3c98544b" version="1">Unlocks the Stable Shot class action.</content>
+        <content contentuid="h55c50aabgc3d6g5c1cg9789g505fa5d4bbf5" version="1">Pinpoint Accuracy</content>
+        <content contentuid="h5dc3b18bg56ebg56ddga676g90e61bc78228" version="1">Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more.</content>
+        <content contentuid="h307f1ad2g9657g57fegae92ge5eb6b98b152" version="1">Headshot</content>
+        <content contentuid="ha0adf4aegadfag50f2g9db4g3b88d23072c3" version="1">Spend 5 grit points. Your next firearm attack this turn is an automatic critical hit.</content>
+        <content contentuid="h49d8e2cfgc0c1g5807gb097g4a3332ac885a" version="1">Headshot</content>
+        <content contentuid="hfdb35b30g6df4g519dgb124g4e729e4bb9d9" version="1">Your next firearm attack this turn is an automatic critical hit.</content>
+        <content contentuid="h25257b3fg6eb7g523fgb456g8e75a6174b9d" version="1">Headshot</content>
+        <content contentuid="h1967be9ag0e70g5e51gba30g5a46615ed9b1" version="1">Unlocks the Headshot grit ability.</content>
+        <content contentuid="h851f176ag3c4bg5951g89d2g98bfe093881d" version="1">Infused Rounds</content>
+        <content contentuid="h963f4738g659eg52e2gae59ga62ebf140a5c" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 1d4 Force damage.</content>
+        <content contentuid="h8cdc7a84g0159g5e7cgb49eg0f28df2118d3" version="1">Infused Rounds</content>
+        <content contentuid="h7aad8a6dgc1b1g5dcegb5f7ga5fd30e32b02" version="1">Unlocks the Infused Rounds attack.</content>
+        <content contentuid="h68c4b217gd450g50d5gb72ag15d2da52d800" version="1">Infused Rounds</content>
+        <content contentuid="hd2bd8f75g08acg52a9gb35fg33cacf556eff" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 2d4 Force damage.</content>
+        <content contentuid="h60eefb8egaf84g5becgb16fgd1ad6dc9eabc" version="1">Improved Infused Rounds</content>
+        <content contentuid="he70d6377gfb77g57d0g87c5g5ecba5a282e1" version="1">Infused Rounds damage increases to 2d4.</content>
+        <content contentuid="hd199df79g10e6g569aga149g1fbac9463bf1" version="1">Arcane Reload</content>
+        <content contentuid="he9ef1003g87b9g5092g9c2dgad911bd9ed4f" version="1">Your weapon magically reloads one bullet per round.</content>
+        <content contentuid="h77805d86g5fbbg56a8gb488g0e8f63b171eb" version="1">Arcane Reload</content>
+        <content contentuid="hc3f31900g4ab3g5d96ga9a7g32d38d2c8eaf" version="1">Your firearm magically reloads one bullet each round (flavor marker; see Implementation Notes).</content>
+        <content contentuid="hc9d2af4cg9741g5b98gbb32g43aadc79b63c" version="1">Infused Rounds</content>
+        <content contentuid="h0ca10309g6387g50c5g9238g145ebaa0c938" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 3d4 Force damage.</content>
+        <content contentuid="h26c4824dg7049g5673gbc15g10235a0522e1" version="1">Mastered Infused Rounds</content>
+        <content contentuid="h8c2a62c6g7f77g5f66g8e00g396e5bc02689" version="1">Infused Rounds damage increases to 3d4.</content>
+        <content contentuid="h51ad746eg6129g5681g9bfcg1e8906b3dbdb" version="1">Smart Shooting</content>
+        <content contentuid="h1dfc365eg9984g540dg8e96gdda89a752066" version="1">Add your Intelligence modifier to your firearm attack rolls.</content>
+        <content contentuid="h5561e09fg42e8g53e8gbe0fg73b431e24d87" version="1">Unstable Backfire</content>
+        <content contentuid="hb12fe557g4125g5cf0g9672gcd5e7eb65e22" version="1">An unstable round exploded in your face.</content>
+        <content contentuid="hf278fa11gc46ag56c0gae25g182f6edce2a6" version="1">Unstable Infused Rounds</content>
+        <content contentuid="h74e247efg3524g54b2g990dg6ccc98f89a80" version="1">Spend a bonus action to shoot an unstable infused round, dealing 5d4 Force damage with a 25% chance to also deal 3d4 Force damage in a 5-foot radius centered on you.</content>
+        <content contentuid="hd2195c52g8934g5fccga564g4ba4149f4fc2" version="1">Unstable Backfire</content>
+        <content contentuid="h8074437bg6d06g5bf5ga37cgf2d96c0dae78" version="1">Deals 3d4 Force damage in a 5-foot radius.</content>
+        <content contentuid="h29545f6fg7760g5aa6ga221g524abfa0561f" version="1">Unstable Infused Rounds</content>
+        <content contentuid="hcf93de15g47cag5a87g87f9g0466eafdf610" version="1">Unlocks the option to use unstable infused rounds.</content>
+        <content contentuid="h1f13e55bga6a8g53b2g817fgc7d5d78daa13" version="1">Spellstrike Shooter</content>
+        <content contentuid="h30431b39g76dag510dgbee0g4399e51ecb10" version="1">When you use your action to cast a spell, you can make a ranged firearm attack as part of the same action.</content>
+        <content contentuid="h16e63198g55acg44acgaf01g6d3cc02bd481" version="1">Shoot Flintlock</content>
+        <content contentuid="h75d3c664ga745g48a8g96a9g777428784924" version="1">Shoot Secondary Flintlock</content>
+        <content contentuid="hfd284d25gccf6g401cg8e93g9b3d41f95015" version="1">Shoot Blunderbuss</content>
+        <content contentuid="h699827d0g349bg4f26ga608gf0c828c495bc" version="1">Shoot Musket</content>
+        <content contentuid="h6d052683ga879g4b3cg91abg93d8d8658fa1" version="1">Fire one bullet at a target in a straight line, dealing your firearm's weapon damage.</content>
+        <content contentuid="h20f35133g343bg482dgaf64g7f092e6e9e2c" version="1">Fire one bullet from your secondary flintlock at a target in a straight line.</content>
+        <content contentuid="hc6b76403g31fag55a8g88a0g3b9d6ff4fa2f" version="1">Primary Reload</content>
+        <content contentuid="he8e58efagc245g5e3ag8f88g916c6aa416b8" version="1">Spend a bonus action to reload your flintlock to its full capacity of 3 bullets.</content>
+        <content contentuid="h7b17af36gce8cg4b45g8f1agf2d064081abc" version="1">Secondary Reload</content>
+        <content contentuid="h111c0a45g7c8cg4a9bg8f57g0dc443584a96" version="1">Spend a bonus action to reload your offhand flintlock to its full capacity of 3 bullets.</content>
+        <content contentuid="hcc92f66ag41e6g56b9gaa9egb8b18da05cd1" version="1">Primary Reload</content>
+        <content contentuid="hb047419bg12aeg5f9bg9749g29f46981707e" version="1">Spend a bonus action to reload your blunderbuss to its full capacity of 2 shots.</content>
+        <content contentuid="h6420edcdg4388g58c9g9493g84bc1e6ba114" version="1">Primary Reload</content>
+        <content contentuid="h3c75a550g3896g5965gbe46gd92b0fae9654" version="1">Spend a bonus action to reload your musket's single cartridge.</content>
+        <content contentuid="h72a09d2bg44a1g5992ga61ega64979492f86" version="1">Full Reload</content>
+        <content contentuid="hef22bce8g264fg5930gbdffgd678bbf3a2f0" version="1">Spend your action to reload both of your dual-wielded flintlocks to full capacity.</content>
+        <content contentuid="h626f90efg09e9g533eg8ab0g5c177030675b" version="1">Craft Flintlock</content>
+        <content contentuid="h40ad7fe6gaa84g5b19g87bbgfb7ae24332ba" version="1">Spend a Gunsmithing Charge and your action to assemble a new Flintlock from spare parts.</content>
+        <content contentuid="hd3abae72g0370g5b58g855dg1f67fda83648" version="1">Craft Blunderbuss</content>
+        <content contentuid="h6c8faccag8d90g5a58gb8bfg73d4146ae9a4" version="1">Spend a Gunsmithing Charge and your action to assemble a new Blunderbuss from spare parts.</content>
+        <content contentuid="hb95132f3ga0d5g53acg976bgef7ddc44e472" version="1">Craft Musket</content>
+        <content contentuid="hf7d87054g7ad4g593ega472g5d17db225d9f" version="1">Spend a Gunsmithing Charge and your action to assemble a new Musket from spare parts.</content>
+        <content contentuid="hef9ed75dg331bg4e14gbabagc074f2423ee6" version="1">Craft</content>
+        <content contentuid="hc7a2f010g91d8g49b9g9c57ga1cd2d58f89a" version="1">Spend a Gunsmithing Charge and your action to craft a Flintlock, Musket, Blunderbuss, Assembly Kit, or Disassembly Kit.</content>
+        <content contentuid="hd7f58e20g12a2g4591gb866gfb7f52605655" version="1">Craft Assembly Kit</content>
+        <content contentuid="h583c33e3g501ag4cbcga3f1g0f4794eb479b" version="1">Spend a Gunsmithing Charge and your action to assemble an Assembly Kit, used to fuse a magical weapon to a firearm.</content>
+        <content contentuid="h07f4f43eg5b7dg43e3g9222g705df6ca4a3d" version="1">Craft Disassembly Kit</content>
+        <content contentuid="hd5f6c265g3434g459eg953cgdef79719c644" version="1">Spend a Gunsmithing Charge and your action to assemble a Disassembly Kit, used to separate a fused firearm and magical weapon.</content>
+        <content contentuid="hb7ef5aa0g366ag49adga7c8g4755665e926d" version="1">Assembly Kit</content>
+        <content contentuid="h99797fe3gfab4g4c6fga911gf944c039177f" version="1">A gunsmith's kit of fittings and tools used to fuse a magical weapon to a firearm.</content>
+        <content contentuid="h01d4548cgf39eg44a2gb244gf5b5ca6a4928" version="1">Disassembly Kit</content>
+        <content contentuid="h238c2696gc297g4f35g8d5ag064cb9ef95d1" version="1">A gunsmith's kit of tools used to separate a fused firearm and magical weapon.</content>
+        <content contentuid="hdeba89e0g2bbcg58b5gbb2egc2b68c62f29c" version="1">Misfired</content>
+        <content contentuid="h4c6a6437gc436g5429g8a56gc54551460a5e" version="1">This firearm has misfired and cannot be used to attack until repaired or until your next long rest.</content>
+        <content contentuid="hcb90881dg412fg51f2g84f7g86701a838704" version="1">Misfire</content>
+        <content contentuid="hf6c7a7d5gbb8dg5f3ega0e9ge42df85e24ff" version="1">A natural 1 on a firearm attack roll causes it to misfire.</content>
+        <content contentuid="h0a33234fgb0deg5433gbd89g3390e2a211bc" version="1">Flintlock</content>
+        <content contentuid="ha92b53aagade3g5ce4gb4fdg64b144f51378" version="1">A compact one-handed firearm. Holds 3 bullets.</content>
+        <content contentuid="hfa8fd0b5ge50bg5424g87b4g636eebb68c21" version="1">Blunderbuss</content>
+        <content contentuid="h5bbd1e6egb1f5g5127gbfceg8b3d0bea6498" version="1">A two-handed firearm with heavy, short-range stopping power. Holds 2 bullets.</content>
+        <content contentuid="hf7a2a39fgda5eg515cga8bcgfb93ba72bd84" version="1">Musket</content>
+        <content contentuid="h81cfc332ge624g59b6gba71g058b66c79a2d" version="1">A two-handed long-range firearm. Holds 1 bullet.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000001" version="1">Bite the Bullet: 1 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000002" version="1">Bite the Bullet: 2 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000003" version="1">Bite the Bullet: 3 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000004" version="1">Spend a bonus action and 1 grit point. Gain temporary hit points equal to your proficiency bonus.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000005" version="1">Spend a bonus action and 2 grit points. Gain temporary hit points equal to twice your proficiency bonus.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000006" version="1">Spend a bonus action and 3 grit points. Gain temporary hit points equal to three times your proficiency bonus.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000001" version="1">Merciless Shot: 1 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000002" version="1">Merciless Shot: 2 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000003" version="1">Merciless Shot: 3 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Attack for 1.5 times your firearm's weapon damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Attack for twice your firearm's weapon damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Attack for 2.5 times your firearm's weapon damage.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000001" version="1">Fanning Fire: 1 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000002" version="1">Fanning Fire: 2 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000003" version="1">Fanning Fire: 3 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and two bullets to fire two shots, each at -1 to hit.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and three bullets to fire three shots, each at -2 to hit.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and four bullets to fire four shots, each at -3 to hit.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000001" version="1">Tinkerer: Primary Capacity</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000002" version="1">Tinkerer: Primary Damage</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000003" version="1">Tinkerer: Primary Range</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000004" version="1">Tinkerer: Secondary Capacity</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000005" version="1">Tinkerer: Secondary Damage</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000006" version="1">Tinkerer: Secondary Range</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Increase this firearm's ammunition capacity by 2 until the next long rest. Replaces its previous modification.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Change this firearm's damage dice until the next long rest: Flintlock 1d10, Blunderbuss 2d6, Musket 3d4. Replaces its previous modification.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until the next long rest: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. Replaces its previous modification.</content>
+        <content contentuid="h10000005g0000g4000g8000g000000000001" version="1">Rapid Repair: Primary Firearm</content>
+        <content contentuid="h10000005g0000g4000g8000g000000000002" version="1">Rapid Repair: Secondary Firearm</content>
+        <content contentuid="h10000006g0000g4000g8000g000000000001" version="1">Scattershot</content>
+        <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 10-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking full weapon damage on a failed save or half as much on a success.</content>
+</contentList>

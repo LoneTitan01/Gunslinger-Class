@@ -1,0 +1,181 @@
+{
+  "last_node_id": 22,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 1, "type": "UNETLoader", "pos": [20, 40], "size": [350, 110], "flags": {}, "order": 0, "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "UNETLoader"},
+      "widgets_values": ["flux1-dev.safetensors", "fp8_e4m3fn"],
+      "title": "Installed FLUX.1-dev - FP8 for 12GB VRAM"
+    },
+    {
+      "id": 2, "type": "DualCLIPLoader", "pos": [20, 200], "size": [350, 150], "flags": {}, "order": 1, "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "CLIP", "type": "CLIP", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "DualCLIPLoader"},
+      "widgets_values": ["clip_l.safetensors", "t5xxl_fp8_e4m3fn_scaled.safetensors", "flux", "default"]
+    },
+    {
+      "id": 3, "type": "VAELoader", "pos": [20, 400], "size": [350, 70], "flags": {}, "order": 2, "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "VAE", "type": "VAE", "links": [9], "slot_index": 0}],
+      "properties": {"Node name for S&R": "VAELoader"}, "widgets_values": ["ae.safetensors"]
+    },
+    {
+      "id": 4, "type": "CLIPTextEncode", "pos": [420, 40], "size": [460, 310], "flags": {}, "order": 5, "mode": 0,
+      "inputs": [{"name": "clip", "type": "CLIP", "link": 2}],
+      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [3, 4], "slot_index": 0}],
+      "properties": {"Node name for S&R": "CLIPTextEncode"},
+      "widgets_values": ["A single fantasy RPG ability icon: an antique flintlock pistol firing one large brass projectile through a jagged crimson impact burst. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels."],
+      "title": "POSITIVE - replace subject using icon_prompts.json"
+    },
+    {
+      "id": 5, "type": "FluxGuidance", "pos": [930, 40], "size": [310, 80], "flags": {}, "order": 6, "mode": 0,
+      "inputs": [{"name": "conditioning", "type": "CONDITIONING", "link": 3}],
+      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [5], "slot_index": 0}],
+      "properties": {"Node name for S&R": "FluxGuidance"}, "widgets_values": [3.5]
+    },
+    {
+      "id": 6, "type": "ConditioningZeroOut", "pos": [930, 165], "size": [310, 55], "flags": {}, "order": 7, "mode": 0,
+      "inputs": [{"name": "conditioning", "type": "CONDITIONING", "link": 4}],
+      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [6], "slot_index": 0}],
+      "properties": {"Node name for S&R": "ConditioningZeroOut"}
+    },
+    {
+      "id": 7, "type": "EmptySD3LatentImage", "pos": [420, 400], "size": [340, 140], "flags": {}, "order": 3, "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [7], "slot_index": 0}],
+      "properties": {"Node name for S&R": "EmptySD3LatentImage"}, "widgets_values": [1024, 1024, 1],
+      "title": "1024 square master - one icon per queue"
+    },
+    {
+      "id": 8, "type": "KSampler", "pos": [1300, 40], "size": [340, 300], "flags": {}, "order": 8, "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 1},
+        {"name": "positive", "type": "CONDITIONING", "link": 5},
+        {"name": "negative", "type": "CONDITIONING", "link": 6},
+        {"name": "latent_image", "type": "LATENT", "link": 7}
+      ],
+      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [8], "slot_index": 0}],
+      "properties": {"Node name for S&R": "KSampler"},
+      "widgets_values": [872341001, "fixed", 24, 1, "euler", "simple", 1],
+      "title": "FLUX: CFG 1 / guidance above controls prompt"
+    },
+    {
+      "id": 9, "type": "VAEDecode", "pos": [1700, 40], "size": [230, 80], "flags": {}, "order": 9, "mode": 0,
+      "inputs": [{"name": "samples", "type": "LATENT", "link": 8}, {"name": "vae", "type": "VAE", "link": 9}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [10, 13], "slot_index": 0}],
+      "properties": {"Node name for S&R": "VAEDecode"}
+    },
+    {
+      "id": 10, "type": "LoadBackgroundRemovalModel", "pos": [1300, 410], "size": [340, 85], "flags": {}, "order": 4, "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "bg_model", "type": "BACKGROUND_REMOVAL", "links": [11], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadBackgroundRemovalModel"}, "widgets_values": ["birefnet.safetensors"],
+      "title": "INSTALL MODEL FIRST - see To-do.md"
+    },
+    {
+      "id": 11, "type": "RemoveBackground", "pos": [1700, 220], "size": [280, 90], "flags": {}, "order": 10, "mode": 0,
+      "inputs": [{"name": "bg_removal_model", "type": "BACKGROUND_REMOVAL", "link": 11}, {"name": "image", "type": "IMAGE", "link": 10}],
+      "outputs": [{"name": "mask", "type": "MASK", "links": [12], "slot_index": 0}],
+      "properties": {"Node name for S&R": "RemoveBackground"}
+    },
+    {
+      "id": 12, "type": "InvertMask", "pos": [2040, 220], "size": [220, 60], "flags": {}, "order": 11, "mode": 0,
+      "inputs": [{"name": "mask", "type": "MASK", "link": 12}],
+      "outputs": [{"name": "MASK", "type": "MASK", "links": [14], "slot_index": 0}],
+      "properties": {"Node name for S&R": "InvertMask"}, "title": "Required: foreground mask to Comfy alpha"
+    },
+    {
+      "id": 13, "type": "JoinImageWithAlpha", "pos": [2320, 40], "size": [270, 90], "flags": {}, "order": 12, "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 13}, {"name": "alpha", "type": "MASK", "link": 14}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [15, 16, 17, 18, 19], "slot_index": 0}],
+      "properties": {"Node name for S&R": "JoinImageWithAlpha"}, "title": "Transparent RGBA master"
+    },
+    {
+      "id": 14, "type": "SaveImage", "pos": [2660, 40], "size": [350, 330], "flags": {}, "order": 13, "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 15}], "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["Gunslinger/masters/GSL_MercilessShot"],
+      "title": "1024 master PNG - change basename"
+    },
+    {
+      "id": 15, "type": "ImageScale", "pos": [2320, 420], "size": [270, 150], "flags": {}, "order": 14, "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 16}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [20], "slot_index": 0}],
+      "properties": {"Node name for S&R": "ImageScale"}, "widgets_values": ["lanczos", 380, 380, "disabled"]
+    },
+    {
+      "id": 16, "type": "SaveImage", "pos": [2660, 420], "size": [350, 330], "flags": {}, "order": 18, "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 20}], "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["Gunslinger/tooltip/GSL_MercilessShot"],
+      "title": "380 tooltip PNG - change basename"
+    },
+    {
+      "id": 17, "type": "ImageScale", "pos": [2320, 800], "size": [270, 150], "flags": {}, "order": 15, "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 17}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [21], "slot_index": 0}],
+      "properties": {"Node name for S&R": "ImageScale"}, "widgets_values": ["lanczos", 144, 144, "disabled"]
+    },
+    {
+      "id": 18, "type": "SaveImage", "pos": [2660, 800], "size": [350, 330], "flags": {}, "order": 19, "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 21}], "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["Gunslinger/controller/GSL_MercilessShot"],
+      "title": "144 controller PNG - change basename"
+    },
+    {
+      "id": 19, "type": "ImageScale", "pos": [2320, 1180], "size": [270, 150], "flags": {}, "order": 16, "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 18}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [22], "slot_index": 0}],
+      "properties": {"Node name for S&R": "ImageScale"}, "widgets_values": ["lanczos", 64, 64, "disabled"]
+    },
+    {
+      "id": 20, "type": "SaveImage", "pos": [2660, 1180], "size": [350, 330], "flags": {}, "order": 20, "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 22}], "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["Gunslinger/hotbar/GSL_MercilessShot"],
+      "title": "64 atlas tile PNG - change basename"
+    },
+    {
+      "id": 21, "type": "ImageScale", "pos": [2320, 1560], "size": [270, 150], "flags": {}, "order": 17, "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 19}],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [23], "slot_index": 0}],
+      "properties": {"Node name for S&R": "ImageScale"}, "widgets_values": ["lanczos", 48, 48, "disabled"]
+    },
+    {
+      "id": 22, "type": "SaveImage", "pos": [2660, 1560], "size": [350, 330], "flags": {}, "order": 21, "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 23}], "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["Gunslinger/resource/GSL_MercilessShot"],
+      "title": "48 resource PNG - use for resource prompts"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 8, 0, "MODEL"],
+    [2, 2, 0, 4, 0, "CLIP"],
+    [3, 4, 0, 5, 0, "CONDITIONING"],
+    [4, 4, 0, 6, 0, "CONDITIONING"],
+    [5, 5, 0, 8, 1, "CONDITIONING"],
+    [6, 6, 0, 8, 2, "CONDITIONING"],
+    [7, 7, 0, 8, 3, "LATENT"],
+    [8, 8, 0, 9, 0, "LATENT"],
+    [9, 3, 0, 9, 1, "VAE"],
+    [10, 9, 0, 11, 1, "IMAGE"],
+    [11, 10, 0, 11, 0, "BACKGROUND_REMOVAL"],
+    [12, 11, 0, 12, 0, "MASK"],
+    [13, 9, 0, 13, 0, "IMAGE"],
+    [14, 12, 0, 13, 1, "MASK"],
+    [15, 13, 0, 14, 0, "IMAGE"],
+    [16, 13, 0, 15, 0, "IMAGE"],
+    [17, 13, 0, 17, 0, "IMAGE"],
+    [18, 13, 0, 19, 0, "IMAGE"],
+    [19, 13, 0, 21, 0, "IMAGE"],
+    [20, 15, 0, 16, 0, "IMAGE"],
+    [21, 17, 0, 18, 0, "IMAGE"],
+    [22, 19, 0, 20, 0, "IMAGE"],
+    [23, 21, 0, 22, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {"ds": {"scale": 0.7, "offset": [0, 0]}},
+  "version": 0.4
+}

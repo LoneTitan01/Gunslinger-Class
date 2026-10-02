@@ -6,7 +6,7 @@
             <children>
                 <node id="SkillList">
                     <attribute id="Name" type="FixedString" value="Gunslinger Skill List"/>
-                    <attribute id="Skills" type="LSString" value="Acrobatics, Athletics, Intimidation, Investigation, Perception, SleightOfHand, Stealth, Survival"/>
+                    <attribute id="Skills" type="LSString" value="Acrobatics, Arcana, Athletics, Intimidation, Perception, SleightOfHand, Survival"/>
                     <attribute id="UUID" type="guid" value="145ef419-c6ef-5187-a3ad-ca4ab8c76019"/>
                 </node>
             </children>

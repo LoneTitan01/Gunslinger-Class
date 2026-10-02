@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="EquipmentTypes">
+        <node id="root">
+            <children>
+                <node id="EquipmentType">
+                    <attribute id="BoneMainSheathed" type="FixedString" value="Dummy_Sheath_Hip_R"/>
+                    <attribute id="BoneMainUnsheathed" type="FixedString" value="Dummy_R_Hand"/>
+                    <attribute id="BoneOffHandSheathed" type="FixedString" value="Dummy_Sheath_Hip_L"/>
+                    <attribute id="BoneOffHandUnsheathed" type="FixedString" value="Dummy_L_Hand"/>
+                    <attribute id="Name" type="FixedString" value="GSL_Firearm_1H"/>
+                    <attribute id="SoundAttackType" type="FixedString" value=""/>
+                    <attribute id="SoundEquipmentType" type="FixedString" value="Crossbow"/>
+                    <attribute id="SourceBoneSheathed" type="FixedString" value="Dummy_Sheath"/>
+                    <attribute id="SourceBoneVersatileSheathed" type="FixedString" value="Dummy_Sheath"/>
+                    <attribute id="UUID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235"/>
+                    <attribute id="WeaponType_OneHanded" type="FixedString" value="Crossbow1H"/>
+                    <attribute id="WeaponType_TwoHanded" type="FixedString" value="Crossbow1H"/>
+                </node>
+                <node id="EquipmentType">
+                    <attribute id="BoneMainSheathed" type="FixedString" value="Dummy_Sheath_Upper_L"/>
+                    <attribute id="BoneMainUnsheathed" type="FixedString" value="Dummy_L_Hand"/>
+                    <attribute id="Name" type="FixedString" value="GSL_Firearm_2H"/>
+                    <attribute id="SoundAttackType" type="FixedString" value=""/>
+                    <attribute id="SoundEquipmentType" type="FixedString" value="Crossbow"/>
+                    <attribute id="SourceBoneSheathed" type="FixedString" value="Dummy_Sheath"/>
+                    <attribute id="SourceBoneVersatileSheathed" type="FixedString" value="Dummy_Sheath"/>
+                    <attribute id="UUID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac"/>
+                    <attribute id="WeaponType_OneHanded" type="FixedString" value="Crossbow2H"/>
+                    <attribute id="WeaponType_TwoHanded" type="FixedString" value="Crossbow2H"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

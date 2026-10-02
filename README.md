@@ -3,7 +3,7 @@ This is a mod for Baldur's Gate 3 implementing a Gunslinger class, the ability t
 
 ## Requirements
 
-- [BG3 Script Extender](https://github.com/Norbyte/bg3se/releases)
+- **Required:** [BG3 Script Extender](https://github.com/Norbyte/bg3se/releases), version 20 or newer. Persistent firearm modifications, misfire/broken state, rarity-based Rapid Repair, volley cleanup, and Last Word's post-damage counterattack use server-side Lua. Install the extender through BG3 Mod Manager before enabling this version.
 - **Optional:** [5e Spells](https://www.nexusmods.com/baldursgate3/mods/125), for the Arcane Gunsman spell options marked as coming from that mod.
 
 ## Modding Wiki
@@ -12,13 +12,29 @@ This is a mod for Baldur's Gate 3 implementing a Gunslinger class, the ability t
 
 ## Firearms
 
-Firing consumes one bullet; capacity depends on the firearm. Base flintlocks hold 3 bullets, blunderbusses hold 2, and muskets hold 1. Reloading one firearm, whether it is the primary or secondary weapon, takes a bonus action. Reloading while dual-wielding flintlocks takes an action. Guns automatically reload to capacity on a short or long rest. A natural 1 on an attack roll causes a firearm to misfire, rendering it unusable until repaired. The Gunslinger can use a class action to repair a misfired firearm: spend an action and succeed on a Sleight of Hand check with a DC of 10 + the weapon's rarity (common 0, uncommon 1, rare 2, very rare 3, legendary 4).
+Each firearm replaces the default ranged attack with its own **Shoot Flintlock**, **Shoot Blunderbuss**, or **Shoot Musket** weapon attack. Shots fire the vanilla crossbow bolt projectile along a flat, straight line (the bolt's lobbed arc is removed) with crossbow firing animations, weapon damage, and weapon attack rolls; they are not spell attacks or piercing line-area attacks. Each basic shot consumes one bullet, and the engine prevents the attack when its ammo pool is empty. Flintlocks hold 3 bullets in each hand, blunderbusses hold 2, and muskets hold 1. Main-hand and offhand flintlocks use separate ammo pools and separate attack buttons; automatic bundled dual-wield shots are disabled so an offhand shot cannot bypass its ammunition cost.
+
+Reload actions are granted by the equipped gun, not by Gunslinger class level:
+
+- **Primary Reload:** bonus action; appears with a main-hand flintlock, blunderbuss, or musket and refills that gun.
+- **Secondary Reload:** bonus action; appears with an offhand flintlock and refills its separate pool.
+- **Full Reload:** action; appears with two equipped flintlocks and refills both pools.
+
+**Scattershot** (blunderbuss only) costs an action and one blunderbuss bullet. It blasts a 10-foot cone; each creature in it makes a Dexterity saving throw (DC 8 + Dexterity modifier + proficiency bonus), taking full weapon damage on a failed save or half on a success. It appears only while a working blunderbuss is in the main hand.
+
+Firearms do not grant the inherited vanilla crossbow weapon actions (Piercing Shot, Mobile Shooting, Brace). Their only equipment-granted actions are the shots, reloads, and Scattershot listed above. They are granted through the weapons' `BoostsOnEquipMainHand` / `BoostsOnEquipOffHand` (`UnlockSpell(...)`) so they are listed as actions on the weapon tooltip, like vanilla weapon actions. The off-hand flintlock grants Secondary Reload, the off-hand shot, and Full Reload; Full Reload is greyed out unless a flintlock is also in the main hand. The hidden per-hand equip passives only add the ammo pools and swap the default ranged attack for the firearm shot (`AttackSpellOverride`).
+
+Ammo refills on a short or long rest. Hand/type resource pools remain the combat UI, while Script Extender stores ammunition, modifications, misfires, and destruction against each physical firearm and restores its state when equipped or transferred. A natural 1 on an attack roll causes that gun to misfire, disabling its firearm attacks until repaired or a long rest. Rapid Repair is implemented; the separate ordinary action/DC 10 + rarity repair described by the original design is still not implemented.
 
 | Firearm | Hands | Capacity | Base damage | Range |
 | --- | --- | --- | --- | --- |
 | Flintlock | One-handed | 3 bullets | 2d4 | 45 ft |
 | Blunderbuss | Two-handed | 2 bullets | 1d12 | 25 ft |
 | Musket | Two-handed | 1 bullet | 2d6 | 80 ft |
+
+Weapon range values are **1350 / 750 / 2400**, respectively, using the game's shortbow scale of 1800 = 60 feet. Main-hand shooting spells use the equipped weapon's range; the secondary flintlock uses 13.5 metres, or a 19.5-metre override with Tinkerer's range modification. The modified secondary attack is also explicitly unlocked as a selectable action. High-ground range extensions remain inherited from vanilla ranged attacks.
+
+Blunderbuss and Musket use BG3's exact `Twohanded` weapon-property token, matching Heavy and Light Crossbows. The display-style spelling `Two-Handed` is not a valid stats property.
 
 ### Crafting
 
@@ -260,6 +276,11 @@ The Gunslinger is a firearm-focused class built around precision, timing, and sp
 
 At level 3, Gunslingers choose two grit abilities, then choose one additional ability at levels 5, 9, 13, and 17. Desperados instead choose one additional grit ability every three levels starting at level 5 (levels 5, 8, 11, 14, 17, and 20), and increase their maximum grit by 1 every three levels starting at level 6 (levels 6, 9, 12, 15, and 18). Subclasses are selected at level 3.
 
+### Character Creation
+
+- **Default ability scores:** Strength 10, Dexterity 15 (+2 bonus), Constitution 13, Intelligence 14 (+1 bonus), Wisdom 12, Charisma 8.
+- **Skill proficiencies:** choose 2 from Acrobatics, Arcana, Athletics, Intimidation, Perception, Sleight of Hand, and Survival. Sleight of Hand and Athletics are selected by default.
+
 ### Gunslinger Progression
 
 | Level | Gunslinger features | Grit Abilities | Max Grit Points | Misc |
@@ -420,26 +441,68 @@ These are thematic recommendations, not a finalized class spell list. The 5e Spe
 
 ## Implementation Notes / Known Limitations
 
+### Grit ability visuals
+
+Grit abilities reuse base-game animations, prepare/cast effects and sounds copied from vanilla spells with similar effects. Weapon variants inherit them from their first variant.
+
+| Ability | Vanilla visual source |
+| --- | --- |
+| Merciless Shot | Sneak Attack (ranged) |
+| Line 'em Up | Piercing Shot |
+| Rapid Shot | Horde Breaker (ranged) |
+| Bite the Bullet | Second Wind |
+| Shot in the Dark | Darkvision |
+| Rapid Repair, Tinkerer | Mending |
+| Fanning Fire | Volley |
+| Double Load | Hamstring Shot |
+| Close Call | Shield reaction animation |
+| Last Word | Death Ward |
+| Stable Shot | Brace (crossbow) |
+| Headshot | Hunter's Mark |
+| Infused Rounds | Branding Smite (ranged) |
+
+Unstable Backfire is an instant sub-effect with no cast animation.
+
+### Custom icon artwork
+
+See [To-do.md](To-do.md) for the complete artwork checklist, exact export paths and formats, atlas slots, and stat consumers. All custom actions, passives and statuses now reference registered `GSL_*` ability icons. The new ability atlas, tooltip/controller exports, and six action-resource image sets contain temporary firearm artwork; replace those images with final art while retaining their names and atlas positions. Shooting artwork is separate from the existing firearm inventory icons. Resource images are looked up by resource `Name` under the mod's GUI folders, not by a speculative `Icon` attribute in the resource definitions. The optional 5e compatibility PAK needs no duplicate artwork.
+
 This mod is implemented entirely through BG3's stats/.lsx data format (no custom Script Extender (BG3SE) scripting or Osiris story scripts). A few parts of the design above don't have a clean 1:1 vanilla equivalent, so they were implemented as documented, best-effort approximations. These are called out below so they're easy to find and revisit.
 
 **Firearms, ammo and misfires**
 
-- Firearm weapons (`WPN_GSL_Flintlock`, `WPN_GSL_Blunderbuss`, `WPN_GSL_Musket`) reuse the vanilla Hand Crossbow / Heavy Crossbow mesh, icon and projectile via BG3's stats `using` inheritance rather than shipping custom 3D models. A small `RootTemplates/_merged.lsx` override gives each firearm its own in-world item template (so it displays as "Flintlock"/"Blunderbuss"/"Musket" with the correct stats rather than as a vanilla crossbow), but the visuals themselves are the vanilla crossbow assets.
-- Natural-1 misfires are fully implemented: a shared `GSL_Firearm_Misfire_Passive` detects a critical miss on a firearm attack and applies the `GSL_MISFIRE` status, which imposes disadvantage and a large damage penalty until repaired or until a long rest. The Rapid Repair grit ability clears it with a Sleight of Hand check, matching the README.
-- Ammo capacity (3/2/1 bullets) is tracked with hidden per-weapon action resources (`GunslingerFlintlockAmmo`, `GunslingerBlunderbussAmmo`, `GunslingerMusketAmmo`) that restore on rest, and four "Reload" spells (`Shout_GSL_Reload_*`) are granted to every Gunslinger at level 1 to manually refill them (bonus action per weapon, or a full action for both dual-wielded flintlocks). However, BG3's stats system has no clean, scripting-free hook to automatically deduct a bullet from these resources every time the weapon's normal attack action is used — that would need Script Extender/Osiris integration, which is out of scope for this stats-only generator. In practice, ammunition is enforced on the honor system via the Reload spells and the resource display, not automatically consumed per shot.
+- Firearm weapons (`WPN_GSL_Flintlock`, `WPN_GSL_Blunderbuss`, `WPN_GSL_Musket`) use the 3D models, textures and inventory icons from **Immersive Firearms by maradi** (used with the author's permission). Weapon stats and firing animations inherit from vanilla crossbows (Flintlock → Hand Crossbow, one-handed; Musket → Light Crossbow, two-handed; Blunderbuss → Heavy Crossbow, two-handed). Their custom shooting spells and the weapons' `Projectile` field use two mod projectile root templates in `RootTemplates/_merged.lsx`: `GSL_Projectile_Bullet_Straight` (`9c0f6a51-3b7e-4d2a-8f61-2e4b7c9d1a05`, main hand) and `GSL_Projectile_Bullet_Straight_OffHand` (`d4e2b8a7-6c13-4f9e-a5b0-7e1f3c2d8b96`, off-hand flintlock). These are standalone copies of vanilla `VFX_Projectile_Arrow_Normal_01` / `VFX_Projectile_Arrow_Normal_OffHand_01` that keep the original bolt trail, impact and sound effects but omit `ProjectilePath`, `OffsetMin_Bezier3` and `ShiftMin_Bezier3`, the fields that create the lobbed arc. This is the same way straight vanilla projectiles such as Eldritch Blast and Fire Bolt are defined. IF's own stats, spells and statuses are **not** included, and IF does not need to be installed. The imported assets were given new resource UUIDs and icon names (`GSL_*`) to avoid conflicts with Immersive Firearms. Equipment types use crossbow-compatible one-/two-handed animation mappings. Asset locations:
+  - meshes: `Generated/Public/GunslingerClass/Firearms/`
+  - textures: `Public/GunslingerClass/Assets/Firearms/`
+  - visual/material/texture banks: `Public/GunslingerClass/Content/Assets/[PAK]_GSL_Firearms/_merged.lsx`
+  - icon atlas: `Public/GunslingerClass/Assets/Textures/Icons/`, `GUI/Icons_GunslingerFirearms.lsx`, `Content/UI/[PAK]_UI/_merged.lsx`
+  - tooltip/controller icons: `Public/Game/GUI/Assets/`
+  - The `Content` banks and `RootTemplates/_merged.lsx` must be converted to `_merged.lsf` before packing (`stage_packages.py --divine` does this). Root-template conversion is required for crafted firearms and kits to be available to the game; leaving the item templates as source XML in the PAK can allow Craft to spend its charge without creating an item.
+- Firearm-only conditions use vanilla `IsRangedWeaponAttack()` and `IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())`. The imported weapons use the otherwise-unused Slings proficiency group. They do not call Immersive Firearms' custom `IsFirearmAttack()` helper or require that mod's scripts.
+- The shared critical-miss passive notifies the server runtime, which records the exact gun and projects hand-specific attack locks. Double Load has a separate destruction trigger; destroyed guns offer no Rapid Repair option. Ordinary repair remains outside this grit update.
+- Ammo capacity (3/2/1 bullets) is granted by equipment passives. Direct grit attacks pay ammunition through `UseCosts`; reaction shots spend one bullet through native resource functors, without a second action/reaction charge. The server adds conditional ammunition costs and readiness checks to Line 'em Up, Infused Rounds, and native spells with ranged weapon attack rolls. Those conditional checks leave non-firearm weapons' existing actions/costs intact. Reloads still refill their matching pools; the runtime snapshots the result to the physical gun.
 
 **Crafting**
 
-- Starting at level 2, three `Shout_GSL_Craft*` spells (Flintlock/Blunderbuss/Musket) spend one Gunsmithing Charge (`GunslingerCraftCharges`, restores on long rest) and an action to place a new firearm directly into the caster's inventory via `SummonInInventory`.
-- The README's "Assembly Kit" (fusing an existing magical weapon's properties onto a firearm) is **not implemented**. BG3's native item-fusion mechanism (`ItemCombos.txt`) requires the two specific source/result stat entries to be known ahead of time, which doesn't generalize to "any magical weapon the player happens to find." Implementing this properly would need Script Extender scripting to read and re-apply an arbitrary weapon's boosts at runtime.
+- Starting at level 2, the Gunslinger gets a single **Craft** class action (`Shout_GSL_Craft`), a linked spell container that opens five options: Flintlock, Musket, Blunderbuss, Assembly Kit, and Disassembly Kit (`Shout_GSL_Craft*`). Each option spends one Gunsmithing Charge (`GunslingerCraftCharges`, restores on long rest) and an action to place the item directly into the caster's inventory via `SummonInInventory`.
+- The Assembly Kit (`OBJ_GSL_AssemblyKit`) and Disassembly Kit (`OBJ_GSL_DisassemblyKit`) are craftable inventory items with their own root templates (based on the vanilla Forgery Kit's visuals), but they **do not fuse or defuse weapons yet**. BG3's native item-fusion mechanism (`ItemCombos.txt`) requires the two specific source/result stat entries to be known ahead of time, which doesn't generalize to "any magical weapon the player happens to find." Implementing this properly would need per-weapon combos or Script Extender scripting to read and re-apply an arbitrary weapon's boosts at runtime.
 
 **Grit abilities**
 
-- All 8 base grit abilities (Merciless Shot, Line 'em Up, Rapid Shot, Bite the Bullet, Shot in the Dark, Rapid Repair, Tinkerer, Fanning Fire) are implemented as `GunslingerGrit`-gated spells, unlocked two at a time via `SelectPassives` at level 3 as the README specifies.
-- **Tinkerer** is simplified to a flat damage-die bump on the equipped firearm rather than the three-way capacity/damage/range menu in the README, since that needs per-item state tracking with no simple spell-functor equivalent.
-- **Fanning Fire** is simplified to granting one extra free firearm attack rather than the full variable 2–4 attack ladder with scaling penalties.
-- The 4 Desperado-exclusive grit abilities (Desperado's Luck, Double Load, Close Call, Last Word) are implemented as automatically-granted features at the appropriate subclass levels rather than additional pool picks, since the README doesn't specify how they interact with the shared 2-per-tier selection pool.
-  - **Desperado's Luck** is simplified to a flat, non-interactive +1d4 bonus applied once per turn to firearm attack rolls, rather than a "spend grit after seeing you missed" reroll interrupt (no confirmed vanilla reroll-after-roll functor).
+- See [Grit-Ability-Report.md](Grit-Ability-Report.md) for the before/README/after comparison, exact costs, implementation references, and in-game acceptance checklist. Source tests and mocked Lua lifecycle tests are not proof of BG3 reaction timing.
+- Level 3 grants two selected base grit abilities; later selections grant one, on the class/subclass schedules listed above. Tinkerer enters the level-5 pool and Fanning Fire the level-7 pool. Grit Adept uses the level-3 pool.
+- Merciless Shot, Rapid Shot, Double Load, and Fanning Fire now execute weapon attacks directly, rather than spending an action on a buff followed by a second attack. Linked menus expose Merciless/Bite/Fanning's 1-3 grit tiers. Line 'em Up uses half weapon damage on enemies only, quarter damage on a successful Dexterity save.
+- Tinkerer has six choices: capacity/damage/range for primary or secondary firearms. The server stores one modification per physical gun, replaces the previous choice, and clears it on long rest. Increasing capacity does not conjure bullets; reload to fill the new space.
+- Rapid Repair exposes primary/secondary choices at DC 12-16, filtered by the equipped gun's rarity and repairable misfire state. It keeps the previous bonus-action timing and costs one grit. A failed check still spends those costs.
+- Fanning Fire uses 2/3/4 target selections, matching ammunition costs and -1/-2/-3 attack penalties. Its penalty is removed on cast completion or cancellation. Shots require enough loaded ammunition for the entire volley: even a capacity-modified Musket holds only three bullets.
+- Shot in the Dark grants native 18-metre darkvision and blindness-group immunity for the next attack. Whether this suppresses an already-active Blind status exactly as the design intends still needs an in-game check.
+- **Stable Shot** now spends 6 metres (20 feet) of movement when activated; learning the feature no longer permanently removes that movement from every turn.
+- Desperado's exclusive features are automatic at levels 3/5/8/11, in addition to its selected grit abilities.
+  - **Desperado's Luck:** native post-roll prompt, one grit, +1d4, once-per-turn marker, no Reaction cost.
+  - **Double Load:** action attack, one grit, two bullets, 1.5x weapon damage; natural 1 marks that physical gun destroyed until long rest.
+  - **Close Call:** native post-roll prompt costing a Reaction and one grit. Subtracting two from the incoming roll is equivalent to +2 AC for that attack. Its resolution interrupt checks for a miss, fires a loaded usable firearm counterattack, and clears its marker on either hit or miss.
+  - **Last Word:** native lethal-damage prompt costing three grit, Death Ward and a long-rest cooldown; the server requests its firearm attack after the incoming damage event, not before survival. Its lethal-prompt timing and Death Ward/1-HP interaction are high-priority in-game checks, not engine-verified claims.
+- New menu tiers, repair options, and interrupts reuse existing custom icons. No additional artwork is required. Lua files and the extender config are included automatically by `stage_packages.py`.
 
 **Feats**
 
@@ -450,7 +513,8 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 
 **Arcane Gunsman**
 
-- **Arcane Reload** (level 7) is a flavor-only marker spell/passive; it does not actually tick ammunition down automatically each round, for the same reason described under Ammo above.
+- **Arcane Reload** (level 7) remains a flavor-only marker spell/passive and does not automatically replenish ammunition each round.
+- **Infused Rounds** inherits vanilla ranged attack animations, range, and projectile trajectories, requires a main-hand firearm, and overrides the inherited physical/offhand damage effects and tooltip damage with its Force damage. Unstable rounds use a native d4 roll (4 = 25%) to trigger an immediate, caster-centred 1.5-metre radius backfire on a shot, whether it hits or misses.
 - The recommended Arcane Gunsman spell lists substitute a small number of spells that could not be confirmed to exist under the exact vanilla/5e-mod names in the README (e.g. Shield, Lightning Bolt, Fire Shield, Ice Storm, Cone of Cold, Conjure Volley, Tasha's Mind Whip, Holy Weapon, Swift Quiver, and Synaptic Static), in favor of grep-verified alternatives of a similar level and theme (for example Color Spray, Fireball, Fear, Gust of Wind, and the Mephit fire-breath zone spell in place of the base-game spells above). These spell lists are explicitly marked in the README as "thematic recommendations, not a finalized class spell list," so this substitution is intended to be revisited/tuned rather than treated as final.
 
 **5e Spells compatibility addon**
@@ -459,5 +523,7 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 
 **General**
 
-- No packaging/build step (e.g. producing a `.pak` via `divine.exe`) is included; this repository contains the unpacked mod source tree under `Source/`, matching the structure of the example mods in `examples/`. Packaging for distribution is left to the modder using standard BG3 modding tools (see the [Modding Wiki](https://wiki.bg3.community/Tutorials)).
-- All `.lsx`/localization XML files parse cleanly and all passive/spell/status cross-references resolve (validated with `validate_xml.py` at the repo root).
+- This repository contains the unpacked mod source tree under `GunslingerClass/`, alongside reference mods in `examples/`. `stage_packages.py` runs `validate_xml.py`, then copies the files for each PAK into `Main_Staging/` (base mod, `Generated/` meshes, `Public/Game/` icons, plus `Localization/English/`) and `5e_Compat_Staging/` (5e Spells compat add-on). Pass `--divine <path to LSLib Divine.exe>` to convert the localization `.xml` to `.loca` and the `Content` bank and `RootTemplates` `.lsx` files to `.lsf`, then pack both folders into `Packages/GunslingerClass.pak` and `Packages/GunslingerClass_5eSpellsCompat.pak` (LZ4, verified against the staged file list). Add `--no-pack` to convert and stage without packing. Without `--divine`, convert the files with LSLib ConverterApp, remove the originals, and pack each staging folder with ConverterApp (Create Package, V18 Baldur's Gate 3 Release, LZ4).
+- `validate_xml.py` checks XML, the main module/localization folder layout, and public `TranslatedString` localization, then runs `validate_stats.py` to check local stats references, spell inheritance, effective cast animations/events, projectile trajectories, zone geometry, reload effects, and separate offhand attack wiring. Vanilla animation/trajectory inheritance is checked against `examples/BG3 Reference` when available; without that cache, validation explicitly reports that external fields were not checked. These checks do not parse stats in the game engine or verify behaviour in-game.
+- Run the focused regression suite with `python -m unittest discover -s tests -p test_spell_data.py -v`. After installing a rebuilt PAK and restarting the game, test all five Craft choices; empty/refill each basic firearm ammo pool; fire and reload both flintlocks separately; then check class actions, Rapid Repair, Infused Rounds, and unstable backfire in combat. Verify resource costs on misses as well as hits.
+- Run `python -m unittest discover -s tests -p test_staging_resources.py -v` to check root-template and visual-bank conversion, manual-conversion reporting, and conversion failure handling.

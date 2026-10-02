@@ -5,11 +5,12 @@
         <node id="root">
             <children>
                 <node id="Progression">
-                    <attribute id="Boosts" type="LSString" value="ProficiencyBonus(SavingThrow,Dexterity);ProficiencyBonus(SavingThrow,Intelligence);Proficiency(LightArmor);Proficiency(MediumArmor);Proficiency(SimpleWeapons);Proficiency(Slings);ActionResource(GunslingerFlintlockAmmo,3,0);ActionResource(GunslingerBlunderbussAmmo,2,0);ActionResource(GunslingerMusketAmmo,1,0)"/>
+                    <attribute id="Boosts" type="LSString" value="ProficiencyBonus(SavingThrow,Dexterity);ProficiencyBonus(SavingThrow,Intelligence);Proficiency(LightArmor);Proficiency(MediumArmor);Proficiency(SimpleWeapons);Proficiency(Slings)"/>
                     <attribute id="Level" type="uint8" value="1"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="PassivesAdded" type="LSString" value="GSL_GritRecovery"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
-                    <attribute id="Selectors" type="LSString" value="SelectSkills(145ef419-c6ef-5187-a3ad-ca4ab8c76019,3);AddSpells(ad9500fe-a489-4eff-9658-cbd82c1edfb8,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSkills(145ef419-c6ef-5187-a3ad-ca4ab8c76019,2);SelectAbilityBonus(b9149c8e-52c8-46e5-9cb6-fc39301c05fe,AbilityBonus,2,1)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="662340ed-6db6-5c9f-92d1-c2ba708d3fbf"/>
                 </node>

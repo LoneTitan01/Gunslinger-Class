@@ -1,0 +1,11 @@
+new entry "OBJ_GSL_AssemblyKit"
+type "Object"
+using "_Kit"
+data "RootTemplate" "4f9578e8-e638-447a-835b-cd7aa282d921"
+data "Weight" "1"
+
+new entry "OBJ_GSL_DisassemblyKit"
+type "Object"
+using "_Kit"
+data "RootTemplate" "69a4dba2-7023-4f78-8509-dff4201821ad"
+data "Weight" "1"
