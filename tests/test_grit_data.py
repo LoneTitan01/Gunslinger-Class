@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -91,7 +92,8 @@ class GritDataTests(unittest.TestCase):
         for hand in ('Main', 'Off'):
             for mode in ('Capacity', 'Damage', 'Range'):
                 fields = self.fields(f'Shout_GSL_Tinkerer_{hand}{mode}')
-                self.assertEqual(fields['UseCosts'], 'BonusActionPoint:1;GunslingerGrit:1')
+                self.assertEqual(fields['UseCosts'], 'ActionPoint:1')
+                self.assertNotIn('GunslingerGrit', fields['TooltipUseCosts'])
                 self.assertIn(f'GSL_FIREARM_{hand.upper()}_DISABLED', fields['RequirementConditions'])
                 self.assertEqual(fields['SpellProperties'], '')
         extended = self.fields('GSL_OffHand_Flintlock_attack_Range')
@@ -141,6 +143,30 @@ class GritDataTests(unittest.TestCase):
         self.assertIn('IsKillingBlow()', last['Conditions'])
         self.assertIn('DEATH_WARD', last['Properties'])
 
+    def test_new_grit_reactions_are_native_interrupts(self) -> None:
+        for passive, interrupt, cost in (
+            ('GSL_HairTriggerUnlock', 'Interrupt_GSL_HairTrigger', 'ReactionActionPoint:1;GunslingerGrit:1'),
+            ('GSL_GritAndSteelUnlock', 'Interrupt_GSL_GritAndSteel', 'GunslingerGrit:2'),
+            ('GSL_Desperado_DuckAndWeaveUnlock', 'Interrupt_GSL_DuckAndWeave', 'ReactionActionPoint:1;GunslingerGrit:1'),
+            ('GSL_Desperado_QuickOnTheDrawUnlock', 'Interrupt_GSL_QuickOnTheDraw', 'ReactionActionPoint:1;GunslingerGrit:2'),
+            ('GSL_Desperado_DesperadosFortuneUnlock', 'Interrupt_GSL_DesperadosFortune', 'GunslingerGrit:1'),
+        ):
+            with self.subTest(interrupt=interrupt):
+                self.assertIn(f'UnlockInterrupt({interrupt})', self.entries[passive].fields['Boosts'])
+                fields = self.entries[interrupt].fields
+                self.assertEqual(self.entries[interrupt].kind, 'InterruptData')
+                self.assertEqual(fields['Cost'], cost)
+        for interrupt in ('Interrupt_GSL_HairTrigger', 'Interrupt_GSL_QuickOnTheDraw'):
+            fields = self.entries[interrupt].fields
+            self.assertIn('Projectile_GSL_ReactionShot', fields['Properties'])
+            self.assertIn('GSL_FIREARM_MAIN_DISABLED', fields['Conditions'])
+        self.assertIn('AdjustRoll(1d8)', self.entries['Interrupt_GSL_DesperadosFortune'].fields['Properties'])
+        luck = self.entries['Interrupt_GSL_DesperadosLuck'].fields['Conditions']
+        self.assertIn("not HasPassive('GSL_Desperado_DesperadosFortuneUnlock',context.Observer)", luck)
+        self.assertNotIn('Cost', self.entries['Interrupt_GSL_LastStand'].fields)
+        self.assertIn('DEATH_WARD', self.entries['Interrupt_GSL_LastStand'].fields['Properties'])
+        self.assertIn('GSL_CHEAT_DEATHS_ODDS_REFUND', self.entries['Interrupt_GSL_LastWord'].fields['Properties'])
+
     def test_progression_grit_and_selection_schedules_match_readme(self) -> None:
         rows = []
         for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
@@ -150,10 +176,189 @@ class GritDataTests(unittest.TestCase):
             picks = sorted(int(row['Level']) for row in relevant if 'GritAbility' in row.get('Selectors', ''))
             increases = sorted(int(row['Level']) for row in relevant if 'ActionResource(GunslingerGrit' in row.get('Boosts', ''))
             self.assertEqual(picks, [3, 5, 8, 11, 14, 17, 20] if subclass == 'Desperado' else [3, 5, 9, 13, 17])
-            self.assertEqual(increases, [3, 6, 9, 12, 15, 18] if subclass == 'Desperado' else [3, 7, 11, 15, 19])
+            self.assertEqual(increases, [3, 6, 9, 12, 15, 18] if subclass == 'Desperado' else [3, 7, 11, 15, 18])
             for row in relevant:
                 if 'GritAbility' in row.get('Selectors', ''):
                     self.assertIn(f',{2 if row["Level"] == "3" else 1},GritAbility)', row['Selectors'])
+
+    def test_level_three_grit_pick_follows_subclass_and_desperado_pools(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        lists = {}
+        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
+            attrs = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            lists[attrs['UUID']] = attrs['Passives'].split(',')
+        base = next(r for r in rows if r['Name'] == 'Gunslinger' and r['Level'] == '3')
+        self.assertNotIn('GritAbility', base.get('Selectors', ''))
+        for subclass in ('Marksman', 'ArcaneGunsman', 'Desperado'):
+            third = next(r for r in rows if r['Name'] == subclass and r['Level'] == '3')
+            self.assertIn(',2,GritAbility)', third.get('Selectors', ''))
+        general = {
+            'GSL_DisarmingShotUnlock': 3, 'GSL_WingingShotUnlock': 3, 'GSL_ForcefulShotUnlock': 3,
+            'GSL_BullyingShotUnlock': 3, 'GSL_QuickloadUnlock': 3, 'GSL_FlashPowderUnlock': 3,
+            'GSL_ViolentShotUnlock': 9, 'GSL_DazingShotUnlock': 9, 'GSL_PiercingRoundUnlock': 9,
+            'GSL_HairTriggerUnlock': 9, 'GSL_RicochetUnlock': 13, 'GSL_GritAndSteelUnlock': 13,
+            'GSL_BulletTimeUnlock': 17, 'GSL_HailOfLeadUnlock': 17, 'GSL_FinalJudgementUnlock': 17,
+        }
+        desperado = {
+            'GSL_Desperado_DesperadosLuckUnlock': 3, 'GSL_Desperado_AnteUpUnlock': 3,
+            'GSL_Desperado_LuckyDrawUnlock': 3, 'GSL_Desperado_TwoGunTangoUnlock': 3,
+            'GSL_Desperado_DoubleLoadUnlock': 5, 'GSL_Desperado_RollTheBonesUnlock': 5,
+            'GSL_Desperado_DuckAndWeaveUnlock': 5, 'GSL_Desperado_CloseCallUnlock': 8,
+            'GSL_Desperado_CheatDeathsOdds': 8, 'GSL_Desperado_HotHandUnlock': 8,
+            'GSL_Desperado_LastWordUnlock': 11, 'GSL_Desperado_DoubleOrNothingUnlock': 11,
+            'GSL_Desperado_QuickOnTheDrawUnlock': 11, 'GSL_Desperado_DeadMansHandUnlock': 14,
+            'GSL_Desperado_LastStandUnlock': 14, 'GSL_Desperado_AllInUnlock': 17,
+            'GSL_Desperado_DesperadosFortuneUnlock': 17, 'GSL_Desperado_HighNoonUnlock': 20,
+        }
+        for passive in (*general, *desperado):
+            self.assertEqual(self.entries[passive].kind, 'PassiveData', passive)
+        seen = set()
+        for row in rows:
+            self.assertFalse(set(row.get('PassivesAdded', '').split(';')) & set(desperado))
+            for list_id in re.findall(r'SelectPassives\(([0-9a-f-]+),\d+,GritAbility\)', row.get('Selectors', '')):
+                pool = lists[list_id]
+                seen.update(pool)
+                self.assertIn('GSL_MercilessShotUnlock', pool)
+                self.assertEqual(len(pool), len(set(pool)), f'duplicate grit pick at level {row["Level"]}')
+                level = int(row['Level'])
+                self.assertEqual({p for p in pool if p in general}, {p for p, lvl in general.items() if lvl <= level})
+                expected = {p for p, lvl in desperado.items() if lvl <= level} if row['Name'] == 'Desperado' else set()
+                self.assertEqual({p for p in pool if p in desperado}, expected)
+        self.assertLessEqual(set(general) | set(desperado), seen)
+
+    def test_feat_and_late_subclass_levels(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        feats = sorted(int(r['Level']) for r in rows if r['Name'] == 'Gunslinger' and r.get('AllowImprovement') == 'true')
+        self.assertEqual(feats, [4, 8, 12, 16, 19])
+        levels = {p: r['Level'] for r in rows for p in r.get('PassivesAdded', '').split(';') if p}
+        self.assertEqual(levels['GSL_Marksman_Headshot'], '18')
+        self.assertEqual(levels['GSL_ArcaneGunsman_SpellstrikeShooter'], '18')
+        fifth = [r['Level'] for r in rows if r['Name'] == 'ArcaneGunsman' and 'ActionResource(SpellSlot,1,5)' in r.get('Boosts', '')]
+        self.assertEqual(fifth, ['19'])
+
+    def test_gunslingers_draw_and_deadeye(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        levels = {p: (r['Name'], r['Level']) for r in rows for p in r.get('PassivesAdded', '').split(';') if p}
+        self.assertEqual(levels['GSL_GunslingersDraw'], ('Gunslinger', '1'))
+        self.assertEqual(levels['GSL_Deadeye'], ('Gunslinger', '20'))
+        self.assertEqual(self.fields('GSL_GunslingersDraw')['Boosts'], 'Initiative(3)')
+        deadeye = self.fields('GSL_Deadeye')
+        self.assertEqual(deadeye['StatsFunctorContext'], 'OnDamage')
+        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", deadeye['Conditions'])
+        self.assertIn('IsCritical()', deadeye['Conditions'])
+        self.assertEqual(deadeye['StatsFunctors'], 'DealDamage(5d10,Piercing)')
+
+    def test_second_attack_is_class_wide_and_long_shot_is_once_per_turn(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        grants = [(r['Name'], r['Level']) for r in rows if 'GSL_SecondAttack' in r.get('PassivesAdded', '').split(';')]
+        self.assertEqual(grants, [('Gunslinger', '6')])
+        second = self.fields('GSL_SecondAttack')
+        self.assertIn('ExtraAttackSpellCheck()', second['Conditions'])
+        self.assertIn('ApplyStatus(EXTRA_ATTACK, 100, 1)', second['StatsFunctors'])
+        self.assertNotIn('Boosts', second)
+        self.assertNotIn('GSL_Desperado_SecondAttack', self.entries)
+        self.assertIn('OncePerTurn', self.fields('GSL_Marksman_LongShot')['Properties'].split(';'))
+
+    def test_tinkerer_is_a_level_four_class_feature_with_a_second_mod_at_ten(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        levels = {p: (r['Name'], r['Level']) for r in rows for p in r.get('PassivesAdded', '').split(';') if p}
+        self.assertEqual(levels['GSL_TinkererUnlock'], ('Gunslinger', '4'))
+        self.assertEqual(levels['GSL_MasterTinkerer'], ('Gunslinger', '10'))
+        self.assertNotIn('IsHidden', self.fields('GSL_TinkererUnlock').get('Properties', ''))
+        self.assertEqual(self.fields('GSL_TinkererUnlock')['Boosts'], 'UnlockSpell(Shout_GSL_Tinkerer)')
+        lists = ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//attribute[@id="Passives"]')
+        self.assertFalse(any('GSL_TinkererUnlock' in a.get('value', '') for a in lists))
+
+    def test_misfire_is_a_to_hit_penalty_not_a_firing_lock(self) -> None:
+        self.assertEqual(self.fields('GSL_FIREARM_MAIN_MISFIRED')['Boosts'], 'RollBonus(RangedWeaponAttack,-2)')
+        self.assertEqual(self.fields('GSL_FIREARM_OFF_MISFIRED')['Boosts'], 'RollBonus(RangedOffHandWeaponAttack,-2)')
+        self.assertNotIn('Disadvantage', self.fields('GSL_MISFIRE')['Boosts'])
+        self.assertNotIn('-99', self.fields('GSL_MISFIRE')['Boosts'])
+        for hand in ('MAIN', 'OFF'):
+            self.assertEqual(self.fields(f'GSL_FIREARM_{hand}_DISABLED')['Boosts'], '')
+            self.assertIn('DisablePortraitIndicator', self.fields(f'GSL_FIREARM_{hand}_DISABLED')['StatusPropertyFlags'])
+
+    def test_improved_critical_at_level_fourteen(self) -> None:
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        grants = [(r['Name'], r['Level']) for r in rows if 'GSL_ImprovedCritical' in r.get('PassivesAdded', '').split(';')]
+        self.assertEqual(grants, [('Gunslinger', '14')])
+        self.assertEqual(self.fields('GSL_ImprovedCritical')['Boosts'], 'ReduceCriticalAttackThreshold(1)')
+
+    def test_skill_choices_and_defaults(self) -> None:
+        expected = {'SleightOfHand', 'Acrobatics', 'Athletics', 'Deception', 'Insight', 'Intimidation',
+                    'Perception', 'Persuasion', 'Stealth'}
+        skill_list = ET.parse(PUBLIC / 'Lists' / 'SkillLists.lsx').find('.//node[@id="SkillList"]')
+        values = {a.get('id'): a.get('value') for a in skill_list.findall('attribute')}
+        self.assertEqual({s.strip() for s in values['Skills'].split(',')}, expected)
+        progression = (PUBLIC / 'Progressions' / 'Progressions.lsx').read_text(encoding='utf-8')
+        self.assertIn(f"SelectSkills({values['UUID']},2)", progression)
+        default = ET.parse(PUBLIC / 'DefaultValues' / 'Skills.lsx').find('.//attribute[@id="Add"]').get('value').split(';')
+        self.assertEqual(default[:2], ['SleightOfHand', 'Perception'])
+        self.assertEqual(set(default), expected)
+        rows = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
+        expertise = [(r['Name'], r['Level'], s) for r in rows for s in r.get('Selectors', '').split(';')
+                     if s.startswith('SelectSkillsExpertise(')]
+        self.assertEqual(expertise, [('Gunslinger', '6', 'SelectSkillsExpertise(f974ebd6-3725-4b90-bb5c-2b647d41615d,1)')])
+
+    def test_saving_throw_proficiencies_are_dexterity_and_constitution(self) -> None:
+        saves = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            saves += [(row['Name'], row['Level'], ability) for ability in re.findall(r'ProficiencyBonus\(SavingThrow,(\w+)\)', row.get('Boosts', ''))]
+        self.assertEqual(sorted(saves), [('Gunslinger', '1', 'Constitution'), ('Gunslinger', '1', 'Dexterity')])
+
+    def test_armor_and_weapon_proficiencies(self) -> None:
+        granted = set()
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            granted |= set(re.findall(r'(?<!Bonus)Proficiency\((\w+)\)', row.get('Boosts', '')))
+        self.assertEqual(granted, {
+            'LightArmor', 'Shields', 'Slings',
+            'Shortbows', 'Longbows', 'HandCrossbows', 'LightCrossbows', 'HeavyCrossbows',
+            'Clubs', 'Daggers', 'Handaxes', 'LightHammers', 'Sickles', 'Scimitars', 'Shortswords',
+        })
+
+    def test_starting_equipment_kit(self) -> None:
+        text = (PUBLIC / 'Stats' / 'Generated' / 'Equipment.txt').read_text(encoding='utf-8')
+        self.assertIn('add initialweaponset "Ranged"', text)
+        entries = re.findall(r'add equipment entry "(\w+)"', text)
+        for item in ('ARM_Leather_Body', 'WPN_Dagger', 'ARM_Boots_Leather', 'WPN_LightCrossbow'):
+            self.assertEqual(entries.count(item), 1, item)
+        self.assertEqual([e for e in entries if e.startswith('WPN_')], ['WPN_LightCrossbow', 'WPN_Dagger'])
+        self.assertEqual([e for e in entries if e.startswith('ARM_') and not e.startswith('ARM_Camp')], ['ARM_Boots_Leather', 'ARM_Leather_Body'])
+
+    def test_level_one_fighting_style_choice(self) -> None:
+        list_id = 'f6882a6c-8cab-49d9-8681-acda9106f6f6'
+        lists = {}
+        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
+            row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            lists[row['UUID']] = row['Passives'].split(',')
+        self.assertEqual(lists[list_id], [
+            'FightingStyle_Archery', 'FightingStyle_TwoWeaponFighting', 'FightingStyle_Dueling',
+            'GSL_FightingStyle_CloseQuarters', 'FightingStyle_Defense',
+        ])
+        selectors = []
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            selectors += [(row['Name'], row['Level'], s) for s in re.findall(r'SelectPassives\(([^)]*FightingStyle)\)', row.get('Selectors', ''))]
+        self.assertEqual(selectors, [('Gunslinger', '1', f'{list_id},1,FightingStyle')])
+        passive = self.fields('GSL_FightingStyle_CloseQuarters')
+        self.assertEqual(passive['Boosts'], 'RollBonus(RangedWeaponAttack,1);RollBonus(RangedOffHandWeaponAttack,1);IgnorePointBlankDisadvantage(Ammunition)')
+        self.assertEqual(passive['Icon'], 'GSL_FightingStyle_CloseQuarters')
 
 
 if __name__ == '__main__':

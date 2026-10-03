@@ -1,8 +1,9 @@
 {
-  "instructions": "For each icon, combine style_prefix + subject + style_suffix and paste into CLIPTextEncode. Set all five SaveImage basenames to the exact icon key. One icon per queue. Resource keys use the 48px output; ability keys use 380px, 144px and 64px outputs.",
+  "instructions": "For each icon, combine style_prefix + subject + style_suffix and paste into CLIPTextEncode. Set all five SaveImage basenames to the exact icon key. One icon per queue. Resource keys use the 48px output; ability keys use 380px, 144px and 64px outputs. Class keys use the 1024px master, exported to the 300px class icon and 140px hotbar class icon by export_class_icons.py.",
   "style_prefix": "A single fantasy RPG ability icon: ",
   "style_suffix": ". Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
   "resource_style_suffix": ". A single simple fantasy RPG resource glyph, thick compact silhouette, engraved brass, dark steel and warm ivory highlights, clean crisp edges. One centered isolated emblem on a flat charcoal background with generous empty margin. No text, numbers, border, scenery, modern ammunition cartridges, tiny details or extra objects. Strong recognizable silhouette when reduced to 48 pixels.",
+  "class_style_suffix": ". A single fantasy RPG character-class crest in the style of a heraldic class emblem, one bold unified silhouette, engraved polished gold and brass with warm ivory highlights and a restrained crimson accent, clean crisp edges. One centered emblem occupying 80 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic emblem, not a scene or a portrait. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
   "abilities": {
     "GSL_MercilessShot": "A skull without a lower jaw",
     "GSL_LineEmUp": "three ivory target silhouettes aligned along one straight brass projectile trail",
@@ -53,7 +54,40 @@
     "GSL_SpellstrikeShooter": "an antique flintlock muzzle and a violet arcane star releasing one combined bright projectile",
     "GSL_GritRecovery": "a bright crimson resolve diamond encircled by one bold brass restoration arrow",
     "GSL_BrokenFirearm": "an antique flintlock lock mechanism visibly split by one broad jagged crimson fracture, the barrel bent and damaged",
-    "GSL_Misfire": "an antique flintlock barrel blocked by one round lead ball with a compact crimson warning burst behind the flintlock"
+    "GSL_Misfire": "an antique flintlock barrel blocked by one round lead ball with a compact crimson warning burst behind the flintlock",
+    "GSL_FightingStyle_CloseQuarters": "a short antique flintlock pistol held close at the hip, firing point-blank past a raised steel dagger blade, with one small golden muzzle flash",
+    "GSL_GunslingersDraw": "A flintlock pistol being drawn halfway out of a leather holster, motion streaks behind it",
+    "GSL_Deadeye": "A single eye with a crosshair pupil above a lead ball shattering a target",
+    "GSL_ImprovedCritical": "A brass gun sight reticle centered on a cracked bullseye with two bright impact sparks",
+    "GSL_DisarmingShot": "A lead ball striking a sword out of a gloved hand mid-air with sparks",
+    "GSL_WingingShot": "A lead ball clipping a boot and a figure toppling sideways",
+    "GSL_ForcefulShot": "A powerful muzzle blast shockwave hurling a silhouette backwards",
+    "GSL_BullyingShot": "A smoking pistol barrel pointed at a cowering shadow with a skull-shaped smoke cloud",
+    "GSL_Quickload": "Several paper cartridges sliding into a pistol barrel in a blur of motion",
+    "GSL_FlashPowder": "A blinding white flash bursting from a pinch of black powder thrown from a hand",
+    "GSL_ViolentShot": "An overpacked pistol barrel bulging and glowing red as a huge muzzle flash erupts",
+    "GSL_DazingShot": "A lead ball grazing a helmet with spinning stars and a dizzy swirl",
+    "GSL_PiercingRound": "A pointed steel bullet punching straight through three wooden boards in a line",
+    "GSL_HairTrigger": "A finger tensed on a delicate filed-down trigger with a single spark at the frizzen",
+    "GSL_Ricochet": "A bullet bouncing off a stone wall leaving a zig-zag spark trail between two targets",
+    "GSL_GritAndSteel": "A clenched fist wrapped in steel knuckles gripping a flintlock pistol against a stormy background",
+    "GSL_BulletTime": "A bullet frozen in mid-air with rippling distortion rings and a stopped pocket watch",
+    "GSL_HailOfLead": "Dozens of lead balls raining down from a smoky sky like a storm",
+    "GSL_FinalJudgement": "A judge gavel crossed with a smoking pistol over a cracked skull",
+    "GSL_AnteUp": "A stack of poker chips pushed forward beside a loaded pistol",
+    "GSL_LuckyDraw": "A playing card ace of spades pierced by a bullet hole",
+    "GSL_TwoGunTango": "Two crossed flintlock pistols firing in opposite directions with dancing smoke",
+    "GSL_RollTheBones": "A pair of bone dice tumbling beside a bullet",
+    "GSL_DuckAndWeave": "A wide-brimmed hat flying off as a bullet whizzes past a ducking figure",
+    "GSL_CheatDeathsOdds": "A skull wearing a wide-brimmed hat winking over a hand of cards",
+    "GSL_HotHand": "A glowing red-hot gloved hand holding a smoking flintlock pistol",
+    "GSL_DoubleOrNothing": "A spinning silver coin split in half by a bullet",
+    "GSL_QuickOnTheDraw": "A pistol half-drawn from a holster with motion blur and a spark",
+    "GSL_DeadMansHand": "A poker hand of black aces and eights fanned beside a flintlock pistol",
+    "GSL_LastStand": "A battered gunslinger silhouette standing defiant against a blood-red sunset",
+    "GSL_AllIn": "A mountain of poker chips shoved forward with bullets scattered among them",
+    "GSL_DesperadosFortune": "A golden horseshoe wrapped around a pistol lock with sparkles",
+    "GSL_HighNoon": "A blazing sun directly overhead casting a single long shadow of a gunslinger"
   },
   "resources": {
     "GunslingerGrit": "a bold crimson diamond-shaped flame of resolve held in a brass setting",
@@ -62,5 +96,8 @@
     "GunslingerBlunderbussAmmo": "three tightly grouped round lead pellets above one wide brass bell muzzle",
     "GunslingerMusketAmmo": "a modern bullet with a musket ball sitting beside it",
     "GunslingerCraftCharges": "one thick brass gear with a compact ivory crafting hammer at its center"
+  },
+  "classes": {
+    "Gunslinger": "two antique flintlock pistols crossed beneath a wide-brimmed frontier hat, with one small curl of powder smoke rising between the barrels"
   }
 }

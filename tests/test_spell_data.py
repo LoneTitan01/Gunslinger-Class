@@ -93,6 +93,22 @@ class SpellDataTests(unittest.TestCase):
             'Projectile_GSL_RapidShot_Blunderbuss': 'Projectile_HordeBreaker',
             'Projectile_GSL_DoubleLoad_Musket': 'Projectile_HamstringShot',
             'Projectile_GSL_FanningFire_Blunderbuss_3': 'Target_Volley',
+            'Projectile_GSL_DisarmingShot_Flintlock': 'Projectile_DisarmingAttack',
+            'Projectile_GSL_WingingShot_Musket': 'Projectile_TripAttack',
+            'Projectile_GSL_ForcefulShot_Blunderbuss': 'Projectile_PushingAttack',
+            'Projectile_GSL_BullyingShot_Flintlock': 'Projectile_MenacingAttack',
+            'Projectile_GSL_DazingShot_Flintlock': 'Projectile_DistractingStrike',
+            'Projectile_GSL_ViolentShot_Musket_3': 'Projectile_PinDown',
+            'Target_GSL_FlashPowder': 'Target_FaerieFire',
+            'Shout_GSL_BulletTime': 'Shout_ActionSurge',
+            'Shout_GSL_HailOfLead': 'Target_Volley',
+            'Projectile_GSL_FinalJudgement_Flintlock': 'Projectile_SneakAttack',
+            'Shout_GSL_AnteUp': 'Target_Bless',
+            'Projectile_GSL_DoubleOrNothing_Musket': 'Projectile_SneakAttack',
+            'Shout_GSL_DeadMansHand': 'Target_Bane',
+            'Shout_GSL_LastStand': 'Shout_Blur',
+            'Projectile_GSL_AllIn_Blunderbuss_8': 'Target_Volley',
+            'Target_GSL_HighNoon': 'Target_HuntersMark',
         }
         for name, source in sources.items():
             with self.subTest(spell=name):

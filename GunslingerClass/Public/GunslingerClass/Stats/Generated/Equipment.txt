@@ -1,7 +1,9 @@
 new equipment "EQP_GunslingerClass"
-add initialweaponset "Melee"
+add initialweaponset "Ranged"
 add equipmentgroup
-add equipment entry "WPN_Shortsword"
+add equipment entry "WPN_LightCrossbow"
+add equipmentgroup
+add equipment entry "WPN_Dagger"
 add equipmentgroup
 add equipment entry "ARM_Boots_Leather"
 add equipmentgroup

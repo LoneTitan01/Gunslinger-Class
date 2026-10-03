@@ -90,7 +90,8 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def catalog_icons(catalog: dict[str, Any], group: str, names: list[str] | None) -> list[tuple[str, str]]:
     icons: dict[str, str] = {}
-    for section in ('abilities', 'resources'):
+    suffixes = {'abilities': 'style_suffix', 'resources': 'resource_style_suffix', 'classes': 'class_style_suffix'}
+    for section in ('abilities', 'resources', 'classes'):
         subjects = catalog[section]
         if not isinstance(subjects, dict):
             raise GenerationError(f'Catalog {section} must be an object')
@@ -100,7 +101,7 @@ def catalog_icons(catalog: dict[str, Any], group: str, names: list[str] | None) 
             if name in icons:
                 raise GenerationError(f'Duplicate icon key: {name}')
             if group in {'all', section}:
-                suffix = catalog['resource_style_suffix' if section == 'resources' else 'style_suffix']
+                suffix = catalog[suffixes[section]]
                 icons[name] = catalog['style_prefix'] + subject + suffix
     if names:
         unknown = set(names) - icons.keys()
@@ -227,7 +228,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--catalog', type=Path, default=HERE / 'icon_prompts.json')
     parser.add_argument('--workflow', type=Path, default=HERE / 'Gunslinger_Icons_FLUX.json')
     parser.add_argument('--output', type=Path, default=HERE / 'generated')
-    parser.add_argument('--group', choices=('all', 'abilities', 'resources'), default='all')
+    parser.add_argument('--group', choices=('all', 'abilities', 'resources', 'classes'), default='all')
     parser.add_argument('--icons', nargs='+', help='Exact catalog keys; otherwise generate the selected group')
     parser.add_argument('--seed', type=int, default=872341001, help='Base seed; each key gets a stable derived seed')
     parser.add_argument('--timeout', type=positive_float, default=1800, help='Seconds per icon, including queue wait')

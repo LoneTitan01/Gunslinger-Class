@@ -1,6 +1,7 @@
 local Rules = Ext.Require("GritRules.lua")
 local templates = {
     ["3d8b177d-89db-4826-8068-9f2d777faf04"] = "Flintlock",
+    ["a710ad68-179b-4b0e-8ef2-3b37609a3f12"] = "Flintlock",
     ["4a7854fd-718a-4a4e-b9db-3875b5788065"] = "Blunderbuss",
     ["1da91e88-3f0e-4ccc-ac25-0bdf00426880"] = "Musket"
 }
@@ -63,11 +64,11 @@ end
 
 local function applyItem(item, state)
     for kind in pairs(Rules.Firearms) do
-        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), state.mode == "Damage" and state.kind == kind)
+        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), Rules.HasMod(state, "Damage") and state.kind == kind)
     end
     local entity = assert(Ext.Entity.Get(item), "Tracked firearm has no entity")
     local weapon = assert(entity.Weapon, "Tracked firearm has no Weapon component")
-    local range = state.baseRange + (state.mode == "Range" and Rules.Firearms[state.kind].rangeBonus or 0)
+    local range = state.baseRange + (Rules.HasMod(state, "Range") and Rules.Firearms[state.kind].rangeBonus or 0)
     if weapon.WeaponRange ~= range then
         weapon.WeaponRange = range
         entity:Replicate("Weapon")
@@ -101,7 +102,7 @@ local function refresh(character, restoreAmmo)
         local newItem = item and not data.weapons[item]
         local previousBoost = owner[hand .. "Boost"]
         local state = item and itemState(data, item, kind)
-        local boost = state and state.mode == "Capacity" and
+        local boost = state and Rules.HasMod(state, "Capacity") and
             "ActionResource(" .. (hand == "Off" and "GunslingerOffhandFlintlockAmmo" or
                 "Gunslinger" .. kind .. "Ammo") .. ",2,0)" or nil
         local source = "GSL_Tinkerer_" .. hand
@@ -111,10 +112,11 @@ local function refresh(character, restoreAmmo)
             owner[hand .. "Boost"] = boost
         end
         owner[hand] = item
-        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DISABLED", state and (state.broken or state.misfire))
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DISABLED", state and state.broken)
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", state and state.misfire and not state.broken)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", state and state.broken)
         if hand == "Off" then
-            status(character, "GSL_TINKERER_OFF_RANGE", state and state.mode == "Range")
+            status(character, "GSL_TINKERER_OFF_RANGE", state and Rules.HasMod(state, "Range"))
         end
         for dc = 12, 16 do
             local repairable = state and state.misfire and not state.broken
@@ -138,17 +140,29 @@ local function refresh(character, restoreAmmo)
     refreshing[character] = nil
 end
 
+local function misfireItem(character, item, broken)
+    local data = database()
+    local kind = item and templates[(Osi.GetTemplate(item) or ""):sub(-36):lower()]
+    assert(kind, "Misfire could not be correlated to a physical firearm")
+    Rules.Misfire(itemState(data, item, kind), broken)
+    save(data)
+    refresh(character, false)
+end
+
+local ammoSpells = {Zone_GSL_LineEmUp = true, Zone_GSL_PiercingRound = true, Shout_GSL_HailOfLead = true}
+local rollTheBones = {"GSL_RTB_BUST", "GSL_RTB_HIT", "GSL_RTB_JACKPOT"}
+
 Ext.Events.StatsLoaded:Subscribe(function()
     for _, name in ipairs(Ext.Stats.GetStats("SpellData")) do
         local spell = Ext.Stats.Get(name)
-        if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or name == "Zone_GSL_LineEmUp" then
+        if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or ammoSpells[name] then
             local hand = name:find("OffHand", 1, true) and "OFF" or "MAIN"
             local condition = "not HasStatus('GSL_FIREARM_" .. hand .. "_DISABLED',context.Source)"
             if not spell.RequirementConditions:find("GSL_FIREARM_" .. hand .. "_DISABLED", 1, true) then
                 if spell.RequirementConditions ~= "" then condition = "(" .. spell.RequirementConditions .. ") and " .. condition end
                 spell.RequirementConditions = condition
             end
-            if name == "Zone_GSL_LineEmUp" or name:match("^Projectile_GSL_InfusedRounds") then
+            if ammoSpells[name] or name:match("^Projectile_GSL_InfusedRounds") then
                 local ready = {}
                 local costs = {}
                 for kind in pairs(Rules.Firearms) do
@@ -197,7 +211,35 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand}
     local grit = spell:match("^Projectile_GSL_FanningFire_%a+_(%d)$")
     if grit then Osi.ApplyStatus(character, "GSL_FANNING_FIRE_" .. grit, -1, 1, character) end
+    casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_%a+_(%d)$"))
+    if spell:match("^Projectile_GSL_DoubleOrNothing_") then
+        if Rules.DoubleOrNothing(Ext.Math.Random(1, 20)) then
+            Osi.ApplyStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN", -1, 1, character)
+        else
+            casts[character].lose = true
+        end
+    end
+    if spell:match("^Projectile_GSL_AllIn_") then Osi.ApplyStatus(character, "GSL_ALL_IN", -1, 1, character) end
 end)
+
+local function clearShotStatuses(character, spell)
+    if spell:match("^Projectile_GSL_FanningFire_") then
+        for grit = 1, 3 do Osi.RemoveStatus(character, "GSL_FANNING_FIRE_" .. grit) end
+    end
+    if spell:match("^Projectile_GSL_DoubleLoad_") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
+    if spell:match("^Projectile_GSL_DoubleOrNothing_") then Osi.RemoveStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN") end
+    if spell:match("^Projectile_GSL_AllIn_") then Osi.RemoveStatus(character, "GSL_ALL_IN") end
+end
+
+local function cheatDeathsOdds(character, spell)
+    if Osi.HasPassive(character, "GSL_Desperado_CheatDeathsOdds") ~= 1 then return end
+    local cost = Rules.GritCost((Ext.Stats.Get(spell) or {}).UseCosts)
+    local entity = Ext.Entity.Get(character)
+    local health = entity and entity.Health
+    if health and health.MaxHp > 0 and Rules.CheatDeathRefund(cost, health.Hp / health.MaxHp) then
+        Osi.ApplyStatus(character, "GSL_CHEAT_DEATHS_ODDS_REFUND", 0, 1, character)
+    end
+end
 
 Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell, _, _, action)
     local cast = casts[character]
@@ -205,14 +247,20 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         if cast.mode then
             assert(cast.item, "Tinkerer resolved without an equipped firearm")
             local data = database()
-            Rules.Modify(assert(data.weapons[cast.item]), cast.mode)
+            local limit = Osi.HasPassive(character, "GSL_MasterTinkerer") == 1 and 2 or 1
+            Rules.Modify(assert(data.weapons[cast.item]), cast.mode, limit)
             save(data)
             refresh(character, true)
         end
-        if spell:match("^Projectile_GSL_FanningFire_") then
-            for grit = 1, 3 do Osi.RemoveStatus(character, "GSL_FANNING_FIRE_" .. grit) end
+        clearShotStatuses(character, spell)
+        if cast.item and (cast.lose or (cast.violent and Rules.ViolentMisfire(cast.violent, Ext.Math.Random(1, 20)))) then
+            misfireItem(character, cast.item, false)
         end
-        if spell:match("^Projectile_GSL_DoubleLoad_") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
+        if spell == "Shout_GSL_RollTheBones" then
+            for _, name in ipairs(rollTheBones) do Osi.RemoveStatus(character, name) end
+            Osi.ApplyStatus(character, "GSL_RTB_" .. Rules.RollTheBones(Ext.Math.Random(1, 6)), 12, 1, character)
+        end
+        cheatDeathsOdds(character, spell)
         casts[character] = nil
     end
     if database().owners[character] then
@@ -224,10 +272,7 @@ end)
 Ext.Osiris.RegisterListener("CastSpellFailed", 5, "after", function(character, spell, _, _, action)
     local cast = casts[character]
     if cast and cast.action == action then
-        if spell:match("^Projectile_GSL_FanningFire_") then
-            for grit = 1, 3 do Osi.RemoveStatus(character, "GSL_FANNING_FIRE_" .. grit) end
-        end
-        if spell:match("^Projectile_GSL_DoubleLoad_") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
+        clearShotStatuses(character, spell)
         casts[character] = nil
     end
     if database().owners[character] then
@@ -242,14 +287,8 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
     elseif applied == "GSL_MISFIRE" or applied == "GSL_DOUBLE_LOAD_BROKEN" then
         local cast = casts[character]
         local item = cast and cast.item or Osi.GetEquippedWeapon(character)
-        local data = database()
-        local kind = item and templates[(Osi.GetTemplate(item) or ""):sub(-36):lower()]
-        assert(kind, "Misfire could not be correlated to a physical firearm")
-        local state = itemState(data, item, kind)
-        Rules.Misfire(state, applied == "GSL_DOUBLE_LOAD_BROKEN")
-        save(data)
         Osi.RemoveStatus(character, applied)
-        refresh(character, false)
+        misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN")
     elseif applied == "GSL_REPAIR_MAIN_DONE" or applied == "GSL_REPAIR_OFF_DONE" then
         local cast = casts[character]
         assert(cast and cast.action == action and cast.item, "Repair lost its physical firearm/action correlation")

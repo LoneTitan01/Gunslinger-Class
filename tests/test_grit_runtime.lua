@@ -1,12 +1,19 @@
 local root = "GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\"
 local rules = dofile(root .. "GritRules.lua")
 local listeners, events, entities, inventory, statuses = {}, {}, {}, {}, {}
-local variables = {}
+local variables, passives, rolls, durations = {}, {}, {}, {}
 local spellStats = {
     GSL_MainHand_Flintlock_attack = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     GSL_OffHand_Flintlock_attack = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
+    Projectile_GSL_Bloodletting_Flintlock = {RequirementConditions = "", SpellProperties = "",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack)",
+        UseCosts = "ActionPoint:1;GunslingerFlintlockAmmo:1"},
     Zone_GSL_LineEmUp = {RequirementConditions = "Character()", SpellProperties = "OriginalEffect", SpellRoll = ""},
     Projectile_GSL_InfusedRounds = {RequirementConditions = "Character()", SpellProperties = "ForceEffect", SpellRoll = ""},
+    Zone_GSL_PiercingRound = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
+    Shout_GSL_HailOfLead = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
+    Projectile_GSL_DoubleOrNothing_Flintlock = {RequirementConditions = "", SpellProperties = "", SpellRoll = "",
+        UseCosts = "ActionPoint:1;GunslingerGrit:2;GunslingerFlintlockAmmo:1"},
     Projectile_PiercingShot = {RequirementConditions = "OriginalRequirement", SpellProperties = "OriginalPiercingEffect",
         SpellRoll = "Attack(AttackType.RangedWeaponAttack)"}
 }
@@ -26,6 +33,11 @@ Ext = {
         GetModVariables = function() return variables end
     },
     Entity = {Get = function(id) return entities[id] end},
+    Math = {Random = function(low, high)
+        local roll = assert(table.remove(rolls, 1), "Unexpected random roll")
+        assert(roll >= low and roll <= high)
+        return roll
+    end},
     Events = {},
     Stats = {
         GetStats = function()
@@ -51,7 +63,8 @@ Osi = {
     GetEquippedWeapon = function(char) return inventory[char]["Ranged Main Weapon"] end,
     GetTemplate = function(item) return entities[item].template end,
     HasActiveStatus = function(id, status) return statuses[id] and statuses[id][status] and 1 or 0 end,
-    ApplyStatus = function(id, status)
+    ApplyStatus = function(id, status, duration)
+        durations[status] = duration
         statuses[id] = statuses[id] or {}
         statuses[id][status] = true
     end,
@@ -69,6 +82,7 @@ Osi = {
         entry.Amount = math.min(entry.Amount, entry.MaxAmount)
     end,
     IsDead = function() return 0 end,
+    HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
     UseSpell = function(char, spell, target)
         assert(char == "alice" and spell == "Projectile_GSL_ReactionShot" and target == "bob")
     end
@@ -79,6 +93,7 @@ local function character(id)
             [rules.Firearms.Flintlock.resource] = {{Level = 0, Amount = 3, MaxAmount = 3}},
             [rules.OffhandResource] = {{Level = 0, Amount = 3, MaxAmount = 3}}
         }},
+        Health = {Hp = 30, MaxHp = 30},
         Replicate = function(_, component) assert(component == "ActionResources") end
     }
     inventory[id] = {}
@@ -93,6 +108,7 @@ end
 character("alice")
 character("bob")
 gun("first")
+entities.first.template = "a710ad68-179b-4b0e-8ef2-3b37609a3f12"
 gun("second")
 inventory.alice["Ranged Main Weapon"] = "first"
 inventory.alice["Ranged Offhand Weapon"] = "second"
@@ -101,6 +117,8 @@ events.StatsLoaded()
 events.StatsLoaded()
 assert(spellStats.GSL_MainHand_Flintlock_attack.RequirementConditions:find("GSL_FIREARM_MAIN_DISABLED", 1, true))
 assert(spellStats.GSL_OffHand_Flintlock_attack.RequirementConditions:find("GSL_FIREARM_OFF_DISABLED", 1, true))
+assert(spellStats.Projectile_GSL_Bloodletting_Flintlock.RequirementConditions:find("GSL_FIREARM_MAIN_DISABLED", 1, true))
+assert(spellStats.Projectile_GSL_Bloodletting_Flintlock.SpellProperties == "", "Bloodletting must not be charged twice")
 local _, costs = spellStats.Zone_GSL_LineEmUp.SpellProperties:gsub("UseActionResource", "")
 assert(costs == 3, "A stats reload must not duplicate ammo costs")
 assert(spellStats.Zone_GSL_LineEmUp.SpellProperties:find("OriginalEffect", 1, true))
@@ -112,6 +130,7 @@ local _, specialCosts = special.SpellProperties:gsub("UseActionResource", "")
 assert(specialCosts == 3, "Native actions must not double-charge on stats reload")
 fire("Equipped", "after", "first", "alice")
 ticks()
+assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
 local function cast(spell, action)
     fire("UsingSpell", "before", "alice", spell, "", "", action)
     fire("CastedSpell", "after", "alice", spell, "", "", action)
@@ -129,17 +148,36 @@ assert(entities.first.Weapon.WeaponRange == 19.5 and entities.second.Weapon.Weap
 cast("Shout_GSL_Tinkerer_OffDamage", 3)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+cast("Shout_GSL_Tinkerer_OffRange", 31)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0, "Below level 10 a new mod replaces the old one")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 1)
+passives.alice = {GSL_MasterTinkerer = true}
+cast("Shout_GSL_Tinkerer_OffDamage", 32)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1, "Master Tinkerer keeps two mods")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 1)
 fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 ammo("alice", "Off").Amount = 2
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 4)
 assert(variables.Firearms.weapons.second.misfire and not variables.Firearms.weapons.first.misfire)
-assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 1)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 0, "A misfire must not stop the gun firing")
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 1)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_OFF_12") == 1)
 fire("CastedSpell", "after", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 fire("UsingSpell", "before", "alice", "Shout_GSL_RapidRepair_Off12", "", "", 5)
 fire("StatusApplied", "after", "alice", "GSL_REPAIR_OFF_DONE", "alice", 5)
 fire("CastedSpell", "after", "alice", "Shout_GSL_RapidRepair_Off12", "", "", 5)
 assert(not variables.Firearms.weapons.second.misfire)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
+for action = 41, 42 do
+    fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", action)
+    fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", action)
+    fire("CastedSpell", "after", "alice", "GSL_OffHand_Flintlock_attack", "", "", action)
+end
+assert(variables.Firearms.weapons.second.broken, "Misfiring a misfired gun must break it")
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 1)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
+assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_OFF_12") == 0)
 fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleLoad_Flintlock", "", "", 6)
 fire("StatusApplied", "after", "alice", "GSL_DOUBLE_LOAD_BROKEN", "alice", 6)
 fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleLoad_Flintlock", "", "", 6)
@@ -158,7 +196,8 @@ entities.first.Weapon.WeaponRange = 13.5
 events.SessionLoaded()
 assert(entities.first.Weapon.WeaponRange == 19.5, "Saved modification must be reapplied")
 fire("LongRestFinished", "after")
-assert(not variables.Firearms.weapons.first.broken)
+assert(not variables.Firearms.weapons.first.broken and not variables.Firearms.weapons.second.broken)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 0)
 assert(entities.first.Weapon.WeaponRange == 13.5)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
 assert(ammo("bob", "Main").Amount == 3 and ammo("alice", "Off").Amount == 3)
@@ -179,4 +218,42 @@ fire("AttackedBy", "after", "alice", "bob", "bob", "Piercing", 10, "Attack", 9)
 assert(Osi.HasActiveStatus("alice", "GSL_LASTWORD_PENDING") == 1, "Unrelated damage must not consume the counter")
 fire("AttackedBy", "after", "alice", "bob", "bob", "Piercing", 10, "Attack", 8)
 assert(Osi.HasActiveStatus("alice", "GSL_LASTWORD_PENDING") == 0)
-print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter")
+for _, name in ipairs({"Zone_GSL_PiercingRound", "Shout_GSL_HailOfLead"}) do
+    local _, count = spellStats[name].SpellProperties:gsub("UseActionResource", "")
+    assert(count == 3, name .. " must spend main-hand ammunition")
+    assert(spellStats[name].RequirementConditions:find("GSL_FIREARM_MAIN_DISABLED", 1, true))
+end
+local function shot(spell, action, ...)
+    for _, roll in ipairs({...}) do rolls[#rolls + 1] = roll end
+    cast(spell, action)
+    assert(#rolls == 0, spell .. " consumed the wrong number of rolls")
+end
+shot("Projectile_GSL_ViolentShot_Flintlock_2", 50, 3)
+assert(not variables.Firearms.weapons.first.misfire, "Violent Shot misfires only on d20 <= grit")
+shot("Projectile_GSL_ViolentShot_Flintlock_2", 51, 2)
+assert(variables.Firearms.weapons.first.misfire and Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 1)
+fire("LongRestFinished", "after")
+rolls[1] = 11
+fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleOrNothing_Flintlock", "", "", 52)
+assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 1, "A win doubles the shot")
+fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleOrNothing_Flintlock", "", "", 52)
+assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 0 and not variables.Firearms.weapons.first.misfire)
+shot("Projectile_GSL_DoubleOrNothing_Flintlock", 53, 10)
+assert(variables.Firearms.weapons.first.misfire, "A losing Double or Nothing misfires")
+assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0)
+fire("LongRestFinished", "after")
+fire("UsingSpell", "before", "alice", "Projectile_GSL_AllIn_Flintlock_4", "", "", 54)
+assert(Osi.HasActiveStatus("alice", "GSL_ALL_IN") == 1)
+fire("CastSpellFailed", "after", "alice", "Projectile_GSL_AllIn_Flintlock_4", "", "", 54)
+assert(Osi.HasActiveStatus("alice", "GSL_ALL_IN") == 0)
+shot("Shout_GSL_RollTheBones", 55, 1)
+assert(Osi.HasActiveStatus("alice", "GSL_RTB_BUST") == 1 and durations.GSL_RTB_BUST == 12)
+shot("Shout_GSL_RollTheBones", 56, 6)
+assert(Osi.HasActiveStatus("alice", "GSL_RTB_BUST") == 0 and Osi.HasActiveStatus("alice", "GSL_RTB_JACKPOT") == 1)
+passives.alice.GSL_Desperado_CheatDeathsOdds = true
+entities.alice.Health.Hp = 14
+shot("Shout_GSL_RollTheBones", 57, 3)
+assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0, "One-grit abilities never refund")
+shot("Projectile_GSL_DoubleOrNothing_Flintlock", 58, 11)
+assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 1, "Bloodied 2-grit abilities refund 1 grit")
+assert(durations.GSL_CHEAT_DEATHS_ODDS_REFUND == 0)print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, all in, roll the bones, cheat death's odds")

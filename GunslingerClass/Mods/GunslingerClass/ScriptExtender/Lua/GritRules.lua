@@ -19,9 +19,25 @@ function Rules.ParseTinkerer(spell)
     return hand, mode
 end
 
+function Rules.Mods(state)
+    if state.mode then
+        state.mods = {state.mode}
+        state.mode = nil
+    end
+    state.mods = state.mods or {}
+    return state.mods
+end
+
+function Rules.HasMod(state, mode)
+    for _, current in ipairs(Rules.Mods(state)) do
+        if current == mode then return true end
+    end
+    return false
+end
+
 function Rules.Capacity(state)
     local firearm = assert(Rules.Firearms[state.kind], "Unknown firearm kind")
-    return firearm.capacity + (state.mode == "Capacity" and 2 or 0)
+    return firearm.capacity + (Rules.HasMod(state, "Capacity") and 2 or 0)
 end
 
 function Rules.RepairDC(rarity)
@@ -29,16 +45,20 @@ function Rules.RepairDC(rarity)
     return 12 + assert(bonuses[rarity], "Unsupported firearm rarity: " .. tostring(rarity))
 end
 
-function Rules.Modify(state, mode)
+function Rules.Modify(state, mode, limit)
     assert(mode == "Capacity" or mode == "Damage" or mode == "Range", "Invalid modification")
     assert(not state.broken, "A destroyed firearm requires a long rest")
-    state.mode = mode
+    limit = limit or 1
+    assert(limit == 1 or limit == 2, "Invalid modification limit")
+    local mods = Rules.Mods(state)
+    if not Rules.HasMod(state, mode) then mods[#mods + 1] = mode end
+    while #mods > limit do table.remove(mods, 1) end
     state.ammo = math.min(state.ammo or 0, Rules.Capacity(state))
 end
 
 function Rules.Misfire(state, doubleLoad)
+    state.broken = state.broken or doubleLoad or state.misfire == true
     state.misfire = true
-    state.broken = state.broken or doubleLoad
 end
 
 function Rules.Repair(state)
@@ -47,8 +67,31 @@ function Rules.Repair(state)
     return true
 end
 
+function Rules.ViolentMisfire(tier, roll)
+    return roll <= tier
+end
+
+function Rules.RollTheBones(roll)
+    if roll <= 1 then return "BUST" end
+    if roll >= 6 then return "JACKPOT" end
+    return "HIT"
+end
+
+function Rules.GritCost(useCosts)
+    return tonumber((useCosts or ""):match("GunslingerGrit:(%d+)")) or 0
+end
+
+function Rules.CheatDeathRefund(cost, healthFraction)
+    return cost >= 2 and healthFraction < 0.5
+end
+
+function Rules.DoubleOrNothing(roll)
+    return roll >= 11
+end
+
 function Rules.LongRest(state)
     state.mode = nil
+    state.mods = {}
     state.misfire = false
     state.broken = false
     state.ammo = Rules.Capacity(state)

@@ -8,4 +8,4 @@ Packages/
 *.pak
 
 # ComfyUI generated icon candidates (not packaged mod assets)
-# artwork/comfyui/generated/
+artwork/comfyui/generated/

@@ -40,9 +40,33 @@ class IconDataTests(unittest.TestCase):
                 referenced.add(icon)
         self.assertEqual(referenced, mapped)
 
+    def test_class_icons_match_vanilla_class_icon_format(self) -> None:
+        descriptions = ET.parse(PUBLIC / 'ClassDescriptions' / 'ClassDescriptions.lsx')
+        base_class = next(
+            node for node in descriptions.findall('.//node[@id="ClassDescription"]')
+            if node.find('attribute[@id="ParentGuid"]') is None
+        )
+        name = base_class.find('attribute[@id="Name"]').get('value')
+        self.assertEqual(name, 'Gunslinger')
+        for path, size, mips in (
+            (ASSETS / 'ClassIcons' / f'{name}.DDS', 300, 9),
+            (ASSETS / 'ClassIcons' / 'hotbar' / f'{name}.DDS', 140, 8),
+        ):
+            with self.subTest(path=path.relative_to(ASSETS)):
+                self.assert_dds_size(path, size, size)
+                header = path.read_bytes()[:128]
+                self.assertEqual(header[84:88], b'DXT5')
+                self.assertEqual(struct.unpack_from('<I', header, 28)[0], mips)
+                expected = 128
+                edge = size
+                for _ in range(mips):
+                    expected += ((edge + 3) // 4) ** 2 * 16
+                    edge = max(1, edge // 2)
+                self.assertEqual(path.stat().st_size, expected)
+
     def test_atlas_cells_are_unique_and_match_checklist_slots(self) -> None:
-        self.assertEqual(len(self.cells), 50)
-        self.assertEqual(len({cell['MapKey'] for cell in self.cells}), 50)
+        self.assertEqual(len(self.cells), 83)
+        self.assertEqual(len({cell['MapKey'] for cell in self.cells}), 83)
         checklist = (ROOT / 'To-do.md').read_text(encoding='utf-8')
         for index, cell in enumerate(self.cells):
             column, row = index % 32, index // 32

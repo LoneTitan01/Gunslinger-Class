@@ -16,6 +16,17 @@
                     <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e"/>
                 </node>
                 <node id="GameObjects">
+                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235"/>
+                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="a710ad68-179b-4b0e-8ef2-3b37609a3f12"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_ArtificialLeech"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="a5d843ab-c3af-4e60-a925-bb2e15828938"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_ArtificialLeech"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e"/>
+                </node>
+                <node id="GameObjects">
                     <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac"/>
                     <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss"/>
                     <attribute id="LevelName" type="FixedString" value=""/>
@@ -48,6 +59,22 @@
                     <attribute id="ParentTemplateId" type="FixedString" value="5114c34c-d779-46d9-ae98-d15a0ff0ac31"/>
                     <attribute id="Stats" type="FixedString" value="OBJ_GSL_AssemblyKit"/>
                     <attribute id="Type" type="FixedString" value="item"/>
+                    <children>
+                        <node id="OnUsePeaceActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="23"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="CombineSlots" type="int8" value="3"/>
+                                            <attribute id="IsBase" type="bool" value="True"/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
                 </node>
                 <node id="GameObjects">
                     <attribute id="Description" type="TranslatedString" handle="h238c2696gc297g4f35g8d5ag064cb9ef95d1" version="1"/>
@@ -58,6 +85,22 @@
                     <attribute id="ParentTemplateId" type="FixedString" value="5114c34c-d779-46d9-ae98-d15a0ff0ac31"/>
                     <attribute id="Stats" type="FixedString" value="OBJ_GSL_DisassemblyKit"/>
                     <attribute id="Type" type="FixedString" value="item"/>
+                    <children>
+                        <node id="OnUsePeaceActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="23"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="CombineSlots" type="int8" value="3"/>
+                                            <attribute id="IsBase" type="bool" value="True"/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
                 </node>
                 <node id="GameObjects">
                     <attribute id="Acceleration" type="float" value="40"/>
