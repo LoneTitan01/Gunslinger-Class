@@ -92,14 +92,14 @@ type "StatusData"
 using "GSL_MISFIRE"
 data "StackId" "GSL_FIREARM_MAIN_MISFIRED"
 data "RemoveEvents" ""
-data "Boosts" "RollBonus(RangedWeaponAttack,-2)"
+data "Boosts" "RollBonus(RangedWeaponAttack,-2);UnlockSpell(Shout_GSL_FieldRepair)"
 data "Icon" "GSL_Misfire"
 
 new entry "GSL_FIREARM_OFF_MISFIRED"
 type "StatusData"
 using "GSL_FIREARM_MAIN_MISFIRED"
 data "StackId" "GSL_FIREARM_OFF_MISFIRED"
-data "Boosts" "RollBonus(RangedOffHandWeaponAttack,-2)"
+data "Boosts" "RollBonus(RangedOffHandWeaponAttack,-2);UnlockSpell(Shout_GSL_FieldRepair)"
 data "Icon" "GSL_Misfire"
 
 new entry "GSL_FIREARM_MAIN_DESTROYED"
@@ -196,6 +196,64 @@ type "StatusData"
 using "GSL_REPAIR_MAIN_DONE"
 data "StackId" "GSL_REPAIR_OFF_DONE"
 data "Icon" "GSL_RapidRepair"
+
+new entry "GSL_FIELD_REPAIR_MAIN_10"
+type "StatusData"
+using "GSL_REPAIR_MAIN_12"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_10"
+data "Icon" "GSL_RapidRepair"
+
+new entry "GSL_FIELD_REPAIR_MAIN_11"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_11"
+
+new entry "GSL_FIELD_REPAIR_MAIN_12"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_12"
+
+new entry "GSL_FIELD_REPAIR_MAIN_13"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_13"
+
+new entry "GSL_FIELD_REPAIR_MAIN_14"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_14"
+
+new entry "GSL_FIELD_REPAIR_MAIN_15"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_15"
+
+new entry "GSL_FIELD_REPAIR_OFF_10"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_10"
+
+new entry "GSL_FIELD_REPAIR_OFF_11"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_11"
+
+new entry "GSL_FIELD_REPAIR_OFF_12"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_12"
+
+new entry "GSL_FIELD_REPAIR_OFF_13"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_13"
+
+new entry "GSL_FIELD_REPAIR_OFF_14"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_14"
+
+new entry "GSL_FIELD_REPAIR_OFF_15"
+using "GSL_FIELD_REPAIR_MAIN_10"
+data "StackId" "GSL_FIELD_REPAIR_OFF_15"
+
+new entry "GSL_FIELD_REPAIR_MAIN_DONE"
+using "GSL_REPAIR_MAIN_DONE"
+data "StackId" "GSL_FIELD_REPAIR_MAIN_DONE"
+
+new entry "GSL_FIELD_REPAIR_OFF_DONE"
+using "GSL_REPAIR_MAIN_DONE"
+data "StackId" "GSL_FIELD_REPAIR_OFF_DONE"
 
 new entry "GSL_ANTE_UP"
 type "StatusData"

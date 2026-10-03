@@ -85,6 +85,20 @@ class GritDataTests(unittest.TestCase):
                 self.assertIn(f'GSL_REPAIR_{hand.upper()}_{dc}', fields['RequirementConditions'])
                 self.assertIn(f'GSL_REPAIR_{hand.upper()}_DONE', fields['SpellSuccess'])
 
+    def test_field_repair_is_an_action_with_rarity_dc_for_each_hand(self) -> None:
+        parent = self.fields('Shout_GSL_FieldRepair')
+        self.assertEqual(parent['UseCosts'], '')
+        self.assertEqual(len(parent['ContainerSpells'].split(';')), 12)
+        self.assertIn('UnlockSpell(Shout_GSL_FieldRepair)', self.fields('GSL_FIREARM_MAIN_MISFIRED')['Boosts'])
+        self.assertIn('UnlockSpell(Shout_GSL_FieldRepair)', self.fields('GSL_FIREARM_OFF_MISFIRED')['Boosts'])
+        for hand in ('Main', 'Off'):
+            for dc in range(10, 16):
+                fields = self.fields(f'Shout_GSL_FieldRepair_{hand}{dc}')
+                self.assertEqual(fields['UseCosts'], 'ActionPoint:1')
+                self.assertEqual(fields['SpellRoll'], f'SkillCheck(Skill.SleightOfHand,{dc})')
+                self.assertIn(f'GSL_FIELD_REPAIR_{hand.upper()}_{dc}', fields['RequirementConditions'])
+                self.assertIn(f'GSL_FIELD_REPAIR_{hand.upper()}_DONE', fields['SpellSuccess'])
+
     def test_tinkerer_is_a_six_choice_per_hand_menu(self) -> None:
         parent = self.fields('Shout_GSL_Tinkerer')
         self.assertEqual(parent['UseCosts'], '')
@@ -280,8 +294,8 @@ class GritDataTests(unittest.TestCase):
         self.assertFalse(any('GSL_TinkererUnlock' in a.get('value', '') for a in lists))
 
     def test_misfire_is_a_to_hit_penalty_not_a_firing_lock(self) -> None:
-        self.assertEqual(self.fields('GSL_FIREARM_MAIN_MISFIRED')['Boosts'], 'RollBonus(RangedWeaponAttack,-2)')
-        self.assertEqual(self.fields('GSL_FIREARM_OFF_MISFIRED')['Boosts'], 'RollBonus(RangedOffHandWeaponAttack,-2)')
+        self.assertIn('RollBonus(RangedWeaponAttack,-2)', self.fields('GSL_FIREARM_MAIN_MISFIRED')['Boosts'])
+        self.assertIn('RollBonus(RangedOffHandWeaponAttack,-2)', self.fields('GSL_FIREARM_OFF_MISFIRED')['Boosts'])
         self.assertNotIn('Disadvantage', self.fields('GSL_MISFIRE')['Boosts'])
         self.assertNotIn('-99', self.fields('GSL_MISFIRE')['Boosts'])
         for hand in ('MAIN', 'OFF'):

@@ -45,6 +45,11 @@ function Rules.RepairDC(rarity)
     return 12 + assert(bonuses[rarity], "Unsupported firearm rarity: " .. tostring(rarity))
 end
 
+function Rules.FieldRepairDC(rarity)
+    local modifiers = {[0] = 0, [1] = 1, [2] = 2, [3] = 3, [4] = 4, [5] = 5}
+    return 10 + assert(modifiers[rarity], "Unsupported firearm rarity: " .. tostring(rarity))
+end
+
 function Rules.Modify(state, mode, limit)
     assert(mode == "Capacity" or mode == "Damage" or mode == "Range", "Invalid modification")
     assert(not state.broken, "A destroyed firearm requires a long rest")

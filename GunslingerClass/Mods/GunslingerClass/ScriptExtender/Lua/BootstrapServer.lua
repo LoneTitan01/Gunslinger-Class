@@ -118,9 +118,13 @@ local function refresh(character, restoreAmmo)
         if hand == "Off" then
             status(character, "GSL_TINKERER_OFF_RANGE", state and Rules.HasMod(state, "Range"))
         end
+        local repairable = state and state.misfire and not state.broken
+        local rarity = repairable and assert(Ext.Entity.Get(item).Value, "Firearm has no rarity").Rarity
+        for dc = 10, 15 do
+            status(character, "GSL_FIELD_REPAIR_" .. hand:upper() .. "_" .. dc,
+                repairable and Rules.FieldRepairDC(rarity) == dc)
+        end
         for dc = 12, 16 do
-            local repairable = state and state.misfire and not state.broken
-            local rarity = repairable and assert(Ext.Entity.Get(item).Value, "Firearm has no rarity").Rarity
             status(character, "GSL_REPAIR_" .. hand:upper() .. "_" .. dc,
                 repairable and Rules.RepairDC(rarity) == dc)
         end
@@ -206,9 +210,10 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     refresh(character, false)
     local hand, mode = Rules.ParseTinkerer(spell)
     local shotHand = spell:match("^Shout_GSL_RapidRepair_(%a+)%d+$") or
+        spell:match("^Shout_GSL_FieldRepair_(%a+)%d+$") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")
     local item = equipped(character, hand or shotHand)
-    casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand}
+    casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand, itemHand = hand or shotHand}
     local grit = spell:match("^Projectile_GSL_FanningFire_%a+_(%d)$")
     if grit then Osi.ApplyStatus(character, "GSL_FANNING_FIRE_" .. grit, -1, 1, character) end
     casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_%a+_(%d)$"))
@@ -289,11 +294,14 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
         local item = cast and cast.item or Osi.GetEquippedWeapon(character)
         Osi.RemoveStatus(character, applied)
         misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN")
-    elseif applied == "GSL_REPAIR_MAIN_DONE" or applied == "GSL_REPAIR_OFF_DONE" then
+    elseif applied == "GSL_REPAIR_MAIN_DONE" or applied == "GSL_REPAIR_OFF_DONE" or
+        applied == "GSL_FIELD_REPAIR_MAIN_DONE" or applied == "GSL_FIELD_REPAIR_OFF_DONE" then
         local cast = casts[character]
         assert(cast and cast.action == action and cast.item, "Repair lost its physical firearm/action correlation")
+        local hand = applied:find("_OFF_", 1, true) and "Off" or "Main"
+        assert(cast.itemHand == hand, "Repair success does not match the selected firearm hand")
         local data = database()
-        assert(Rules.Repair(data.weapons[cast.item]), "Rapid Repair cannot restore a destroyed firearm")
+        assert(Rules.Repair(data.weapons[cast.item]), "Repair cannot restore a destroyed firearm")
         save(data)
         Osi.RemoveStatus(character, applied)
         refresh(character, false)

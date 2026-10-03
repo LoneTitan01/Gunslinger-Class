@@ -247,6 +247,8 @@ Before treating the new build as gameplay-certified:
     thresholds, guaranteed/expanded crits, death prevention, kill refunds, and
     that Desperado's Luck is hidden while Fortune or High Noon is active.
 
-The separate ordinary DC 10 + rarity repair action and weapon-fusion kits remain
-known non-grit implementation gaps. The original class design is not rewritten
-to claim those features now work.
+Ordinary field repair is separate from the grit ability: while a firearm is
+misfired, its owner can spend an action on a Sleight of Hand check at DC 10 +
+rarity. Success clears only that gun's misfire; failure spends the action but
+leaves the misfire in place. Destroyed guns remain unrepairable until a long
+rest. Weapon-fusion kits remain a known non-grit implementation gap.

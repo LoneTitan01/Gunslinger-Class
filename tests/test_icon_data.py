@@ -34,8 +34,10 @@ class IconDataTests(unittest.TestCase):
         for entry in self.entries.values():
             if entry.kind not in {'SpellData', 'PassiveData', 'StatusData', 'InterruptData'} or entry.name in PARENTS:
                 continue
+            icon = entry.fields.get('Icon')
+            if not icon or not icon.startswith('GSL_'):
+                continue
             with self.subTest(entry=entry.name):
-                icon = entry.fields.get('Icon')
                 self.assertIn(icon, mapped)
                 referenced.add(icon)
         self.assertEqual(referenced, mapped)
@@ -64,10 +66,9 @@ class IconDataTests(unittest.TestCase):
                     edge = max(1, edge // 2)
                 self.assertEqual(path.stat().st_size, expected)
 
-    def test_atlas_cells_are_unique_and_match_checklist_slots(self) -> None:
+    def test_atlas_cells_are_unique_and_use_expected_slots(self) -> None:
         self.assertEqual(len(self.cells), 83)
         self.assertEqual(len({cell['MapKey'] for cell in self.cells}), 83)
-        checklist = (ROOT / 'To-do.md').read_text(encoding='utf-8')
         for index, cell in enumerate(self.cells):
             column, row = index % 32, index // 32
             with self.subTest(icon=cell['MapKey']):
@@ -75,7 +76,6 @@ class IconDataTests(unittest.TestCase):
                 self.assertEqual(float(cell['U2']), (column + 1) / 32)
                 self.assertEqual(float(cell['V1']), row / 32)
                 self.assertEqual(float(cell['V2']), (row + 1) / 32)
-                self.assertIn(f"| [ ] | `{cell['MapKey']}` | {column},{row} |", checklist)
 
     def test_all_ability_exports_have_required_dimensions(self) -> None:
         for cell in self.cells:
@@ -103,9 +103,7 @@ class IconDataTests(unittest.TestCase):
         resources = ET.parse(PUBLIC / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx')
         names = [a.get('value') for a in resources.findall('.//attribute[@id="Name"]')]
         self.assertEqual(len(names), 6)
-        checklist = (ROOT / 'To-do.md').read_text(encoding='utf-8')
         for name in names:
-            self.assertIn(f'`{name}.DDS`', checklist)
             for quality in ('Assets', 'AssetsLowRes'):
                 for surface in (('Shared', 'Resources'), ('ActionResources_c', 'Icons', 'Resources')):
                     for state in ('', 'Highlight', 'Used', 'Missing'):

@@ -25,7 +25,11 @@ end
 for rarity, dc in pairs({[0] = 12, [1] = 12, [2] = 13, [3] = 14, [4] = 15, [5] = 16}) do
     assert(rules.RepairDC(rarity) == dc)
 end
+for rarity = 0, 5 do
+    assert(rules.FieldRepairDC(rarity) == 10 + rarity)
+end
 assert(not pcall(rules.RepairDC, 6), "Unsupported rarity must be explicit")
+assert(not pcall(rules.FieldRepairDC, 6), "Unsupported field-repair rarity must be explicit")
 for _, hand in ipairs({"Main", "Off"}) do
     for _, mode in ipairs({"Capacity", "Damage", "Range"}) do
         local parsedHand, parsedMode = rules.ParseTinkerer("Shout_GSL_Tinkerer_" .. hand .. mode)
