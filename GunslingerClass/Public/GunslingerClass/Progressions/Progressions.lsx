@@ -56,6 +56,13 @@
                     <attribute id="UUID" type="guid" value="211a1753-c432-552d-aa7d-501b634ce271"/>
                 </node>
                 <node id="Progression">
+                    <attribute id="Level" type="uint8" value="5"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="315f0012-d01f-5ce6-b4d5-9250638db0c5"/>
+                </node>
+                <node id="Progression">
                     <attribute id="Level" type="uint8" value="6"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="PassivesAdded" type="LSString" value="GSL_SecondAttack"/>
@@ -63,6 +70,13 @@
                     <attribute id="Selectors" type="LSString" value="SelectSkillsExpertise(f974ebd6-3725-4b90-bb5c-2b647d41615d,1)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="3fcd36c4-72bb-58ad-a1d2-d335787ce4b2"/>
+                </node>
+                <node id="Progression">
+                    <attribute id="Level" type="uint8" value="7"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="4535af9a-99fe-500d-b799-1fb27e0051e6"/>
                 </node>
                 <node id="Progression">
                     <attribute id="AllowImprovement" type="bool" value="true"/>
@@ -73,12 +87,26 @@
                     <attribute id="UUID" type="guid" value="4d475124-de8b-5155-96c3-42535ffaa695"/>
                 </node>
                 <node id="Progression">
+                    <attribute id="Level" type="uint8" value="9"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="cfa25be9-3341-5286-bd7e-0635c184917b"/>
+                </node>
+                <node id="Progression">
                     <attribute id="Level" type="uint8" value="10"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="PassivesAdded" type="LSString" value="GSL_MasterTinkerer"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="4c7ab219-bff8-50c5-8f67-c3c2b3625a90"/>
+                </node>
+                <node id="Progression">
+                    <attribute id="Level" type="uint8" value="11"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="f7456291-937e-5486-8622-d8389b4b7d05"/>
                 </node>
                 <node id="Progression">
                     <attribute id="AllowImprovement" type="bool" value="true"/>
@@ -89,6 +117,13 @@
                     <attribute id="UUID" type="guid" value="a18a5a2b-7d12-5e45-8fbb-386208e5e766"/>
                 </node>
                 <node id="Progression">
+                    <attribute id="Level" type="uint8" value="13"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="efac87f4-e6c1-50dc-991f-a53c1f312275"/>
+                </node>
+                <node id="Progression">
                     <attribute id="Level" type="uint8" value="14"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="PassivesAdded" type="LSString" value="GSL_ImprovedCritical"/>
@@ -97,12 +132,33 @@
                     <attribute id="UUID" type="guid" value="3482784c-b0c1-5294-bcc2-b18488c9a4f4"/>
                 </node>
                 <node id="Progression">
+                    <attribute id="Level" type="uint8" value="15"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="3e0a2e66-3926-5a9d-8a81-b9b62dad1fae"/>
+                </node>
+                <node id="Progression">
                     <attribute id="AllowImprovement" type="bool" value="true"/>
                     <attribute id="Level" type="uint8" value="16"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="886d21a8-5f2d-5896-b197-ae58236347ad"/>
+                </node>
+                <node id="Progression">
+                    <attribute id="Level" type="uint8" value="17"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="8896d618-0951-554c-b4da-50b4c6be705f"/>
+                </node>
+                <node id="Progression">
+                    <attribute id="Level" type="uint8" value="18"/>
+                    <attribute id="Name" type="LSString" value="Gunslinger"/>
+                    <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="a7f08785-ab3e-5ef4-b1bf-c264e7153eff"/>
                 </node>
                 <node id="Progression">
                     <attribute id="AllowImprovement" type="bool" value="true"/>

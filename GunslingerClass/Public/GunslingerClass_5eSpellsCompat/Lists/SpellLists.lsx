@@ -6,27 +6,27 @@
             <children>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Cantrips (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Target_ControlFlames,Target_MindSliver"/>
+                    <attribute id="Spells" type="LSString" value="Target_ControlFlames;Target_MindSliver"/>
                     <attribute id="UUID" type="guid" value="94dcbc4f-dcd9-49c6-8a14-0ab1fcf9ca9d"/>
                 </node>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_AbsorbElements,Throw_Catapult,Target_ChaosBolt,Shout_ZephyrStrike"/>
+                    <attribute id="Spells" type="LSString" value="Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
                     <attribute id="UUID" type="guid" value="9960eae3-1e75-4226-8b5d-ecf8ee60da2d"/>
                 </node>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 2 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Target_DragonsBreath,Shout_KineticJaunt,Zone_RimesBindingIce"/>
+                    <attribute id="Spells" type="LSString" value="Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce"/>
                     <attribute id="UUID" type="guid" value="ccfe04a1-ea3c-49d9-a50b-276a6c67c16a"/>
                 </node>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 3 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_AshardalonsStride,Target_EruptingEarth,Target_FlameArrows,Teleportation_ThunderStep"/>
+                    <attribute id="Spells" type="LSString" value="Shout_AshardalonsStride;Target_EruptingEarth;Target_FlameArrows;Teleportation_ThunderStep"/>
                     <attribute id="UUID" type="guid" value="a1296e01-7cd7-4e65-bfaf-68d375cf0d3d"/>
                 </node>
                 <node id="SpellList">
                     <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 4 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_ShadowOfMoil,Target_StormSphere,Projectile_VitriolicSphere"/>
+                    <attribute id="Spells" type="LSString" value="Shout_ShadowOfMoil;Target_StormSphere;Projectile_VitriolicSphere"/>
                     <attribute id="UUID" type="guid" value="07ea3488-c5a3-4506-9df8-0eb840e4d45c"/>
                 </node>
             </children>

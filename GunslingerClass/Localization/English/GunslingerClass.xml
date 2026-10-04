@@ -28,36 +28,36 @@
         <content contentuid="h4b3872ddg6a21g5396g8709g70e68bcc379c" version="1">Desperado</content>
         <content contentuid="h68e3af46g0e28g5b06g8f2cg3dc59fdf32e6" version="1">Desperado</content>
         <content contentuid="h4dc4990bg35eeg5a26gbaf1gdecb89eb6cd3" version="1">A spellcasting gunfighter who imbues shots with magical effects. Intelligence is the Arcane Gunsman's spellcasting ability.</content>
-        <content contentuid="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1">ArcaneGunsman</content>
-        <content contentuid="hc5873587g2542g5f10gb920g8ef237599f1d" version="1">ArcaneGunsman</content>
+        <content contentuid="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1">Arcane Gunsman</content>
+        <content contentuid="hc5873587g2542g5f10gb920g8ef237599f1d" version="1">Arcane Gunsman</content>
         <content contentuid="h9780c102g240ag52efga3d4gb13e793b2538" version="1">Gunner</content>
-        <content contentuid="hc813199fg372fg5d65g9726gbf91f9de4f02" version="1">Gain proficiency with firearms (they use the Sling proficiency group). Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="hc813199fg372fg5d65g9726gbf91f9de4f02" version="1">Gain proficiency with firearms. Increase your Dexterity score by 1, to a maximum of 20.</content>
         <content contentuid="hd2151e63gd92fg5f28g8a51g47b2555d2fc5" version="1">Firearm Proficiency</content>
         <content contentuid="h8fe49679gc007g5b01g8776g6de2ec0fcd7c" version="1">You are proficient with firearms.</content>
         <content contentuid="h822d05e0ge91bg5508gb51fg170bec80fd06" version="1">Firearm Training</content>
-        <content contentuid="hbca83974ga19eg577cga666g8d33a1f10697" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="hbca83974ga19eg577cga666g8d33a1f10697" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action.</content>
         <content contentuid="h152bfd65g7a13g5210g848egf4b3e6c5ade7" version="1">Quick Reload</content>
         <content contentuid="h81d8a202gd9d4g5471g873cg64069f5a17d2" version="1">When dual-wielding two Flintlocks, you can reload both as a bonus action instead of an action. Increase your Dexterity score by 1, to a maximum of 20.</content>
         <content contentuid="h8f5e4ffag0bb9g5041gb895g914d3ce3104a" version="1">Quick Reload</content>
         <content contentuid="h63669565gd150g54a6ga29bg14d2e584f6a7" version="1">You can reload dual-wielded Flintlocks as a bonus action.</content>
-        <content contentuid="hb2be8eb9ga022g57a2g8d81g580b18f771c2" version="1">Quick Hands</content>
-        <content contentuid="h2ec284b9gefa5g5d71g9312g091ef6f06039" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="hb2be8eb9ga022g57a2g8d81g580b18f771c2" version="1">Quick Reload</content>
+        <content contentuid="h2ec284b9gefa5g5d71g9312g091ef6f06039" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action.</content>
         <content contentuid="hb3ef2296g5489g5323g804fgbc950b19f840" version="1">Grit Adept</content>
         <content contentuid="h057a18e6gf320g5384g8f0cg935604752fc1" version="1">Increase your maximum grit points by 2 and choose one grit ability available to a level 3 Gunslinger.</content>
         <content contentuid="h15bd841dgfae1g5147gb414g0ce21b37f52f" version="1">Grit Adept</content>
         <content contentuid="hb50a250ag92d2g5df8ga2e3gc45d95e4917c" version="1">Increases your maximum grit points by 2.</content>
         <content contentuid="hfe3fc1adgd09fg528dg9c17g07a9c9ded6a6" version="1">Close-Quarters Gunner</content>
-        <content contentuid="h66b30a07g43c0g5a3agbc41ga9802954ac42" version="1">Blunderbuss attacks do not suffer penalties from nearby enemies. Once per turn, hitting a creature within 15 feet with a firearm can push it 5 feet. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h66b30a07g43c0g5a3agbc41ga9802954ac42" version="1">Firearm attacks no longer have Disadvantage against targets within 5 feet of you. Increase your Dexterity score by 1, to a maximum of 20.</content>
         <content contentuid="h50bb50edgd484g5a95gbcfcg1273431e8b4c" version="1">Close-Quarters Gunner</content>
-        <content contentuid="h82212626ge6ccg563cg95d1g231dd57825d0" version="1">Once per turn, a firearm hit against a creature within 15 feet pushes it 5 feet.</content>
+        <content contentuid="h82212626ge6ccg563cg95d1g231dd57825d0" version="1">Your firearm attacks don't have Disadvantage against targets within [1].</content>
         <content contentuid="h34a62d26g3dabg5ed2gaaf6g8a1383bf7efb" version="1">Steady Hands</content>
-        <content contentuid="h4d4b0115ge158g5dafgba1eg26e231e3952a" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h4d4b0115ge158g5dafgba1eg26e231e3952a" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action.</content>
         <content contentuid="h39d746fcgef1eg5e46gbf97gb2a8b39788e2" version="1">Longarm Specialist</content>
         <content contentuid="h1dda5dd0g4202g5414g85b2ge2bdc0ff9ae1" version="1">Musket attacks ignore long-range penalties and gain 20 feet of normal range. Increase your Dexterity score by 1, to a maximum of 20.</content>
         <content contentuid="h59aaf8a3g5c11g500aga433gd1f52205f1b3" version="1">Longarm Specialist</content>
         <content contentuid="hd5c74955gd9dbg5a53gbcfbgf81b55d714f6" version="1">Your musket attacks ignore long-range penalties.</content>
         <content contentuid="he363c076g6a22g5ba8g9cb8ge57da773fdd7" version="1">Long Range Training</content>
-        <content contentuid="h559e6207g14c3g5bf9g82d5gc45aa514884a" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h559e6207g14c3g5bf9g82d5gc45aa514884a" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action.</content>
         <content contentuid="h87f20920gbd0fg5f9ega347g9fca442b57ad" version="1">Called Shot</content>
         <content contentuid="h63755c1bg1d36g5c3bg8deeg2be5897f57e7" version="1">Once per turn, when you hit a creature with a firearm from at least 30 feet away, it suffers Disadvantage on its next attack before the end of its next turn. Increase your Dexterity score by 1, to a maximum of 20.</content>
         <content contentuid="he888357dg677fg5ed9gbf20g36ea7f66d135" version="1">Called Shot</content>
@@ -65,13 +65,13 @@
         <content contentuid="h32940c53g07deg5162g8e10g7b22025bcf4b" version="1">Called Shot</content>
         <content contentuid="hde2089a1g083bg58c6gbe7agcae08f66d776" version="1">Once per turn, a firearm hit from 30 feet or more away gives the target Disadvantage on its next attack roll.</content>
         <content contentuid="hc5fa9067ge726g5d16gb6e0g651d8e55989f" version="1">Marksman's Eye</content>
-        <content contentuid="h8b4fb956g2cccg5daag81dfg7900a636ac15" version="1">Increases your Dexterity score by 1.</content>
+        <content contentuid="h8b4fb956g2cccg5daag81dfg7900a636ac15" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action.</content>
         <content contentuid="h22be4009g1753g5ce0gb5a9g434c53fd8d23" version="1">Spellshot Adept</content>
         <content contentuid="h0ffdc689g958fg583eg9b51gb8d30604e2f9" version="1">Your firearm attacks count as magical. Once per turn after casting a spell, your next firearm hit deals an extra 1d4 force damage. Increase your Intelligence score by 1, to a maximum of 20.</content>
         <content contentuid="h343f06f4g032dg50e5gb244g0ef356191cc1" version="1">Spellshot</content>
         <content contentuid="hd21dc251gbb07g59e5g91feg4c49a09507b5" version="1">Your firearm attacks count as magical.</content>
         <content contentuid="h2fe64534g03adg5fbdgabecg564403bb298a" version="1">Spellshot Charged</content>
-        <content contentuid="he71d0c39gb3f1g5bacgb76dg8d2484248a0d" version="1">Your next firearm hit this turn deals an extra 1d4 Force damage.</content>
+        <content contentuid="he71d0c39gb3f1g5bacgb76dg8d2484248a0d" version="1">Your next firearm hit before the end of your next turn deals an extra 1d4 Force damage.</content>
         <content contentuid="h017f038dg644eg5818gbf70g1413605fad0f" version="1">Spellshot Adept</content>
         <content contentuid="hd7bbfdebg51c3g51d1gb1c6gb4892e6f30ff" version="1">Once per turn, after you cast a spell, your next firearm hit deals an extra 1d4 Force damage.</content>
         <content contentuid="h1cefb2dagb9fbg5590gaf37g85bee738e876" version="1">Spellshot Adept</content>
@@ -101,9 +101,9 @@
         <content contentuid="h23345878g373eg5e32gb6dbgc9ea48ec8971" version="1">Shot in the Dark</content>
         <content contentuid="hf107b388ga4efg5f00gbf38g1d99812fb35d" version="1">Unlocks the Shot in the Dark grit ability.</content>
         <content contentuid="h206052b1gafcfg5a4bg8a02g22064a972674" version="1">Shot in the Dark</content>
-        <content contentuid="h58020396gc5cdg5f36g9031g5d29039ab1a6" version="1">You have Darkvision and ignore the Blinded condition for your next shot.</content>
+        <content contentuid="h58020396gc5cdg5f36g9031g5d29039ab1a6" version="1">You have Darkvision and ignore the Blinded condition.</content>
         <content contentuid="h9d0667c8gfdaeg5a1cg9463g1ff7de4976e7" version="1">Shot in the Dark</content>
-        <content contentuid="ha1e675dcg7790g5669ga976gd79d71c200f2" version="1">As a bonus action, spend 1 grit point to gain Darkvision out to 60 feet and ignore Blindness for your next shot.</content>
+        <content contentuid="ha1e675dcg7790g5669ga976gd79d71c200f2" version="1">As a bonus action, spend 1 grit point to gain Darkvision out to 60 feet and ignore Blindness for 10 turns.</content>
         <content contentuid="h5926aed9gaee2g591agb986g656004d615c9" version="1">Rapid Repair</content>
         <content contentuid="h5955813dg09f5g53b7g87bdg91ad7b4c0f4e" version="1">Unlocks the Rapid Repair grit ability.</content>
         <content contentuid="h9589d1fbg4953g55b2gbc01g0b1a85bdda5b" version="1">Rapid Repair</content>
@@ -148,49 +148,45 @@
         <content contentuid="hd7aaf651g3a0ag505dgbbf6g396a115e4586" version="1">Last Word</content>
         <content contentuid="h8e995049g0155g5826g8334gf5311ed4f3f9" version="1">Unlocks the Last Word grit ability.</content>
         <content contentuid="h58deeaf2g7fd6g5cb9gb53dg96830c2e0103" version="1">Lock-on</content>
-        <content contentuid="h44889be1g11d9g55e9ga059g1fc78391eb85" version="1">Add your proficiency bonus to damage against a targeted enemy.</content>
+        <content contentuid="h44889be1g11d9g55e9ga059g1fc78391eb85" version="1">As a bonus action, lock on to a creature. Your firearm attacks deal additional damage equal to your proficiency bonus to it. Requires concentration and can be used once per short rest. If the target dies before your concentration ends, you can lock on to a new target as a bonus action without using another short rest use.</content>
         <content contentuid="h1f5b1232ge771g5078ga86eg3ab18359e742" version="1">Long Shot</content>
         <content contentuid="h3ada472ega21fg5255g8a7bg39be21cc02c2" version="1">Once per turn, deal additional damage based on the distance to your target when you hit with a firearm.</content>
         <content contentuid="h82b2b368gb4e7g5db6ga986gb2ed358f3cdc" version="1">Stable Shot</content>
-        <content contentuid="h814cafeag14ccg5516gb149g4af6f6b3a298" version="1">Advantage on your next firearm attack this turn.</content>
+        <content contentuid="h814cafeag14ccg5516gb149g4af6f6b3a298" version="1">Advantage on your next firearm attack before the end of your next turn.</content>
         <content contentuid="hecb315c0gee58g5b97ga583g28d080dc2c93" version="1">Stable Shot</content>
-        <content contentuid="hd925b749g0648g5f38g86bcg38cc2eefac9e" version="1">As a class action, sacrifice 20 feet of movement to gain Advantage on your next firearm attack this turn.</content>
+        <content contentuid="hd925b749g0648g5f38g86bcg38cc2eefac9e" version="1">As a class action, sacrifice 20 feet of movement to gain Advantage on your next firearm attack before the end of your next turn.</content>
         <content contentuid="hfe429d72g1c5eg5e3fg93fdg722ba2e9dc16" version="1">Stable Shot</content>
         <content contentuid="h81f3620dgb400g55c5g95abg94ca3c98544b" version="1">Unlocks the Stable Shot class action.</content>
         <content contentuid="h55c50aabgc3d6g5c1cg9789g505fa5d4bbf5" version="1">Pinpoint Accuracy</content>
         <content contentuid="h5dc3b18bg56ebg56ddga676g90e61bc78228" version="1">Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more.</content>
         <content contentuid="h307f1ad2g9657g57fegae92ge5eb6b98b152" version="1">Headshot</content>
-        <content contentuid="ha0adf4aegadfag50f2g9db4g3b88d23072c3" version="1">Spend 5 grit points. Your next firearm attack this turn is an automatic critical hit.</content>
+        <content contentuid="ha0adf4aegadfag50f2g9db4g3b88d23072c3" version="1">Spend 5 grit points. Your next firearm attack before the end of your next turn is an automatic critical hit.</content>
         <content contentuid="h49d8e2cfgc0c1g5807gb097g4a3332ac885a" version="1">Headshot</content>
-        <content contentuid="hfdb35b30g6df4g519dgb124g4e729e4bb9d9" version="1">Your next firearm attack this turn is an automatic critical hit.</content>
+        <content contentuid="hfdb35b30g6df4g519dgb124g4e729e4bb9d9" version="1">Your next firearm attack before the end of your next turn is an automatic critical hit.</content>
         <content contentuid="h25257b3fg6eb7g523fgb456g8e75a6174b9d" version="1">Headshot</content>
         <content contentuid="h1967be9ag0e70g5e51gba30g5a46615ed9b1" version="1">Unlocks the Headshot grit ability.</content>
         <content contentuid="h851f176ag3c4bg5951g89d2g98bfe093881d" version="1">Infused Rounds</content>
-        <content contentuid="h963f4738g659eg52e2gae59ga62ebf140a5c" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 1d4 Force damage.</content>
+        <content contentuid="h963f4738g659eg52e2gae59ga62ebf140a5c" version="1">As a bonus action, infuse your firearm rounds with Fire, Thunder, Lightning, Acid, Cold, or Poison for 10 turns. Your firearm attacks deal an extra 1d4 damage of that type. Improved Infused Rounds raises this to 2d4 and adds Force; Mastered Infused Rounds raises it to 3d4 and adds Radiant and Necrotic.</content>
         <content contentuid="h8cdc7a84g0159g5e7cgb49eg0f28df2118d3" version="1">Infused Rounds</content>
-        <content contentuid="h7aad8a6dgc1b1g5dcegb5f7ga5fd30e32b02" version="1">Unlocks the Infused Rounds attack.</content>
-        <content contentuid="h68c4b217gd450g50d5gb72ag15d2da52d800" version="1">Infused Rounds</content>
-        <content contentuid="hd2bd8f75g08acg52a9gb35fg33cacf556eff" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 2d4 Force damage.</content>
+        <content contentuid="h7aad8a6dgc1b1g5dcegb5f7ga5fd30e32b02" version="1">Unlocks Infused Rounds: as a bonus action, infuse your firearm rounds with Fire, Thunder, Lightning, Acid, Cold, or Poison for 10 turns, adding 1d4 damage of that type to your firearm attacks.</content>
         <content contentuid="h60eefb8egaf84g5becgb16fgd1ad6dc9eabc" version="1">Improved Infused Rounds</content>
-        <content contentuid="he70d6377gfb77g57d0g87c5g5ecba5a282e1" version="1">Infused Rounds damage increases to 2d4.</content>
+        <content contentuid="he70d6377gfb77g57d0g87c5g5ecba5a282e1" version="1">Infused Rounds damage increases to 2d4, and you can infuse your rounds with Force.</content>
         <content contentuid="hd199df79g10e6g569aga149g1fbac9463bf1" version="1">Arcane Reload</content>
         <content contentuid="he9ef1003g87b9g5092g9c2dgad911bd9ed4f" version="1">Your weapon magically reloads one bullet per round.</content>
         <content contentuid="h77805d86g5fbbg56a8gb488g0e8f63b171eb" version="1">Arcane Reload</content>
         <content contentuid="hc3f31900g4ab3g5d96ga9a7g32d38d2c8eaf" version="1">Your firearm magically reloads one bullet each round (flavor marker; see Implementation Notes).</content>
-        <content contentuid="hc9d2af4cg9741g5b98gbb32g43aadc79b63c" version="1">Infused Rounds</content>
-        <content contentuid="h0ca10309g6387g50c5g9238g145ebaa0c938" version="1">Spend a bonus action to shoot an elementally-infused round, dealing 3d4 Force damage.</content>
         <content contentuid="h26c4824dg7049g5673gbc15g10235a0522e1" version="1">Mastered Infused Rounds</content>
-        <content contentuid="h8c2a62c6g7f77g5f66g8e00g396e5bc02689" version="1">Infused Rounds damage increases to 3d4.</content>
+        <content contentuid="h8c2a62c6g7f77g5f66g8e00g396e5bc02689" version="1">Infused Rounds damage increases to 3d4, and you can infuse your rounds with Radiant or Necrotic.</content>
         <content contentuid="h51ad746eg6129g5681g9bfcg1e8906b3dbdb" version="1">Smart Shooting</content>
-        <content contentuid="h1dfc365eg9984g540dg8e96gdda89a752066" version="1">Add your Intelligence modifier to your firearm attack rolls.</content>
+        <content contentuid="h1dfc365eg9984g540dg8e96gdda89a752066" version="1">Add your Intelligence modifier to your firearm attack and damage rolls.</content>
         <content contentuid="h5561e09fg42e8g53e8gbe0fg73b431e24d87" version="1">Unstable Backfire</content>
         <content contentuid="hb12fe557g4125g5cf0g9672gcd5e7eb65e22" version="1">An unstable round exploded in your face.</content>
         <content contentuid="hf278fa11gc46ag56c0gae25g182f6edce2a6" version="1">Unstable Infused Rounds</content>
-        <content contentuid="h74e247efg3524g54b2g990dg6ccc98f89a80" version="1">Spend a bonus action to shoot an unstable infused round, dealing 5d4 Force damage with a 25% chance to also deal 3d4 Force damage in a 5-foot radius centered on you.</content>
+        <content contentuid="h74e247efg3524g54b2g990dg6ccc98f89a80" version="1">Requires an active infusion. For 10 turns, your infused rounds deal 5d4 damage of their element instead, but each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
         <content contentuid="hd2195c52g8934g5fccga564g4ba4149f4fc2" version="1">Unstable Backfire</content>
         <content contentuid="h8074437bg6d06g5bf5ga37cgf2d96c0dae78" version="1">Deals 3d4 Force damage in a 5-foot radius.</content>
         <content contentuid="h29545f6fg7760g5aa6ga221g524abfa0561f" version="1">Unstable Infused Rounds</content>
-        <content contentuid="hcf93de15g47cag5a87g87f9g0466eafdf610" version="1">Unlocks the option to use unstable infused rounds.</content>
+        <content contentuid="hcf93de15g47cag5a87g87f9g0466eafdf610" version="1">Adds the Unstable option to Infused Rounds: for 10 turns your infused rounds deal 5d4 damage of their element, but each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
         <content contentuid="h1f13e55bga6a8g53b2g817fgc7d5d78daa13" version="1">Spellstrike Shooter</content>
         <content contentuid="h30431b39g76dag510dgbee0g4399e51ecb10" version="1">When you use your action to cast a spell, you can make a ranged firearm attack as part of the same action.</content>
         <content contentuid="h16e63198g55acg44acgaf01g6d3cc02bd481" version="1">Shoot Flintlock</content>
@@ -200,13 +196,13 @@
         <content contentuid="h6d052683ga879g4b3cg91abg93d8d8658fa1" version="1">Fire one bullet at a target in a straight line, dealing your firearm's weapon damage.</content>
         <content contentuid="h20f35133g343bg482dgaf64g7f092e6e9e2c" version="1">Fire one bullet from your secondary flintlock at a target in a straight line.</content>
         <content contentuid="hc6b76403g31fag55a8g88a0g3b9d6ff4fa2f" version="1">Primary Reload</content>
-        <content contentuid="he8e58efagc245g5e3ag8f88g916c6aa416b8" version="1">Spend a bonus action to reload your flintlock to its full capacity of 3 bullets.</content>
+        <content contentuid="he8e58efagc245g5e3ag8f88g916c6aa416b8" version="1">Spend a bonus action to reload your flintlock to its full capacity of 3 bullets. If you have no bonus action left, it costs an action instead.</content>
         <content contentuid="h7b17af36gce8cg4b45g8f1agf2d064081abc" version="1">Secondary Reload</content>
-        <content contentuid="h111c0a45g7c8cg4a9bg8f57g0dc443584a96" version="1">Spend a bonus action to reload your offhand flintlock to its full capacity of 3 bullets.</content>
+        <content contentuid="h111c0a45g7c8cg4a9bg8f57g0dc443584a96" version="1">Spend a bonus action to reload your offhand flintlock to its full capacity of 3 bullets. If you have no bonus action left, it costs an action instead.</content>
         <content contentuid="hcc92f66ag41e6g56b9gaa9egb8b18da05cd1" version="1">Primary Reload</content>
-        <content contentuid="hb047419bg12aeg5f9bg9749g29f46981707e" version="1">Spend a bonus action to reload your blunderbuss to its full capacity of 2 shots.</content>
+        <content contentuid="hb047419bg12aeg5f9bg9749g29f46981707e" version="1">Spend a bonus action to reload your blunderbuss to its full capacity of 2 shots. If you have no bonus action left, it costs an action instead.</content>
         <content contentuid="h6420edcdg4388g58c9g9493g84bc1e6ba114" version="1">Primary Reload</content>
-        <content contentuid="h3c75a550g3896g5965gbe46gd92b0fae9654" version="1">Spend a bonus action to reload your musket's single cartridge.</content>
+        <content contentuid="h3c75a550g3896g5965gbe46gd92b0fae9654" version="1">Spend a bonus action to reload your musket's single cartridge. If you have no bonus action left, it costs an action instead.</content>
         <content contentuid="h72a09d2bg44a1g5992ga61ega64979492f86" version="1">Full Reload</content>
         <content contentuid="hef22bce8g264fg5930gbdffgd678bbf3a2f0" version="1">Spend your action to reload both of your dual-wielded flintlocks to full capacity.</content>
         <content contentuid="h626f90efg09e9g533eg8ab0g5c177030675b" version="1">Craft Flintlock</content>
@@ -265,13 +261,16 @@
         <content contentuid="h10000005g0000g4000g8000g000000000001" version="1">Rapid Repair: Primary Firearm</content>
         <content contentuid="h10000005g0000g4000g8000g000000000002" version="1">Rapid Repair: Secondary Firearm</content>
         <content contentuid="h10000006g0000g4000g8000g000000000001" version="1">Scattershot</content>
-        <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 10-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking full weapon damage on a failed save or half as much on a success.</content>
+        <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 10-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking half weapon damage on a failed save and no damage on a success.</content>
         <content contentuid="h10000007g0000g4000g8000g000000000001" version="1">Close Quarters</content>
         <content contentuid="h10000007g0000g4000g8000g000000000002" version="1">You gain a +1 bonus to ranged weapon attack rolls, and you don't have Disadvantage on ranged attack rolls when a hostile creature is within [1] of you.</content>
         <content contentuid="h10000008g0000g4000g8000g000000000001" version="1">Gunslinger's Draw</content>
         <content contentuid="h10000008g0000g4000g8000g000000000002" version="1">Your hand is always near your holster. You gain a +[1] bonus to Initiative.</content>
         <content contentuid="h10000009g0000g4000g8000g000000000001" version="1">Deadeye</content>
         <content contentuid="h10000009g0000g4000g8000g000000000002" version="1">When you land a Critical Hit with a firearm, the attack deals an additional [1].</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000001" version="1">Lock-on: New Target</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000002" version="1">Your locked-on target died. As a bonus action, lock on to a new creature while maintaining the same concentration.</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000003" version="1">A Gunslinger has locked on. Their firearm attacks deal additional damage equal to their proficiency bonus to this creature.</content>
         <content contentuid="h1000000ag0000g4000g8000g000000000001" version="1">Master Tinkerer</content>
         <content contentuid="h1000000bg0000g4000g8000g000000000001" version="1">Improved Critical</content>
         <content contentuid="h1000000bg0000g4000g8000g000000000002" version="1">Your weapon attacks score a Critical Hit on a roll of 19 or 20.</content>
@@ -307,7 +306,7 @@
         <content contentuid="h0000001ag0000g4000g8000g000000000001" version="1">Final Judgement</content>
         <content contentuid="h0000001ag0000g4000g8000g000000000002" version="1">Spend 4 grit and fire a fatal shot. If the hit leaves the target below 25% of its hit points, it takes weapon damage again and must succeed a Constitution saving throw or die.</content>
         <content contentuid="h0000001bg0000g4000g8000g000000000001" version="1">Ante Up</content>
-        <content contentuid="h0000001bg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to gain Advantage on your next firearm attack this turn. If that attack misses, attacks against you have Advantage until your next turn.</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to gain Advantage on your next firearm attack before the end of your next turn. If that attack misses, attacks against you have Advantage until your next turn.</content>
         <content contentuid="h0000001bg0000g4000g8000g000000000003" version="1">Ante Up</content>
         <content contentuid="h0000001bg0000g4000g8000g000000000004" version="1">Your next firearm attack has Advantage.</content>
         <content contentuid="h0000001bg0000g4000g8000g000000000005" version="1">Lost the Ante</content>
@@ -336,11 +335,11 @@
         <content contentuid="h00000021g0000g4000g8000g000000000004" version="1">You can use Hot Hand.</content>
         <content contentuid="h00000021g0000g4000g8000g000000000005" version="1">Your next firearm attack scores a Critical Hit on an 18-20.</content>
         <content contentuid="h00000022g0000g4000g8000g000000000001" version="1">Double or Nothing</content>
-        <content contentuid="h00000022g0000g4000g8000g000000000002" version="1">Spend 2 grit and roll a d20 as you fire. On 11 or higher the shot deals double weapon damage. Otherwise the firearm misfires.</content>
+        <content contentuid="h00000022g0000g4000g8000g000000000002" version="1">When you hit with a firearm attack, use your reaction and spend 2 grit to roll a d20. On 11 or higher the shot deals its weapon damage again. Otherwise the firearm misfires.</content>
         <content contentuid="h00000023g0000g4000g8000g000000000001" version="1">Quick on the Draw</content>
         <content contentuid="h00000023g0000g4000g8000g000000000002" version="1">When an enemy within 9m starts an attack, spend your reaction and 2 grit to shoot it first with your loaded firearm.</content>
         <content contentuid="h00000024g0000g4000g8000g000000000001" version="1">Dead Man's Hand</content>
-        <content contentuid="h00000024g0000g4000g8000g000000000002" version="1">While you are below 25% of your hit points, spend 3 grit: your next firearm attack this turn is a Critical Hit if it hits. Once per turn.</content>
+        <content contentuid="h00000024g0000g4000g8000g000000000002" version="1">While you are below 25% of your hit points, spend 3 grit: your next firearm attack before the end of your next turn is a Critical Hit if it hits. Once per turn.</content>
         <content contentuid="h00000024g0000g4000g8000g000000000003" version="1">Your next firearm hit is a Critical Hit.</content>
         <content contentuid="h00000025g0000g4000g8000g000000000001" version="1">Last Stand</content>
         <content contentuid="h00000025g0000g4000g8000g000000000002" version="1">Spend 3 grit to make a last stand for 2 turns. The first blow that would kill you leaves you alive instead, and every creature you kill restores 1 grit. Once per long rest.</content>
@@ -644,15 +643,15 @@
         <content contentuid="h30000040g0000g4000g8000g000000000001" version="1">Sorrowful Lash</content>
         <content contentuid="h30000040g0000g4000g8000g000000000002" version="1">As a bonus action, fire one blunderbuss shot that pulls a Large or smaller target toward you. Once per turn; costs one bullet.</content>
         <content contentuid="h30000041g0000g4000g8000g000000000001" version="1">Poison Mist Scattershot</content>
-        <content contentuid="h30000041g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone, adding Poison damage equal to your proficiency bonus and creating a Poison cloud. Costs one bullet.</content>
+        <content contentuid="h30000041g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone, adding Poison damage equal to your proficiency bonus and creating a Poison cloud.</content>
         <content contentuid="h30000042g0000g4000g8000g000000000001" version="1">Undead Bane</content>
         <content contentuid="h30000042g0000g4000g8000g000000000002" version="1">Your blunderbuss attacks deal an extra 1d6 Bludgeoning damage to Undead and Fiends.</content>
         <content contentuid="h30000043g0000g4000g8000g000000000001" version="1">Blooded</content>
         <content contentuid="h30000043g0000g4000g8000g000000000002" version="1">Your blunderbuss attacks deal an extra 1d4 Bludgeoning damage to targets while you are at or below half hit points.</content>
         <content contentuid="h30000044g0000g4000g8000g000000000001" version="1">Gargantuan Scattershot</content>
-        <content contentuid="h30000044g0000g4000g8000g000000000002" version="1">Blast a 20-foot cone, dealing firearm damage and an extra 1d6 Bludgeoning damage to each target. Costs one bullet.</content>
+        <content contentuid="h30000044g0000g4000g8000g000000000002" version="1">Blast a 20-foot cone, dealing firearm damage and an extra 1d6 Bludgeoning damage.</content>
         <content contentuid="h30000045g0000g4000g8000g000000000001" version="1">Thunderous Scattershot</content>
-        <content contentuid="h30000045g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone. While you are Drunk, each target also takes 1d4 Thunder damage. Costs one bullet.</content>
+        <content contentuid="h30000045g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone. While you are Drunk, each target also takes 1d4 Thunder damage.</content>
         <content contentuid="h30000046g0000g4000g8000g000000000001" version="1">Punch-Drunk</content>
         <content contentuid="h30000046g0000g4000g8000g000000000002" version="1">While you are Drunk, your firearm attacks have Advantage.</content>
         <content contentuid="h30000047g0000g4000g8000g000000000001" version="1">Unseen Menace</content>
@@ -742,4 +741,33 @@
         <content contentuid="h30000055g0000g4000g8000g000000000002" version="1">Reroll up to two weapon damage dice on a ranged weapon attack.</content>
         <content contentuid="h30000056g0000g4000g8000g000000000001" version="1">Soulbreaker Psionics</content>
         <content contentuid="h30000056g0000g4000g8000g000000000002" version="1">While wielded by a Githyanki, your ranged weapon attacks deal an extra 1d4 Psychic damage.</content>
+        <content contentuid="h35161ff8g5952g5527g927eg2e792bf91519" version="1">Infused Rounds: Fire</content>
+        <content contentuid="hc62f048cg330ag5adeg8562g7b5beddc81de" version="1">Infuse your firearm rounds with Fire for 10 turns. Your firearm attacks deal an extra 1d4 Fire damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h4d4a62efg1664g5149gbcd3gf057859db462" version="1">Infused Rounds: Thunder</content>
+        <content contentuid="h438a6f05g6a9eg5899g9d0dg287367953e37" version="1">Infuse your firearm rounds with Thunder for 10 turns. Your firearm attacks deal an extra 1d4 Thunder damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h1118e0e6g5270g5c02g97a0gc9beb4a92a2a" version="1">Infused Rounds: Lightning</content>
+        <content contentuid="h1df96069gd4dcg541fga392g09b012679503" version="1">Infuse your firearm rounds with Lightning for 10 turns. Your firearm attacks deal an extra 1d4 Lightning damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="ha0e91155gb042g5b0ag907egf7d6600d1245" version="1">Infused Rounds: Acid</content>
+        <content contentuid="h4869b7a6gdbcdg5ad3g8028gce8117ab974f" version="1">Infuse your firearm rounds with Acid for 10 turns. Your firearm attacks deal an extra 1d4 Acid damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="hdca73009gc5f7g55d6gabe0g1cd1f6ef2b6b" version="1">Infused Rounds: Cold</content>
+        <content contentuid="h6d912303g4282g536bg815dg430e1e0781c5" version="1">Infuse your firearm rounds with Cold for 10 turns. Your firearm attacks deal an extra 1d4 Cold damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="hec2b1884g2060g540bgbd08gb57a08f34c5f" version="1">Infused Rounds: Poison</content>
+        <content contentuid="h6ea97210g98c6g5c5egaf13g6f38dcda48ab" version="1">Infuse your firearm rounds with Poison for 10 turns. Your firearm attacks deal an extra 1d4 Poison damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h4b45172bg0410g5e41gadf6g2a0f4f77c507" version="1">Infused Rounds: Force</content>
+        <content contentuid="h4ab030e7g5681g5891g8864g4cac054a0cf6" version="1">Requires Improved Infused Rounds. Infuse your firearm rounds with Force for 10 turns. Your firearm attacks deal an extra 1d4 Force damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h597bebc5g325bg5628g9b09g64b4147d7c4d" version="1">Infused Rounds: Radiant</content>
+        <content contentuid="h04a4ff9cg639bg5c6fgac9fgaa464f593bfa" version="1">Requires Mastered Infused Rounds. Infuse your firearm rounds with Radiant for 10 turns. Your firearm attacks deal an extra 1d4 Radiant damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h080f3be9g2ab1g555egb4d7g744d7d52af24" version="1">Infused Rounds: Necrotic</content>
+        <content contentuid="hf27018a1g0fc9g58d7gbc01g708f867ff04d" version="1">Requires Mastered Infused Rounds. Infuse your firearm rounds with Necrotic for 10 turns. Your firearm attacks deal an extra 1d4 Necrotic damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h16b307cagaef0g5843g97b5g4bdf0dee6380" version="1">Infused Rounds: Unstable</content>
+        <content contentuid="h815414fegecb9g5ecdg8a56g3c7fee420aa2" version="1">Firearm attacks deal an extra 1d4 Fire damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="hf1dcff8bg78beg5ff9gab6eg8c50924ec8c9" version="1">Firearm attacks deal an extra 1d4 Thunder damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="he8554f1bg6290g569fg9a94gf24c6dc4646a" version="1">Firearm attacks deal an extra 1d4 Lightning damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h2ed3281cg1bdeg58d7g839cg6e976e587317" version="1">Firearm attacks deal an extra 1d4 Acid damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h0fdf04a4g4b52g5bb5g8244g01157df2a312" version="1">Firearm attacks deal an extra 1d4 Cold damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h06f4c4e4gae33g57f0g9c4fg07a4351d8346" version="1">Firearm attacks deal an extra 1d4 Poison damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h36fbb006g9d47g5b32gabfag7aa4e4c7d61d" version="1">Firearm attacks deal an extra 1d4 Force damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h8002c15cg70fcg50a9gacaag0935898a2fd4" version="1">Firearm attacks deal an extra 1d4 Radiant damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h98cd80c2g8a53g5549ga7feg2cb202c59869" version="1">Firearm attacks deal an extra 1d4 Necrotic damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h6c13fa32g88aeg5c1bg9533gb456d7c045e8" version="1">Infused rounds deal 5d4 damage of their element. Each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
 </contentList>

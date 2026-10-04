@@ -87,7 +87,7 @@ def validation_errors(
             for expression in UNSUPPORTED_EXPRESSIONS:
                 if expression in value:
                     errors.append(f'{entry.name}: unsupported/unbundled expression {expression} in {key}')
-            for reference in LOCAL_REFERENCE.findall(value) if key != 'Icon' else ():
+            for reference in LOCAL_REFERENCE.findall(value) if key not in {'Icon', 'StackId'} else ():
                 if reference not in entries:
                     errors.append(f'{entry.name}: missing local stat reference {reference} in {key}')
             if key in {'SpellProperties', 'SpellSuccess', 'StatsFunctors'}:

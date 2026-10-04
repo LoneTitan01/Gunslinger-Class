@@ -1,9 +1,12 @@
-"""Export a class emblem master PNG to the DDS files BG3 reads for class icons.
+"""Export a class emblem master PNG to the textures BG3 reads for class icons.
 
 BG3 looks up class icons by the ClassDescription ``Name``:
-  Public/Game/GUI/Assets/ClassIcons/<Name>.DDS         300x300 (level-up / character sheet)
-  Public/Game/GUI/Assets/ClassIcons/hotbar/<Name>.DDS  140x140 (hotbar class/spellbook button)
-Both are DXT5 (BC3) with a full mip chain, matching vanilla and other class mods.
+  Public/Game/GUI/Assets/ClassIcons/<Name>.DDS/.png         300x300 (level-up / character sheet)
+  Public/Game/GUI/Assets/ClassIcons/hotbar/<Name>.DDS/.png  140x140 (hotbar class/spellbook button)
+  Public/Game/GUI/Assets/Class/ico_class_m_<name>.DDS/.png  72x72 (inventory / party class badge)
+The ClassIcons DDS files are DXT5 (BC3) with a full mip chain; the small badge has a single
+level. The UI resolves ``.png`` paths, so a PNG copy ships next to every DDS, matching the
+Artificer class mod.
 """
 
 from __future__ import annotations
@@ -23,6 +26,12 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 CLASS_ICONS = ROOT / 'GunslingerClass' / 'Public' / 'Game' / 'GUI' / 'Assets' / 'ClassIcons'
 SIZES = {'': 300, 'hotbar': 140}
+BADGE_FOLDER = 'Class'
+BADGE_SIZE = 72
+
+
+def badge_name(name: str) -> str:
+    return f'ico_class_m_{name.lower()}'
 
 DDSD_CAPS, DDSD_HEIGHT, DDSD_WIDTH, DDSD_PIXELFORMAT = 0x1, 0x2, 0x4, 0x1000
 DDSD_MIPMAPCOUNT, DDSD_LINEARSIZE = 0x20000, 0x80000
@@ -61,13 +70,21 @@ def dds_header(size: int, mip_count: int) -> bytes:
     return b'DDS ' + header + b'\0' * 44 + pixel_format + caps + b'\0' * 4
 
 
-def encode_dds(master: 'Image.Image', size: int) -> bytes:
-    sizes = mip_sizes(size)
+def encode_dds(master: 'Image.Image', size: int, mipmaps: bool = True) -> bytes:
+    sizes = mip_sizes(size) if mipmaps else [size]
     levels = [dxt5_payload(master.resize((edge, edge), Image.Resampling.LANCZOS)) for edge in sizes]
     return dds_header(size, len(sizes)) + b''.join(levels)
 
 
-def export(master_path: Path, name: str, destination: Path) -> list[Path]:
+def write_texture(master: 'Image.Image', target: Path, size: int, mipmaps: bool = True) -> list[Path]:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(encode_dds(master, size, mipmaps))
+    png_target = target.with_suffix('.png')
+    master.resize((size, size), Image.Resampling.LANCZOS).save(png_target, format='PNG')
+    return [target, png_target]
+
+
+def export(master_path: Path, name: str, destination: Path, badge: bool = True) -> list[Path]:
     if Image is None:
         raise SystemExit('Pillow is required: python -m pip install --user Pillow')
     with Image.open(master_path) as opened:
@@ -76,10 +93,10 @@ def export(master_path: Path, name: str, destination: Path) -> list[Path]:
         raise SystemExit(f'Master must be square, got {master.size}')
     written = []
     for folder, size in SIZES.items():
-        target = destination / folder / f'{name}.DDS'
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(encode_dds(master, size))
-        written.append(target)
+        written += write_texture(master, destination / folder / f'{name}.DDS', size)
+    if badge:
+        target = destination.parent / BADGE_FOLDER / f'{badge_name(name)}.DDS'
+        written += write_texture(master, target, BADGE_SIZE, mipmaps=False)
     return written
 
 

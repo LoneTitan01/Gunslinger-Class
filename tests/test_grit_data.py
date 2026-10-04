@@ -19,6 +19,42 @@ class GritDataTests(unittest.TestCase):
     def fields(self, name: str) -> dict[str, str]:
         return resolve_spell(name, self.entries, {})[0]
 
+    def test_class_hit_points_match_d8_progression(self) -> None:
+        # The engine adds the Constitution modifier to BaseHp and to each level's HpPerLevel.
+        descriptions = ET.parse(PUBLIC / 'ClassDescriptions' / 'ClassDescriptions.lsx')
+        base_class = next(
+            node for node in descriptions.findall('.//node[@id="ClassDescription"]')
+            if node.find('attribute[@id="ParentGuid"]') is None
+        )
+        attributes = {attribute.get('id'): attribute.get('value') for attribute in base_class.findall('attribute')}
+        self.assertEqual(attributes['BaseHp'], '8')
+        self.assertEqual(attributes['HpPerLevel'], '5')
+
+    def test_level_up_grit_choices_share_unlocked_ability_descriptors(self) -> None:
+        choices = set()
+        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
+            attributes = {attribute.get('id'): attribute.get('value') for attribute in node.findall('attribute')}
+            if 'Grit Abilities' in attributes.get('Name', ''):
+                choices.update(attributes['Passives'].split(','))
+        self.assertTrue(choices)
+        checked = set()
+        for name in sorted(choices):
+            passive = self.fields(name)
+            targets = re.findall(r'Unlock(?:Spell|Interrupt)\(([^,)]+)', passive.get('Boosts', ''))
+            if not targets:
+                self.assertEqual(name, 'GSL_Desperado_CheatDeathsOdds')
+                self.assertTrue(passive.get('Description'))
+                continue
+            for target in targets:
+                ability = self.fields(target)
+                with self.subTest(choice=name, ability=target):
+                    for key in ('DisplayName', 'Description', 'Icon'):
+                        self.assertTrue(ability.get(key), key)
+                        self.assertEqual(passive.get(key), ability[key], key)
+                    self.assertEqual(passive.get('DescriptionParams', ''), ability.get('DescriptionParams', ''))
+                checked.add(name)
+        self.assertEqual(checked, choices - {'GSL_Desperado_CheatDeathsOdds'})
+
     def test_variable_bite_the_bullet_choices(self) -> None:
         parent = self.fields('Shout_GSL_BiteTheBullet')
         self.assertEqual(parent['UseCosts'], '')
@@ -32,21 +68,96 @@ class GritDataTests(unittest.TestCase):
             self.assertEqual(self.fields(status)['StackId'], 'TEMPORARY_HP')
 
     def test_merciless_is_an_attack_not_an_action_spent_on_a_buff(self) -> None:
-        for weapon, resource in AMMO.items():
-            for grit in range(1, 4):
-                fields = self.fields(f'Projectile_GSL_MercilessShot_{weapon}_{grit}')
-                self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:{grit};{resource}:1')
-                self.assertEqual(fields['SpellSuccess'],
-                                 f'DealDamage(MainRangedWeapon*{(1 + grit / 2):g},MainRangedWeaponDamageType);ExecuteWeaponFunctors(MainHand)')
-                self.assertNotIn('ApplyStatus', fields['SpellProperties'])
-                self.assertIn(f"GSL_{weapon}_MainHand", fields['RequirementConditions'])
+        options = [f'Projectile_GSL_MercilessShot_{grit}' for grit in range(1, 4)]
+        parent = self.fields('Shout_GSL_MercilessShot')
+        self.assertIn('IsLinkedSpellContainer', parent['SpellFlags'])
+        self.assertEqual(parent['ContainerSpells'].split(';'), options)
+        for grit, name in enumerate(options, 1):
+            fields = self.fields(name)
+            self.assertEqual(fields['SpellContainerID'], 'Shout_GSL_MercilessShot')
+            self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:{grit}')
+            self.assertEqual(fields['DisplayName'], f'h10000002g0000g4000g8000g00000000000{grit};1')
+            self.assertEqual(fields['SpellSuccess'],
+                             f'DealDamage(MainRangedWeapon*{(1 + grit / 2):g},MainRangedWeaponDamageType);ExecuteWeaponFunctors(MainHand)')
+            self.assertNotIn('ApplyStatus', fields['SpellProperties'])
+            self.assertIn('GSL_FIREARM_MAIN_DISABLED', fields['RequirementConditions'])
+            for weapon, resource in AMMO.items():
+                self.assertIn(f"(HasPassive('GSL_{weapon}_MainHand',context.Source) and "
+                              f"HasActionResource('{resource}',1,0))", fields['RequirementConditions'])
+                self.assertIn(f"IF(HasPassive('GSL_{weapon}_MainHand',context.Source)):"
+                              f"UseActionResource(SELF,{resource},1,0)", fields['SpellProperties'])
 
-    def test_rapid_shot_fires_and_pays_bonus_action_grit_and_ammo_once(self) -> None:
-        for weapon, resource in AMMO.items():
-            fields = self.fields(f'Projectile_GSL_RapidShot_{weapon}')
-            self.assertEqual(fields['UseCosts'], f'BonusActionPoint:1;GunslingerGrit:1;{resource}:1')
-            self.assertIn('DealDamage(', fields['SpellSuccess'])
-            self.assertNotIn('PiercingShot', str(fields))
+    def test_single_grit_shots_are_one_any_gun_spell_without_a_group(self) -> None:
+        shots = {
+            'RapidShot': ('GSL_RapidShotUnlock', 'BonusActionPoint:1;GunslingerGrit:1', 1),
+            'DoubleLoad': ('GSL_Desperado_DoubleLoadUnlock', 'ActionPoint:1;GunslingerGrit:1', 2),
+            'DisarmingShot': ('GSL_DisarmingShotUnlock', 'ActionPoint:1;GunslingerGrit:1', 1),
+            'WingingShot': ('GSL_WingingShotUnlock', 'ActionPoint:1;GunslingerGrit:1', 1),
+            'ForcefulShot': ('GSL_ForcefulShotUnlock', 'ActionPoint:1;GunslingerGrit:1', 1),
+            'BullyingShot': ('GSL_BullyingShotUnlock', 'ActionPoint:1;GunslingerGrit:1', 1),
+            'DazingShot': ('GSL_DazingShotUnlock', 'ActionPoint:1;GunslingerGrit:2', 1),
+            'Ricochet': ('GSL_RicochetUnlock', 'ActionPoint:1;GunslingerGrit:3', 1),
+            'FinalJudgement': ('GSL_FinalJudgementUnlock', 'ActionPoint:1;GunslingerGrit:4', 1),
+        }
+        for shot, (unlock, costs, ammo) in shots.items():
+            name = f'Projectile_GSL_{shot}'
+            with self.subTest(shot=shot):
+                self.assertNotIn(f'Shout_GSL_{shot}', self.entries)
+                for weapon in AMMO:
+                    self.assertNotIn(f'{name}_{weapon}', self.entries)
+                self.assertEqual(self.fields(unlock)['Boosts'], f'UnlockSpell({name})')
+                fields = self.fields(name)
+                self.assertNotIn('SpellContainerID', fields)
+                self.assertEqual(fields['UseCosts'], costs)
+                self.assertEqual(fields['TooltipUseCosts'], costs)
+                self.assertIn('DealDamage(', fields['SpellSuccess'])
+                self.assertIn('ExecuteWeaponFunctors(MainHand)', fields['SpellSuccess'])
+                self.assertIn('GSL_FIREARM_MAIN_DISABLED', fields['RequirementConditions'])
+                for weapon, resource in AMMO.items():
+                    self.assertIn(f"(HasPassive('GSL_{weapon}_MainHand',context.Source) and "
+                                  f"HasActionResource('{resource}',{ammo},0))", fields['RequirementConditions'])
+                    self.assertIn(f"IF(HasPassive('GSL_{weapon}_MainHand',context.Source)):"
+                                  f"UseActionResource(SELF,{resource},{ammo},0)", fields['SpellProperties'])
+        self.assertNotIn('PiercingShot', str(self.fields('Projectile_GSL_RapidShot')))
+
+    def test_double_or_nothing_is_a_reaction_to_a_firearm_hit(self) -> None:
+        self.assertEqual(self.fields('GSL_Desperado_DoubleOrNothingUnlock')['Boosts'],
+                         'UnlockInterrupt(Interrupt_GSL_DoubleOrNothing)')
+        self.assertNotIn('Shout_GSL_DoubleOrNothing', self.entries)
+        interrupt = self.fields('Interrupt_GSL_DoubleOrNothing')
+        self.assertEqual(interrupt['InterruptContext'], 'OnCastHit')
+        self.assertEqual(interrupt['Cost'], 'ReactionActionPoint:1;GunslingerGrit:2')
+        for condition in ('IsAbleToReact(context.Observer)', 'Self(context.Source,context.Observer)',
+                          'IsWeaponAttack()', 'HasDamageEffectFlag(DamageFlags.Hit)',
+                          "not SpellId('Projectile_GSL_DoubleOrNothing')",
+                          "not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Observer)"):
+            self.assertIn(condition, interrupt['Conditions'])
+        self.assertIn('UseSpell(Projectile_GSL_DoubleOrNothing,true,true,true)', interrupt['Properties'])
+        shot = self.fields('Projectile_GSL_DoubleOrNothing')
+        self.assertEqual(shot['SpellRoll'], '')
+        self.assertEqual(shot['UseCosts'], '')
+        self.assertNotIn('UseActionResource', shot['SpellProperties'])
+        self.assertEqual(shot['SpellSuccess'], "IF(HasStatus('GSL_DOUBLE_OR_NOTHING_WIN',context.Source)):"
+                                               'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)')
+
+    def test_smart_shooting_adds_intelligence_to_firearm_attack_and_damage(self) -> None:
+        boosts = self.fields('GSL_ArcaneGunsman_SmartShooting')['Boosts'].split(';')
+        firearm = "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())):"
+        self.assertEqual(boosts, [firearm + 'RollBonus(Attack,IntelligenceModifier)',
+                                  firearm + 'DamageBonus(max(0,IntelligenceModifier))'])
+
+    def test_base_firearm_attacks_are_granted_once_by_attack_override(self) -> None:
+        for name, entry in self.entries.items():
+            for key in ('BoostsOnEquipMainHand', 'BoostsOnEquipOffHand', 'Boosts', 'DefaultBoosts'):
+                with self.subTest(entry=name, field=key):
+                    self.assertIsNone(re.search(r'UnlockSpell\(GSL_(?:MainHand|OffHand)_\w+_attack\)',
+                                                entry.fields.get(key, '')))
+        overrides = {'GSL_Flintlock_MainHand': 'GSL_MainHand_Flintlock_attack,Projectile_MainHandAttack',
+                     'GSL_Flintlock_OffHand': 'GSL_OffHand_Flintlock_attack,Projectile_OffhandAttack',
+                     'GSL_Blunderbuss_MainHand': 'GSL_MainHand_Blunderbuss_attack,Projectile_MainHandAttack',
+                     'GSL_Musket_MainHand': 'GSL_MainHand_Musket_attack,Projectile_MainHandAttack'}
+        for passive, override in overrides.items():
+            self.assertIn(f'AttackSpellOverride({override})', self.fields(passive)['Boosts'])
 
     def test_line_em_up_uses_half_weapon_damage_and_quarter_on_save(self) -> None:
         fields = self.fields('Zone_GSL_LineEmUp')
@@ -67,11 +178,9 @@ class GritDataTests(unittest.TestCase):
                 self.assertNotIn('ActionResource(ActionPoint', self.fields(f'GSL_FANNING_FIRE_{grit}')['Boosts'])
 
     def test_double_load_two_bullets_and_multiplier(self) -> None:
-        for weapon, resource in AMMO.items():
-            fields = self.fields(f'Projectile_GSL_DoubleLoad_{weapon}')
-            self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:1;{resource}:2')
-            self.assertIn('MainRangedWeapon*1.5', fields['SpellSuccess'])
-            self.assertIn('GSL_DOUBLE_LOAD', fields['SpellProperties'])
+        fields = self.fields('Projectile_GSL_DoubleLoad')
+        self.assertIn('MainRangedWeapon*1.5', fields['SpellSuccess'])
+        self.assertIn('ApplyStatus(SELF,GSL_DOUBLE_LOAD,100,1)', fields['SpellProperties'])
 
     def test_repair_choices_have_rarity_dc_and_hand_specific_success(self) -> None:
         parent = self.fields('Shout_GSL_RapidRepair')
@@ -281,6 +390,30 @@ class GritDataTests(unittest.TestCase):
         self.assertNotIn('GSL_Desperado_SecondAttack', self.entries)
         self.assertIn('OncePerTurn', self.fields('GSL_Marksman_LongShot')['Properties'].split(';'))
 
+    def test_lock_on_is_a_concentration_mark_that_reapplies_on_kill(self) -> None:
+        self.assertEqual(self.fields('GSL_Marksman_LockOn')['Boosts'], 'UnlockSpell(Target_GSL_LockOn)')
+        spell = self.fields('Target_GSL_LockOn')
+        self.assertEqual(spell['UseCosts'], 'BonusActionPoint:1')
+        self.assertEqual(spell['Cooldown'], 'OncePerShortRest')
+        self.assertIn('IsConcentration', spell['SpellFlags'].split(';'))
+        self.assertEqual(spell['ConcentrationSpellID'], 'Target_GSL_LockOn_Reapply')
+        self.assertIn('ApplyStatus(GSL_LOCK_ON,100,-1)', spell['SpellProperties'])
+        self.assertIn('ApplyStatus(SELF,GSL_LOCK_ON_OWNER,100,-1)', spell['SpellProperties'])
+        mark = self.fields('GSL_LOCK_ON')
+        self.assertIn('IF(RemoveCause(StatusRemoveCause.Death)):ApplyStatus(SELF,GSL_LOCK_ON_REAPPLY', mark['OnRemoveFunctors'])
+        self.assertEqual(self.fields('GSL_LOCK_ON_REAPPLY')['Boosts'], 'UnlockSpell(Target_GSL_LockOn_Reapply)')
+        reapply = self.fields('Target_GSL_LockOn_Reapply')
+        self.assertEqual(reapply['UseCosts'], 'BonusActionPoint:1')
+        self.assertEqual(reapply['Cooldown'], '')
+        self.assertEqual(reapply['ConcentrationSpellID'], '')
+        self.assertEqual(reapply['FollowUpOriginalSpell'], 'Target_GSL_LockOn')
+        self.assertNotIn('IsConcentration', reapply['SpellFlags'].split(';'))
+        self.assertIn('RemoveStatus(SELF,GSL_LOCK_ON_REAPPLY)', reapply['SpellProperties'])
+        self.assertEqual(self.fields('GSL_LOCK_ON_OWNER')['Passives'], 'GSL_LockOn_Damage')
+        damage = self.fields('GSL_LockOn_Damage')
+        self.assertIn("HasStatus('GSL_LOCK_ON',context.Target,context.Source)", damage['Conditions'])
+        self.assertEqual(damage['StatsFunctors'], 'DealDamage(ProficiencyBonus,Piercing)')
+
     def test_tinkerer_is_a_level_four_class_feature_with_a_second_mod_at_ten(self) -> None:
         rows = []
         for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
@@ -373,6 +506,38 @@ class GritDataTests(unittest.TestCase):
         passive = self.fields('GSL_FightingStyle_CloseQuarters')
         self.assertEqual(passive['Boosts'], 'RollBonus(RangedWeaponAttack,1);RollBonus(RangedOffHandWeaponAttack,1);IgnorePointBlankDisadvantage(Ammunition)')
         self.assertEqual(passive['Icon'], 'GSL_FightingStyle_CloseQuarters')
+
+    def test_close_quarters_gunner_removes_point_blank_disadvantage(self) -> None:
+        feats = {}
+        for node in ET.parse(PUBLIC / 'Feats' / 'Feats.lsx').findall('.//node[@id="Feat"]'):
+            row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            feats[row['Name']] = row['PassivesAdded'].split(';')
+        self.assertEqual(feats['GSL_Feat_CloseQuartersGunner'], [
+            'GSL_Feat_CloseQuartersGunner_PointBlank', 'GSL_Feat_CloseQuartersGunner_Dexterity',
+        ])
+        passive = self.fields('GSL_Feat_CloseQuartersGunner_PointBlank')
+        self.assertEqual(passive['Boosts'], 'IgnorePointBlankDisadvantage(Ammunition)')
+        self.assertNotIn('StatsFunctors', passive)
+        self.assertNotIn('GSL_Feat_CloseQuartersGunner_Push', self.entries)
+
+    def test_next_firearm_attack_buffs_last_until_end_of_next_turn(self) -> None:
+        appliers = {
+            'Shout_GSL_StableShot': ['GSL_STABLE_SHOT'],
+            'Shout_GSL_Headshot': ['GSL_HEADSHOT'],
+            'Shout_GSL_AnteUp': ['GSL_ANTE_UP', 'GSL_ANTE_UP_STAKE'],
+            'Shout_GSL_HotHand': ['GSL_HOT_HAND'],
+            'Shout_GSL_DeadMansHand': ['GSL_DEAD_MANS_HAND'],
+            'GSL_Feat_SpellshotAdept_Rider': ['GSL_SPELLSHOT_CHARGED'],
+        }
+        for source, statuses in appliers.items():
+            fields = self.fields(source)
+            functors = fields.get('SpellProperties') or fields['StatsFunctors']
+            for status in statuses:
+                with self.subTest(status=status):
+                    self.assertIn(f'ApplyStatus(SELF,{status},100,2)', functors)
+                    self.assertNotIn('OnTurn', self.fields(status).get('RemoveEvents', ''))
+        for status in ('GSL_STABLE_SHOT', 'GSL_HEADSHOT', 'GSL_ANTE_UP', 'GSL_HOT_HAND', 'GSL_DEAD_MANS_HAND', 'GSL_SPELLSHOT_CHARGED'):
+            self.assertEqual(self.fields(status)['RemoveEvents'], 'OnAttack')
 
 
 if __name__ == '__main__':

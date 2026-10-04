@@ -22,7 +22,7 @@
 							</node>
 							<node id="Feat">
 								<attribute id="Name" type="FixedString" value="GSL_Feat_CloseQuartersGunner"/>
-								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_CloseQuartersGunner_Push;GSL_Feat_CloseQuartersGunner_Dexterity"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_CloseQuartersGunner_PointBlank;GSL_Feat_CloseQuartersGunner_Dexterity"/>
 								<attribute id="UUID" type="guid" value="d58674cf-121e-44a9-a802-ba3077d1c5f4"/>
 							</node>
 							<node id="Feat">

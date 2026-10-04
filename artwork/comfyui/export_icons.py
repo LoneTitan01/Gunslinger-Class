@@ -11,6 +11,9 @@ and writes, matching the layouts of the existing placeholder files:
     Public/GunslingerClass/Assets/Textures/Icons/Icons_GunslingerAbilities.dds  2048x2048 DXT5
 * Action resources (Available/Highlight/Used/Missing in four GUI surfaces):
     Mods/GunslingerClass/GUI/<surface>/[<State>/]<Resource>.DDS     48x48 DXT5
+* Character creation / level-up resources:
+    Mods/GunslingerClass/GUI/{Assets,AssetsLowRes}/CC/icons_resources/<Resource>.DDS
+    128x128 DXT5, with PNG counterparts and GUI texture metadata.
 * Class emblems through export_class_icons.py.
 
 Atlas UVs and the TextureBank are not modified.
@@ -60,7 +63,10 @@ RESOURCE_SURFACES = (
 )
 RESOURCE_STATES = ('', 'Highlight', 'Used', 'Missing')
 RESOURCE_SIZE = 48
+LEVEL_UP_RESOURCE_SURFACES = ('Assets/CC/icons_resources', 'AssetsLowRes/CC/icons_resources')
+LEVEL_UP_RESOURCE_SIZE = 128
 CLASSES = ('Gunslinger',)
+SUBCLASSES = ('Marksman', 'Desperado', 'ArcaneGunsman')
 
 
 def dds_header(width: int, height: int, mip_count: int) -> bytes:
@@ -164,21 +170,68 @@ def export_abilities(generated: Path) -> list[Path]:
 
 def export_resources(generated: Path) -> list[Path]:
     written = []
+    metadata_entries = []
+
+    def write_icon(relative: Path, image: 'Image.Image') -> None:
+        target = RESOURCE_GUI / relative.with_suffix('.DDS')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(encode(image))
+        png_target = target.with_suffix('.png')
+        image.save(png_target, format='PNG')
+        written.extend((target, png_target))
+        metadata_entries.append((relative, image.width, image.height))
+
     for name in RESOURCES:
         glyph = load(generated / 'resource' / f'{name}.png', RESOURCE_SIZE, generated / 'masters' / f'{name}.png')
         for state in RESOURCE_STATES:
-            data = encode(resource_state(glyph, state))
+            image = resource_state(glyph, state)
             for surface in RESOURCE_SURFACES:
-                target = RESOURCE_GUI.joinpath(*surface.split('/'), *([state] if state else []), f'{name}.DDS')
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(data)
-                written.append(target)
+                relative = Path(surface, *([state] if state else []))
+                write_icon(relative / f'{name}.png', image)
+
+        level_up = load(generated / 'masters' / f'{name}.png', LEVEL_UP_RESOURCE_SIZE,
+                        generated / 'resource' / f'{name}.png')
+        for surface in LEVEL_UP_RESOURCE_SURFACES:
+            write_icon(Path(surface) / f'{name}.png', level_up)
+
+    save_gui_metadata(RESOURCE_GUI / 'metadata.lsx', metadata_entries)
     return written
+
+
+def save_gui_metadata(path: Path, entries: list[tuple[Path, int, int]]) -> None:
+    root = ET.Element('save')
+    ET.SubElement(root, 'version', {
+        'major': '4', 'minor': '7', 'revision': '1', 'build': '3',
+        'lslib_meta': 'v1,bswap_guids,lsf_keys_adjacency',
+    })
+    region = ET.SubElement(root, 'region', {'id': 'config'})
+    config = ET.SubElement(region, 'node', {'id': 'config'})
+    children = ET.SubElement(config, 'children')
+    entry_list = ET.SubElement(children, 'node', {'id': 'entries'})
+    entry_children = ET.SubElement(entry_list, 'children')
+    for key, width, height in entries:
+        entry = ET.SubElement(entry_children, 'node', {'id': 'Object'})
+        ET.SubElement(entry, 'attribute', {
+            'id': 'MapKey', 'type': 'FixedString', 'value': key.as_posix(),
+        })
+        entry_data = ET.SubElement(entry, 'children')
+        values = ET.SubElement(entry_data, 'node', {'id': 'entries'})
+        for attribute, value in (('h', height), ('mipcount', 1), ('w', width)):
+            ET.SubElement(values, 'attribute', {
+                'id': attribute, 'type': 'int8' if attribute == 'mipcount' else 'int16',
+                'value': str(value),
+            })
+
+    ET.indent(root, space='    ')
+    path.parent.mkdir(parents=True, exist_ok=True)
+    ET.ElementTree(root).write(path, encoding='utf-8', xml_declaration=True)
 
 
 def export_classes(generated: Path) -> list[Path]:
     written = []
-    for name in CLASSES:
+    # Each subclass needs its own icons and inventory badge: once a subclass is chosen,
+    # the UI resolves the class icon by the subclass Name.
+    for name in (*CLASSES, *SUBCLASSES):
         written += export_class_icon(generated / 'masters' / f'{name}.png', name, CLASS_ICONS)
     return written
 
@@ -196,7 +249,7 @@ def main(argv: list[str] | None = None) -> int:
     groups = GROUPS if args.group == 'all' else {args.group: GROUPS[args.group]}
     for group, exporter in groups.items():
         paths = exporter(args.generated)
-        print(f'{group}: wrote {len(paths)} DDS files')
+        print(f'{group}: wrote {len(paths)} files')
     return 0
 
 

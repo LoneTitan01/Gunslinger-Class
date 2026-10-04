@@ -17,11 +17,11 @@ Each firearm replaces the default ranged attack with its own **Shoot Flintlock**
 
 Reload actions are granted by the equipped gun, not by Gunslinger class level:
 
-- **Primary Reload:** bonus action; appears with a main-hand flintlock, blunderbuss, or musket and refills that gun.
-- **Secondary Reload:** bonus action; appears with an offhand flintlock and refills its separate pool.
-- **Full Reload:** action; appears with two equipped flintlocks and refills both pools.
+- **Primary Reload:** bonus action, or an action if no bonus action remains; appears with a main-hand flintlock, blunderbuss, or musket and refills that gun.
+- **Secondary Reload:** bonus action, or an action if no bonus action remains; appears with an offhand flintlock and refills its separate pool.
+- **Full Reload:** action (bonus action with the Quick Reload feat, via `UnlockSpellVariant`/`ModifyUseCosts`); appears with two equipped flintlocks and refills both pools.
 
-**Scattershot** (blunderbuss only) costs an action and one blunderbuss bullet. It blasts a 10-foot cone; each creature in it makes a Dexterity saving throw (DC 8 + Dexterity modifier + proficiency bonus), taking full weapon damage on a failed save or half on a success. It appears only while a working blunderbuss is in the main hand.
+**Scattershot** (blunderbuss only) costs an action and one blunderbuss bullet. It blasts a 10-foot cone; each creature in it makes a Dexterity saving throw (DC 8 + Dexterity modifier + proficiency bonus), taking half weapon damage on a failed save and none on a success. The Poison Mist, Gargantuan and Thunderous variants follow the same rule (Poison Mist still leaves its cloud). It appears only while a working blunderbuss is in the main hand.
 
 Firearms do not grant the inherited vanilla crossbow weapon actions (Piercing Shot, Mobile Shooting, Brace). Their only equipment-granted actions are the shots, reloads, and Scattershot listed above. They are granted through the weapons' `BoostsOnEquipMainHand` / `BoostsOnEquipOffHand` (`UnlockSpell(...)`) so they are listed as actions on the weapon tooltip, like vanilla weapon actions. The off-hand flintlock grants Secondary Reload, the off-hand shot, and Full Reload; Full Reload is greyed out unless a flintlock is also in the main hand. The hidden per-hand equip passives only add the ammo pools and swap the default ranged attack for the firearm shot (`AttackSpellOverride`).
 
@@ -331,7 +331,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 | **Gunner** | Gain proficiency with firearms. Firearms are grouped under BG3's Slings weapon category. Increase Dexterity by 1. |
 | **Quick Reload** | When dual-wielding two Flintlocks, reload both as a bonus action instead of an action. Increase Dexterity by 1. |
 | **Grit Adept** | Increase your maximum grit points by 2 and choose one grit ability available to a level 3 Gunslinger. |
-| **Close-Quarters Gunner** | Blunderbuss attacks do not suffer penalties from nearby enemies. Once per turn, hitting a creature within 15 feet can push it 5 feet. Increase Dexterity by 1. |
+| **Close-Quarters Gunner** | Firearm attacks no longer have Disadvantage against targets within 5 feet. Increase Dexterity by 1. |
 | **Longarm Specialist** | Musket attacks ignore long-range penalties and gain 20 feet of normal range. Increase Dexterity by 1. |
 | **Called Shot** | Once per turn, when you hit a creature with a firearm from at least 30 feet away, choose one: reduce its movement speed by 10 feet, prevent it from making reactions, or impose Disadvantage on its next attack before the end of its next turn. Increase Dexterity by 1. |
 | **Spellshot Adept** | Your firearm attacks count as magical. Once per turn after casting a spell, your next firearm hit deals an extra 1d4 damage of the spell's elemental type. Increase Intelligence by 1. |
@@ -342,7 +342,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 - **Line 'em Up:** Spend 2 grit points to deal half damage to all enemies in a 20-foot line. Targets make a saving throw with a DC of 8 + your Dexterity modifier + your proficiency bonus, taking half damage on a successful save.
 - **Rapid Shot:** Spend 1 grit point to fire again as a bonus action.
 - **Bite the Bullet:** As a bonus action, spend up to 3 grit points to gain temporary hit points equal to the grit spent multiplied by your proficiency bonus.
-- **Shot in the Dark:** As a bonus action, spend 1 grit point to gain darkvision out to 60 feet and ignore blindness for one shot.
+- **Shot in the Dark:** As a bonus action, spend 1 grit point to gain darkvision out to 60 feet and ignore blindness for 10 turns.
 - **Rapid Repair:** Spend 1 grit point and make a Sleight of Hand check against a DC of 12 + the weapon's rarity: common (0), uncommon (1), rare (2), very rare (3), or legendary (4).
 - **Fanning Fire (level 7+):** Spend 1-3 grit points as an action to make 2-4 firearm attacks against 1 + the grit spent number of enemies. Each shot takes an attack-roll penalty equal to the grit spent: 1 grit gives two attacks at -1 each; 3 grit gives four attacks at -3 each.
 - **Disarming Shot (level 3+):** Spend 1 grit and fire; on a hit the target must pass a Strength save or drop its weapon.
@@ -364,7 +364,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 #### Desperado Grit Abilities
 
 - **Desperado's Luck (level 3+):** Once per turn, when a firearm attack would miss, spend 1 grit point to add 1d4 to the roll, potentially turning it into a hit. This interrupt does not spend a Reaction point.
-- **Ante Up (level 3+):** Bonus action, 1 grit: gain Advantage on your next firearm attack this turn; if it misses, attacks against you have Advantage until your next turn.
+- **Ante Up (level 3+):** Bonus action, 1 grit: gain Advantage on your next firearm attack before the end of your next turn; if it misses, attacks against you have Advantage until your next turn.
 - **Lucky Draw (level 3+):** Spend 1 grit to reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn.
 - **Two-Gun Tango (level 3+):** Bonus action, 1 grit and one off-hand bullet: fire your off-hand flintlock and add your Dexterity modifier to its damage.
 - **Double Load (level 5+):** Spend 1 grit point and two bullets to deal 1.5 times damage. A natural 1 destroys the weapon until a long rest restores it; it cannot be repaired by any other means. "The gun has been damaged beyond a simple field repair. Several hours at the workbench are needed for it to fire again."
@@ -374,9 +374,9 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 - **Cheat Death's Odds (level 8+, passive):** While below half your hit points, grit abilities that cost 2 or more grit refund 1 grit when used.
 - **Hot Hand (level 8+):** After a firearm hit, spend 2 grit before the end of your next turn: your next firearm attack scores a Critical Hit on an 18-20.
 - **Last Word (level 11+):** Once per long rest, when damage would reduce you to 0 HP, spend 3 grit points to stay at 1 HP using Death Ward, then immediately make one firearm attack.
-- **Double or Nothing (level 11+):** Spend 2 grit and roll a d20 as you fire. On 11 or higher the shot deals double weapon damage; otherwise the gun misfires.
+- **Double or Nothing (level 11+):** Reaction after you hit with a firearm attack: spend 2 grit and roll a d20. On 11 or higher you deal the weapon's damage again; otherwise the gun misfires.
 - **Quick on the Draw (level 11+):** Reaction, 2 grit: when an enemy within 9 m starts an attack, shoot it first.
-- **Dead Man's Hand (level 14+):** While below 25% of your hit points, spend 3 grit: your next firearm attack this turn is a Critical Hit if it hits. Once per turn.
+- **Dead Man's Hand (level 14+):** While below 25% of your hit points, spend 3 grit: your next firearm attack before the end of your next turn is a Critical Hit if it hits. Once per turn.
 - **Last Stand (level 14+):** Spend 3 grit for 2 turns: the first blow that would kill you leaves you alive instead, and each kill restores 1 grit. Once per long rest.
 - **All In (level 17+):** Spend all of your grit (3-8) and 1 bullet to fire that many shots at enemies, each at -2 to hit.
 - **Desperado's Fortune (level 17+):** Replaces Desperado's Luck: once per turn, spend 1 grit to add 1d8 to a firearm attack roll or a saving throw.
@@ -390,7 +390,7 @@ The Marksman specializes in accurate, high-range attacks that deal heavy damage.
 
 | Level | Marksman features |
 | --- | --- |
-| 3 | **Lock-on:** Add your proficiency bonus to damage against one targeted enemy. |
+| 3 | **Lock-on:** As a bonus action, once per short rest, lock on to a creature (concentration). Your firearm attacks deal extra damage equal to your proficiency bonus to it. If it dies while you concentrate, you can lock on to a new target for a bonus action without using another short rest use, like Hunter's Mark. |
 | 7 | **Long Shot:** Once per turn, deal additional damage based on the distance to your target (see range damage table below). |
 | 11 | **Stable Shot:** As a class action, sacrifice 20 feet of movement to gain advantage on your shot. |
 | 15 | **Pinpoint Accuracy:** Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more. |
@@ -443,10 +443,10 @@ The Arcane Gunsman combines firearms and magic. It can imbue shots with magical 
 
 | Level | Arcane Gunsman features |
 | --- | --- |
-| 3 | Gain Arcane Gunsman spellcasting (see spell slot table)<br>**Infused Rounds:** Spend a bonus action to shoot an elementally-infused round, dealing 1d4 elemental damage |
-| 7 | **Improved Infused Rounds:** Infused Rounds damage increases to 2d4<br>**Arcane Reload:** Your weapon reloads one bullet per round |
-| 11 | **Mastered Infused Rounds:** Infused Rounds damage increases to 3d4<br>**Smart Shooting:** Add your intelligence modifier to your to-hit |
-| 15 | **Unstable Infused Rounds:** Adds the option to use unstable infused rounds, dealing 5d4 elemental damage with a 25% chance to blow up in your face, dealing 3d4 elemental damage in a 5-foot radius centered on you. |
+| 3 | Gain Arcane Gunsman spellcasting (see spell slot table)<br>**Infused Rounds:** Spend a bonus action to infuse your rounds for 10 turns with Fire, Thunder, Lightning, Acid, Cold, or Poison; firearm attacks deal an extra 1d4 damage of that type |
+| 7 | **Improved Infused Rounds:** Infused Rounds damage increases to 2d4 and Force is added to the element choices<br>**Arcane Reload:** Your weapon reloads one bullet per round |
+| 11 | **Mastered Infused Rounds:** Infused Rounds damage increases to 3d4 and Radiant and Necrotic are added to the element choices<br>**Smart Shooting:** Passive; add your Intelligence modifier to firearm attack and damage rolls |
+| 15 | **Unstable Infused Rounds:** Adds an Unstable option to Infused Rounds: while infused, your rounds deal 5d4 of their element for 10 turns, but each firearm attack has a 25% chance to blow up in your face, dealing 3d4 Force damage in a 5-foot radius centered on you. |
 | 18 | **Spellstrike Shooter:** When you use your action to cast a spell, you can make a ranged attack as part of the same action. |
 
 **Arcane Gunsman Spell Slots**
@@ -489,7 +489,9 @@ These are thematic recommendations, not a finalized class spell list. The 5e Spe
 
 ### Grit ability visuals
 
-Grit abilities reuse base-game animations, prepare/cast effects and sounds copied from vanilla spells with similar effects. Weapon variants inherit them from their first variant.
+Grit abilities reuse base-game animations and prepare/cast effects copied from vanilla spells with similar effects. Weapon variants inherit them from their first variant. Non-projectile abilities also copy those spells' sounds; grit abilities that fire a projectile set no `CastSound`/`TargetSound`, so, like the basic firearm attack, they play the firing weapon's own sounds.
+
+Gunshots use the firing sounds from **Immersive Firearms**: the Flintlock and Musket play IF's flintlock/musket shot (`Projectiles_Grn_Impact_Bomb`), and the Blunderbuss plays IF's blunderbuss blast (`Gale_Explosion_Boom` + `ThunderousPunch`). These are all base-game sound events, so no audio files are packed. Because grit shots can be fired from any equipped gun, the sound is picked by the weapon rather than the spell. Each gun's hand passive list includes a hidden `OnCast` passive (`GSL_Firearm_ShotSound_MainHand`, `GSL_Firearm_BlunderbussSound_MainHand` or `GSL_Firearm_ShotSound_OffHand`) whose `SpellId(...)` condition lists every spell that fires that hand's gun. It covers basic attacks, grit shots, Scattershot and the other weapon zones. The passive applies a 0-turn `EFFECT` status (`GSL_FIREARM_SHOT_SOUND` / `GSL_BLUNDERBUSS_SHOT_SOUND`) whose `StatusEffect` is a sound-only effect ported from IF (`Assets/Effects/Effects_Banks/GSL_*_Shot_SoundFX.lsx`, `Content/[PAK]_GSL_Firearm_Sounds/_merged.lsx`, `MultiEffectInfos/`). IF's muzzle-flash visuals are not included. `tests/test_spell_data.py` checks that the passive spell lists match every gunshot spell.
 
 | Ability | Vanilla visual source |
 | --- | --- |
@@ -505,7 +507,7 @@ Grit abilities reuse base-game animations, prepare/cast effects and sounds copie
 | Last Word | Death Ward |
 | Stable Shot | Brace (crossbow) |
 | Headshot | Hunter's Mark |
-| Infused Rounds | Branding Smite (ranged) |
+| Infused Rounds | Divine Favor |
 | Disarming / Winging / Forceful / Bullying Shot | Disarming / Trip / Pushing / Menacing Attack (ranged) |
 | Dazing Shot | Distracting Strike (ranged) |
 | Violent Shot | Pin Down |
@@ -523,9 +525,11 @@ Unstable Backfire is an instant sub-effect with no cast animation.
 
 ### Custom icon artwork
 
-See [To-do.md](To-do.md) for the complete artwork checklist, exact export paths and formats, atlas slots, and stat consumers. All custom actions, passives and statuses now reference registered `GSL_*` ability icons. The ability atlas, tooltip/controller exports and six action-resource image sets now contain the ComfyUI-generated artwork, converted by `python artwork/comfyui/export_icons.py`. The exporter rebuilds the atlas from each key's UV cell and derives the Highlight, Used and Missing resource states. Re-run it after regenerating or editing any generated PNG. Shooting artwork is separate from the existing firearm inventory icons. Resource images are looked up by resource `Name` under the mod's GUI folders, not by a speculative `Icon` attribute in the resource definitions. The optional 5e compatibility PAK needs no duplicate artwork.
+See [To-do.md](To-do.md) for the complete artwork checklist, exact export paths and formats, atlas slots, and stat consumers. All custom actions, passives and statuses now reference registered `GSL_*` ability icons. The ability atlas, tooltip/controller exports and six action-resource image sets now contain the ComfyUI-generated artwork, converted by `python artwork/comfyui/export_icons.py`. The exporter rebuilds the atlas from each key's UV cell, derives the Highlight, Used and Missing resource states, and writes the resource PNG/DDS variants plus `Mods/GunslingerClass/GUI/metadata.lsx`. Re-run it after regenerating or editing any generated PNG. When packing with `stage_packages.py --divine`, the GUI texture metadata is compiled to `metadata.lsf` alongside the visual banks and root templates. Shooting artwork is separate from the existing firearm inventory icons. Resource images are looked up by resource `Name` under the mod's GUI folders, not by a speculative `Icon` attribute in the resource definitions. The optional 5e compatibility PAK needs no duplicate artwork.
 
-The Gunslinger class icon is `Public/Game/GUI/Assets/ClassIcons/Gunslinger.DDS` (300x300, level-up screen and character sheet) and `ClassIcons/hotbar/Gunslinger.DDS` (140x140, hotbar class button). Both are DXT5 with full mipmaps and are found through the class `Name`, like vanilla classes. They are generated with the ComfyUI `classes` prompt group and exported by `artwork/comfyui/export_class_icons.py`.
+Character creation and level-up use separate resource icons at `Mods/GunslingerClass/GUI/Assets/CC/icons_resources/<ResourceName>.DDS`, with PNG counterparts and `AssetsLowRes` copies. The resource exporter creates all six at 128x128 from the master artwork (falling back to the resource PNG), registers their dimensions in GUI metadata, and preserves the existing 48x48 combat-panel icons. `validate_xml.py` checks these level-up paths and metadata before staging. Rebuild the PAK with `stage_packages.py --divine` and reinstall it to pick up the icons; their appearance still needs an in-game level-up check.
+
+The Gunslinger class icon is `Public/Game/GUI/Assets/ClassIcons/Gunslinger.DDS` (300x300, level-up screen and character sheet) and `ClassIcons/hotbar/Gunslinger.DDS` (140x140, hotbar class button). Both are DXT5 with full mipmaps and are found through the class `Name`, like vanilla classes. `Class/ico_class_m_gunslinger.DDS` (72x72, single level) is the small class badge shown in the inventory and party panels. Every class texture ships with a matching `.png` because the UI resolves PNG paths. The Marksman, Desperado and ArcaneGunsman subclasses each have their own emblem, written under their `Name` to `ClassIcons/`, `ClassIcons/hotbar/` and `Class/ico_class_m_<name>.DDS`. Once a subclass is chosen, the UI looks up the class icon by the subclass name, so a missing subclass badge leaves the inventory class icon empty. All of these are generated with the ComfyUI `classes` prompt group and exported by `artwork/comfyui/export_icons.py --group classes` (via `export_class_icons.py`).
 
 This mod is implemented entirely through BG3's stats/.lsx data format (no custom Script Extender (BG3SE) scripting or Osiris story scripts). A few parts of the design above don't have a clean 1:1 vanilla equivalent, so they were implemented as documented, best-effort approximations. These are called out below so they're easy to find and revisit.
 
@@ -537,10 +541,11 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
   - visual/material/texture banks: `Public/GunslingerClass/Content/Assets/[PAK]_GSL_Firearms/_merged.lsx`
   - icon atlas: `Public/GunslingerClass/Assets/Textures/Icons/`, `GUI/Icons_GunslingerFirearms.lsx`, `Content/UI/[PAK]_UI/_merged.lsx`
   - tooltip/controller icons: `Public/Game/GUI/Assets/`
-  - The `Content` banks and `RootTemplates/_merged.lsx` must be converted to `_merged.lsf` before packing (`stage_packages.py --divine` does this). Root-template conversion is required for crafted firearms and kits to be available to the game; leaving the item templates as source XML in the PAK can allow Craft to spend its charge without creating an item.
+  - gunshot sound effects: `Public/GunslingerClass/Assets/Effects/Effects_Banks/`, `Content/[PAK]_GSL_Firearm_Sounds/_merged.lsx`, `MultiEffectInfos/`
+  - The `Content` banks, `MultiEffectInfos` and `RootTemplates/_merged.lsx` must be converted to `.lsf`, and the effect sources under `Assets/Effects` to `.lsfx`, before packing (`stage_packages.py --divine` does this). Root-template conversion is required for crafted firearms and kits to be available to the game; leaving the item templates as source XML in the PAK can allow Craft to spend its charge without creating an item.
 - Firearm-only conditions use vanilla `IsRangedWeaponAttack()` and `IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())`. The imported weapons use the otherwise-unused Slings proficiency group. They do not call Immersive Firearms' custom `IsFirearmAttack()` helper or require that mod's scripts.
 - The shared critical-miss passive notifies the server runtime, which records the exact gun and projects hand-specific attack locks. Double Load has a separate destruction trigger; destroyed guns offer no Rapid Repair option. Ordinary repair remains outside this grit update.
-- Ammo capacity (3/2/1 bullets) is granted by equipment passives. Direct grit attacks pay ammunition through `UseCosts`; reaction shots spend one bullet through native resource functors, without a second action/reaction charge. The server adds conditional ammunition costs and readiness checks to Line 'em Up, Infused Rounds, and native spells with ranged weapon attack rolls. Those conditional checks leave non-firearm weapons' existing actions/costs intact. Reloads still refill their matching pools; the runtime snapshots the result to the physical gun.
+- Ammo capacity (3/2/1 bullets) is granted by equipment passives. Direct grit attacks pay ammunition through `UseCosts`; reaction shots spend one bullet through native resource functors, without a second action/reaction charge. The server adds conditional ammunition costs and readiness checks to Line 'em Up and native spells with ranged weapon attack rolls. Those conditional checks leave non-firearm weapons' existing actions/costs intact. Reloads still refill their matching pools; the runtime snapshots the result to the physical gun. Primary/Secondary Reload have no `UseCosts`: their requirement needs a bonus action or an action, and their functors spend the bonus action when available, otherwise an action (the action branch is checked first so only one is ever spent).
 
 **Crafting**
 
@@ -549,13 +554,15 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 
 **Grit abilities**
 
+- Level-up grit choices reuse the unlocked spell or reaction's name, description, and icon, so the selection tooltip shows the same rules text as the ability itself. Cheat Death's Odds is a passive-only choice and uses its own descriptor.
 - See [Grit-Ability-Report.md](Grit-Ability-Report.md) for the before/README/after comparison, exact costs, implementation references, and in-game acceptance checklist. Source tests and mocked Lua lifecycle tests are not proof of BG3 reaction timing.
 - Level 3 grants two selected grit abilities (from the subclass's pool); later selections grant one, on the class/subclass schedules listed above. Fanning Fire is in the level 7+ pools, so it's first offered at the next grit pick (level 8 for Desperados, level 9 for Marksman and Arcane Gunsman). Tinkerer is no longer a grit pick; it's a level 4 class feature. Grit Adept uses the level-3 pool.
-- Merciless Shot, Rapid Shot, Double Load, and Fanning Fire now execute weapon attacks directly, rather than spending an action on a buff followed by a second attack. Linked menus expose Merciless/Bite/Fanning's 1-3 grit tiers. Line 'em Up uses half weapon damage on enemies only, quarter damage on a successful Dexterity save.
+- Merciless Shot, Rapid Shot, Double Load, and Fanning Fire now execute weapon attacks directly, rather than spending an action on a buff followed by a second attack. Linked menus expose only tiered abilities (Merciless/Bite/Fanning/Violent Shot/All In). Single-cost shots (Rapid Shot, Double Load, Disarming, Winging, Forceful, Bullying, Dazing, Ricochet, Final Judgement) are one hotbar spell each, not a group; like Merciless Shot's options they work with any equipped firearm and spend that firearm's bullet(s).
+- Each firearm's basic attack is granted once, through the weapon passive's AttackSpellOverride (replacing the vanilla ranged attack). Weapons no longer also UnlockSpell it, which had shown the attack twice (one copy using the class casting ability). The attack therefore isn't listed on the weapon tooltip. Line 'em Up uses half weapon damage on enemies only, quarter damage on a successful Dexterity save.
 - Tinkerer has six choices: capacity/damage/range for primary or secondary firearms, each costing an action and no grit. The server stores up to one modification per physical gun (two distinct ones with Master Tinkerer at level 10), replaces the oldest when full, and clears them on long rest. Saves that stored the older single-modification format are migrated automatically. Increasing capacity does not conjure bullets; reload to fill the new space.
 - Rapid Repair exposes primary/secondary choices at DC 12-16, filtered by the equipped gun's rarity and repairable misfire state. It keeps the previous bonus-action timing and costs one grit. A failed check still spends those costs.
 - Fanning Fire uses 2/3/4 target selections, matching ammunition costs and -1/-2/-3 attack penalties. Its penalty is removed on cast completion or cancellation. Shots require enough loaded ammunition for the entire volley: even a capacity-modified Musket holds only three bullets.
-- Shot in the Dark grants native 18-metre darkvision and blindness-group immunity for the next attack. Whether this suppresses an already-active Blind status exactly as the design intends still needs an in-game check.
+- Shot in the Dark grants native 18-metre darkvision and blindness-group immunity for 10 turns (attacking no longer ends it). Whether this suppresses an already-active Blind status exactly as the design intends still needs an in-game check.
 - **Stable Shot** now spends 6 metres (20 feet) of movement when activated; learning the feature no longer permanently removes that movement from every turn.
 - Desperado's exclusive abilities are grit picks, added to Desperado-only grit pools at levels 3/5/8/11/14/17/20. The level 3 grit pick lives on each subclass's level 3 progression row, so it's offered after the subclass is chosen. Grit Adept still uses the shared level-3 pool.
   - **Desperado's Luck:** native post-roll prompt, one grit, +1d4, once-per-turn marker, no Reaction cost.
@@ -564,9 +571,9 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
   - **Last Word:** native lethal-damage prompt costing three grit, Death Ward and a long-rest cooldown; the server requests its firearm attack after the incoming damage event, not before survival. Its lethal-prompt timing and Death Ward/1-HP interaction are high-priority in-game checks, not engine-verified claims.
 - **Expanded grit pools.** Fifteen shared abilities unlock at levels 3/9/13/17. Fourteen more Desperado abilities unlock at levels 3/5/8/11/14/17/20, giving 18 Desperado-only abilities. Every subclass grit pick offers every ability unlocked at that level or lower. Approximations and deviations from the suggestion list:
   - **Violent Shot:** the misfire chance is a server-side d20 roll after the cast, on a result at or below the grit tier. The gun receives the normal Misfired state; a gun that has already misfired breaks.
-  - **Double or Nothing:** the server rolls a d20 when the cast starts. On 11 or higher it applies a double-damage status; otherwise the gun misfires after the shot.
+  - **Double or Nothing:** a reaction (Interrupt_GSL_DoubleOrNothing, Reaction + 2 grit) after a non-lethal firearm hit casts a free follow-up (Projectile_GSL_DoubleOrNothing). The server rolls a d20 when it starts; on 11 or higher the follow-up deals weapon damage again, otherwise the gun misfires. Cheat Death's Odds refunds through the interrupt.
   - **Roll the Bones:** a bust is a -1d4 attack penalty rather than lost grit. Results last 12 seconds (2 turns) or until your next attack; Jackpot restores 1 grit when applied.
-  - **Cheat Death's Odds:** a refund rather than a cost reduction. The server refunds 1 grit after a qualifying cast of 2 or more grit while below half HP. Interrupts costing 2 or more (Grit and Steel, Quick on the Draw, Last Word) apply the refund through their own functors.
+  - **Cheat Death's Odds:** a refund rather than a cost reduction. The server refunds 1 grit after a qualifying cast of 2 or more grit while below half HP. Interrupts costing 2 or more (Grit and Steel, Quick on the Draw, Last Word, Double or Nothing) apply the refund through their own functors.
   - **Quick on the Draw:** triggers when an enemy within 9 m declares an attack against you, not on initiative.
   - **All In:** capped at 8 grit (variants 3-8), costs one bullet, and every shot is at -2 to hit.
   - **Dead Man's Hand:** a guaranteed crit on the next hit, without the two-gun attack.
@@ -580,7 +587,7 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 
 **Feats**
 
-- **Close-Quarters Gunner**: BG3 has no literal "disadvantage on ranged attacks while an enemy is within 5 ft" penalty to cancel, so only the push-on-hit rider is implemented (`Force(1.5, OriginToTarget)` on a firearm hit).
+- **Close-Quarters Gunner**: uses the native `IgnorePointBlankDisadvantage(Ammunition)` boost (the same mechanism as Crossbow Expert's point-blank feature), so firearm attacks against targets within 5 feet are not made at Disadvantage.
 - **Longarm Specialist**: similarly, there's no built-in long-range disadvantage to ignore; approximated as Advantage on firearm attacks beyond 60 ft, which produces the same practical benefit.
 - **Called Shot**: the README's 3-way choice (reduce speed / deny reactions / impose disadvantage) has no in-combat UI hook to let the player pick an option per use, so this always applies the "disadvantage on the target's next attack" option.
 - **Spellshot Adept**: the bonus damage rider is simplified to a fixed Force-damage bonus instead of matching "the school of the spell just cast," since that needs per-school damage-type tracking with no simple functor equivalent.
@@ -588,7 +595,7 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 **Arcane Gunsman**
 
 - **Arcane Reload** (level 7) remains a flavor-only marker spell/passive and does not automatically replenish ammunition each round.
-- **Infused Rounds** inherits vanilla ranged attack animations, range, and projectile trajectories, requires a main-hand firearm, and overrides the inherited physical/offhand damage effects and tooltip damage with its Force damage. Unstable rounds use a native d4 roll (4 = 25%) to trigger an immediate, caster-centred 1.5-metre radius backfire on a shot, whether it hits or misses.
+- **Infused Rounds** is a bonus-action spell group (Divine Favor visuals). Each element applies a 10-turn status whose conditional `CharacterWeaponDamage` boosts add 1d4/2d4/3d4 (5d4 while Unstable) of that element to ranged weapon attacks made with Slings-proficiency firearms; choosing a new element replaces the old one (shared `StackId`). Force needs Improved, Radiant/Necrotic need Mastered. Unstable requires an active infusion and grants a passive that rolls a native d4 (4 = 25%) on each firearm attack to trigger an immediate, caster-centred 1.5-metre radius Force backfire, whether it hits or misses.
 - The recommended Arcane Gunsman spell lists substitute a small number of spells that could not be confirmed to exist under the exact vanilla/5e-mod names in the README (e.g. Shield, Lightning Bolt, Fire Shield, Ice Storm, Cone of Cold, Conjure Volley, Tasha's Mind Whip, Holy Weapon, Swift Quiver, and Synaptic Static), in favor of grep-verified alternatives of a similar level and theme (for example Color Spray, Fireball, Fear, Gust of Wind, and the Mephit fire-breath zone spell in place of the base-game spells above). These spell lists are explicitly marked in the README as "thematic recommendations, not a finalized class spell list," so this substitution is intended to be revisited/tuned rather than treated as final.
 
 **5e Spells compatibility addon**

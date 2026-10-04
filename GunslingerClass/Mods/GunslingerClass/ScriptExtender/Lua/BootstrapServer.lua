@@ -166,7 +166,7 @@ Ext.Events.StatsLoaded:Subscribe(function()
                 if spell.RequirementConditions ~= "" then condition = "(" .. spell.RequirementConditions .. ") and " .. condition end
                 spell.RequirementConditions = condition
             end
-            if ammoSpells[name] or name:match("^Projectile_GSL_InfusedRounds") then
+            if ammoSpells[name] then
                 local ready = {}
                 local costs = {}
                 for kind in pairs(Rules.Firearms) do
@@ -217,7 +217,7 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     local grit = spell:match("^Projectile_GSL_FanningFire_%a+_(%d)$")
     if grit then Osi.ApplyStatus(character, "GSL_FANNING_FIRE_" .. grit, -1, 1, character) end
     casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_%a+_(%d)$"))
-    if spell:match("^Projectile_GSL_DoubleOrNothing_") then
+    if spell:match("^Projectile_GSL_DoubleOrNothing$") then
         if Rules.DoubleOrNothing(Ext.Math.Random(1, 20)) then
             Osi.ApplyStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN", -1, 1, character)
         else
@@ -231,8 +231,8 @@ local function clearShotStatuses(character, spell)
     if spell:match("^Projectile_GSL_FanningFire_") then
         for grit = 1, 3 do Osi.RemoveStatus(character, "GSL_FANNING_FIRE_" .. grit) end
     end
-    if spell:match("^Projectile_GSL_DoubleLoad_") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
-    if spell:match("^Projectile_GSL_DoubleOrNothing_") then Osi.RemoveStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN") end
+    if spell:match("^Projectile_GSL_DoubleLoad$") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
+    if spell:match("^Projectile_GSL_DoubleOrNothing$") then Osi.RemoveStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN") end
     if spell:match("^Projectile_GSL_AllIn_") then Osi.RemoveStatus(character, "GSL_ALL_IN") end
 end
 
@@ -291,7 +291,7 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
         pendingLastWord[character] = action
     elseif applied == "GSL_MISFIRE" or applied == "GSL_DOUBLE_LOAD_BROKEN" then
         local cast = casts[character]
-        local item = cast and cast.item or Osi.GetEquippedWeapon(character)
+        local item = cast and cast.item or equipped(character, "Main") or equipped(character, "Off")
         Osi.RemoveStatus(character, applied)
         misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN")
     elseif applied == "GSL_REPAIR_MAIN_DONE" or applied == "GSL_REPAIR_OFF_DONE" or

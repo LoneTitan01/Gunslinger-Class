@@ -50,10 +50,22 @@ class IconDataTests(unittest.TestCase):
         )
         name = base_class.find('attribute[@id="Name"]').get('value')
         self.assertEqual(name, 'Gunslinger')
-        for path, size, mips in (
-            (ASSETS / 'ClassIcons' / f'{name}.DDS', 300, 9),
-            (ASSETS / 'ClassIcons' / 'hotbar' / f'{name}.DDS', 140, 8),
-        ):
+        subclasses = [
+            node.find('attribute[@id="Name"]').get('value')
+            for node in descriptions.findall('.//node[@id="ClassDescription"]')
+            if node.find('attribute[@id="ParentGuid"]') is not None
+        ]
+        self.assertEqual(sorted(subclasses), ['ArcaneGunsman', 'Desperado', 'Marksman'])
+        textures = []
+        for class_name in (name, *subclasses):
+            textures += [
+                (ASSETS / 'Class' / f'ico_class_m_{class_name.lower()}.DDS', 72, 1),
+                (ASSETS / 'ClassIcons' / f'{class_name}.DDS', 300, 9),
+                (ASSETS / 'ClassIcons' / 'hotbar' / f'{class_name}.DDS', 140, 8),
+            ]
+        main_icons = {path.read_bytes() for path, size, _ in textures if size == 300}
+        self.assertEqual(len(main_icons), 4, 'each subclass needs its own artwork')
+        for path, size, mips in textures:
             with self.subTest(path=path.relative_to(ASSETS)):
                 self.assert_dds_size(path, size, size)
                 header = path.read_bytes()[:128]
@@ -65,6 +77,9 @@ class IconDataTests(unittest.TestCase):
                     expected += ((edge + 3) // 4) ** 2 * 16
                     edge = max(1, edge // 2)
                 self.assertEqual(path.stat().st_size, expected)
+                png = path.with_suffix('.png').read_bytes()
+                self.assertEqual(png[:8], b'\x89PNG\r\n\x1a\n')
+                self.assertEqual(struct.unpack_from('>II', png, 16), (size, size))
 
     def test_atlas_cells_are_unique_and_use_expected_slots(self) -> None:
         self.assertEqual(len(self.cells), 83)
@@ -103,13 +118,36 @@ class IconDataTests(unittest.TestCase):
         resources = ET.parse(PUBLIC / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx')
         names = [a.get('value') for a in resources.findall('.//attribute[@id="Name"]')]
         self.assertEqual(len(names), 6)
+        gui = SOURCE / 'Mods' / 'GunslingerClass' / 'GUI'
+        metadata = ET.parse(gui / 'metadata.lsx')
+        texture_entries = {
+            node.find('attribute[@id="MapKey"]').get('value'): {
+                attribute.get('id'): attribute.get('value')
+                for attribute in node.findall('.//attribute')
+            }
+            for node in metadata.findall('.//node[@id="Object"]')
+        }
+        self.assertEqual(len(texture_entries), 108)
         for name in names:
+            for quality in ('Assets', 'AssetsLowRes'):
+                relative = Path(quality, 'CC', 'icons_resources', f'{name}.png')
+                with self.subTest(level_up=relative):
+                    self.assert_dds_size(gui / relative.with_suffix('.DDS'), 128, 128)
+                    self.assertTrue((gui / relative).is_file())
+                    entry = texture_entries[relative.as_posix()]
+                    self.assertEqual((entry['w'], entry['h'], entry['mipcount']), ('128', '128', '1'))
             for quality in ('Assets', 'AssetsLowRes'):
                 for surface in (('Shared', 'Resources'), ('ActionResources_c', 'Icons', 'Resources')):
                     for state in ('', 'Highlight', 'Used', 'Missing'):
                         with self.subTest(resource=name, quality=quality, surface=surface, state=state):
-                            path = SOURCE / 'Mods' / 'GunslingerClass' / 'GUI' / quality / Path(*surface) / state / f'{name}.DDS'
-                            self.assert_dds_size(path, 48, 48)
+                            relative = Path(quality, *surface, *([state] if state else []))
+                            self.assert_dds_size(gui / relative / f'{name}.DDS', 48, 48)
+                            self.assertTrue((gui / relative / f'{name}.png').is_file())
+                            entry = texture_entries[(relative / f'{name}.png').as_posix()]
+                            self.assertEqual(
+                                (entry['w'], entry['h'], entry['mipcount']),
+                                ('48', '48', '1'),
+                            )
 
 
 if __name__ == '__main__':

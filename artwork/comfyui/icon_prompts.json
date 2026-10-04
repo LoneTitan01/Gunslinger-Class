@@ -98,6 +98,9 @@
     "GunslingerCraftCharges": "one thick brass gear with a compact ivory crafting hammer at its center"
   },
   "classes": {
-    "Gunslinger": "two antique flintlock pistols crossed beneath a wide-brimmed frontier hat, with one small curl of powder smoke rising between the barrels"
+    "Gunslinger": "two antique flintlock pistols crossed beneath a wide-brimmed frontier hat, with one small curl of powder smoke rising between the barrels",
+    "Marksman": "a long antique flintlock musket laid diagonally behind a round brass telescopic sight ring with crimson crosshairs at its center",
+    "Desperado": "a single antique flintlock pistol held upright over a fanned pair of ivory playing cards and one spinning brass coin",
+    "ArcaneGunsman": "an antique flintlock pistol pointing upward, its barrel wrapped in a large glowing crimson magic rune circle with arcane sigils and swirling magical sparks around the muzzle"
   }
 }

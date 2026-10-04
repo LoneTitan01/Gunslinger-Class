@@ -75,9 +75,10 @@ class ComfyIconTests(unittest.TestCase):
         return icons.api_graph(self.workflow, name, text, icons.icon_seed(123, name))
 
     def test_catalog_coverage_selection_and_current_edits(self) -> None:
-        self.assertEqual(len(icons.catalog_icons(self.catalog, 'all', None)), 90)
+        self.assertEqual(len(icons.catalog_icons(self.catalog, 'all', None)), 93)
         self.assertEqual(len(icons.catalog_icons(self.catalog, 'resources', None)), 6)
-        self.assertEqual([name for name, _ in icons.catalog_icons(self.catalog, 'classes', None)], ['Gunslinger'])
+        self.assertEqual([name for name, _ in icons.catalog_icons(self.catalog, 'classes', None)],
+                         ['Gunslinger', 'Marksman', 'Desperado', 'ArcaneGunsman'])
         self.assertIn(self.catalog['class_style_suffix'], icons.catalog_icons(self.catalog, 'classes', None)[0][1])
         self.catalog['abilities']['GSL_MercilessShot'] = 'edited subject'
         text = icons.catalog_icons(self.catalog, 'abilities', ['GSL_MercilessShot'])[0][1]

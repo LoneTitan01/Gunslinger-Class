@@ -6,10 +6,10 @@ Main_Staging       -> Packages/GunslingerClass.pak
 Usage:
     python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation]
 
-With --divine, localization is converted to .loca, Content banks and root
-templates to .lsf, and both staging folders are packed into Packages/*.pak
+With --divine, localization is converted to .loca, Content banks, root
+templates and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
 (unless --no-pack). Without --divine, the localization .xml and resource .lsx files are
-staged as-is and must be converted (.loca / .lsf) and packed with LSLib's
+staged as-is and must be converted (.loca / .lsf / .lsfx) and packed with LSLib's
 ConverterApp.
 """
 from pathlib import Path
@@ -41,6 +41,9 @@ compat_dirs = (
 localization_xml = Path('Localization/English/GunslingerClass.xml')
 content_dir = Path('Public/GunslingerClass/Content')
 root_templates_dir = Path('Public/GunslingerClass/RootTemplates')
+multi_effect_infos_dir = Path('Public/GunslingerClass/MultiEffectInfos')
+effects_dir = Path('Public/GunslingerClass/Assets/Effects')
+gui_metadata = Path('Mods/GunslingerClass/GUI/metadata.lsx')
 
 
 def fail(message):
@@ -84,17 +87,28 @@ def stage_localization(divine):
     return True
 
 
+def converted_path(lsx):
+    """Effect sources compile to .lsfx; every other resource compiles to .lsf."""
+    staged_effects = main_staging / effects_dir
+    return lsx.with_suffix('.lsfx' if staged_effects in lsx.parents else '.lsf')
+
+
 def stage_content_banks(divine):
-    """Compile visual banks and spawnable item root templates to LSF."""
+    """Compile visual/effect banks, MultiEffectInfos, effect sources, GUI texture metadata,
+    and item root templates to LSF/LSFX."""
     banks = sorted(
         path
-        for directory in (content_dir, root_templates_dir)
+        for directory in (content_dir, root_templates_dir, multi_effect_infos_dir, effects_dir)
         for path in (main_staging / directory).rglob('*.lsx')
     )
+    gui_metadata_path = main_staging / gui_metadata
+    if gui_metadata_path.is_file():
+        banks.append(gui_metadata_path)
+        banks.sort()
     if divine is None:
         return banks
     for lsx in banks:
-        lsf = lsx.with_suffix('.lsf')
+        lsf = converted_path(lsx)
         result = subprocess.run(
             [str(divine), '-g', 'bg3', '-a', 'convert-resource', '-s', str(lsx), '-d', str(lsf)],
             capture_output=True,
@@ -176,10 +190,10 @@ def main():
             f'  Then delete {staged_xml.name} from Main_Staging.'
         )
     if unconverted_banks:
-        print('\nNEXT: convert these Content banks and root templates to .lsf '
+        print('\nNEXT: convert these resources to the listed .lsf/.lsfx '
               '(ConverterApp > LSX / LSB / LSF / LSJ), then delete the .lsx:')
         for lsx in unconverted_banks:
-            print(f'  {lsx} -> {lsx.with_suffix(".lsf").name}')
+            print(f'  {lsx} -> {converted_path(lsx).name}')
 
     if args.divine is not None and not args.no_pack:
         print('\nPackages:')

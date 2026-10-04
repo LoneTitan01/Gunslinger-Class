@@ -1,4 +1,5 @@
 from pathlib import Path
+import struct
 import xml.etree.ElementTree as ET
 from validate_stats import validate_stats
 
@@ -41,6 +42,37 @@ for meta_path in sorted((source_root / 'Mods').glob('*/meta.lsx')):
     for node_id in ('PublishVersion', 'TargetModes'):
         if module_info.find(f'children/node[@id="{node_id}"]') is None:
             raise SystemExit(f'{node_id} must be nested inside ModuleInfo/children: {meta_path}')
+
+gui_root = main_module_root / 'GUI'
+gui_metadata_path = gui_root / 'metadata.lsx'
+if gui_metadata_path not in parsed_files:
+    raise SystemExit(f'Missing GUI texture metadata: {gui_metadata_path}')
+gui_entries = {}
+for node in parsed_files[gui_metadata_path].findall('.//node[@id="Object"]'):
+    key = node.find('attribute[@id="MapKey"]')
+    if key is None or not key.get('value'):
+        raise SystemExit(f'Missing texture MapKey in {gui_metadata_path}')
+    if key.get('value') in gui_entries:
+        raise SystemExit(f'Duplicate GUI texture MapKey: {key.get("value")}')
+    gui_entries[key.get('value')] = {
+        attribute.get('id'): attribute.get('value')
+        for attribute in node.findall('children/node[@id="entries"]/attribute')
+    }
+resource_definitions = parsed_files[public_root / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx']
+for name in resource_definitions.findall('.//attribute[@id="Name"]'):
+    for quality in ('Assets', 'AssetsLowRes'):
+        relative = Path(quality, 'CC', 'icons_resources', f'{name.get("value")}.png')
+        values = gui_entries.get(relative.as_posix(), {})
+        if (values.get('w'), values.get('h'), values.get('mipcount')) != ('128', '128', '1'):
+            raise SystemExit(f'Missing or invalid level-up resource texture metadata: {relative}')
+        png = gui_root / relative
+        dds = png.with_suffix('.DDS')
+        if not png.is_file() or not dds.is_file():
+            raise SystemExit(f'Missing level-up resource PNG/DDS: {relative}')
+        with dds.open('rb') as image:
+            header = image.read(128)
+        if len(header) != 128 or header[:4] != b'DDS ' or struct.unpack_from('<II', header, 12) != (128, 128):
+            raise SystemExit(f'Invalid level-up resource DDS dimensions: {dds}')
 
 localization_root_element = parsed_files[english_localization]
 localized_handles = [

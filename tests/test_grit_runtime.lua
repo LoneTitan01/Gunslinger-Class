@@ -9,11 +9,11 @@ local spellStats = {
         SpellRoll = "Attack(AttackType.RangedWeaponAttack)",
         UseCosts = "ActionPoint:1;GunslingerFlintlockAmmo:1"},
     Zone_GSL_LineEmUp = {RequirementConditions = "Character()", SpellProperties = "OriginalEffect", SpellRoll = ""},
-    Projectile_GSL_InfusedRounds = {RequirementConditions = "Character()", SpellProperties = "ForceEffect", SpellRoll = ""},
     Zone_GSL_PiercingRound = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     Shout_GSL_HailOfLead = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
-    Projectile_GSL_DoubleOrNothing_Flintlock = {RequirementConditions = "", SpellProperties = "", SpellRoll = "",
-        UseCosts = "ActionPoint:1;GunslingerGrit:2;GunslingerFlintlockAmmo:1"},
+    Projectile_GSL_DoubleOrNothing = {RequirementConditions = "", SpellProperties = "", SpellRoll = "", UseCosts = ""},
+    Projectile_GSL_DazingShot = {RequirementConditions = "", SpellProperties = "", SpellRoll = "",
+        UseCosts = "ActionPoint:1;GunslingerGrit:2"},
     Projectile_PiercingShot = {RequirementConditions = "OriginalRequirement", SpellProperties = "OriginalPiercingEffect",
         SpellRoll = "Attack(AttackType.RangedWeaponAttack)"}
 }
@@ -60,7 +60,7 @@ local function ammo(char, hand)
 end
 Osi = {
     GetEquippedItem = function(char, slot) return inventory[char] and inventory[char][slot] end,
-    GetEquippedWeapon = function(char) return inventory[char]["Ranged Main Weapon"] end,
+    GetEquippedWeapon = function() return "melee" end,
     GetTemplate = function(item) return entities[item].template end,
     HasActiveStatus = function(id, status) return statuses[id] and statuses[id][status] and 1 or 0 end,
     ApplyStatus = function(id, status, duration)
@@ -181,6 +181,8 @@ fire("StatusApplied", "after", "alice", "GSL_FIELD_REPAIR_MAIN_DONE", "alice", 4
 fire("CastedSpell", "after", "alice", "Shout_GSL_FieldRepair_Main10", "", "", 44)
 assert(not variables.Firearms.weapons.first.misfire)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 0)
+fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 99)
+assert(variables.Firearms.weapons.first.misfire, "An untracked nat 1 must misfire the equipped firearm, not the melee weapon")
 for action = 41, 42 do
     fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", action)
     fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", action)
@@ -191,9 +193,9 @@ assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 1)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_OFF_12") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_FIELD_REPAIR_OFF_10") == 0)
-fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleLoad_Flintlock", "", "", 6)
+fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleLoad", "", "", 6)
 fire("StatusApplied", "after", "alice", "GSL_DOUBLE_LOAD_BROKEN", "alice", 6)
-fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleLoad_Flintlock", "", "", 6)
+fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleLoad", "", "", 6)
 assert(variables.Firearms.weapons.first.broken)
 assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MAIN_12") == 0)
 fire("Unequipped", "before", "first", "alice")
@@ -247,11 +249,11 @@ shot("Projectile_GSL_ViolentShot_Flintlock_2", 51, 2)
 assert(variables.Firearms.weapons.first.misfire and Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 1)
 fire("LongRestFinished", "after")
 rolls[1] = 11
-fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleOrNothing_Flintlock", "", "", 52)
+fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleOrNothing", "", "", 52)
 assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 1, "A win doubles the shot")
-fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleOrNothing_Flintlock", "", "", 52)
+fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleOrNothing", "", "", 52)
 assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 0 and not variables.Firearms.weapons.first.misfire)
-shot("Projectile_GSL_DoubleOrNothing_Flintlock", 53, 10)
+shot("Projectile_GSL_DoubleOrNothing", 53, 10)
 assert(variables.Firearms.weapons.first.misfire, "A losing Double or Nothing misfires")
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0)
 fire("LongRestFinished", "after")
@@ -267,6 +269,8 @@ passives.alice.GSL_Desperado_CheatDeathsOdds = true
 entities.alice.Health.Hp = 14
 shot("Shout_GSL_RollTheBones", 57, 3)
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0, "One-grit abilities never refund")
-shot("Projectile_GSL_DoubleOrNothing_Flintlock", 58, 11)
+shot("Projectile_GSL_DoubleOrNothing", 58, 11)
+assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0, "The free follow-up shot refunds nothing; the reaction does")
+shot("Projectile_GSL_DazingShot", 59)
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 1, "Bloodied 2-grit abilities refund 1 grit")
 assert(durations.GSL_CHEAT_DEATHS_ODDS_REFUND == 0)print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, all in, roll the bones, cheat death's odds")

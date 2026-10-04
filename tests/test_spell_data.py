@@ -52,7 +52,7 @@ class SpellDataTests(unittest.TestCase):
     def test_missing_inherited_animation_is_detected(self) -> None:
         self.entries['Shout_GSL_ClassAction'].fields['SpellAnimation'] = ''
         self.assertTrue(any(
-            'Shout_GSL_RapidShot: missing effective SpellAnimation' in error
+            'Shout_GSL_MercilessShot: missing effective SpellAnimation' in error
             for error in validation_errors(self.entries, self.external)
         ))
 
@@ -87,24 +87,25 @@ class SpellDataTests(unittest.TestCase):
             'Shout_GSL_LastWord': 'Target_DeathWard',
             'Shout_GSL_StableShot': 'Shout_SteadyRangedCrossbow',
             'Shout_GSL_Headshot': 'Target_HuntersMark',
-            'Projectile_GSL_InfusedRounds_Unstable': 'Projectile_Smite_Branding',
+            'Target_GSL_LockOn': 'Target_HuntersMark',
+            'Shout_GSL_InfusedRounds_Fire': 'Shout_DivineFavor',
             'Zone_GSL_LineEmUp': 'Projectile_PiercingShot',
-            'Projectile_GSL_MercilessShot_Musket_3': 'Projectile_SneakAttack',
-            'Projectile_GSL_RapidShot_Blunderbuss': 'Projectile_HordeBreaker',
-            'Projectile_GSL_DoubleLoad_Musket': 'Projectile_HamstringShot',
+            'Projectile_GSL_MercilessShot_3': 'Projectile_SneakAttack',
+            'Projectile_GSL_RapidShot': 'Projectile_HordeBreaker',
+            'Projectile_GSL_DoubleLoad': 'Projectile_HamstringShot',
             'Projectile_GSL_FanningFire_Blunderbuss_3': 'Target_Volley',
-            'Projectile_GSL_DisarmingShot_Flintlock': 'Projectile_DisarmingAttack',
-            'Projectile_GSL_WingingShot_Musket': 'Projectile_TripAttack',
-            'Projectile_GSL_ForcefulShot_Blunderbuss': 'Projectile_PushingAttack',
-            'Projectile_GSL_BullyingShot_Flintlock': 'Projectile_MenacingAttack',
-            'Projectile_GSL_DazingShot_Flintlock': 'Projectile_DistractingStrike',
+            'Projectile_GSL_DisarmingShot': 'Projectile_DisarmingAttack',
+            'Projectile_GSL_WingingShot': 'Projectile_TripAttack',
+            'Projectile_GSL_ForcefulShot': 'Projectile_PushingAttack',
+            'Projectile_GSL_BullyingShot': 'Projectile_MenacingAttack',
+            'Projectile_GSL_DazingShot': 'Projectile_DistractingStrike',
             'Projectile_GSL_ViolentShot_Musket_3': 'Projectile_PinDown',
             'Target_GSL_FlashPowder': 'Target_FaerieFire',
             'Shout_GSL_BulletTime': 'Shout_ActionSurge',
             'Shout_GSL_HailOfLead': 'Target_Volley',
-            'Projectile_GSL_FinalJudgement_Flintlock': 'Projectile_SneakAttack',
+            'Projectile_GSL_FinalJudgement': 'Projectile_SneakAttack',
             'Shout_GSL_AnteUp': 'Target_Bless',
-            'Projectile_GSL_DoubleOrNothing_Musket': 'Projectile_SneakAttack',
+            'Projectile_GSL_DoubleOrNothing': 'Projectile_SneakAttack',
             'Shout_GSL_DeadMansHand': 'Target_Bane',
             'Shout_GSL_LastStand': 'Shout_Blur',
             'Projectile_GSL_AllIn_Blunderbuss_8': 'Target_Volley',
@@ -115,12 +116,91 @@ class SpellDataTests(unittest.TestCase):
                 fields = self.spell(name)
                 expected = resolve_spell(source, {}, vanilla)[0]
                 for key in ('SpellAnimation', 'PrepareEffect', 'CastEffect', 'CastSound'):
+                    if key == 'CastSound' and name.startswith('Projectile_GSL_'):
+                        continue
                     self.assertEqual(fields.get(key, ''), expected.get(key, ''), key)
 
+    def test_grit_projectile_shots_use_the_firing_weapon_sound(self) -> None:
+        grit_spells = read_stats([DATA / 'GunslingerGritSpells.txt'])
+        projectiles = [name for name in grit_spells if name.startswith('Projectile_GSL_')]
+        self.assertGreater(len(projectiles), 20)
+        for name in projectiles:
+            with self.subTest(spell=name):
+                fields = self.spell(name)
+                self.assertEqual(fields.get('CastSound', ''), '')
+                self.assertEqual(fields.get('TargetSound', ''), '')
+                if self.external:
+                    self.assertEqual(fields.get('SpellSoundMagnitude'), 'None')
+
+    def test_firearm_shots_play_immersive_firearms_sounds(self) -> None:
+        def descends(name: str, base: str) -> bool:
+            while name in self.entries:
+                if name == base:
+                    return True
+                name = self.entries[name].parent
+            return False
+
+        shot_fields = ('SpellProperties', 'SpellSuccess', 'SpellFail', 'TooltipDamageList')
+        main_hand, off_hand = set(), set()
+        for name, entry in self.entries.items():
+            if entry.kind != 'SpellData' or name == 'Projectile_GSL_FirearmAttack':
+                continue
+            if descends(name, 'GSL_OffHand_Flintlock_attack'):
+                off_hand.add(name)
+            elif 'MainRangedWeapon' in ' '.join(self.spell(name).get(field, '') for field in shot_fields):
+                main_hand.add(name)
+        self.assertIn('Zone_GSL_Scattershot', main_hand)
+        self.assertIn('Projectile_GSL_RapidShot', main_hand)
+        self.assertEqual(len(off_hand), 3)
+
+        sound_passives = {
+            'GSL_Firearm_ShotSound_MainHand': (main_hand, 'GSL_FIREARM_SHOT_SOUND'),
+            'GSL_Firearm_BlunderbussSound_MainHand': (main_hand, 'GSL_BLUNDERBUSS_SHOT_SOUND'),
+            'GSL_Firearm_ShotSound_OffHand': (off_hand, 'GSL_FIREARM_SHOT_SOUND'),
+        }
+        bank = ET.parse(PUBLIC / 'Content' / '[PAK]_GSL_Firearm_Sounds' / '_merged.lsx')
+        bank_sources = {
+            resource.find('attribute[@id="ID"]').get('value'):
+                resource.find('attribute[@id="SourceFile"]').get('value')
+            for resource in bank.iter('node') if resource.get('id') == 'Resource'
+        }
+        for passive, (spells, status) in sound_passives.items():
+            with self.subTest(passive=passive):
+                fields = self.entries[passive].fields
+                self.assertIn('IsHidden', fields['Properties'])
+                self.assertEqual(fields['StatsFunctorContext'], 'OnCast')
+                self.assertEqual(set(re.findall(r"SpellId\('([^']+)'\)", fields['Conditions'])), spells)
+                self.assertEqual(fields['StatsFunctors'], f'ApplyStatus(SELF,{status},100,0)')
+
+                status_fields = self.entries[status].fields
+                self.assertEqual(status_fields['StatusType'], 'EFFECT')
+                mei = ET.parse(PUBLIC / 'MultiEffectInfos' / f"{status_fields['StatusEffect']}.lsx")
+                effect = next(
+                    attribute.get('value') for attribute in mei.iter('attribute')
+                    if attribute.get('id') == 'EffectResourceGuid'
+                )
+                source = bank_sources[effect]
+                self.assertTrue(source.endswith('.lsfx'))
+                self.assertTrue((ROOT / 'GunslingerClass' / Path(source).with_suffix('.lsx')).is_file())
+
+        for weapon, hand, passive in (
+            ('WPN_GSL_Flintlock', 'PassivesMainHand', 'GSL_Firearm_ShotSound_MainHand'),
+            ('WPN_GSL_Flintlock', 'PassivesOffHand', 'GSL_Firearm_ShotSound_OffHand'),
+            ('WPN_GSL_Blunderbuss', 'PassivesMainHand', 'GSL_Firearm_BlunderbussSound_MainHand'),
+            ('WPN_GSL_Musket', 'PassivesMainHand', 'GSL_Firearm_ShotSound_MainHand'),
+        ):
+            with self.subTest(weapon=weapon, hand=hand):
+                self.assertIn(passive, self.entries[weapon].fields[hand].split(';'))
+        for entry in self.entries.values():
+            if 'PassivesOffHand' in entry.fields and 'GSL_Flintlock_OffHand' in entry.fields['PassivesOffHand']:
+                with self.subTest(override=entry.name):
+                    self.assertIn('GSL_Firearm_ShotSound_OffHand', entry.fields['PassivesOffHand'].split(';'))
+
     def test_projectile_without_inheritance_is_detected(self) -> None:
-        self.entries['Projectile_GSL_InfusedRounds'].parent = ''
+        self.entries['Projectile_GSL_RapidShot'].parent = ''
+        self.entries['Projectile_GSL_RapidShot'].fields['SpellType'] = 'Projectile'
         errors = validation_errors(self.entries, self.external)
-        self.assertTrue(any('Projectile_GSL_InfusedRounds: missing projectile Trajectories' in error for error in errors))
+        self.assertTrue(any('Projectile_GSL_RapidShot: missing projectile Trajectories' in error for error in errors))
 
     def test_local_spell_unlocks_and_lists_exist(self) -> None:
         for entry in self.entries.values():
@@ -159,6 +239,15 @@ class SpellDataTests(unittest.TestCase):
         errors = validation_errors(self.entries, self.external)
         self.assertTrue(any('unconditional reload effect left in SpellSuccess' in error for error in errors))
 
+    def test_natural_one_misfires_the_attacking_firearm(self) -> None:
+        conditions = self.entries['GSL_Firearm_Misfire_Passive'].fields['Conditions']
+        self.assertEqual(conditions, 'IsCriticalMiss() and AttackedWithPassiveSourceWeapon()')
+        double_load = self.entries['GSL_DoubleLoad_Misfire'].fields['Conditions']
+        self.assertIn('IsCriticalMiss()', double_load)
+        for condition in (conditions, double_load):
+            self.assertNotIn('GetActiveWeapon', condition)
+            self.assertNotIn('IsRangedWeaponAttack', condition)
+
     def test_unbundled_firearm_helper_is_detected(self) -> None:
         self.entries['GSL_Firearm_Misfire_Passive'].fields['Conditions'] = 'IsFirearmAttack()'
         self.assertTrue(any(
@@ -167,7 +256,7 @@ class SpellDataTests(unittest.TestCase):
         ))
 
     def test_inheritance_cycles_are_detected(self) -> None:
-        self.entries['Shout_GSL_ClassAction'].parent = 'Shout_GSL_RapidShot'
+        self.entries['Shout_GSL_ClassAction'].parent = 'Shout_GSL_MercilessShot'
         self.assertTrue(any('inheritance cycle' in error for error in validation_errors(self.entries, self.external)))
 
     def test_dangling_status_reference_is_detected(self) -> None:
@@ -194,14 +283,20 @@ class SpellDataTests(unittest.TestCase):
                 self.assertIn(f'AttackSpellOverride({attack},', boosts)
                 weapon_name = 'Flintlock' if weapon == 'OffhandFlintlock' else weapon
                 slot = 'PassivesOffHand' if weapon == 'OffhandFlintlock' else 'PassivesMainHand'
-                self.assertEqual(self.entries[f'WPN_GSL_{weapon_name}'].fields[slot], passive)
+                self.assertIn(passive, self.entries[f'WPN_GSL_{weapon_name}'].fields[slot].split(';'))
 
     def test_reload_restores_correct_equipped_pool(self) -> None:
         for weapon, (resource, _, passive) in AMMO.items():
             with self.subTest(weapon=weapon):
                 fields = self.spell(f'Shout_GSL_Reload_{weapon}')
-                self.assertEqual(fields['SpellProperties'], f'RestoreResource({resource},100%,0)')
-                self.assertEqual(fields['UseCosts'], 'BonusActionPoint:1')
+                bonus = "HasActionResource('BonusActionPoint',1,0,false,false,context.Source)"
+                action = "HasActionResource('ActionPoint',1,0,false,false,context.Source)"
+                self.assertEqual(fields['SpellProperties'], f'RestoreResource({resource},100%,0);'
+                                 f'IF(not {bonus}):UseActionResource(SELF,ActionPoint,1,0);'
+                                 f'IF({bonus}):UseActionResource(SELF,BonusActionPoint,1,0)')
+                self.assertEqual(fields['UseCosts'], '')
+                self.assertEqual(fields['TooltipUseCosts'], 'BonusActionPoint:1')
+                self.assertIn(f'({bonus} or {action})', fields['RequirementConditions'])
                 self.assertIn(f"HasPassive('{passive}',context.Source)", fields['RequirementConditions'])
                 self.assertFalse(fields.get('SpellRoll'))
                 self.assertIn('IsDefaultWeaponAction', fields['SpellFlags'].split(';'))
@@ -220,6 +315,33 @@ class SpellDataTests(unittest.TestCase):
         }
         self.assertTrue({value[0] for value in AMMO.values()} <= names)
 
+    def test_base_class_has_a_progression_row_for_every_level(self) -> None:
+        rows = {}
+        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
+            attributes = {attribute.get('id'): attribute.get('value') for attribute in node.findall('attribute')}
+            if attributes['TableUUID'] == '68521742-30c0-45eb-b95d-48e50e0c0828':
+                self.assertEqual(attributes['Name'], 'Gunslinger')
+                self.assertEqual(attributes['ProgressionType'], '0')
+                rows.setdefault(int(attributes['Level']), []).append(attributes['UUID'])
+        self.assertEqual(sorted(rows), list(range(1, 21)), 'a missing base level blacks out the level-up screen')
+
+    def test_quick_reload_makes_full_reload_a_bonus_action(self) -> None:
+        self.assertEqual(self.spell('Shout_GSL_Reload_DualFlintlock')['UseCosts'], 'ActionPoint:1')
+        self.assertEqual(
+            self.entries['GSL_Feat_QuickReload_Marker'].fields['Boosts'],
+            "UnlockSpellVariant(SpellId('Shout_GSL_Reload_DualFlintlock'),"
+            'ModifyUseCosts(Replace,BonusActionPoint,1,0,ActionPoint))',
+        )
+        feat = ET.parse(PUBLIC / 'Feats' / 'Feats.lsx').find('.//attribute[@value="GSL_Feat_QuickReload"]/..')
+        self.assertIn('GSL_Feat_QuickReload_Marker', feat.find('attribute[@id="PassivesAdded"]').get('value'))
+
+    def test_spell_lists_use_semicolon_separators(self) -> None:
+        for path in (PUBLIC / 'Lists' / 'SpellLists.lsx', PUBLIC.with_name('GunslingerClass_5eSpellsCompat') / 'Lists' / 'SpellLists.lsx'):
+            for spells in ET.parse(path).iterfind('.//attribute[@id="Spells"]'):
+                value = spells.get('value')
+                self.assertNotIn(',', value, f'{path.name}: BG3 spell lists are ";"-separated')
+                self.assertTrue(all(re.fullmatch(r'\w+', name) for name in value.split(';')), value)
+
     def test_reload_actions_are_equipment_grants_not_class_grants(self) -> None:
         for path in (PUBLIC / 'Lists' / 'SpellLists.lsx', PUBLIC / 'Progressions' / 'Progressions.lsx'):
             text = path.read_text(encoding='utf-8')
@@ -237,14 +359,14 @@ class SpellDataTests(unittest.TestCase):
 
     def test_firearm_class_actions_listed_on_weapon_tooltips(self) -> None:
         expected = {
-            ('Flintlock', 'BoostsOnEquipMainHand'): ['GSL_MainHand_Flintlock_attack', 'Shout_GSL_Reload_Flintlock'],
+            ('Flintlock', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Flintlock'],
             ('Flintlock', 'BoostsOnEquipOffHand'): [
-                'GSL_OffHand_Flintlock_attack', 'Shout_GSL_Reload_OffhandFlintlock', 'Shout_GSL_Reload_DualFlintlock',
+                'Shout_GSL_Reload_OffhandFlintlock', 'Shout_GSL_Reload_DualFlintlock',
             ],
             ('Blunderbuss', 'BoostsOnEquipMainHand'): [
-                'GSL_MainHand_Blunderbuss_attack', 'Shout_GSL_Reload_Blunderbuss', 'Zone_GSL_Scattershot',
+                'Shout_GSL_Reload_Blunderbuss', 'Zone_GSL_Scattershot',
             ],
-            ('Musket', 'BoostsOnEquipMainHand'): ['GSL_MainHand_Musket_attack', 'Shout_GSL_Reload_Musket'],
+            ('Musket', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Musket'],
         }
         for (weapon, field), spells in expected.items():
             with self.subTest(weapon=weapon, field=field):
@@ -364,8 +486,16 @@ class SpellDataTests(unittest.TestCase):
             fields['SpellRoll'],
             'not SavingThrow(Ability.Dexterity,8 + context.Source.ProficiencyBonus + GetModifier(context.Source.Dexterity))',
         )
-        self.assertEqual(fields['SpellSuccess'], 'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)')
-        self.assertEqual(fields['SpellFail'], 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)')
+        self.assertEqual(fields['SpellSuccess'], 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)')
+        self.assertEqual(fields['SpellFail'], 'ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)')
+        self.assertEqual(fields['TooltipOnSave'], '')
+        for variant in ('PoisonMist', 'GargantuanScattershot', 'PunchDrunkScattershot'):
+            with self.subTest(variant=variant):
+                spell = self.spell(f'Zone_GSL_{variant}_Blunderbuss')
+                self.assertNotIn('DealDamage', spell['SpellFail'])
+                for effect in spell['SpellSuccess'].split(';'):
+                    if 'DealDamage(' in effect:
+                        self.assertIn('/2,', effect)
         self.assertIn("HasPassive('GSL_Blunderbuss_MainHand',context.Source)", fields['RequirementConditions'])
         self.assertIn("not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Source)", fields['RequirementConditions'])
         self.assertIn('UnlockSpell(Zone_GSL_Scattershot)', self.equip_boosts('Blunderbuss'))
@@ -408,19 +538,61 @@ class SpellDataTests(unittest.TestCase):
         self.entries['Projectile_GSL_FirearmAttack'].fields['SpellFlags'] += ';CanDualWield'
         self.assertTrue(any('bundled offhand shot bypasses' in error for error in validation_errors(self.entries, self.external)))
 
-    def test_infused_rounds_do_not_inherit_physical_or_offhand_damage(self) -> None:
-        for suffix, dice in (('', 1), ('_2', 2), ('_3', 3), ('_Unstable', 5)):
-            with self.subTest(suffix=suffix):
-                fields = self.spell(f'Projectile_GSL_InfusedRounds{suffix}')
-                self.assertEqual(fields['SpellSuccess'], f'DealDamage({dice}d4,Force)')
-                self.assertEqual(fields['TooltipDamageList'], f'DealDamage({dice}d4,Force)')
-                self.assertEqual(fields['SpellFail'], '')
-                self.assertNotIn('MainRangedWeapon', fields['SpellProperties'])
-                self.assertEqual(fields['UseCosts'], 'BonusActionPoint:1')
-                self.assertIn('EquipmentSlot.RangedMainHand', fields['RequirementConditions'])
-        unstable = self.spell('Projectile_GSL_InfusedRounds_Unstable')
-        self.assertIn('RollDieAgainstDC(DiceType.d4,4)', unstable['SpellProperties'])
-        self.assertIn('UseSpell(SELF,Zone_GSL_UnstableBackfire,true,true,true)', unstable['SpellProperties'])
+    def test_infused_rounds_is_a_tiered_element_buff_group(self) -> None:
+        base = ['Fire', 'Thunder', 'Lightning', 'Acid', 'Cold', 'Poison']
+        elements = base + ['Force', 'Radiant', 'Necrotic']
+        container = self.spell('Shout_GSL_InfusedRounds')
+        self.assertEqual(
+            container['ContainerSpells'].split(';'),
+            [f'Shout_GSL_InfusedRounds_{e}' for e in elements] + ['Shout_GSL_InfusedRounds_Unstable'],
+        )
+        self.assertIn('IsLinkedSpellContainer', container['SpellFlags'])
+        self.assertEqual(
+            self.entries['GSL_ArcaneGunsman_InfusedRoundsUnlock'].fields['Boosts'],
+            'UnlockSpell(Shout_GSL_InfusedRounds)',
+        )
+        for passive in ('ImprovedInfusedRounds', 'MasteredInfusedRounds', 'UnstableInfusedRoundsUnlock'):
+            self.assertNotIn('Boosts', self.entries[f'GSL_ArcaneGunsman_{passive}'].fields)
+        for old in ('', '_2', '_3', '_Unstable'):
+            self.assertNotIn(f'Projectile_GSL_InfusedRounds{old}', self.entries)
+        unlocks = {'Force': 'Improved', 'Radiant': 'Mastered', 'Necrotic': 'Mastered'}
+        for element in elements:
+            with self.subTest(element=element):
+                spell = self.spell(f'Shout_GSL_InfusedRounds_{element}')
+                status = f'GSL_INFUSED_ROUNDS_{element.upper()}'
+                self.assertEqual(spell['SpellContainerID'], 'Shout_GSL_InfusedRounds')
+                self.assertEqual(spell['UseCosts'], 'BonusActionPoint:1')
+                self.assertEqual(
+                    spell['SpellProperties'],
+                    f'ApplyStatus(SELF,GSL_INFUSED_ROUNDS,100,10);ApplyStatus(SELF,{status},100,10)',
+                )
+                if element in unlocks:
+                    self.assertEqual(
+                        spell['RequirementConditions'],
+                        f"HasPassive('GSL_ArcaneGunsman_{unlocks[element]}InfusedRounds',context.Source)",
+                    )
+                else:
+                    self.assertEqual(spell.get('RequirementConditions', ''), '')
+                fields = self.entries[status].fields
+                self.assertEqual(fields['StackId'], 'GSL_INFUSED_ROUNDS_ELEMENT')
+                boosts = fields['Boosts'].split(';')
+                self.assertEqual(
+                    [re.search(r':CharacterWeaponDamage\((\w+),(\w+)\)$', b).groups() for b in boosts],
+                    [(dice, element) for dice in ('1d4', '2d4', '3d4', '5d4')],
+                )
+                for boost in boosts:
+                    self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", boost)
+        unstable = self.spell('Shout_GSL_InfusedRounds_Unstable')
+        self.assertIn("HasPassive('GSL_ArcaneGunsman_UnstableInfusedRoundsUnlock',context.Source)", unstable['RequirementConditions'])
+        self.assertIn("HasStatus('GSL_INFUSED_ROUNDS',context.Source)", unstable['RequirementConditions'])
+        self.assertEqual(unstable['SpellProperties'], 'ApplyStatus(SELF,GSL_INFUSED_ROUNDS_UNSTABLE,100,10)')
+        self.assertEqual(self.entries['GSL_INFUSED_ROUNDS_UNSTABLE'].fields['Passives'], 'GSL_InfusedRounds_UnstableBackfire')
+        backfire = self.entries['GSL_InfusedRounds_UnstableBackfire'].fields
+        self.assertEqual(backfire['StatsFunctorContext'], 'OnAttack')
+        self.assertEqual(
+            backfire['StatsFunctors'],
+            'IF(RollDieAgainstDC(DiceType.d4,4)):UseSpell(SELF,Zone_GSL_UnstableBackfire,true,true,true)',
+        )
         explosion = self.spell('Zone_GSL_UnstableBackfire')
         self.assertEqual(explosion['SpellType'], 'Shout')
         self.assertEqual(explosion['AreaRadius'], '1.5')

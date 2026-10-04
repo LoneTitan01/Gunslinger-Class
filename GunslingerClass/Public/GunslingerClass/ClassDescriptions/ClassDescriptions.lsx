@@ -12,7 +12,7 @@
                     <attribute id="CommonHotbarColumns" type="int32" value="2"/>
                     <attribute id="DisplayName" type="TranslatedString" handle="h2d64fb40gecc2g56cfg83c8ge48b80e74c1a" version="1"/>
                     <attribute id="Description" type="TranslatedString" handle="h42e78561gf8c0g5553gbe74gf8eaa40968ea" version="1"/>
-                    <attribute id="HpPerLevel" type="int32" value="4"/>
+                    <attribute id="HpPerLevel" type="int32" value="5"/>
                     <attribute id="IsCompatibleWithClassTitles" type="bool" value="true"/>
                     <attribute id="ItemsHotbarColumns" type="int32" value="2"/>
                     <attribute id="LearningStrategy" type="uint8" value="1"/>

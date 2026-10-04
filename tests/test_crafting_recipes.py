@@ -207,7 +207,6 @@ class CraftingRecipeTests(unittest.TestCase):
                     crafted_weapon,
                 )
                 for ability in (
-                    'UnlockSpell(GSL_MainHand_Blunderbuss_attack)',
                     'UnlockSpell(Shout_GSL_Reload_Blunderbuss)',
                     'UnlockSpell(Zone_GSL_Scattershot)',
                 ):
@@ -347,7 +346,7 @@ class CraftingRecipeTests(unittest.TestCase):
             ),
             'Zone_GSL_GargantuanScattershot_Blunderbuss': (
                 'ActionPoint:1;GunslingerBlunderbussAmmo:1',
-                'DealDamage(1d6,Bludgeoning)',
+                'DealDamage(1d6/2,Bludgeoning)',
             ),
             'Zone_GSL_PunchDrunkScattershot_Blunderbuss': (
                 'ActionPoint:1;GunslingerBlunderbussAmmo:1',
@@ -1609,7 +1608,7 @@ class CraftingRecipeTests(unittest.TestCase):
             fused = read_entry(data_dir / 'Weapon.txt', 'entry', f'WPN_GSL_Musket_{name}')
             self.assertEqual(fused['DefaultBoosts'], boosts)
             self.assertEqual(fused['Rarity'], rarity)
-            self.assertIn('UnlockSpell(GSL_MainHand_Musket_attack)', fused['BoostsOnEquipMainHand'])
+            self.assertNotIn('UnlockSpell(GSL_MainHand_Musket_attack)', fused['BoostsOnEquipMainHand'])
             self.assertIn('UnlockSpell(Shout_GSL_Reload_Musket)', fused['BoostsOnEquipMainHand'])
         witchbreaker = read_entry(data_dir / 'Weapon.txt', 'entry', 'WPN_GSL_Musket_Witchbreaker')
         self.assertIn('MAG_Spellbreaker_Battleaxe_Passive', witchbreaker['PassivesOnEquip'])
@@ -1694,7 +1693,7 @@ class CraftingRecipeTests(unittest.TestCase):
                 )
                 self.assertNotIn('BoostsOnEquipMainHand', fused)
                 base_flintlock = read_entry(weapon_stats, 'entry', 'WPN_GSL_Flintlock')
-                self.assertIn('UnlockSpell(GSL_MainHand_Flintlock_attack)', base_flintlock['BoostsOnEquipMainHand'])
+                self.assertNotIn('UnlockSpell(GSL_MainHand_Flintlock_attack)', base_flintlock['BoostsOnEquipMainHand'])
                 self.assertIn('UnlockSpell(Shout_GSL_Reload_Flintlock)', base_flintlock['BoostsOnEquipMainHand'])
 
                 disassembly = read_entry(
@@ -1926,7 +1925,7 @@ class CraftingRecipeTests(unittest.TestCase):
                     fused['RootTemplate'],
                     template.find("attribute[@id='MapKey']").get('value'),
                 )
-                self.assertIn(
+                self.assertNotIn(
                     'UnlockSpell(GSL_MainHand_Flintlock_attack)',
                     base_flintlock['BoostsOnEquipMainHand'],
                 )
@@ -2564,7 +2563,6 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertEqual(fused['Rarity'], 'Uncommon')
         self.assertEqual(
             fused['BoostsOnEquipMainHand'],
-            'UnlockSpell(GSL_MainHand_Flintlock_attack);'
             'UnlockSpell(Shout_GSL_Reload_Flintlock);'
             'UnlockSpell(Projectile_GSL_Bloodletting_Flintlock)',
         )
@@ -2728,7 +2726,6 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('WeaponDamage(1d4,Cold)', cold_snap['DefaultBoosts'])
         self.assertEqual(
             cold_snap['BoostsOnEquipOffHand'],
-            'UnlockSpell(GSL_OffHand_Flintlock_attack);'
             'UnlockSpell(Shout_GSL_Reload_OffhandFlintlock);'
             'UnlockSpell(Shout_GSL_Reload_DualFlintlock);AC(1)',
         )
