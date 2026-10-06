@@ -399,13 +399,28 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 
 The Marksman specializes in accurate, high-range attacks that deal heavy damage. This subclass is strongest when it can keep enemies at a distance, with few options for close-quarters combat.
 
-| Level | Marksman features |
-| --- | --- |
-| 3 | **Lock-on:** As a bonus action, once per short rest, lock on to a creature (concentration). Your firearm attacks deal extra damage equal to your proficiency bonus to it. If it dies while you concentrate, you can lock on to a new target for a bonus action without using another short rest use, like Hunter's Mark. |
-| 7 | **Long Shot:** Once per turn, deal additional damage based on the distance to your target (see range damage table below). |
-| 11 | **Stable Shot:** Without spending an action, sacrifice 20 feet of movement to gain advantage on your next firearm attack. |
-| 15 | **Pinpoint Accuracy:** Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more. |
-| 18 | **Headshot:** Spend 5 grit for an automatic critical hit. |
+| Level | Gunslinger features | Marksman features |
+| --- | --- | --- |
+| 1 | **Gunslinger's Draw** | — |
+| 2 | — | — |
+| 3 | Choose a subclass; choose 2 grit abilities | **Lock-on:** As a bonus action, once per short rest, lock on to a creature (concentration). Your firearm attacks deal extra damage equal to your proficiency bonus to it. If it dies while you concentrate, you can lock on to a new target for a bonus action without using another short rest use, like Hunter's Mark. |
+| 4 | **Tinkerer** | — |
+| 5 | Choose 1 shared grit ability | — |
+| 6 | **Second Attack**; **Expertise** (1 skill) | — |
+| 7 | — | **Long Shot:** Once per turn, deal additional damage based on the distance to your target (see range damage table below). |
+| 8 | — | — |
+| 9 | Choose 1 shared grit ability | — |
+| 10 | **Master Tinkerer** | — |
+| 11 | — | **Stable Shot:** Without spending an action, sacrifice 20 feet of movement to gain Advantage on your next firearm attack. |
+| 12 | — | — |
+| 13 | Choose 1 shared grit ability | — |
+| 14 | **Improved Critical** | — |
+| 15 | — | **Pinpoint Accuracy:** Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more. |
+| 16 | — | — |
+| 17 | Choose 1 shared grit ability | — |
+| 18 | — | **Headshot:** Spend 5 grit for an automatic critical hit. |
+| 19 | — | — |
+| 20 | **Deadeye** | — |
 
 **Long Shot Damage** (90-120 ft damage values are provisional)
 
@@ -452,13 +467,28 @@ The Desperado makes greater use of grit, spending it on special effects and vers
 
 The Arcane Gunsman combines firearms and magic. It can imbue shots with magical effects, use special ammunition, and gain spellcasting benefits through its firearm. Intelligence is the Arcane Gunsman's spellcasting ability. Its spell slots follow the D&D 5e half-caster progression, keyed to Gunslinger level; spell selection, ammunition, and firearm bonuses are still to be defined.
 
-| Level | Arcane Gunsman features |
-| --- | --- |
-| 3 | Gain Arcane Gunsman spellcasting (see spell slot table): learn 2 cantrips and 3 1st-level spells<br>**Infused Rounds:** Spend a bonus action to infuse your rounds for 10 turns with Fire, Thunder, Lightning, Acid, Cold, or Poison; firearm attacks deal an extra 1d4 damage of that type |
-| 7 | **Improved Infused Rounds:** Infused Rounds damage increases to 2d4 and Force is added to the element choices<br>**Arcane Reload:** Bonus action, concentration: your main-hand firearm reloads one bullet at the start of each of your turns |
-| 11 | **Mastered Infused Rounds:** Infused Rounds damage increases to 3d4 and Radiant and Necrotic are added to the element choices<br>**Smart Shooting:** Passive; add your Intelligence modifier to firearm attack and damage rolls |
-| 15 | **Unstable Infused Rounds:** A toggleable passive: while it is on and an infusion is active, your rounds deal 5d4 of their element, but each firearm attack has a 25% chance to blow up in your face, dealing 3d4 Force damage in a 5-foot radius centered on you. |
-| 18 | **Spellstrike Shooter:** When you cast a leveled spell using your action, you can make one weapon attack without spending an action. |
+| Level | Gunslinger features | Arcane Gunsman features |
+| --- | --- | --- |
+| 1 | **Gunslinger's Draw** | — |
+| 2 | — | — |
+| 3 | Choose a subclass; choose 2 grit abilities | Gain Arcane Gunsman spellcasting (see spell slot table): learn 2 cantrips and 3 1st-level spells. **Infused Rounds:** Spend a bonus action to infuse your rounds for 10 turns with Fire, Thunder, Lightning, Acid, Cold, or Poison; firearm attacks deal an extra 1d4 damage of that type. |
+| 4 | **Tinkerer** | — |
+| 5 | Choose 1 shared grit ability | — |
+| 6 | **Second Attack**; **Expertise** (1 skill) | — |
+| 7 | — | **Improved Infused Rounds:** Damage increases to 2d4 and Force is added to the element choices. **Arcane Reload:** Bonus action, concentration; your main-hand firearm reloads one bullet at the start of each of your turns. |
+| 8 | — | — |
+| 9 | Choose 1 shared grit ability | — |
+| 10 | **Master Tinkerer** | — |
+| 11 | — | **Mastered Infused Rounds:** Damage increases to 3d4; add Radiant and Necrotic choices. **Smart Shooting:** Add your Intelligence modifier to firearm attack and damage rolls. |
+| 12 | — | — |
+| 13 | Choose 1 shared grit ability | — |
+| 14 | **Improved Critical** | — |
+| 15 | — | **Unstable Infused Rounds:** Toggleable; while active with an infusion, rounds deal 5d4 of their element, but each firearm attack has a 25% chance to backfire for 3d4 Force damage in a 5-foot radius. |
+| 16 | — | — |
+| 17 | Choose 1 shared grit ability | — |
+| 18 | — | **Spellstrike Shooter:** When you cast a leveled spell using your action, you can make one weapon attack without spending an action. |
+| 19 | — | — |
+| 20 | **Deadeye** | — |
 
 **Arcane Gunsman Spell Slots**
 
