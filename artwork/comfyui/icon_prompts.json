@@ -83,7 +83,8 @@
     "GSL_DoubleOrNothing": "A spinning silver coin split in half by a bullet",
     "GSL_QuickOnTheDraw": "A pistol half-drawn from a holster with motion blur and a spark",
     "GSL_DeadMansHand": "A poker hand of black aces and eights fanned beside a flintlock pistol",
-    "GSL_AllIn": "A mountain of poker chips shoved forward with bullets scattered among them",
+    "GSL_RicochetShot": "exactly three small dark enemy bust silhouettes, one at upper left, one at upper right, one at lower center, no other figures; a single clearly visible small round golden musket ball flies on an angular zig-zag path between all three silhouettes, with a thick bright ivory trail and sharp corners; simple flat graphic icon on a plain charcoal background, no scene, no plaque, no frame, no ground, no shadows, no cartridge, no long projectile, no smoke, no wavy trail",
+    "GSL_AllIn": "a mountain of poker chips shoved forward with bullets scattered among them",
     "GSL_DesperadosFortune": "A golden horseshoe wrapped around a pistol lock with sparkles",
     "GSL_HighNoon": "A blazing sun directly overhead casting a single long shadow of a gunslinger"
   },

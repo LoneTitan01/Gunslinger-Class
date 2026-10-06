@@ -46,7 +46,7 @@ action retains its separate ammunition pool.
 | Quickload | 3 | Bonus action, 1 grit; refills every wielded gun's loaded ammunition. | - |
 | Flash Powder | 3 | Action, 1 grit; 1.5 m radius Con save or Blinded 1 turn. | - |
 | Violent Shot | 9 | Linked 1/2/3-grit attacks usable with any main-hand firearm, adding 1d8/2d6/3d4 per grit by gun. | Server rolls d20 after the cast; d20 <= tier misfires the gun through the normal Misfired/broken path. |
-| Dazing Shot | 9 | 2 grit attack; Con save or Dazed 1 turn. | - |
+| Stunning Shot | 9 | 2 grit attack; Con save or Stunned 1 turn. | - |
 | Piercing Round | 9 | 2 grit, 1 bullet; 18 m line, one attack roll per creature. | Attack roll per target instead of a save. |
 | Hair Trigger | 9 | Native interrupt, Reaction + 1 grit, when an enemy within 9 m attacks an ally. | Ally-attack trigger ordering needs a game check. |
 | Grit and Steel | 13 | Native failed-save reroll interrupt, 2 grit, once per short rest. | - |
@@ -59,13 +59,13 @@ action retains its separate ammunition pool.
 | Roll the Bones | D7 | Bonus action, 1 grit; server d6 picks Bust/Hit/Jackpot status for 12 s. | Bust is -1d4 to hit, not lost grit. Jackpot restores 1 grit. |
 | Duck and Weave | D7 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
 | Cheat Death's Odds | D7 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
-| Hot Hand | D7 | Native `OnCastHit` interrupt, Reaction + 2 grit, on your own firearm hit: next firearm attack crits on 18-20. | Same trigger shape as Double or Nothing; Cheat Death's Odds refunds through the interrupt functor. |
+| Hot Hand | D7 | Native `OnCastHit` interrupt, 2 grit and no Reaction cost, on your own firearm hit: next firearm attack crits on 18-20. | Same trigger shape as Double or Nothing; Cheat Death's Odds refunds through the interrupt functor. |
 | Double or Nothing | D11 | 2 grit; server d20 at cast start, 11+ doubles weapon damage, otherwise the gun misfires afterwards. | The follow-up shot has no attack roll, so its conditional damage is in `SpellProperties`; `SpellSuccess` never resolved without a roll. |
 | Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks. Cancels the attack (`Counterspell()`), refunds it to the attacker, then shoots. | Triggers on an attack, not on initiative. |
 | Ricochet Shot | D11 | Action, 3 grit and 1 bullet; weapon attack chains from the first enemy to up to three more, dealing half damage on each ricochet. | Follows the vanilla Arrow of Ricochet projectile chain. |
 | Dead Man's Hand | D15 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
 | All In | D18 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
-| Desperado's Fortune | D18 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
+| Desperado's Fortune | D15 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
 | High Noon | D18 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
 
 "D" marks Desperado-only unlock levels.
@@ -77,21 +77,21 @@ ability defect:
 
 - All subclasses: two selected abilities and three maximum grit at level 3. The
   level 3 pick is on each subclass's level 3 row, so it follows subclass choice.
-- Base Gunslinger (every subclass): one additional choice at 5/9/13/17 from the
-  shared pools. Marksman/Arcane Gunsman maximum increases at 7/11/15/18,
-  reaching seven.
+- Marksman and Arcane Gunsman: one additional choice at 5/9/13/17 from the
+  shared pools. Their maximum increases at 7/11/15/18, reaching seven.
 - Desperado: an extra subclass choice at 7/11/15/18, so it picks a grit ability
   every other level from 3 to 18; maximum increases at 6/9/12/15/18, reaching
-  eight. Only the Desperado's own picks (3/7/11/15/18) offer its exclusive
-  abilities, because base-class picks share one list across subclasses.
+  eight. The Desperado uses merged shared and subclass-specific pools at
+  3/5/7/9/11/13/15/17/18, including Desperado abilities available at the time.
 - Tinkerer is no longer in any grit pool (it's a level 4 class feature). Fanning Fire
   is in the level 7+ pools, so it's first offered at level 7 (Desperado) or 9
-  (every subclass's base pick).
+  (Marksman/Arcane Gunsman).
 - Grit Adept gives +2 maximum grit and a level-3-pool choice.
+- There are no optional grit-ability replacement choices on level-up.
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
   plus three new abilities at 3; Double Load, Close Call plus four more at 7;
-  Last Word plus two at 11; two at 15; and All In, Desperado's Fortune and High
-  Noon at 18. They are no longer granted automatically.
+  Last Word plus two at 11; Dead Man's Hand and Desperado's Fortune at 15; and
+  All In and High Noon at 18. They remain selectable unlock choices.
 - `GSL_GritRecovery` uses native firearm-hit/critical/killing-blow conditions to
   restore one grit. A hit that is both critical and lethal satisfies one OR
   condition, not two independent recovery branches.

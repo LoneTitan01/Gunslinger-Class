@@ -851,7 +851,8 @@ class SpellDataTests(unittest.TestCase):
         self.assertIn('DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)', base['SpellSuccess'])
         self.assertIn('SpawnExtraProjectiles(Projectile_GSL_RicochetShot_Ricochet)', base['SpellSuccess'])
         self.assertEqual(base['SpellFail'], 'SpawnExtraProjectiles(Projectile_GSL_RicochetShot_Ricochet)')
-        self.assertEqual(base['Icon'], 'Item_ARR_Arrow_Of_Ricochet')
+        self.assertEqual(base['Icon'], 'GSL_RicochetShot')
+        self.assertEqual(self.entries['GSL_Desperado_RicochetShotUnlock'].fields['Icon'], 'GSL_RicochetShot')
         self.assertEqual(self.entries['GSL_Desperado_RicochetShotUnlock'].fields['Boosts'],
                          'UnlockSpell(Projectile_GSL_RicochetShot)')
 
@@ -873,6 +874,14 @@ class SpellDataTests(unittest.TestCase):
                     self.assertTrue(fields['SpellSuccess'].endswith(expected_next))
                 else:
                     self.assertEqual(fields['ExtraProjectileTargetConditions'], '')
+
+    def test_stunning_shot_applies_stun_for_one_turn_on_failed_save(self) -> None:
+        spell = self.spell('Projectile_GSL_DazingShot')
+        self.assertIn(
+            'IF(not SavingThrow(Ability.Constitution,8 + context.Source.ProficiencyBonus + '
+            'GetModifier(context.Source.Dexterity))):ApplyStatus(STUNNED,100,1)',
+            spell['SpellSuccess'],
+        )
 
     def test_arcane_reload_is_a_concentration_weapon_enchantment(self) -> None:
         spell = self.spell('Shout_GSL_ArcaneReload')

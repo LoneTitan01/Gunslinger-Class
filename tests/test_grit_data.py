@@ -177,14 +177,15 @@ class GritDataTests(unittest.TestCase):
                     self.assertIn(f'UseActionResource(SELF,{resource},1,0)', spell['SpellProperties'])
         self.assertNotIn('PiercingShot', str(self.fields('Projectile_GSL_RapidShot')))
 
-    def test_double_or_nothing_is_a_reaction_to_a_firearm_hit(self) -> None:
+    def test_double_or_nothing_interrupt_on_firearm_hit_has_no_reaction_cost(self) -> None:
         self.assertEqual(self.fields('GSL_Desperado_DoubleOrNothingUnlock')['Boosts'],
                          'UnlockInterrupt(Interrupt_GSL_DoubleOrNothing)')
         self.assertNotIn('Shout_GSL_DoubleOrNothing', self.entries)
         interrupt = self.fields('Interrupt_GSL_DoubleOrNothing')
         self.assertEqual(interrupt['InterruptContext'], 'OnCastHit')
-        self.assertEqual(interrupt['Cost'], 'ReactionActionPoint:1;GunslingerGrit:2')
-        for condition in ('IsAbleToReact(context.Observer)', 'Self(context.Source,context.Observer)',
+        self.assertEqual(interrupt['Cost'], 'GunslingerGrit:2')
+        self.assertNotIn('IsAbleToReact(context.Observer)', interrupt['Conditions'])
+        for condition in ('Self(context.Source,context.Observer)',
                           'IsWeaponAttack()', 'HasDamageEffectFlag(DamageFlags.Hit)',
                           "not SpellId('Projectile_GSL_DoubleOrNothing')",
                           "not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Observer)"):
@@ -492,10 +493,14 @@ class GritDataTests(unittest.TestCase):
         for subclass in ('Marksman', 'ArcaneGunsman', 'Desperado'):
             third = next(r for r in rows if r['Name'] == subclass and r['Level'] == '3')
             self.assertIn(',2,GritAbility)', third.get('Selectors', ''))
-        # The every-fourth-level picks belong to the base class; subclasses only add the Desperado's extra picks.
+        # Level 5/9/13/17 picks live on subclass rows so the Desperado can use its merged pools.
         base_picks = sorted(int(r['Level']) for r in rows if r['Name'] == 'Gunslinger' and re.search(r'SelectPassives\([^)]*,GritAbility\)', r.get('Selectors', '')))
-        self.assertEqual(base_picks, [5, 9, 13, 17])
-        for subclass, levels in (('Marksman', [3]), ('ArcaneGunsman', [3]), ('Desperado', [3, 7, 11, 15, 18])):
+        self.assertEqual(base_picks, [])
+        for subclass, levels in (
+            ('Marksman', [3, 5, 9, 13, 17]),
+            ('ArcaneGunsman', [3, 5, 9, 13, 17]),
+            ('Desperado', [3, 5, 7, 9, 11, 13, 15, 17, 18]),
+        ):
             own = sorted(int(r['Level']) for r in rows if r['Name'] == subclass and re.search(r'SelectPassives\([^)]*,GritAbility\)', r.get('Selectors', '')))
             self.assertEqual(own, levels, subclass)
         general = {
@@ -514,7 +519,7 @@ class GritDataTests(unittest.TestCase):
             'GSL_Desperado_QuickOnTheDrawUnlock': 11, 'GSL_Desperado_RicochetShotUnlock': 11,
             'GSL_Desperado_DeadMansHandUnlock': 15,
             'GSL_Desperado_AllInUnlock': 18,
-            'GSL_Desperado_DesperadosFortuneUnlock': 18, 'GSL_Desperado_HighNoonUnlock': 18,
+            'GSL_Desperado_DesperadosFortuneUnlock': 15, 'GSL_Desperado_HighNoonUnlock': 18,
         }
         for passive in (*general, *desperado):
             self.assertEqual(self.entries[passive].kind, 'PassiveData', passive)
@@ -532,73 +537,20 @@ class GritDataTests(unittest.TestCase):
                 self.assertEqual({p for p in pool if p in desperado}, expected)
         self.assertLessEqual(set(general) | set(desperado), seen)
 
-    def test_grit_ability_replacement_is_optional_at_every_subclass_level(self) -> None:
-        rows = []
-        for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]'):
-            rows.append({a.get('id'): a.get('value', '') for a in node.findall('attribute')})
-        lists = {}
-        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
-            attrs = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
-            lists[attrs['UUID']] = attrs['Passives'].split(',')
+    def test_optional_grit_ability_replacement_is_removed(self) -> None:
+        progressions = ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx')
+        selectors = [
+            attribute.get('value', '')
+            for attribute in progressions.findall('.//node[@id="Progression"]/attribute[@id="Selectors"]')
+        ]
+        self.assertFalse(any('ReplacePassives' in value or 'GritAbilityReplace' in value for value in selectors))
 
-        shared_pool = {
-            4: '8ac43a03-77f4-433d-952a-82ad94fe929f',
-            **{level: 'c5ceb81f-9c72-5c9b-ac59-9b34836f11c6' for level in range(5, 9)},
-            **{level: '01d5301f-3363-586e-980e-5500c04331f6' for level in range(9, 13)},
-            **{level: '5f9c6cb5-dad9-5bec-805b-48d35ddf4e26' for level in range(13, 17)},
-            **{level: '547d73a4-4847-5212-94ff-0de279651159' for level in range(17, 21)},
-        }
-        desperado_pool = {
-            **{level: 'b6277ce5-4392-5f39-813d-c8034896cf11' for level in range(4, 7)},
-            **{level: '2a4fc9b2-a425-5607-bf0d-4568d25b786b' for level in range(7, 9)},
-            **{level: 'a44c8e66-697d-4d43-9665-76c902db8828' for level in range(9, 11)},
-            **{level: 'c1b08d07-d25b-5843-9f71-3f44fed200d4' for level in range(11, 13)},
-            **{level: 'f1b8d409-aca7-4a06-88ea-c8c05a507974' for level in range(13, 15)},
-            **{level: 'c809d089-fad8-429c-8aa5-f722689afee7' for level in range(15, 17)},
-            17: '875aacc9-a570-4fb0-b323-62496a846fa8',
-            **{level: '24dec295-9139-5c1d-8504-039a62afb38b' for level in range(18, 21)},
-        }
-        general = {
-            'GSL_MercilessShotUnlock': 3, 'GSL_LineEmUpUnlock': 3, 'GSL_RapidShotUnlock': 3,
-            'GSL_BiteTheBulletUnlock': 3, 'GSL_ShotInTheDarkUnlock': 3, 'GSL_RapidRepairUnlock': 3,
-            'GSL_TrickShotUnlock': 3, 'GSL_QuickloadUnlock': 3, 'GSL_FlashPowderUnlock': 3,
-            'GSL_FanningFireUnlock': 9, 'GSL_ViolentShotUnlock': 9, 'GSL_DazingShotUnlock': 9,
-            'GSL_PiercingRoundUnlock': 9, 'GSL_HairTriggerUnlock': 9, 'GSL_GritAndSteelUnlock': 13,
-            'GSL_BulletTimeUnlock': 17, 'GSL_HailOfLeadUnlock': 17, 'GSL_FinalJudgementUnlock': 17,
-        }
-        desperado = {
-            'GSL_Desperado_DesperadosLuckUnlock': 3, 'GSL_Desperado_AnteUpUnlock': 3,
-            'GSL_Desperado_LuckyDrawUnlock': 3, 'GSL_Desperado_TwoGunTangoUnlock': 3,
-            'GSL_Desperado_DoubleLoadUnlock': 7, 'GSL_Desperado_RollTheBonesUnlock': 7,
-            'GSL_Desperado_DuckAndWeaveUnlock': 7, 'GSL_Desperado_CloseCallUnlock': 7,
-            'GSL_Desperado_CheatDeathsOdds': 7, 'GSL_Desperado_HotHandUnlock': 7,
-            'GSL_Desperado_LastWordUnlock': 11, 'GSL_Desperado_DoubleOrNothingUnlock': 11,
-            'GSL_Desperado_QuickOnTheDrawUnlock': 11, 'GSL_Desperado_RicochetShotUnlock': 11,
-            'GSL_Desperado_DeadMansHandUnlock': 15, 'GSL_Desperado_AllInUnlock': 18,
-            'GSL_Desperado_DesperadosFortuneUnlock': 18, 'GSL_Desperado_HighNoonUnlock': 18,
-        }
-        replace_rows = [row for row in rows if 'GritAbilityReplace' in row.get('Selectors', '')]
-        self.assertFalse([row for row in rows if row['Name'] == 'Gunslinger' and 'GritAbilityReplace' in row.get('Selectors', '')])
-        for subclass in ('Marksman', 'ArcaneGunsman', 'Desperado'):
-            subclass_rows = [row for row in replace_rows if row['Name'] == subclass]
-            self.assertEqual(sorted(int(row['Level']) for row in subclass_rows), list(range(4, 21)), subclass)
-            for row in subclass_rows:
-                level = int(row['Level'])
-                operations = re.findall(r'ReplacePassives\(([0-9a-f-]+),1,GritAbilityReplace\)', row['Selectors'])
-                self.assertEqual(len(operations), 1, f'{subclass} level {level}')
-                pool_id = operations[0]
-                self.assertEqual(pool_id, (desperado_pool if subclass == 'Desperado' else shared_pool)[level])
-                pool = lists[pool_id]
-                self.assertEqual(len(pool), len(set(pool)), f'duplicate options in {pool_id}')
-                general_unlocks = dict(general)
-                if subclass == 'Desperado':
-                    general_unlocks['GSL_FanningFireUnlock'] = 7
-                self.assertEqual(
-                    {passive for passive in pool if passive in general},
-                    {passive for passive, unlock_level in general_unlocks.items() if unlock_level <= level},
-                )
-                expected_desperado = {passive for passive, unlock_level in desperado.items() if unlock_level <= level} if subclass == 'Desperado' else set()
-                self.assertEqual({passive for passive in pool if passive in desperado}, expected_desperado)
+        passive_lists = ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx')
+        names = [
+            node.find('./attribute[@id="Name"]').get('value', '')
+            for node in passive_lists.findall('.//node[@id="PassiveList"]')
+        ]
+        self.assertFalse(any('Grit Swap Abilities' in name for name in names))
 
     def test_grit_abilities_are_class_actions(self) -> None:
         spells = set()
@@ -854,12 +806,13 @@ class GritDataTests(unittest.TestCase):
         for status in ('GSL_STABLE_SHOT', 'GSL_HEADSHOT', 'GSL_ANTE_UP', 'GSL_HOT_HAND', 'GSL_DEAD_MANS_HAND', 'GSL_SPELLSHOT_CHARGED'):
             self.assertEqual(self.fields(status)['RemoveEvents'], 'OnAttack')
 
-    def test_hot_hand_is_a_reaction_on_a_firearm_hit(self) -> None:
+    def test_hot_hand_interrupt_on_firearm_hit_has_no_reaction_cost(self) -> None:
         self.assertEqual(self.fields('GSL_Desperado_HotHandUnlock')['Boosts'], 'UnlockInterrupt(Interrupt_GSL_HotHand)')
         interrupt = self.fields('Interrupt_GSL_HotHand')
         self.assertEqual(interrupt['InterruptContext'], 'OnCastHit')
-        self.assertEqual(interrupt['Cost'], 'ReactionActionPoint:1;GunslingerGrit:2')
-        for condition in ('IsAbleToReact(context.Observer)', 'Self(context.Source,context.Observer)',
+        self.assertEqual(interrupt['Cost'], 'GunslingerGrit:2')
+        self.assertNotIn('IsAbleToReact(context.Observer)', interrupt['Conditions'])
+        for condition in ('Self(context.Source,context.Observer)',
                           "IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", 'HasDamageEffectFlag(DamageFlags.Hit)'):
             self.assertIn(condition, interrupt['Conditions'])
         self.assertIn('GSL_CHEAT_DEATHS_ODDS_REFUND', interrupt['Properties'])

@@ -743,7 +743,7 @@ data "Boosts" "UnlockInterrupt(Interrupt_GSL_QuickOnTheDraw)"
 
 new entry "GSL_Desperado_RicochetShotUnlock"
 type "PassiveData"
-data "Icon" "Item_ARR_Arrow_Of_Ricochet"
+data "Icon" "GSL_RicochetShot"
 data "DisplayName" "h00000029g0000g4000g8000g000000000001;1"
 data "Description" "h00000029g0000g4000g8000g000000000002;1"
 data "Properties" "IsHidden"

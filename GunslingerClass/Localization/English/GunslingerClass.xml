@@ -18,8 +18,6 @@
         <content contentuid="h09ae87ecgaf05g403dga3e6g755069659a6b" version="1">Regain one Grit point when you reduce a creature to 0 hit points or a firearm attack critically hits. Once per attack: a critical kill, or several kills from one attack, restore only one Grit point.</content>
         <content contentuid="h89c95599gd041g4989g9669g1a79faefb1f8" version="1">Grit Abilities</content>
         <content contentuid="hccf67ca5g7e59g453cg926fgbadababbbc05" version="1">Choose from the grit abilities unlocked by your Gunslinger levels.</content>
-        <content contentuid="h10000028g0000g4000g8000g000000000001" version="1">Replace a Grit Ability</content>
-        <content contentuid="h10000028g0000g4000g8000g000000000002" version="1">Optionally replace one grit ability you know with another grit ability available to your subclass at this level.</content>
         <content contentuid="he1255b27g0099g4e4fga984gcea34703c58f" version="1">Spell Slots</content>
         <content contentuid="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1">You gain new Arcane Gunsman spell slots. Spell slots are restored after a long rest, and each spell you learn can be cast with any slot of its level or higher.</content>
         <content contentuid="h10000026g0000g4000g8000g000000000001" version="1">Spellcasting</content>
@@ -326,8 +324,8 @@
         <content contentuid="h00000012g0000g4000g8000g000000000006" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra 1d8 damage with a Flintlock, 2d6 with a Blunderbuss or 3d4 with a Musket. Afterwards roll a d20: on a result of 1 or lower, the firearm misfires.</content>
         <content contentuid="h00000012g0000g4000g8000g000000000007" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra 2d8 damage with a Flintlock, 4d6 with a Blunderbuss or 6d4 with a Musket. Afterwards roll a d20: on a result of 2 or lower, the firearm misfires.</content>
         <content contentuid="h00000012g0000g4000g8000g000000000008" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra 3d8 damage with a Flintlock, 6d6 with a Blunderbuss or 9d4 with a Musket. Afterwards roll a d20: on a result of 3 or lower, the firearm misfires.</content>
-        <content contentuid="h00000013g0000g4000g8000g000000000001" version="1">Dazing Shot</content>
-        <content contentuid="h00000013g0000g4000g8000g000000000002" version="1">Spend 2 grit and fire at the head. On a hit, the target must succeed a Constitution &lt;LSTag Tooltip="SavingThrow"&gt;saving throw&lt;/LSTag&gt; or be &lt;LSTag Type="Status" Tooltip="DAZED"&gt;Dazed&lt;/LSTag&gt; for 1 turn.</content>
+        <content contentuid="h00000013g0000g4000g8000g000000000001" version="1">Stunning Shot</content>
+        <content contentuid="h00000013g0000g4000g8000g000000000002" version="1">Spend 2 grit and fire at the head. On a hit, the target must succeed a Constitution &lt;LSTag Tooltip="SavingThrow"&gt;saving throw&lt;/LSTag&gt; or be &lt;LSTag Type="Status" Tooltip="STUNNED"&gt;Stunned&lt;/LSTag&gt; for 1 turn.</content>
         <content contentuid="h00000014g0000g4000g8000g000000000001" version="1">Piercing Round</content>
         <content contentuid="h00000014g0000g4000g8000g000000000002" version="1">Spend 2 grit and fire a hardened round in an 18m line. Make an attack roll against each enemy and neutral creature (but not allies) in the line; every hit deals full weapon damage.</content>
         <content contentuid="h00000015g0000g4000g8000g000000000001" version="1">Hair Trigger</content>
