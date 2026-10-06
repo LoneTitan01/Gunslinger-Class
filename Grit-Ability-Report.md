@@ -60,12 +60,12 @@ action retains its separate ammunition pool.
 | Duck and Weave | D7 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
 | Cheat Death's Odds | D7 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
 | Hot Hand | D7 | Native `OnCastHit` interrupt, 2 grit and no Reaction cost, on your own firearm hit: next firearm attack crits on 18-20. | Same trigger shape as Double or Nothing; Cheat Death's Odds refunds through the interrupt functor. |
-| Double or Nothing | D11 | 2 grit; server d20 at cast start, 11+ doubles weapon damage, otherwise the gun misfires afterwards. | The follow-up shot has no attack roll, so its conditional damage is in `SpellProperties`; `SpellSuccess` never resolved without a roll. |
+| Double or Nothing | D11 | 2 grit; on a server d20 result of 11+, makes a free firearm attack against the original target; otherwise the gun misfires. | The additional attack has its own attack roll and spends one bullet, but no action, grit, or Reaction. |
 | Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks. Cancels the attack (`Counterspell()`), refunds it to the attacker, then shoots. | Triggers on an attack, not on initiative. |
 | Ricochet Shot | D11 | Action, 3 grit and 1 bullet; weapon attack chains from the first enemy to up to three more, dealing half damage on each ricochet. | Follows the vanilla Arrow of Ricochet projectile chain. |
 | Dead Man's Hand | D15 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
 | All In | D18 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
-| Desperado's Fortune | D15 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
+| Desperado's Fortune | D15 | If Desperado's Luck is known, it upgrades automatically at level 15 and removes the Luck passive; once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | No grit selection or cost for the upgrade; the Luck interrupt is suppressed while Fortune or High Noon is active. |
 | High Noon | D18 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
 
 "D" marks Desperado-only unlock levels.
@@ -90,8 +90,9 @@ ability defect:
 - There are no optional grit-ability replacement choices on level-up.
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
   plus three new abilities at 3; Double Load, Close Call plus four more at 7;
-  Last Word plus two at 11; Dead Man's Hand and Desperado's Fortune at 15; and
-  All In and High Noon at 18. They remain selectable unlock choices.
+  Last Word plus two at 11; Dead Man's Hand at 15 (Fortune upgrades Luck
+  automatically if known); and All In and High Noon at 18. These remain
+  selectable unlock choices.
 - `GSL_GritRecovery` uses native firearm-hit/critical/killing-blow conditions to
   restore one grit. A hit that is both critical and lethal satisfies one OR
   condition, not two independent recovery branches.
@@ -234,7 +235,9 @@ Before treating the new build as gameplay-certified:
 11. Check each new save-on-hit shot (Disarming, Winging, Forceful, Bullying,
     Dazing) applies only on a hit, and that Quickload refills both hands.
 12. Violent Shot and Double or Nothing: confirm the server roll misfires the
-    correct gun, a second misfire breaks it, and the damage tiers match tooltips.
+    correct gun, a second misfire breaks it, the Double or Nothing success
+    attacks the original target with its own roll, and the damage tiers match
+    tooltips.
 13. Hair Trigger, Duck and Weave, Quick on the Draw and Grit and Steel: verify
     the prompts appear on the intended trigger, spend one Reaction/grit cost,
     and Duck and Weave's physical resistance actually reduces the hit.

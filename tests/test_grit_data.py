@@ -188,18 +188,22 @@ class GritDataTests(unittest.TestCase):
         for condition in ('Self(context.Source,context.Observer)',
                           'IsWeaponAttack()', 'HasDamageEffectFlag(DamageFlags.Hit)',
                           "not SpellId('Projectile_GSL_DoubleOrNothing')",
+                          "not SpellId('Projectile_GSL_DoubleOrNothingAttack')",
                           "not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Observer)"):
             self.assertIn(condition, interrupt['Conditions'])
         self.assertIn('UseSpell(Projectile_GSL_DoubleOrNothing,true,true,true)', interrupt['Properties'])
         shot = self.fields('Projectile_GSL_DoubleOrNothing')
         self.assertEqual(shot['SpellRoll'], '')
         self.assertEqual(shot['UseCosts'], '')
-        self.assertNotIn('UseActionResource', shot['SpellProperties'])
-        # With no SpellRoll, SpellSuccess never resolves (vanilla rollless spells such as Magic Missile use
-        # SpellProperties), so the doubled damage must live in SpellProperties.
+        self.assertEqual(shot['SpellProperties'], '')
         self.assertEqual(shot['SpellSuccess'], '')
-        self.assertEqual(shot['SpellProperties'], "IF(HasStatus('GSL_DOUBLE_OR_NOTHING_WIN',context.Source)):"
-                                                  'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)')
+        followup = self.fields('Projectile_GSL_DoubleOrNothingAttack')
+        self.assertEqual(self.entries['Projectile_GSL_DoubleOrNothingAttack'].parent, 'Projectile_GSL_ReactionShot')
+        self.assertIn("HasActionResource('GunslingerFlintlockAmmo',1,0)", followup['RequirementConditions'])
+        sound = self.fields('GSL_Firearm_ShotSound_MainHand')['Conditions']
+        self.assertIn("SpellId('Projectile_GSL_DoubleOrNothingAttack')", sound)
+        self.assertIn("SpellId('Projectile_GSL_DoubleOrNothingAttack')",
+                      self.fields('GSL_Firearm_BlunderbussSound_MainHand')['Conditions'])
 
     def test_smart_shooting_adds_intelligence_to_firearm_attack_and_damage(self) -> None:
         boosts = self.fields('GSL_ArcaneGunsman_SmartShooting')['Boosts'].split(';')
@@ -255,6 +259,7 @@ class GritDataTests(unittest.TestCase):
     def test_all_in_spends_exactly_all_grit_with_any_firearm(self) -> None:
         options = [f'Projectile_GSL_AllIn_{grit}' for grit in range(3, 11)]
         self.assertEqual(self.fields('Shout_GSL_AllIn')['ContainerSpells'].split(';'), options)
+        self.assertEqual(self.entries['GSL_ALL_IN'].fields['Boosts'], 'RollBonus(RangedWeaponAttack,-2)')
         for grit, name in zip(range(3, 11), options):
             fields = self.fields(name)
             self.assertEqual(fields['AmountOfTargets'], str(grit))
@@ -323,12 +328,20 @@ class GritDataTests(unittest.TestCase):
         extended = self.fields('GSL_OffHand_Flintlock_attack_Range')
         self.assertEqual(extended['TargetRadius'], '19.5')
         self.assertEqual(extended['UseCosts'], 'BonusActionPoint:1;GunslingerOffhandFlintlockAmmo:1')
+        extended_master = self.fields('GSL_OffHand_Flintlock_attack_RangeMaster')
+        self.assertEqual(extended_master['TargetRadius'], '25.5')
+        self.assertIn("HasStatus('GSL_TINKERER_OFF_RANGE_MASTER',context.Source)",
+                      extended_master['RequirementConditions'])
 
     def test_tinkerer_modifications_are_visible_statuses_on_the_weapon(self) -> None:
-        dice = {'Flintlock': '1d10', 'Blunderbuss': '2d6', 'Musket': '3d4'}
+        dice = {'Flintlock': '3d4', 'Blunderbuss': '1d12+1d4', 'Musket': '2d6+1d4'}
+        master_dice = {'Flintlock': '4d4', 'Blunderbuss': '1d12+2d4', 'Musket': '2d6+2d4'}
         range_bonus = {'Flintlock': '6', 'Blunderbuss': '3', 'Musket': '12'}
         weapon_statuses = ['GSL_TINKERER_CAPACITY'] + [
             f'GSL_TINKERER_{mode}_{kind.upper()}' for mode in ('DAMAGE', 'RANGE') for kind in dice
+        ] + ['GSL_TINKERER_MASTER_AMMO'] + [
+            f'GSL_TINKERER_MASTER_{mode}_{kind.upper()}'
+            for mode in ('DAMAGE', 'RANGE') for kind in dice
         ]
         for name in weapon_statuses:
             fields = self.fields(name)
@@ -340,15 +353,24 @@ class GritDataTests(unittest.TestCase):
             self.assertIn('RemoveOnLongRest', fields.get('StatusPropertyFlags', ''))
         stacks = {self.fields(name)['StackId'] for name in weapon_statuses}
         self.assertEqual(stacks, {'GSL_TINKERER_CAPACITY', 'GSL_TINKERER_DAMAGE', 'GSL_TINKERER_RANGE'},
-                         'Each modification needs its own stack so two can coexist on one gun')
+                         'Each upgrade tier must replace only its corresponding gun status')
+        self.assertEqual(self.fields('GSL_TINKERER_MASTER_AMMO')['StackId'], 'GSL_TINKERER_CAPACITY')
         for kind, die in dice.items():
             self.assertEqual(self.fields(f'GSL_TINKERER_DAMAGE_{kind.upper()}')['Boosts'],
                              f'WeaponDamageDieOverride({die})')
+            self.assertEqual(self.fields(f'GSL_TINKERER_MASTER_DAMAGE_{kind.upper()}')['Boosts'],
+                             f'WeaponDamageDieOverride({master_dice[kind]})')
+            self.assertEqual(self.fields(f'GSL_TINKERER_MASTER_RANGE_{kind.upper()}')['StackId'],
+                             'GSL_TINKERER_RANGE')
             boosts = self.fields(f'GSL_TINKERER_MAIN_RANGE_{kind.upper()}')['Boosts']
             self.assertIn(f'ModifyTargetRadius(AdditiveFinal,{range_bonus[kind]})', boosts)
             self.assertIn("HasStringInSpellRoll('AttackType.RangedWeaponAttack')", boosts)
+            master_boosts = self.fields(f'GSL_TINKERER_MAIN_RANGE_MASTER_{kind.upper()}')['Boosts']
+            self.assertIn(f'ModifyTargetRadius(AdditiveFinal,{int(range_bonus[kind]) * 2})', master_boosts)
         self.assertIn('AttackSpellOverride(GSL_OffHand_Flintlock_attack_Range',
                       self.fields('GSL_TINKERER_OFF_RANGE')['Boosts'])
+        self.assertIn('AttackSpellOverride(GSL_OffHand_Flintlock_attack_RangeMaster',
+                      self.fields('GSL_TINKERER_OFF_RANGE_MASTER')['Boosts'])
         self.assertNotIn('GSL_TINKERED', self.entries)
 
     def test_reaction_shot_has_no_action_cost_but_consumes_the_equipped_ammo(self) -> None:
@@ -519,7 +541,7 @@ class GritDataTests(unittest.TestCase):
             'GSL_Desperado_QuickOnTheDrawUnlock': 11, 'GSL_Desperado_RicochetShotUnlock': 11,
             'GSL_Desperado_DeadMansHandUnlock': 15,
             'GSL_Desperado_AllInUnlock': 18,
-            'GSL_Desperado_DesperadosFortuneUnlock': 15, 'GSL_Desperado_HighNoonUnlock': 18,
+            'GSL_Desperado_HighNoonUnlock': 18,
         }
         for passive in (*general, *desperado):
             self.assertEqual(self.entries[passive].kind, 'PassiveData', passive)
@@ -536,6 +558,21 @@ class GritDataTests(unittest.TestCase):
                 expected = {p for p, lvl in desperado.items() if lvl <= level} if row['Name'] == 'Desperado' else set()
                 self.assertEqual({p for p in pool if p in desperado}, expected)
         self.assertLessEqual(set(general) | set(desperado), seen)
+        self.assertNotIn('GSL_Desperado_DesperadosFortuneUnlock', seen)
+
+    def test_desperados_luck_evolves_into_fortune_at_level_15(self) -> None:
+        rows = [
+            {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
+            for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]')
+        ]
+        level_15 = next(r for r in rows if r['Name'] == 'Desperado' and r['Level'] == '15')
+        self.assertIn('GSL_Desperado_DesperadosFortuneUnlock', level_15['PassivesAdded'].split(';'))
+        self.assertIn('GSL_Desperado_DesperadosLuckUnlock', level_15['PassivesRemoved'].split(';'))
+        fortune = self.entries['GSL_Desperado_DesperadosFortuneUnlock']
+        self.assertIn(
+            "IF(HasPassive('GSL_Desperado_DesperadosLuckUnlock',context.Source)):UnlockInterrupt(Interrupt_GSL_DesperadosFortune)",
+            fortune.fields['Boosts'],
+        )
 
     def test_optional_grit_ability_replacement_is_removed(self) -> None:
         progressions = ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx')

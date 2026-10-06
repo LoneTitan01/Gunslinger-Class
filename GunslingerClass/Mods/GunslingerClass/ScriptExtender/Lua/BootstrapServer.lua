@@ -11,6 +11,7 @@ local refreshing = {}
 local pendingRefresh = {}
 local pendingLastWord = {}
 local recentAttackers = {}
+local pendingAttackTargets = {}
 
 Ext.Vars.RegisterModVariable(Rules.ModuleUUID, "Firearms", {
     Server = true, WriteableOnServer = true, Persistent = true
@@ -78,11 +79,17 @@ end
 local function applyItem(item, state)
     status(item, "GSL_FIREARM_ITEM_MISFIRED", state.misfire and not state.broken)
     status(item, "GSL_FIREARM_ITEM_DESTROYED", state.broken)
-    status(item, "GSL_TINKERER_CAPACITY", Rules.HasMod(state, "Capacity"))
+    local capacityCount = Rules.ModCount(state, "Capacity")
+    status(item, "GSL_TINKERER_CAPACITY", capacityCount == 1)
+    status(item, "GSL_TINKERER_MASTER_AMMO", capacityCount >= 2)
     for kind in pairs(Rules.Firearms) do
         local current = state.kind == kind
-        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), current and Rules.HasMod(state, "Damage"))
-        status(item, "GSL_TINKERER_RANGE_" .. kind:upper(), current and Rules.HasMod(state, "Range"))
+        local damageCount = current and Rules.ModCount(state, "Damage") or 0
+        local rangeCount = current and Rules.ModCount(state, "Range") or 0
+        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), damageCount == 1)
+        status(item, "GSL_TINKERER_MASTER_DAMAGE_" .. kind:upper(), damageCount >= 2)
+        status(item, "GSL_TINKERER_RANGE_" .. kind:upper(), rangeCount == 1)
+        status(item, "GSL_TINKERER_MASTER_RANGE_" .. kind:upper(), rangeCount >= 2)
     end
     -- Older versions edited the Weapon component directly; restore it once, since range now comes from statuses.
     if state.baseRange then
@@ -122,9 +129,11 @@ local function refreshNow(character, restoreAmmo)
         local newItem = item and not data.weapons[item]
         local previousBoost = owner[hand .. "Boost"]
         local state = item and itemState(data, item, kind)
-        local boost = state and Rules.HasMod(state, "Capacity") and
+        local capacityCount = state and Rules.ModCount(state, "Capacity") or 0
+        local boostAmount = state and Rules.Firearms[kind].capacity * capacityCount or 0
+        local boost = boostAmount > 0 and
             "ActionResource(" .. (hand == "Off" and "GunslingerOffhandFlintlockAmmo" or
-                "Gunslinger" .. kind .. "Ammo") .. ",2,0)" or nil
+                "Gunslinger" .. kind .. "Ammo") .. "," .. boostAmount .. ",0)" or nil
         local source = "GSL_Tinkerer_" .. hand
         if previousBoost ~= boost then
             if previousBoost then Osi.RemoveBoosts(character, previousBoost, 0, source, character) end
@@ -136,14 +145,19 @@ local function refreshNow(character, restoreAmmo)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", state and state.misfire and not state.broken)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", state and state.broken)
         if hand == "Off" then
-            status(character, "GSL_TINKERER_OFF_RANGE", state and Rules.HasMod(state, "Range"))
+            local rangeCount = state and Rules.ModCount(state, "Range") or 0
+            status(character, "GSL_TINKERER_OFF_RANGE", rangeCount == 1)
+            status(character, "GSL_TINKERER_OFF_RANGE_MASTER", rangeCount >= 2)
         else
             -- Longarm Specialist's range is a spell-variant boost, so it is applied only while a musket is held.
             status(character, "GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket" and
                 Osi.HasPassive(character, "GSL_Feat_LongarmSpecialist_Range") == 1)
             for gun in pairs(Rules.Firearms) do
+                local rangeCount = state and state.kind == gun and Rules.ModCount(state, "Range") or 0
                 status(character, "GSL_TINKERER_MAIN_RANGE_" .. gun:upper(),
-                    state and state.kind == gun and Rules.HasMod(state, "Range"))
+                    rangeCount == 1)
+                status(character, "GSL_TINKERER_MAIN_RANGE_MASTER_" .. gun:upper(),
+                    rangeCount >= 2)
             end
         end
         local repairable = state and state.misfire and not state.broken
@@ -259,18 +273,14 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     if spell == "Projectile_GSL_DoubleLoad" then Osi.ApplyStatus(character, "GSL_DOUBLE_LOAD", -1, 1, character) end
     casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_(%d)$"))
     if spell:match("^Projectile_GSL_DoubleOrNothing$") then
-        if Rules.DoubleOrNothing(Ext.Math.Random(1, 20)) then
-            Osi.ApplyStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN", -1, 1, character)
-        else
-            casts[character].lose = true
-        end
+        casts[character].doubleOrNothingWin = Rules.DoubleOrNothing(Ext.Math.Random(1, 20))
+        casts[character].lose = not casts[character].doubleOrNothingWin
     end
     if spell:match("^Projectile_GSL_AllIn_") then Osi.ApplyStatus(character, "GSL_ALL_IN", -1, 1, character) end
 end)
 
 local function clearShotStatuses(character, spell)
     if spell:match("^Projectile_GSL_DoubleLoad$") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
-    if spell:match("^Projectile_GSL_DoubleOrNothing$") then Osi.RemoveStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN") end
     if spell:match("^Projectile_GSL_AllIn_") then Osi.RemoveStatus(character, "GSL_ALL_IN") end
 end
 
@@ -294,6 +304,16 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
             Rules.Modify(assert(data.weapons[cast.item]), cast.mode, limit)
             save(data)
             refresh(character, true)
+        end
+        if spell == "Projectile_GSL_DoubleOrNothing" then
+            local target = pendingAttackTargets[character]
+            pendingAttackTargets[character] = nil
+            if cast.doubleOrNothingWin then
+                target = assert(target, "Double or Nothing resolved without its triggering attack target")
+                if Osi.IsDead(target) == 0 then
+                    Osi.UseSpell(character, "Projectile_GSL_DoubleOrNothingAttack", target)
+                end
+            end
         end
         clearShotStatuses(character, spell)
         -- Volleys hit several targets, so their bullets are spent once per cast here rather than per target in stats.
@@ -372,6 +392,7 @@ end)
 
 Ext.Osiris.RegisterListener("AttackedBy", 7, "after", function(defender, _, attacker)
     recentAttackers[defender] = attacker
+    if attacker and attacker ~= defender then pendingAttackTargets[attacker] = defender end
     if pendingLastWord[defender] and Osi.HasActiveStatus(defender, "GSL_LASTWORD_PENDING") == 1 then
         lastWordShot(defender, attacker)
     end
@@ -445,6 +466,7 @@ Ext.Events.SessionLoaded:Subscribe(function()
     pendingRefresh = {}
     pendingLastWord = {}
     recentAttackers = {}
+    pendingAttackTargets = {}
     for character in pairs(database().owners) do
         if Ext.Entity.Get(character) then refresh(character, true) end
     end

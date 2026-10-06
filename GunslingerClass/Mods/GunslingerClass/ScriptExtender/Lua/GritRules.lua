@@ -2,11 +2,11 @@ local Rules = {}
 
 Rules.ModuleUUID = "27bc37d3-66c2-436d-8d69-f7407a1e676e"
 Rules.Firearms = {
-    Flintlock = {capacity = 3, dice = "1d10", rangeBonus = 6,
+    Flintlock = {capacity = 3, dice = "2d4", rangeBonus = 6,
         resource = "c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"},
-    Blunderbuss = {capacity = 2, dice = "2d6", rangeBonus = 3,
+    Blunderbuss = {capacity = 2, dice = "1d12", rangeBonus = 3,
         resource = "7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"},
-    Musket = {capacity = 1, dice = "3d4", rangeBonus = 12,
+    Musket = {capacity = 1, dice = "2d6", rangeBonus = 12,
         resource = "6c4658a0-74d6-4bec-851f-d91ee914484d"}
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
@@ -29,15 +29,34 @@ function Rules.Mods(state)
 end
 
 function Rules.HasMod(state, mode)
+    return Rules.ModCount(state, mode) > 0
+end
+
+function Rules.ModCount(state, mode)
+    local count = 0
     for _, current in ipairs(Rules.Mods(state)) do
-        if current == mode then return true end
+        if current == mode then count = count + 1 end
     end
-    return false
+    return count
 end
 
 function Rules.Capacity(state)
     local firearm = assert(Rules.Firearms[state.kind], "Unknown firearm kind")
-    return firearm.capacity + (Rules.HasMod(state, "Capacity") and 2 or 0)
+    return firearm.capacity * (1 + Rules.ModCount(state, "Capacity"))
+end
+
+function Rules.DamageDice(state)
+    local upgrades = Rules.ModCount(state, "Damage")
+    if upgrades == 0 then return nil end
+    if state.kind == "Flintlock" then return (2 + upgrades) .. "d4" end
+    if state.kind == "Blunderbuss" then return "1d12+" .. upgrades .. "d4" end
+    if state.kind == "Musket" then return "2d6+" .. upgrades .. "d4" end
+    error("Unknown firearm kind: " .. tostring(state.kind))
+end
+
+function Rules.RangeBonus(state)
+    local firearm = assert(Rules.Firearms[state.kind], "Unknown firearm kind")
+    return firearm.rangeBonus * Rules.ModCount(state, "Range")
 end
 
 function Rules.Modify(state, mode, limit)
@@ -46,7 +65,7 @@ function Rules.Modify(state, mode, limit)
     limit = limit or 1
     assert(limit == 1 or limit == 2, "Invalid modification limit")
     local mods = Rules.Mods(state)
-    if not Rules.HasMod(state, mode) then mods[#mods + 1] = mode end
+    mods[#mods + 1] = mode
     while #mods > limit do table.remove(mods, 1) end
     state.ammo = math.min(state.ammo or 0, Rules.Capacity(state))
 end

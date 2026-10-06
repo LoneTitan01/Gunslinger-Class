@@ -117,23 +117,33 @@
         <content contentuid="h10000027g0000g4000g8000g000000000005" version="1">Make a DC 15 Sleight of Hand check to clear this firearm's misfire. A failed check spends the action but does not repair the firearm. A broken firearm cannot be repaired until your next long rest.</content>
         <content contentuid="h10000027g0000g4000g8000g000000000006" version="1">Spend 1 grit point and make a DC 18 Sleight of Hand check to clear this firearm's misfire. A failed check spends the bonus action and grit but does not repair the firearm.</content>
         <content contentuid="hc29dc490gb036g5e94g88d9g2fd21e9adb3b" version="1">Tinkerer</content>
-        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Use an action to modify your primary or secondary firearm until a long rest: increased capacity, larger damage dice, or longer range.</content>
+        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Use an action to modify your primary or secondary firearm until a long rest: double its ammunition capacity, add 1d4 damage, or increase its range.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000001" version="1">Tinkered: Capacity</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000002" version="1">This firearm holds 2 more bullets until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000002" version="1">This firearm holds twice its base ammunition capacity until the next long rest.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000003" version="1">Tinkered: Damage</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000004" version="1">This Flintlock's damage dice are 1d10 until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000005" version="1">This Blunderbuss's damage dice are 2d6 until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000006" version="1">This Musket's damage dice are 3d4 until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000004" version="1">This Flintlock deals 3d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000005" version="1">This Blunderbuss deals 1d12 + 1d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000006" version="1">This Musket deals 2d6 + 1d4 damage until the next long rest.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000007" version="1">Tinkered: Range</content>
         <content contentuid="h10000020g0000g4000g8000g000000000008" version="1">This Flintlock's range is increased by 20 feet until the next long rest.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000009" version="1">This Blunderbuss's range is increased by 10 feet until the next long rest.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000010" version="1">This Musket's range is increased by 40 feet until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000011" version="1">Tinker Master: Ammo</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000012" version="1">This firearm holds three times its base ammunition capacity until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000013" version="1">Tinker Master: Damage</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000014" version="1">This Flintlock deals 4d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000015" version="1">This Blunderbuss deals 1d12 + 2d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000016" version="1">This Musket deals 2d6 + 2d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000017" version="1">Tinker Master: Range</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000018" version="1">This Flintlock's range is increased by 40 feet until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000019" version="1">This Blunderbuss's range is increased by 20 feet until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000020" version="1">This Musket's range is increased by 80 feet until the next long rest.</content>
         <content contentuid="h10000021g0000g4000g8000g000000000001" version="1">Flintlock</content>
         <content contentuid="h10000021g0000g4000g8000g000000000002" version="1">Blunderbuss</content>
         <content contentuid="h10000021g0000g4000g8000g000000000003" version="1">Musket</content>
         <content contentuid="h10000021g0000g4000g8000g000000000004" version="1">Firearm</content>
         <content contentuid="h5cf5a27cg1592g56b4g93a5gc048e11b9ce6" version="1">Tinkerer</content>
-        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend an action to modify the primary or secondary firearm. Choose capacity, damage dice, or range. Each physical gun keeps one modification (two from level 10 with Master Tinkerer) until a long rest; when the limit is reached, a new modification replaces the oldest one.</content>
+        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend an action to modify the primary or secondary firearm. Choose capacity, damage, or range. Each physical gun keeps one upgrade (two from level 10 with Master Tinkerer) until a long rest; repeating an upgrade with Master Tinkerer grants its Tinker Master tier, and a third upgrade replaces the oldest one.</content>
         <content contentuid="h4d7604b0g70abg5e29gb0deg24235336a21b" version="1">Fanning Fire</content>
         <content contentuid="h01862009g89e3g5610gbd73g7cbde620cac9" version="1">Unlocks the Fanning Fire grit ability.</content>
         <content contentuid="h3178086bg4305g5971g85e1g0a37f8a4c60d" version="1">Fanning Fire</content>
@@ -269,9 +279,9 @@
         <content contentuid="h10000004g0000g4000g8000g000000000004" version="1">Tinkerer: Secondary Capacity</content>
         <content contentuid="h10000004g0000g4000g8000g000000000005" version="1">Tinkerer: Secondary Damage</content>
         <content contentuid="h10000004g0000g4000g8000g000000000006" version="1">Tinkerer: Secondary Range</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Increase this firearm's ammunition capacity by 2 until the next long rest. Replaces the oldest modification when the limit is reached.</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Change this firearm's damage dice until the next long rest: Flintlock 1d10, Blunderbuss 2d6, Musket 3d4. Replaces the oldest modification when the limit is reached.</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until the next long rest: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. Replaces the oldest modification when the limit is reached.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Double this firearm's base ammunition capacity until the next long rest. With Master Tinkerer, apply this again to triple its base capacity.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Add 1d4 damage until the next long rest: Flintlock 3d4, Blunderbuss 1d12 + 1d4, Musket 2d6 + 1d4. With Master Tinkerer, apply this again to add another 1d4.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until the next long rest: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. With Master Tinkerer, apply this again to double that bonus.</content>
         <content contentuid="h10000006g0000g4000g8000g000000000001" version="1">Scattershot</content>
         <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 15-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking half weapon damage on a failed save and no damage on a success.</content>
         <content contentuid="h10000007g0000g4000g8000g000000000001" version="1">Close Quarters</content>
@@ -286,7 +296,7 @@
         <content contentuid="h1000000ag0000g4000g8000g000000000001" version="1">Master Tinkerer</content>
         <content contentuid="h1000000bg0000g4000g8000g000000000001" version="1">Improved Critical</content>
         <content contentuid="h1000000bg0000g4000g8000g000000000002" version="1">Your weapon attacks score a Critical Hit on a roll of 19 or 20.</content>
-        <content contentuid="h1000000ag0000g4000g8000g000000000002" version="1">Each firearm can hold two different Tinkerer modifications at once. When a third is applied, the oldest modification is replaced.</content>
+        <content contentuid="h1000000ag0000g4000g8000g000000000002" version="1">Each firearm can hold two Tinkerer upgrades at once. Repeating an upgrade grants Tinker Master: Ammo, Damage, or Range. When a third upgrade is applied, the oldest is replaced.</content>
         <content contentuid="h0000000cg0000g4000g8000g000000000001" version="1">Disarming Shot</content>
         <content contentuid="h0000000cg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire your firearm. On a hit, the target must succeed a Strength saving throw or drop its weapon.</content>
         <content contentuid="h0000000dg0000g4000g8000g000000000001" version="1">Winging Shot</content>

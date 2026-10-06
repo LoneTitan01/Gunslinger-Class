@@ -3,12 +3,17 @@ local rules = dofile("GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lu
 for kind, firearm in pairs(rules.Firearms) do
     local state = {kind = kind, ammo = firearm.capacity}
     rules.Modify(state, "Capacity")
-    assert(rules.Capacity(state) == firearm.capacity + 2)
+    assert(rules.Capacity(state) == firearm.capacity * 2)
     assert(state.ammo == firearm.capacity, "A capacity upgrade must not create ammunition")
     state.ammo = rules.Capacity(state)
     rules.Modify(state, "Damage")
     assert(rules.Capacity(state) == firearm.capacity)
     assert(state.ammo == firearm.capacity, "Replacing capacity must clamp ammunition")
+    local expectedDamage = kind == "Flintlock" and "3d4" or
+        kind == "Blunderbuss" and "1d12+1d4" or "2d6+1d4"
+    assert(rules.DamageDice(state) == expectedDamage)
+    rules.Modify(state, "Range")
+    assert(rules.RangeBonus(state) == firearm.rangeBonus)
     rules.Misfire(state, false)
     assert(state.misfire and not state.broken)
     assert(rules.Repair(state) and not state.misfire)
@@ -39,10 +44,20 @@ assert(not rules.HasMod(second, "Range") and second.broken)
 local master = {kind = "Musket", ammo = 1}
 rules.Modify(master, "Capacity", 2)
 rules.Modify(master, "Capacity", 2)
-assert(#master.mods == 1, "Repeating a modification must not fill both slots")
+assert(#master.mods == 2 and rules.ModCount(master, "Capacity") == 2)
+assert(rules.Capacity(master) == 3, "A second Ammo upgrade must triple base capacity")
+assert(master.ammo == 1, "Capacity upgrades must not create ammunition")
+local damageMaster = {kind = "Flintlock", ammo = 3}
+rules.Modify(damageMaster, "Damage", 2)
+rules.Modify(damageMaster, "Damage", 2)
+assert(rules.DamageDice(damageMaster) == "4d4", "A second Damage upgrade must add another d4")
+local rangeMaster = {kind = "Blunderbuss", ammo = 2}
+rules.Modify(rangeMaster, "Range", 2)
+rules.Modify(rangeMaster, "Range", 2)
+assert(rules.RangeBonus(rangeMaster) == 6, "A second Range upgrade must double its bonus")
 rules.Modify(master, "Damage", 2)
-assert(rules.HasMod(master, "Capacity") and rules.HasMod(master, "Damage"))
-assert(rules.Capacity(master) == 3)
+assert(rules.ModCount(master, "Capacity") == 1 and rules.HasMod(master, "Damage"))
+assert(rules.Capacity(master) == 2)
 rules.Modify(master, "Range", 2)
 assert(not rules.HasMod(master, "Capacity") and rules.HasMod(master, "Damage") and rules.HasMod(master, "Range"))
 assert(master.ammo == 1 and rules.Capacity(master) == 1)
@@ -57,4 +72,4 @@ assert(rules.GritCost("ActionPoint:1;GunslingerGrit:3;GunslingerFlintlockAmmo:1"
 assert(rules.GritCost("BonusActionPoint:1") == 0 and rules.GritCost(nil) == 0)
 assert(rules.CheatDeathRefund(2, 0.49) and not rules.CheatDeathRefund(1, 0.1) and not rules.CheatDeathRefund(3, 0.5))
 assert(rules.DoubleOrNothing(11) and rules.DoubleOrNothing(20) and not rules.DoubleOrNothing(10))
-print("Grit rule tests passed: tiers, rarity, independent guns, replacement, two-mod limit, repair, long rest and gamble rolls")
+print("Grit rule tests passed: upgrade tiers, capacity/damage/range scaling, replacement, repair, long rest and gamble rolls")

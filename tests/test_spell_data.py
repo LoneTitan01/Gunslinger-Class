@@ -173,7 +173,9 @@ class SpellDataTests(unittest.TestCase):
                 main_hand.add(name)
         self.assertIn('Zone_GSL_Scattershot', main_hand)
         self.assertIn('Projectile_GSL_RapidShot', main_hand)
-        self.assertEqual(len(off_hand), 3)
+        self.assertIn('Projectile_GSL_DoubleOrNothingAttack', main_hand)
+        self.assertIn('GSL_OffHand_Flintlock_attack_RangeMaster', off_hand)
+        self.assertEqual(len(off_hand), 4)
 
         upgrade_shots = {
             'Projectile_GSL_DashAndGun_Flintlock',

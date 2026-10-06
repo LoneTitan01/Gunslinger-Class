@@ -2,6 +2,7 @@ local root = "GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\"
 local rules = dofile(root .. "GritRules.lua")
 local listeners, events, entities, inventory, statuses = {}, {}, {}, {}, {}
 local variables, passives, rolls, durations = {}, {}, {}, {}
+local doubleOrNothingAttacks = 0
 local spellStats = {
     GSL_MainHand_Flintlock_attack = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     GSL_OffHand_Flintlock_attack = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
@@ -12,6 +13,8 @@ local spellStats = {
     Zone_GSL_PiercingRound = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     Shout_GSL_HailOfLead = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     Projectile_GSL_DoubleOrNothing = {RequirementConditions = "", SpellProperties = "", SpellRoll = "", UseCosts = ""},
+    Projectile_GSL_DoubleOrNothingAttack = {RequirementConditions = "", SpellProperties = "", SpellRoll = "",
+        UseCosts = ""},
     Projectile_GSL_DazingShot = {RequirementConditions = "", SpellProperties = "", SpellRoll = "",
         UseCosts = "ActionPoint:1;GunslingerGrit:2"},
     Projectile_PiercingShot = {RequirementConditions = "OriginalRequirement", SpellProperties = "OriginalPiercingEffect",
@@ -70,21 +73,29 @@ Osi = {
     end,
     RemoveStatus = function(id, status) if statuses[id] then statuses[id][status] = nil end end,
     AddBoosts = function(char, boost)
-        local hand = boost:find("Offhand", 1, true) and "Off" or "Main"
+        local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
+        assert(resource and amount, "Unexpected action-resource boost: " .. boost)
+        local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
         local entry = ammo(char, hand)
-        entry.MaxAmount = entry.MaxAmount + 2
-        entry.Amount = entry.Amount + 2
+        entry.MaxAmount = entry.MaxAmount + tonumber(amount)
+        entry.Amount = entry.Amount + tonumber(amount)
     end,
     RemoveBoosts = function(char, boost)
-        local hand = boost:find("Offhand", 1, true) and "Off" or "Main"
+        local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
+        assert(resource and amount, "Unexpected action-resource boost: " .. boost)
+        local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
         local entry = ammo(char, hand)
-        entry.MaxAmount = entry.MaxAmount - 2
+        entry.MaxAmount = entry.MaxAmount - tonumber(amount)
         entry.Amount = math.min(entry.Amount, entry.MaxAmount)
     end,
     IsDead = function() return 0 end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
     UseSpell = function(char, spell, target)
-        assert(char == "alice" and spell == "Projectile_GSL_ReactionShot" and target == "bob")
+        assert(char == "alice" and target == "bob")
+        assert(spell == "Projectile_GSL_DoubleOrNothingAttack" or spell == "Projectile_GSL_ReactionShot")
+        if spell == "Projectile_GSL_DoubleOrNothingAttack" then
+            doubleOrNothingAttacks = doubleOrNothingAttacks + 1
+        end
     end
 }
 local function character(id)
@@ -136,14 +147,14 @@ local function cast(spell, action)
     fire("CastedSpell", "after", "alice", spell, "", "", action)
 end
 cast("Shout_GSL_Tinkerer_MainCapacity", 1)
-assert(ammo("alice", "Main").MaxAmount == 5 and ammo("alice", "Main").Amount == 3)
+assert(ammo("alice", "Main").MaxAmount == 6 and ammo("alice", "Main").Amount == 3)
 assert(ammo("alice", "Off").MaxAmount == 3, "Primary capacity must not modify the other gun")
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 1, "Capacity must show on the modified gun")
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_CAPACITY") == 0)
 fire("UsingSpell", "before", "alice", "Shout_GSL_Reload_Flintlock", "", "", 11)
-ammo("alice", "Main").Amount = 5
+ammo("alice", "Main").Amount = 6
 fire("CastedSpell", "after", "alice", "Shout_GSL_Reload_Flintlock", "", "", 11)
-assert(variables.Firearms.weapons.first.ammo == 5, "Reload must snapshot upgraded capacity")
+assert(variables.Firearms.weapons.first.ammo == 6, "Reload must snapshot upgraded capacity")
 cast("Shout_GSL_Tinkerer_MainRange", 2)
 assert(ammo("alice", "Main").MaxAmount == 3)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0, "A replaced mod must leave the gun")
@@ -163,6 +174,29 @@ passives.alice = {GSL_MasterTinkerer = true}
 cast("Shout_GSL_Tinkerer_OffDamage", 32)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1, "Master Tinkerer keeps two mods")
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 1)
+cast("Shout_GSL_Tinkerer_OffDamage", 33)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 1,
+    "Repeating Damage with Master Tinkerer must activate its master tier")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 0)
+cast("Shout_GSL_Tinkerer_OffRange", 36)
+cast("Shout_GSL_Tinkerer_OffRange", 37)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 0)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 1,
+    "Repeating Range with Master Tinkerer must activate its master range")
+cast("Shout_GSL_Tinkerer_MainCapacity", 34)
+assert(ammo("alice", "Main").MaxAmount == 6)
+cast("Shout_GSL_Tinkerer_MainCapacity", 35)
+assert(ammo("alice", "Main").MaxAmount == 9, "A second Ammo upgrade must triple base capacity")
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_AMMO") == 1)
+cast("Shout_GSL_Tinkerer_MainRange", 38)
+cast("Shout_GSL_Tinkerer_MainRange", 39)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
+    "Repeating main-hand Range must activate its doubled range boost")
+cast("Shout_GSL_Tinkerer_MainDamage", 40)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 1,
+    "A remaining single Range upgrade must use the ordinary range boost")
 fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 ammo("alice", "Off").Amount = 2
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 4)
@@ -286,10 +320,12 @@ shot("Projectile_GSL_ViolentShot_2", 51, 2)
 assert(variables.Firearms.weapons.first.misfire and Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 1)
 fire("LongRestFinished", "after")
 rolls[1] = 11
+fire("AttackedBy", "after", "bob", "alice", "alice", "Piercing", 10, "Attack", 52)
+events.Tick()
 fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleOrNothing", "", "", 52)
-assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 1, "A win doubles the shot")
 fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleOrNothing", "", "", 52)
-assert(Osi.HasActiveStatus("alice", "GSL_DOUBLE_OR_NOTHING_WIN") == 0 and not variables.Firearms.weapons.first.misfire)
+assert(doubleOrNothingAttacks == 1 and not variables.Firearms.weapons.first.misfire,
+    "A winning Double or Nothing makes a free attack against the original target")
 shot("Projectile_GSL_DoubleOrNothing", 53, 10)
 assert(variables.Firearms.weapons.first.misfire, "A losing Double or Nothing misfires")
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0)
@@ -319,6 +355,7 @@ passives.alice.GSL_Desperado_CheatDeathsOdds = true
 entities.alice.Health.Hp = 14
 shot("Shout_GSL_RollTheBones", 57, 3)
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0, "One-grit abilities never refund")
+fire("AttackedBy", "after", "bob", "alice", "alice", "Piercing", 10, "Attack", 58)
 shot("Projectile_GSL_DoubleOrNothing", 58, 11)
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0, "The free follow-up shot refunds nothing; the reaction does")
 shot("Projectile_GSL_DazingShot", 59)

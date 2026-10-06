@@ -323,6 +323,8 @@
                     <attribute id="Level" type="uint8" value="15"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
+                    <attribute id="PassivesAdded" type="LSString" value="GSL_Desperado_DesperadosFortuneUnlock"/>
+                    <attribute id="PassivesRemoved" type="LSString" value="GSL_Desperado_DesperadosLuckUnlock"/>
                     <attribute id="Selectors" type="LSString" value="SelectPassives(cc00480c-d7cb-5410-baad-d3c8df5de4e0,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
                     <attribute id="UUID" type="guid" value="ecc25c60-bc61-5f1b-868c-c59d7d99d175"/>
