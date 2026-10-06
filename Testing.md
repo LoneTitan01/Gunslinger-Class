@@ -43,6 +43,7 @@ These rely on engine behaviour that the local tests can't confirm.
 - [x] **Misfire on the gun:** the firearm's Misfire passive reads as a rules description. After a natural 1, the gun's own tooltip shows a Misfired effect (like Tinkered: Damage), the attack penalty is -2 (not -4), and it clears on repair or long rest and turns into Broken on a second natural 1. Off-hand misfires mark the off-hand gun only.
 - [ ] **Repair menu:** a misfired gun shows one class action for its hand only (**Repair: Main Hand** or **Repair: Off Hand**). It holds **Repair** (action, DC 15 Sleight of Hand), plus **Rapid Repair** next to it once you know Rapid Repair. A success clears the misfire and removes the menu; a broken gun shows no menu.
 - [x] **Scattershot:** the blunderbuss cone deals half damage on a failed Dexterity save and none on a success. Check the Poison Mist, Gargantuan and Thunderous variants too; Poison Mist leaves its cloud even on a save. Each can be used once per short rest and comes back after a short or long rest.
+- [ ] **Scattershot range:** base Scattershot has a 15-foot cone; Poison Mist, Gargantuan and Thunderous Scattershot each have a 20-foot cone.
 
 ## Feats
 

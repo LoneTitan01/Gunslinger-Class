@@ -346,48 +346,52 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 
 ### Grit Abilities
 
-- **Merciless Shot:** Spend up to 3 grit points and make an attack as an action. For each grit point spent, add 1d4 damage (Flintlock) or 1d6 damage (Blunderbuss or Musket).
-- **Line 'em Up:** Spend 2 grit points to deal half damage to all enemies and neutral creatures (but not allies) in a 20-foot line. Targets make a saving throw with a DC of 8 + your Dexterity modifier + your proficiency bonus, taking half damage on a successful save.
-- **Rapid Shot:** Spend 1 grit point to fire again as a bonus action.
-- **Bite the Bullet:** As a bonus action, spend up to 3 grit points to gain temporary hit points equal to the grit spent multiplied by your proficiency bonus.
-- **Shot in the Dark:** As a bonus action, spend 1 grit point to gain darkvision out to 60 feet and ignore blindness for 10 turns.
-- **Rapid Repair:** Spend a bonus action and 1 grit point to make a DC 18 Sleight of Hand check that clears a misfire. It appears next to Repair in a misfired gun's Repair menu.
-- **Fanning Fire (level 7+):** Spend 1-3 grit points as an action to make 2-4 firearm attacks against 1 + the grit spent number of enemies. Each shot takes an attack-roll penalty of 1 + the grit spent: 1 grit gives two attacks at -2 each; 2 grit gives three at -3; 3 grit gives four at -4.
-- **Disarming Shot (level 3+):** Spend 1 grit and fire; on a hit the target must pass a Strength save or drop its weapon.
-- **Winging Shot (level 3+):** Spend 1 grit and fire at the legs; on a hit the target must pass a Constitution save or be knocked Prone.
-- **Forceful Shot (level 3+):** Spend 1 grit and fire a heavy charge; on a hit the target must pass a Strength save or be pushed back 4.5 m.
-- **Bullying Shot (level 3+):** Spend 1 grit and fire; on a hit the target must pass a Wisdom save or be Frightened for 1 turn.
-- **Quickload (level 3+):** Spend 1 grit to fully reload your main-hand firearm or your off-hand flintlock without using an action, or 1 grit and a bonus action to reload both.
-- **Flash Powder (level 3+):** Spend an action and 1 grit; target a point on the ground or a creature within 9 m. Creatures in a 1.5 m radius must pass a Constitution save or be Blinded for 1 turn.
-- **Violent Shot (level 9+):** Spend 1-3 grit to add 1d8 (Flintlock), 2d6 (Blunderbuss) or 3d4 (Musket) damage per grit. Afterwards roll a d20: on a result at or below the grit spent, the gun misfires.
-- **Dazing Shot (level 9+):** Spend 2 grit and fire; on a hit the target must pass a Constitution save or be Dazed for 1 turn.
-- **Piercing Round (level 9+):** Spend 2 grit and 1 bullet to fire through an 18 m line, making an attack roll against each enemy and neutral creature (but not allies) in it.
-- **Hair Trigger (level 9+):** Reaction, 1 grit: when an enemy within 9 m attacks an ally, shoot the attacker.
-- **Grit and Steel (level 13+):** When you fail a saving throw, spend 2 grit to reroll it. Once per short rest.
-- **Bullet Time (level 17+):** Spend 4 grit to gain an extra action this turn. Once per short rest.
-- **Hail of Lead (level 17+):** Spend an action, 5 grit and 1 bullet to make a weapon attack against every enemy within 18 m. Once per long rest.
-- **Final Judgement (level 17+):** Spend 4 grit and fire; if the hit leaves the target below 25% of its hit points, it takes weapon damage again and must pass a Constitution save or die.
+| Name | Lvl available | Description | Cost (grit and actions) |
+| --- | --- | --- | --- |
+| Merciless Shot | 3 | Make a firearm attack; each grit spent adds 1d4 damage with a Flintlock or 1d6 with a Blunderbuss or Musket. | 1-3 grit; Action; 1 bullet |
+| Line 'em Up | 3 | Deal half weapon damage to enemies and neutral creatures, but not allies, in a 20-foot line. Targets make a Dexterity save (DC 8 + Dexterity modifier + proficiency bonus) and take half damage on a successful save. | 2 grit; Action; 1 bullet |
+| Rapid Shot | 3 | Fire one additional firearm attack. | 1 grit; Bonus Action; 1 bullet |
+| Bite the Bullet | 3 | Gain temporary hit points equal to grit spent multiplied by your proficiency bonus. | Up to 3 grit; Bonus Action |
+| Shot in the Dark | 3 | Gain 60-foot darkvision and ignore blindness for 10 turns. | 1 grit; Bonus Action |
+| Rapid Repair | 3 | Make a DC 18 Sleight of Hand check to clear a misfire. Appears next to Repair in a misfired gun's Repair menu. | 1 grit; Bonus Action |
+| Disarming Shot | 3 | On a hit, the target must pass a Strength save or drop its weapon. | 1 grit; Action; 1 bullet |
+| Winging Shot | 3 | On a hit, the target must pass a Constitution save or be knocked Prone. | 1 grit; Action; 1 bullet |
+| Forceful Shot | 3 | On a hit, the target must pass a Strength save or be pushed back 4.5 m. | 1 grit; Action; 1 bullet |
+| Bullying Shot | 3 | On a hit, the target must pass a Wisdom save or be Frightened for 1 turn. | 1 grit; Action; 1 bullet |
+| Quickload | 3 | Fully reload your main-hand firearm or off-hand Flintlock, or reload both. | 1 grit; no action for one gun, or Bonus Action for both |
+| Flash Powder | 3 | Target a point on the ground or a creature within 9 m. Creatures in a 1.5 m radius must pass a Constitution save or be Blinded for 1 turn. | 1 grit; Action |
+| Fanning Fire | 7 (Desperado); 9 (others) | Make 2-4 firearm attacks against up to 1 + grit spent targets. Each shot takes a penalty of 1 + grit spent: -2 for 1 grit, -3 for 2, or -4 for 3. | 1-3 grit; Action; 2-4 bullets |
+| Violent Shot | 9 | Add damage per grit spent: 1d8 with a Flintlock, 2d6 with a Blunderbuss, or 3d4 with a Musket. Then roll a d20; the gun misfires on a result at or below grit spent. | 1-3 grit; Action; 1 bullet |
+| Dazing Shot | 9 | On a hit, the target must pass a Constitution save or be Dazed for 1 turn. | 2 grit; Action; 1 bullet |
+| Piercing Round | 9 | Fire through an 18 m line, making an attack roll against each enemy and neutral creature, but not allies, in it. | 2 grit; Action; 1 bullet |
+| Hair Trigger | 9 | When an enemy within 9 m attacks an ally, shoot the attacker. | 1 grit; Reaction; 1 bullet |
+| Grit and Steel | 13 | When you fail a saving throw, reroll it. Once per short rest. | 2 grit; interrupt on failed save |
+| Bullet Time | 17 | Gain an extra action this turn. Once per short rest. | 4 grit; no action |
+| Hail of Lead | 17 | Make a weapon attack against every enemy within 18 m. Once per long rest. | 5 grit; Action; 1 bullet |
+| Final Judgement | 17 | If the hit leaves the target below 25% of its hit points, it takes weapon damage again and must pass a Constitution save or die. | 4 grit; Action; 1 bullet |
 
 #### Desperado Grit Abilities
 
-- **Desperado's Luck (level 3+):** Once per turn, when a firearm attack would miss, spend 1 grit point to add 1d4 to the roll, potentially turning it into a hit. This interrupt does not spend a Reaction point.
-- **Ante Up (level 3+):** Bonus action, 1 grit: gain Advantage on your next firearm attack before the end of your next turn; if it misses, attacks against you have Advantage until your next turn.
-- **Lucky Draw (level 3+):** Spend 1 grit to reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn.
-- **Two-Gun Tango (level 3+):** 1 grit and one off-hand bullet, no action or bonus action: fire your off-hand flintlock.
-- **Double Load (level 7+):** Spend 1 grit point and two bullets for an attack dealing an extra 1d4 damage (Flintlock) or 1d6 damage (Blunderbuss or Musket). A natural 1 destroys the weapon until a long rest restores it; it cannot be repaired by any other means. The gun gains the **Broken** condition: "This firearm is broken and cannot fire until your next long rest."
-- **Roll the Bones (level 7+):** Bonus action, 1 grit: roll a d6. 1: -1d4 to firearm attack rolls; 2-5: +1d6 damage on the next firearm hit; 6: +2d6 damage and regain 1 grit. The effect lasts until your next attack or 2 turns.
-- **Duck and Weave (level 7+):** Reaction, 1 grit: when a ranged weapon attack is about to damage you, resist its physical damage, then Disengage and gain 3 m of movement.
-- **Close Call (level 7+):** As a reaction, spend 2 grit points to increase AC by 2 against an attack. If the attack misses, you automatically make a firearm attack against the attacker.
-- **Cheat Death's Odds (level 7+, passive):** While below half your hit points, grit abilities that cost 2 or more grit refund 1 grit when used.
-- **Hot Hand (level 7+):** Reaction, 2 grit: when you hit with a firearm attack, your next firearm attack scores a Critical Hit on an 18-20.
-- **Last Word (level 11+):** Once per long rest, spend a bonus action and 3 grit points to arm Last Word until your next long rest. The next time you would be downed, you stay at 1 HP instead and immediately make one firearm attack against your attacker.
-- **Double or Nothing (level 11+):** Reaction after you hit with a firearm attack: spend 2 grit and roll a d20. On 11 or higher you deal the weapon's damage again; otherwise the gun misfires.
-- **Quick on the Draw (level 11+):** Reaction, 2 grit: when an enemy within 9 m starts an attack, cancel it and shoot first. The enemy gets the attack back (an extra weapon attack, or its action for spell attacks).
-- **Ricochet Shot (level 11+, Desperado):** Action, 3 grit and 1 bullet: shoot an enemy; the shot ricochets to up to three additional enemies. The first hit deals full weapon damage and each ricochet deals half.
-- **Dead Man's Hand (level 15+):** While below 25% of your hit points, spend 3 grit: your next firearm attack before the end of your next turn is a Critical Hit if it hits. Once per turn.
-- **All In (level 19+):** Spend all of your grit (3-10) and 1 bullet to fire that many shots at enemies, each at -2 to hit. All In is a group of six options (3 to 8 grit) that work with any equipped firearm; only the option matching your current grit can be cast, so it always spends all of your grit.
-- **Desperado's Fortune (level 19+):** Replaces Desperado's Luck: once per turn, spend 1 grit to add 1d8 to a firearm attack roll or a saving throw.
-- **High Noon (level 19+):** Bonus action, 5 grit: call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit (only a natural 1 misses) and crit on 17-20. Your firearm attacks also deal an extra 1d8 damage. Once per long rest.
+| Name | Lvl available | Description | Cost (grit and actions) |
+| --- | --- | --- | --- |
+| Desperado's Luck | 3 | Once per turn, when a firearm attack would miss, add 1d4 to the roll, potentially turning it into a hit. Does not spend a Reaction point. | 1 grit; no action |
+| Ante Up | 3 | Gain Advantage on your next firearm attack before the end of your next turn. If it misses, attacks against you have Advantage until your next turn. | 1 grit; Bonus Action |
+| Lucky Draw | 3 | Reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn. | 1 grit; no action |
+| Two-Gun Tango | 3 | Fire your off-hand Flintlock. | 1 grit; no action; 1 off-hand bullet |
+| Double Load | 7 | Make an attack with two bullets, dealing an extra 1d4 damage with a Flintlock or 1d6 with a Blunderbuss or Musket. A natural 1 destroys the weapon until a long rest restores it; it cannot be repaired. | 1 grit; Action; 2 bullets |
+| Roll the Bones | 7 | Roll a d6: 1 gives -1d4 to firearm attack rolls; 2-5 adds 1d6 damage on the next firearm hit; 6 adds 2d6 damage and restores 1 grit. Lasts until your next attack or 2 turns. | 1 grit; Bonus Action |
+| Duck and Weave | 7 | When a ranged weapon attack is about to damage you, resist its physical damage, then Disengage and gain 3 m of movement. | 1 grit; Reaction |
+| Close Call | 7 | Gain +2 AC against an attack. If it misses, automatically make a firearm attack against the attacker. | 2 grit; Reaction; 1 bullet if counterattacking |
+| Cheat Death's Odds | 7 | While below half your hit points, grit abilities that cost 2 or more grit refund 1 grit when used. | Passive; no action or grit cost |
+| Hot Hand | 7 | When you hit with a firearm attack, your next firearm attack scores a Critical Hit on an 18-20. | 2 grit; Reaction |
+| Double or Nothing | 11 | After you hit with a firearm attack, roll a d20. On 11 or higher, deal the weapon's damage again; otherwise the gun misfires. | 2 grit; Reaction |
+| Last Word | 11 | Arm Last Word until your next long rest. The next time you would be downed, stay at 1 HP and immediately make one firearm attack against your attacker. Once per long rest. | 3 grit; Bonus Action |
+| Quick on the Draw | 11 | When an enemy within 9 m starts an attack, cancel it and shoot first. The enemy gets its attack back (an extra weapon attack, or its action for spell attacks). | 2 grit; Reaction; 1 bullet |
+| Ricochet Shot | 11 | Shoot an enemy; the shot ricochets to up to three additional enemies. The first hit deals full weapon damage and each ricochet deals half. | 3 grit; Action; 1 bullet |
+| Dead Man's Hand | 15 | While below 25% of your hit points, make your next firearm attack before the end of your next turn a Critical Hit if it hits. Once per turn. | 3 grit; no action |
+| All In | 19 | Fire a number of shots equal to all your current grit (3-10) at enemies, each at -2 to hit. The matching option is the only one that can be cast. | All current grit; Action; 1 bullet |
+| Desperado's Fortune | 19 | Replaces Desperado's Luck. Once per turn, add 1d8 to a firearm attack roll or a saving throw. | 1 grit; no action |
+| High Noon | 19 | Call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit (only a natural 1 misses), crit on 17-20, and deal an extra 1d8 damage. Once per long rest. | 5 grit; Bonus Action |
 
 ### Subclasses
 
