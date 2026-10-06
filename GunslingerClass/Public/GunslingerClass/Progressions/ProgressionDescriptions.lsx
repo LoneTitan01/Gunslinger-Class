@@ -49,6 +49,14 @@
                     <attribute id="UUID" type="guid" value="9ceae79f-285f-4e94-bdfe-6a5dfad88b29"/>
                 </node>
                 <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h10000026g0000g4000g8000g000000000002" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h10000026g0000g4000g8000g000000000001" version="1"/>
+                    <attribute id="ParamMatch" type="FixedString" value="0:SpellSlot;1:1"/>
+                    <attribute id="ProgressionTableId" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
+                    <attribute id="Type" type="FixedString" value="ActionResource"/>
+                    <attribute id="UUID" type="guid" value="bcbf6dcb-f0b8-4cbd-baf4-7fdc3d4134ba"/>
+                </node>
+                <node id="ProgressionDescription">
                     <attribute id="Description" type="TranslatedString" handle="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1"/>
                     <attribute id="DisplayName" type="TranslatedString" handle="he1255b27g0099g4e4fga984gcea34703c58f" version="1"/>
                     <attribute id="ParamMatch" type="FixedString" value="0:SpellSlot"/>

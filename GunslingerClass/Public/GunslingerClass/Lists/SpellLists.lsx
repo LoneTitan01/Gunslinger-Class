@@ -20,23 +20,23 @@
                     <attribute id="UUID" type="guid" value="93f4be1c-e2b3-4f34-9850-f16b9291d14a"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 2"/>
-                    <attribute id="Spells" type="LSString" value="Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-2"/>
+                    <attribute id="Spells" type="LSString" value="Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray"/>
                     <attribute id="UUID" type="guid" value="241f47a5-5bb2-4a11-87cf-a25d87a40fab"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 3"/>
-                    <attribute id="Spells" type="LSString" value="Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-3"/>
+                    <attribute id="Spells" type="LSString" value="Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray"/>
                     <attribute id="UUID" type="guid" value="8d085377-16f2-44fd-ac85-013e5d0053d7"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 4"/>
-                    <attribute id="Spells" type="LSString" value="Zone_Fear;Zone_GustOfWind"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-4"/>
+                    <attribute id="Spells" type="LSString" value="Shout_FireShield;Target_IceStorm;Target_ResilientSphere;Teleportation_DimensionDoor;Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray"/>
                     <attribute id="UUID" type="guid" value="5bb50772-adba-4021-b1c8-fecb2ed421a0"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 5"/>
-                    <attribute id="Spells" type="LSString" value="Zone_GustOfWind_3;Zone_Mephit_FireBreath"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-5"/>
+                    <attribute id="Spells" type="LSString" value="Zone_ConeOfCold;Target_HoldMonster;Throw_Telekinesis;Shout_FireShield;Target_IceStorm;Target_ResilientSphere;Teleportation_DimensionDoor;Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray"/>
                     <attribute id="UUID" type="guid" value="a6a675d9-ce50-409e-9271-094559fffa43"/>
                 </node>
             </children>

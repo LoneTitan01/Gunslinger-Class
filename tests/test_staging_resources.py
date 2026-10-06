@@ -14,6 +14,7 @@ class StagingResourceTests(unittest.TestCase):
             resources = (
                 stage_packages.content_dir / 'Assets' / 'Firearms' / '_merged.lsx',
                 Path('Public/GunslingerClass/RootTemplates/_merged.lsx'),
+                stage_packages.tags_dir / 'd4237481-5fe3-4120-9c9c-2c89b72b774d.lsx',
                 stage_packages.gui_metadata,
                 stage_packages.multi_effect_infos_dir / '1926d069-4ddf-4f80-ae75-897cf666fb16.lsx',
             )

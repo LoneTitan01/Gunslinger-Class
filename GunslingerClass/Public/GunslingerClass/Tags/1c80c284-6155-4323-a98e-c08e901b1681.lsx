@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="Tags">
+        <node id="Tags">
+            <attribute id="Description" type="LSString" value="Gunslinger Blunderbuss weapon type"/>
+            <attribute id="DisplayDescription" type="TranslatedString" handle="h10000021g0000g4000g8000g000000000004" version="1"/>
+            <attribute id="DisplayName" type="TranslatedString" handle="h10000021g0000g4000g8000g000000000002" version="1"/>
+            <attribute id="Icon" type="FixedString" value=""/>
+            <attribute id="Name" type="FixedString" value="WPN_GSL_BLUNDERBUSS"/>
+            <attribute id="UUID" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681"/>
+            <children>
+                <node id="Categories">
+                    <children>
+                        <node id="Category">
+                            <attribute id="Name" type="LSString" value="Code"/>
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

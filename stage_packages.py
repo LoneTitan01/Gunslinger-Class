@@ -7,7 +7,7 @@ Usage:
     python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation]
 
 With --divine, localization is converted to .loca, Content banks, root
-templates and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
+templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
 (unless --no-pack). Without --divine, the localization .xml and resource .lsx files are
 staged as-is and must be converted (.loca / .lsf / .lsfx) and packed with LSLib's
 ConverterApp.
@@ -41,6 +41,7 @@ compat_dirs = (
 localization_xml = Path('Localization/English/GunslingerClass.xml')
 content_dir = Path('Public/GunslingerClass/Content')
 root_templates_dir = Path('Public/GunslingerClass/RootTemplates')
+tags_dir = Path('Public/GunslingerClass/Tags')
 multi_effect_infos_dir = Path('Public/GunslingerClass/MultiEffectInfos')
 effects_dir = Path('Public/GunslingerClass/Assets/Effects')
 gui_metadata = Path('Mods/GunslingerClass/GUI/metadata.lsx')
@@ -95,10 +96,10 @@ def converted_path(lsx):
 
 def stage_content_banks(divine):
     """Compile visual/effect banks, MultiEffectInfos, effect sources, GUI texture metadata,
-    and item root templates to LSF/LSFX."""
+    item root templates and tags to LSF/LSFX."""
     banks = sorted(
         path
-        for directory in (content_dir, root_templates_dir, multi_effect_infos_dir, effects_dir)
+        for directory in (content_dir, root_templates_dir, tags_dir, multi_effect_infos_dir, effects_dir)
         for path in (main_staging / directory).rglob('*.lsx')
     )
     gui_metadata_path = main_staging / gui_metadata

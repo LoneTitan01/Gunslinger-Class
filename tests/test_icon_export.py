@@ -26,7 +26,7 @@ class IconExportTests(unittest.TestCase):
     def test_atlas_layout_places_every_key_in_a_unique_cell(self) -> None:
         path, texture, tile, cells = exporter.atlas_layout()
         self.assertEqual(path.name, 'Icons_GunslingerAbilities.dds')
-        self.assertEqual((texture, tile, len(cells)), (2048, 64, 83))
+        self.assertEqual((texture, tile, len(cells)), (2048, 64, 81))
         self.assertEqual(len(set(cells.values())), len(cells))
         self.assertEqual(cells['GSL_MercilessShot'], (0, 0))
         self.assertEqual(cells['GSL_Scattershot'], (17 * 64, 64))

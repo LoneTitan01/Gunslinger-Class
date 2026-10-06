@@ -59,6 +59,7 @@
                     <attribute id="Level" type="uint8" value="5"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(c5ceb81f-9c72-5c9b-ac59-9b34836f11c6,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="315f0012-d01f-5ce6-b4d5-9250638db0c5"/>
                 </node>
@@ -90,6 +91,7 @@
                     <attribute id="Level" type="uint8" value="9"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(01d5301f-3363-586e-980e-5500c04331f6,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="cfa25be9-3341-5286-bd7e-0635c184917b"/>
                 </node>
@@ -120,6 +122,7 @@
                     <attribute id="Level" type="uint8" value="13"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(5f9c6cb5-dad9-5bec-805b-48d35ddf4e26,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="efac87f4-e6c1-50dc-991f-a53c1f312275"/>
                 </node>
@@ -150,6 +153,7 @@
                     <attribute id="Level" type="uint8" value="17"/>
                     <attribute id="Name" type="LSString" value="Gunslinger"/>
                     <attribute id="ProgressionType" type="uint8" value="0"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(547d73a4-4847-5212-94ff-0de279651159,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
                     <attribute id="UUID" type="guid" value="8896d618-0951-554c-b4da-50b4c6be705f"/>
                 </node>
@@ -186,14 +190,6 @@
                     <attribute id="UUID" type="guid" value="dd7ab6da-9742-567d-ac83-a28a73cf969b"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="5"/>
-                    <attribute id="Name" type="LSString" value="Marksman"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(c5ceb81f-9c72-5c9b-ac59-9b34836f11c6,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
-                    <attribute id="UUID" type="guid" value="a6a1585b-4e99-5818-99a1-25a8c4173049"/>
-                </node>
-                <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
                     <attribute id="Level" type="uint8" value="7"/>
                     <attribute id="Name" type="LSString" value="Marksman"/>
@@ -201,14 +197,6 @@
                     <attribute id="ProgressionType" type="uint8" value="1"/>
                     <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
                     <attribute id="UUID" type="guid" value="03d8c675-ccac-5d5b-bcf6-306949239961"/>
-                </node>
-                <node id="Progression">
-                    <attribute id="Level" type="uint8" value="9"/>
-                    <attribute id="Name" type="LSString" value="Marksman"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(01d5301f-3363-586e-980e-5500c04331f6,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
-                    <attribute id="UUID" type="guid" value="09f239c7-71bc-59d0-a5d7-d2299fea275f"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
@@ -220,14 +208,6 @@
                     <attribute id="UUID" type="guid" value="bbe5571d-7885-5fb3-a214-b37b92307ed3"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="13"/>
-                    <attribute id="Name" type="LSString" value="Marksman"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(5f9c6cb5-dad9-5bec-805b-48d35ddf4e26,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
-                    <attribute id="UUID" type="guid" value="6c8a3cd1-5858-57f1-8285-15a357e1ccfb"/>
-                </node>
-                <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
                     <attribute id="Level" type="uint8" value="15"/>
                     <attribute id="Name" type="LSString" value="Marksman"/>
@@ -235,14 +215,6 @@
                     <attribute id="ProgressionType" type="uint8" value="1"/>
                     <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
                     <attribute id="UUID" type="guid" value="20974183-908b-54b8-b998-091bd0741992"/>
-                </node>
-                <node id="Progression">
-                    <attribute id="Level" type="uint8" value="17"/>
-                    <attribute id="Name" type="LSString" value="Marksman"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(547d73a4-4847-5212-94ff-0de279651159,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
-                    <attribute id="UUID" type="guid" value="f1af9133-68a0-50aa-b55a-17e253dd233e"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
@@ -262,14 +234,6 @@
                     <attribute id="UUID" type="guid" value="1f1b127b-59f7-5c15-8e72-ebd4aa73717a"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="5"/>
-                    <attribute id="Name" type="LSString" value="Desperado"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(2a4fc9b2-a425-5607-bf0d-4568d25b786b,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
-                    <attribute id="UUID" type="guid" value="23a3d684-141f-5ab1-b3b0-6293c3e8ef08"/>
-                </node>
-                <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
                     <attribute id="Level" type="uint8" value="6"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
@@ -278,12 +242,12 @@
                     <attribute id="UUID" type="guid" value="c1b7e30e-f719-5e19-ba66-bed6b814a46f"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="8"/>
+                    <attribute id="Level" type="uint8" value="7"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(c1b08d07-d25b-5843-9f71-3f44fed200d4,1,GritAbility)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(2a4fc9b2-a425-5607-bf0d-4568d25b786b,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
-                    <attribute id="UUID" type="guid" value="11b10140-e41b-5930-9d4f-73cc8944c611"/>
+                    <attribute id="UUID" type="guid" value="461eaa48-19c1-5bdf-8ce1-34d521762ad7"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
@@ -297,7 +261,7 @@
                     <attribute id="Level" type="uint8" value="11"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(cc00480c-d7cb-5410-baad-d3c8df5de4e0,1,GritAbility)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(c1b08d07-d25b-5843-9f71-3f44fed200d4,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
                     <attribute id="UUID" type="guid" value="ecfeaf94-c0a2-54dc-bbff-026ba6bb82fa"/>
                 </node>
@@ -310,28 +274,13 @@
                     <attribute id="UUID" type="guid" value="df7980c2-1cfa-5066-b215-ec4102c598d9"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="14"/>
-                    <attribute id="Name" type="LSString" value="Desperado"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(24dec295-9139-5c1d-8504-039a62afb38b,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
-                    <attribute id="UUID" type="guid" value="a37f15b2-6a3e-57b7-a394-e1a0ffa66f3d"/>
-                </node>
-                <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
                     <attribute id="Level" type="uint8" value="15"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(cc00480c-d7cb-5410-baad-d3c8df5de4e0,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
                     <attribute id="UUID" type="guid" value="ecc25c60-bc61-5f1b-868c-c59d7d99d175"/>
-                </node>
-                <node id="Progression">
-                    <attribute id="Level" type="uint8" value="17"/>
-                    <attribute id="Name" type="LSString" value="Desperado"/>
-                    <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(6b314e95-5188-5e31-81b0-3bf7cf4a178b,1,GritAbility)"/>
-                    <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
-                    <attribute id="UUID" type="guid" value="77d555ff-3eee-5346-8c60-8c54aebb1ecb"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(GunslingerGrit,1,0)"/>
@@ -342,29 +291,30 @@
                     <attribute id="UUID" type="guid" value="05068e6f-adb6-5bb4-b1cb-427d525d5162"/>
                 </node>
                 <node id="Progression">
-                    <attribute id="Level" type="uint8" value="20"/>
+                    <attribute id="Level" type="uint8" value="19"/>
                     <attribute id="Name" type="LSString" value="Desperado"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(db6a663b-28d8-5ec9-93c2-d88c16d9a6ea,1,GritAbility)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(24dec295-9139-5c1d-8504-039a62afb38b,1,GritAbility)"/>
                     <attribute id="TableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
-                    <attribute id="UUID" type="guid" value="e19f3e21-3aa8-5d30-b2cf-c566c760ca50"/>
+                    <attribute id="UUID" type="guid" value="352e87fd-0eb3-55b1-a158-d444653bde1c"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,3,1)"/>
                     <attribute id="Level" type="uint8" value="3"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
-                    <attribute id="PassivesAdded" type="LSString" value="GSL_ArcaneGunsman_InfusedRoundsUnlock"/>
+                    <attribute id="PassivesAdded" type="LSString" value="GSL_ArcaneGunsman_InfusedRoundsUnlock;UnlockedSpellSlotLevel1"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(8ac43a03-77f4-433d-952a-82ad94fe929f,2,GritAbility);SelectSpells(ceb7dba3-aeb9-47f7-bebb-41a0c0833c97,2,0,,,,AlwaysPrepared);SelectSpells(93f4be1c-e2b3-4f34-9850-f16b9291d14a,2,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectPassives(8ac43a03-77f4-433d-952a-82ad94fe929f,2,GritAbility);SelectSpells(ceb7dba3-aeb9-47f7-bebb-41a0c0833c97,2,0,,,,AlwaysPrepared);SelectSpells(93f4be1c-e2b3-4f34-9850-f16b9291d14a,3,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="c4102aa9-ed04-5946-a744-5baff956dfed"/>
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,1,1);ActionResource(SpellSlot,2,2)"/>
+                    <attribute id="PassivesAdded" type="LSString" value="UnlockedSpellSlotLevel2"/>
                     <attribute id="Level" type="uint8" value="5"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(c5ceb81f-9c72-5c9b-ac59-9b34836f11c6,1,GritAbility);SelectSpells(93f4be1c-e2b3-4f34-9850-f16b9291d14a,1,0,,,,AlwaysPrepared);SelectSpells(241f47a5-5bb2-4a11-87cf-a25d87a40fab,1,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSpells(241f47a5-5bb2-4a11-87cf-a25d87a40fab,2,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="c5a1e6b3-1144-5820-87f7-3b85f1ec8bdb"/>
                 </node>
@@ -380,10 +330,11 @@
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,2,3)"/>
+                    <attribute id="PassivesAdded" type="LSString" value="UnlockedSpellSlotLevel3"/>
                     <attribute id="Level" type="uint8" value="9"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(01d5301f-3363-586e-980e-5500c04331f6,1,GritAbility);SelectSpells(ceb7dba3-aeb9-47f7-bebb-41a0c0833c97,1,0,,,,AlwaysPrepared);SelectSpells(8d085377-16f2-44fd-ac85-013e5d0053d7,1,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSpells(ceb7dba3-aeb9-47f7-bebb-41a0c0833c97,1,0,,,,AlwaysPrepared);SelectSpells(8d085377-16f2-44fd-ac85-013e5d0053d7,1,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="f95a4de7-7c8e-5df6-85ff-7b70bde011c0"/>
                 </node>
@@ -399,10 +350,11 @@
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,1,4)"/>
+                    <attribute id="PassivesAdded" type="LSString" value="UnlockedSpellSlotLevel4"/>
                     <attribute id="Level" type="uint8" value="13"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(5f9c6cb5-dad9-5bec-805b-48d35ddf4e26,1,GritAbility);SelectSpells(5bb50772-adba-4021-b1c8-fecb2ed421a0,1,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSpells(5bb50772-adba-4021-b1c8-fecb2ed421a0,1,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="f4c4c7ac-49d8-5d2f-aca2-2200303f416f"/>
                 </node>
@@ -412,7 +364,7 @@
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="PassivesAdded" type="LSString" value="GSL_ArcaneGunsman_UnstableInfusedRoundsUnlock"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectSpells(241f47a5-5bb2-4a11-87cf-a25d87a40fab,1,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSpells(5bb50772-adba-4021-b1c8-fecb2ed421a0,1,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="88d6bf1b-fd62-51a0-b7fc-e6c476d30d35"/>
                 </node>
@@ -421,7 +373,7 @@
                     <attribute id="Level" type="uint8" value="17"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>
-                    <attribute id="Selectors" type="LSString" value="SelectPassives(547d73a4-4847-5212-94ff-0de279651159,1,GritAbility);SelectSpells(5bb50772-adba-4021-b1c8-fecb2ed421a0,1,0,,,,AlwaysPrepared)"/>
+                    <attribute id="Selectors" type="LSString" value="SelectSpells(5bb50772-adba-4021-b1c8-fecb2ed421a0,1,0,,,,AlwaysPrepared)"/>
                     <attribute id="TableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
                     <attribute id="UUID" type="guid" value="edf8924c-5c63-558b-94bc-0b17801196b3"/>
                 </node>
@@ -436,6 +388,7 @@
                 </node>
                 <node id="Progression">
                     <attribute id="Boosts" type="LSString" value="ActionResource(SpellSlot,1,5)"/>
+                    <attribute id="PassivesAdded" type="LSString" value="UnlockedSpellSlotLevel5"/>
                     <attribute id="Level" type="uint8" value="19"/>
                     <attribute id="Name" type="LSString" value="ArcaneGunsman"/>
                     <attribute id="ProgressionType" type="uint8" value="1"/>

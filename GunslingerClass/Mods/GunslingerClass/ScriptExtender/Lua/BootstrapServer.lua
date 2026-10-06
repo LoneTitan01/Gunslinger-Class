@@ -10,6 +10,7 @@ local casts = {}
 local refreshing = {}
 local pendingRefresh = {}
 local pendingLastWord = {}
+local recentAttackers = {}
 
 Ext.Vars.RegisterModVariable(Rules.ModuleUUID, "Firearms", {
     Server = true, WriteableOnServer = true, Persistent = true
@@ -36,11 +37,7 @@ end
 
 local function itemState(data, item, kind)
     if not data.weapons[item] then
-        local entity = assert(Ext.Entity.Get(item), "Equipped firearm has no entity")
-        data.weapons[item] = {
-            kind = kind, ammo = Rules.Firearms[kind].capacity,
-            baseRange = assert(entity.Weapon, "Firearm has no Weapon component").WeaponRange
-        }
+        data.weapons[item] = {kind = kind, ammo = Rules.Firearms[kind].capacity}
     end
     return data.weapons[item]
 end
@@ -62,16 +59,41 @@ local function status(object, name, enabled)
     if not enabled and present then Osi.RemoveStatus(object, name) end
 end
 
-local function applyItem(item, state)
-    for kind in pairs(Rules.Firearms) do
-        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), Rules.HasMod(state, "Damage") and state.kind == kind)
+local BonusActionPoint = "420c8df5-45c2-4253-93c2-7ec44e127930"
+local reloadPollTicks = 0
+
+-- Reload hotbar costs follow the bonus action: a bonus action while one remains, otherwise an action.
+local function updateReloadCosts(character)
+    local entity = Ext.Entity.Get(character)
+    local resources = entity and entity.ActionResources and entity.ActionResources.Resources
+    if not resources then return end
+    local bonus = false
+    for _, entry in pairs(resources[BonusActionPoint] or {}) do
+        if entry.Amount >= 1 then bonus = true end
     end
-    local entity = assert(Ext.Entity.Get(item), "Tracked firearm has no entity")
-    local weapon = assert(entity.Weapon, "Tracked firearm has no Weapon component")
-    local range = state.baseRange + (Rules.HasMod(state, "Range") and Rules.Firearms[state.kind].rangeBonus or 0)
-    if weapon.WeaponRange ~= range then
-        weapon.WeaponRange = range
-        entity:Replicate("Weapon")
+    status(character, "GSL_RELOAD_NO_BONUS_ACTION", not bonus)
+    status(character, "GSL_QUICK_FULL_RELOAD", bonus and Osi.HasPassive(character, "GSL_Feat_QuickReload_Marker") == 1)
+end
+
+local function applyItem(item, state)
+    status(item, "GSL_FIREARM_ITEM_MISFIRED", state.misfire and not state.broken)
+    status(item, "GSL_FIREARM_ITEM_DESTROYED", state.broken)
+    status(item, "GSL_TINKERER_CAPACITY", Rules.HasMod(state, "Capacity"))
+    for kind in pairs(Rules.Firearms) do
+        local current = state.kind == kind
+        status(item, "GSL_TINKERER_DAMAGE_" .. kind:upper(), current and Rules.HasMod(state, "Damage"))
+        status(item, "GSL_TINKERER_RANGE_" .. kind:upper(), current and Rules.HasMod(state, "Range"))
+    end
+    -- Older versions edited the Weapon component directly; restore it once, since range now comes from statuses.
+    if state.baseRange then
+        local entity = Ext.Entity.Get(item)
+        pcall(function()
+            if entity.Weapon.WeaponRange ~= state.baseRange then
+                entity.Weapon.WeaponRange = state.baseRange
+                entity:Replicate("Weapon")
+            end
+        end)
+        state.baseRange = nil
     end
 end
 
@@ -90,9 +112,7 @@ local function snapshot(character)
     save(data)
 end
 
-local function refresh(character, restoreAmmo)
-    if refreshing[character] then return end
-    refreshing[character] = true
+local function refreshNow(character, restoreAmmo)
     local data = database()
     local owner = data.owners[character] or {}
     data.owners[character] = owner
@@ -117,17 +137,20 @@ local function refresh(character, restoreAmmo)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", state and state.broken)
         if hand == "Off" then
             status(character, "GSL_TINKERER_OFF_RANGE", state and Rules.HasMod(state, "Range"))
+        else
+            -- Longarm Specialist's range is a spell-variant boost, so it is applied only while a musket is held.
+            status(character, "GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket" and
+                Osi.HasPassive(character, "GSL_Feat_LongarmSpecialist_Range") == 1)
+            for gun in pairs(Rules.Firearms) do
+                status(character, "GSL_TINKERER_MAIN_RANGE_" .. gun:upper(),
+                    state and state.kind == gun and Rules.HasMod(state, "Range"))
+            end
         end
         local repairable = state and state.misfire and not state.broken
-        local rarity = repairable and assert(Ext.Entity.Get(item).Value, "Firearm has no rarity").Rarity
-        for dc = 10, 15 do
-            status(character, "GSL_FIELD_REPAIR_" .. hand:upper() .. "_" .. dc,
-                repairable and Rules.FieldRepairDC(rarity) == dc)
-        end
-        for dc = 12, 16 do
-            status(character, "GSL_REPAIR_" .. hand:upper() .. "_" .. dc,
-                repairable and Rules.RepairDC(rarity) == dc)
-        end
+        -- Each misfired hand gets its own Repair menu; Rapid Repair joins it once the passive is known.
+        local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", rapid)
         if state then
             applyItem(item, state)
             local entry, entity = resource(character, hand, state)
@@ -141,7 +164,16 @@ local function refresh(character, restoreAmmo)
         end
     end
     save(data)
+    updateReloadCosts(character)
+end
+
+local function refresh(character, restoreAmmo)
+    if refreshing[character] then return end
+    refreshing[character] = true
+    -- Release the re-entrancy guard even on error, or every later refresh for this character is silently skipped.
+    local ok, err = pcall(refreshNow, character, restoreAmmo)
     refreshing[character] = nil
+    if not ok then error(err, 0) end
 end
 
 local function misfireItem(character, item, broken)
@@ -157,6 +189,12 @@ local ammoSpells = {Zone_GSL_LineEmUp = true, Zone_GSL_PiercingRound = true, Sho
 local rollTheBones = {"GSL_RTB_BUST", "GSL_RTB_HIT", "GSL_RTB_JACKPOT"}
 
 Ext.Events.StatsLoaded:Subscribe(function()
+    -- Every magical firearm has its own root template; map them all from their weapon stats.
+    for _, name in ipairs(Ext.Stats.GetStats("Weapon")) do
+        local kind = name:match("^WPN_GSL_(%a+)")
+        local root = kind and Rules.Firearms[kind] and Ext.Stats.Get(name).RootTemplate
+        if root and root ~= "" then templates[root:lower()] = kind end
+    end
     for _, name in ipairs(Ext.Stats.GetStats("SpellData")) do
         local spell = Ext.Stats.Get(name)
         if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or ammoSpells[name] then
@@ -206,17 +244,20 @@ Ext.Events.StatsLoaded:Subscribe(function()
 end)
 
 Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell, _, _, action)
+    -- Grit Recovery triggers once per attack; a new attack re-arms it.
+    if Osi.HasActiveStatus(character, "GSL_GRIT_RECOVERY_SPENT") == 1 then
+        Osi.RemoveStatus(character, "GSL_GRIT_RECOVERY_SPENT")
+    end
     if not spell:find("GSL_", 1, true) then return end
     refresh(character, false)
     local hand, mode = Rules.ParseTinkerer(spell)
-    local shotHand = spell:match("^Shout_GSL_RapidRepair_(%a+)%d+$") or
-        spell:match("^Shout_GSL_FieldRepair_(%a+)%d+$") or
+    local shotHand = spell:match("^Shout_GSL_%a+Repair_(%a+)") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")
     local item = equipped(character, hand or shotHand)
     casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand, itemHand = hand or shotHand}
-    local grit = spell:match("^Projectile_GSL_FanningFire_%a+_(%d)$")
-    if grit then Osi.ApplyStatus(character, "GSL_FANNING_FIRE_" .. grit, -1, 1, character) end
-    casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_%a+_(%d)$"))
+    -- Applied before the attack roll so Double Load's critical-miss passive is active for this shot.
+    if spell == "Projectile_GSL_DoubleLoad" then Osi.ApplyStatus(character, "GSL_DOUBLE_LOAD", -1, 1, character) end
+    casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_(%d)$"))
     if spell:match("^Projectile_GSL_DoubleOrNothing$") then
         if Rules.DoubleOrNothing(Ext.Math.Random(1, 20)) then
             Osi.ApplyStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN", -1, 1, character)
@@ -228,9 +269,6 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
 end)
 
 local function clearShotStatuses(character, spell)
-    if spell:match("^Projectile_GSL_FanningFire_") then
-        for grit = 1, 3 do Osi.RemoveStatus(character, "GSL_FANNING_FIRE_" .. grit) end
-    end
     if spell:match("^Projectile_GSL_DoubleLoad$") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
     if spell:match("^Projectile_GSL_DoubleOrNothing$") then Osi.RemoveStatus(character, "GSL_DOUBLE_OR_NOTHING_WIN") end
     if spell:match("^Projectile_GSL_AllIn_") then Osi.RemoveStatus(character, "GSL_ALL_IN") end
@@ -258,6 +296,15 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
             refresh(character, true)
         end
         clearShotStatuses(character, spell)
+        -- Volleys hit several targets, so their bullets are spent once per cast here rather than per target in stats.
+        local volley = tonumber(spell:match("^Projectile_GSL_FanningFire_(%d)$"))
+        local shots = volley and volley + 1 or (spell:match("^Projectile_GSL_AllIn_%d+$") and 1)
+        local volleyState = shots and cast.item and database().weapons[cast.item]
+        if volleyState then
+            local entry, entity = resource(character, "Main", volleyState)
+            entry.Amount = math.max(0, entry.Amount - shots)
+            entity:Replicate("ActionResources")
+        end
         if cast.item and (cast.lose or (cast.violent and Rules.ViolentMisfire(cast.violent, Ext.Math.Random(1, 20)))) then
             misfireItem(character, cast.item, false)
         end
@@ -286,14 +333,29 @@ Ext.Osiris.RegisterListener("CastSpellFailed", 5, "after", function(character, s
     end
 end)
 
+-- Last Word's Downed replacement and the lethal hit's AttackedBy event can arrive in either order.
+local function lastWordShot(character, attacker)
+    pendingLastWord[character] = nil
+    Osi.RemoveStatus(character, "GSL_LASTWORD_PENDING")
+    if attacker and attacker ~= character and Osi.IsDead(character) == 0 and Osi.IsDead(attacker) == 0 then
+        Osi.UseSpell(character, "Projectile_GSL_ReactionShot", attacker)
+    end
+end
+
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, _, action)
     if applied == "GSL_LASTWORD_PENDING" then
-        pendingLastWord[character] = action
+        if recentAttackers[character] then
+            lastWordShot(character, recentAttackers[character])
+        else
+            pendingLastWord[character] = true
+        end
     elseif applied == "GSL_MISFIRE" or applied == "GSL_DOUBLE_LOAD_BROKEN" then
         local cast = casts[character]
         local item = cast and cast.item or equipped(character, "Main") or equipped(character, "Off")
         Osi.RemoveStatus(character, applied)
-        misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN")
+        -- Any critical miss during Double Load breaks the gun, even if only the ordinary misfire passive fired.
+        misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN" or
+            (cast ~= nil and cast.spell == "Projectile_GSL_DoubleLoad"))
     elseif applied == "GSL_REPAIR_MAIN_DONE" or applied == "GSL_REPAIR_OFF_DONE" or
         applied == "GSL_FIELD_REPAIR_MAIN_DONE" or applied == "GSL_FIELD_REPAIR_OFF_DONE" then
         local cast = casts[character]
@@ -308,13 +370,10 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
     end
 end)
 
-Ext.Osiris.RegisterListener("AttackedBy", 7, "after", function(defender, _, attacker, _, _, _, action)
-    if pendingLastWord[defender] == action and Osi.HasActiveStatus(defender, "GSL_LASTWORD_PENDING") == 1 then
-        pendingLastWord[defender] = nil
-        Osi.RemoveStatus(defender, "GSL_LASTWORD_PENDING")
-        if attacker and Osi.IsDead(defender) == 0 and Osi.IsDead(attacker) == 0 then
-            Osi.UseSpell(defender, "Projectile_GSL_ReactionShot", attacker)
-        end
+Ext.Osiris.RegisterListener("AttackedBy", 7, "after", function(defender, _, attacker)
+    recentAttackers[defender] = attacker
+    if pendingLastWord[defender] and Osi.HasActiveStatus(defender, "GSL_LASTWORD_PENDING") == 1 then
+        lastWordShot(defender, attacker)
     end
 end)
 
@@ -330,6 +389,7 @@ Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
     if database().owners[character] then pendingRefresh[character] = 2 end
 end)
 Ext.Events.Tick:Subscribe(function()
+    recentAttackers = {}
     for character, ticks in pairs(pendingRefresh) do
         if ticks > 0 then
             pendingRefresh[character] = ticks - 1
@@ -338,9 +398,36 @@ Ext.Events.Tick:Subscribe(function()
             refresh(character, false)
         end
     end
+    reloadPollTicks = reloadPollTicks + 1
+    if reloadPollTicks >= 5 then
+        reloadPollTicks = 0
+        for character in pairs(database().owners) do updateReloadCosts(character) end
+    end
 end)
+-- Arcane Reload's concentration status sits on the firearm itself, so the bullet follows the enchanted gun.
+local function arcaneReload(character)
+    local data = database()
+    for hand in pairs(slots) do
+        local item = equipped(character, hand)
+        local state = item and data.weapons[item]
+        if state and not state.broken and Osi.HasActiveStatus(item, "GSL_ARCANE_RELOAD") == 1 then
+            local entry, entity = resource(character, hand, state)
+            if entry.Amount < entry.MaxAmount then
+                entry.Amount = entry.Amount + 1
+                entity:Replicate("ActionResources")
+                state.ammo = math.min(entry.Amount, Rules.Capacity(state))
+            end
+        end
+    end
+    save(data)
+end
+
 Ext.Osiris.RegisterListener("TurnStarted", 1, "after", function(character)
-    if database().owners[character] then refresh(character, false) end
+    status(character, "GSL_GRIT_RECOVERY_SPENT", false)
+    if database().owners[character] then
+        refresh(character, false)
+        arcaneReload(character)
+    end
 end)
 Ext.Osiris.RegisterListener("LongRestFinished", 0, "after", function()
     local data = database()
@@ -357,6 +444,7 @@ Ext.Events.SessionLoaded:Subscribe(function()
     casts = {}
     pendingRefresh = {}
     pendingLastWord = {}
+    recentAttackers = {}
     for character in pairs(database().owners) do
         if Ext.Entity.Get(character) then refresh(character, true) end
     end

@@ -26,6 +26,33 @@ def read_entry(path: Path, kind: str, name: str) -> dict[str, str]:
 
 
 class CraftingRecipeTests(unittest.TestCase):
+    def test_kits_only_offer_the_slots_their_recipes_use(self) -> None:
+        combo_text = (PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt').read_text(encoding='utf-8')
+        combos = [
+            dict(re.findall(r'data "([^"]+)" "([^"]*)"', block))
+            for block in re.split(r'\n(?=new ItemCombination )', combo_text)
+            if block.lstrip().startswith('new ItemCombination ')
+        ]
+        templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx').findall(".//node[@id='GameObjects']")
+        for kit, expected_slots in (('OBJ_GSL_AssemblyKit', 2), ('OBJ_GSL_DisassemblyKit', 1)):
+            with self.subTest(kit=kit):
+                template = next(
+                    node for node in templates
+                    if node.find("attribute[@id='Stats']") is not None
+                    and node.find("attribute[@id='Stats']").get('value') == kit
+                )
+                self.assertEqual(
+                    template.find(".//attribute[@id='CombineSlots']").get('value'), str(expected_slots),
+                )
+                recipes = [
+                    fields for fields in combos
+                    if kit in {fields.get(f'Object {slot}') for slot in range(1, 5)}
+                ]
+                self.assertTrue(recipes)
+                for fields in recipes:
+                    ingredients = [key for key in fields if re.fullmatch(r'Object \d+', key)]
+                    self.assertEqual(len(ingredients), expected_slots + 1)
+
     def test_combination_firearm_display_names_are_unique(self) -> None:
         weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
         localization = ET.parse(
@@ -140,13 +167,19 @@ class CraftingRecipeTests(unittest.TestCase):
         expected_names = {name for name, _ in recipes}
         combination_text = combinations.read_text(encoding='utf-8-sig')
         weapon_text = weapon_stats.read_text(encoding='utf-8-sig')
-        self.assertEqual(
-            set(re.findall(r'^new ItemCombination "GSL_Assembly_Blunderbuss_(.+)"$', combination_text, re.MULTILINE)),
-            expected_names,
+        self.assertTrue(
+            expected_names <= set(re.findall(
+                r'^new ItemCombination "GSL_Assembly_Blunderbuss_(.+)"$',
+                combination_text,
+                re.MULTILINE,
+            )),
         )
-        self.assertEqual(
-            set(re.findall(r'^new entry "WPN_GSL_Blunderbuss_(.+)"$', weapon_text, re.MULTILINE)),
-            expected_names,
+        self.assertTrue(
+            expected_names <= set(re.findall(
+                r'^new entry "WPN_GSL_Blunderbuss_(.+)"$',
+                weapon_text,
+                re.MULTILINE,
+            )),
         )
         maps: set[str] = set()
 
@@ -2574,7 +2607,7 @@ class CraftingRecipeTests(unittest.TestCase):
             if node.find("attribute[@id='Name']").get('value') == 'WPN_GSL_Flintlock_ArtificialLeech'
         )
         self.assertEqual(fused['RootTemplate'], fused_template.find("attribute[@id='MapKey']").get('value'))
-        for kit_name in ('OBJ_GSL_AssemblyKit', 'OBJ_GSL_DisassemblyKit'):
+        for kit_name, slots in (('OBJ_GSL_AssemblyKit', '2'), ('OBJ_GSL_DisassemblyKit', '1')):
             kit = next(
                 node for node in nodes
                 if node.find("attribute[@id='Name']").get('value') == kit_name
@@ -2584,7 +2617,7 @@ class CraftingRecipeTests(unittest.TestCase):
             self.assertEqual(action.find("attribute[@id='ActionType']").get('value'), '23')
             self.assertEqual(
                 action.find("./children/node[@id='Attributes']/attribute[@id='CombineSlots']").get('value'),
-                '3',
+                slots,
             )
 
     def test_bloodletting_is_a_normal_ammo_using_shot_with_bleed_on_hit(self) -> None:
@@ -3459,6 +3492,187 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('Resistance(Fire, Resistant)', darkfire['Boosts'])
         self.assertIn('Resistance(Cold, Resistant)', darkfire['Boosts'])
         self.assertIn('UnlockSpell(Target_MAG_Haste)', darkfire['Boosts'])
+
+
+    def test_firearm_upgrade_paths_are_registered_and_reversible(self) -> None:
+        combinations = PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt'
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        localization = ET.parse(
+            ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml'
+        )
+        localized_ids = {
+            content.get('contentuid')
+            for content in localization.findall('.//content')
+        }
+        templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx').findall(
+            ".//node[@id='GameObjects']"
+        )
+        upgrades = (
+            ('Flintlock', 'Quickshot', 'WPN_GSL_Flintlock', 'LOOT_Misc_SmokepowderSatchel'),
+            ('Flintlock', 'RunAndGun', 'WPN_GSL_Flintlock_Quickshot', 'OBJ_Metalbar_Gold'),
+            ('Flintlock', 'Diamond', 'WPN_GSL_Flintlock_RunAndGun', 'OBJ_Diamond'),
+            ('Flintlock', 'BlackDiamond', 'WPN_GSL_Flintlock_Diamond', 'OBJ_DiamondDark'),
+            ('Flintlock', 'InfernalDiamond', 'WPN_GSL_Flintlock_Diamond', 'QUEST_LOW_Infernal_Diamond'),
+            ('Blunderbuss', 'InfernalIron', 'WPN_GSL_Blunderbuss', 'LOOT_Misc_InfernalIron'),
+            ('Blunderbuss', 'InfernalAlloy', 'WPN_GSL_Blunderbuss_InfernalIron', 'LOOT_Misc_InfernalAlloy'),
+            ('Blunderbuss', 'SoulCoin', 'WPN_GSL_Blunderbuss_InfernalAlloy', 'LOOT_Misc_SoulCoin'),
+            ('Blunderbuss', 'EnrichedInfernalIron', 'WPN_GSL_Blunderbuss_SoulCoin', 'LOOT_Misc_InfernalIron_Enriched'),
+            ('Musket', 'Silver', 'WPN_GSL_Musket', 'OBJ_Metalbar_Silver'),
+            ('Musket', 'Advanced', 'WPN_GSL_Musket_Silver', 'OBJ_GSL_AdvancedMusketComponents'),
+            ('Musket', 'Paralyzing', 'WPN_GSL_Musket_Advanced', 'UNI_LOW_KarabasansGift_Grenade'),
+            ('Musket', 'Mithral', 'WPN_GSL_Musket_Paralyzing', 'LOOT_GEN_Metalbar_Mithral_A'),
+        )
+        map_keys: set[str] = set()
+        for family, tier, source_weapon, material in upgrades:
+            result_weapon = f'WPN_GSL_{family}_{tier}'
+            recipe_name = f'{family}_{tier}'
+            with self.subTest(upgrade=result_weapon):
+                assembly = read_entry(
+                    combinations,
+                    'ItemCombination',
+                    f'GSL_Assembly_{recipe_name}',
+                )
+                self.assertEqual(
+                    [assembly[f'Object {slot}'] for slot in range(1, 4)],
+                    ['OBJ_GSL_AssemblyKit', material, source_weapon],
+                )
+                self.assertEqual(
+                    [assembly[f'Transform {slot}'] for slot in range(1, 4)],
+                    ['Consume', 'Consume', 'Transform'],
+                )
+                result = read_entry(
+                    combinations,
+                    'ItemCombinationResult',
+                    f'GSL_Assembly_{recipe_name}_1',
+                )
+                self.assertEqual(result['Result 1'], result_weapon)
+
+                disassembly = read_entry(
+                    combinations,
+                    'ItemCombination',
+                    f'GSL_Disassembly_{recipe_name}',
+                )
+                self.assertEqual(
+                    [disassembly[f'Object {slot}'] for slot in range(1, 3)],
+                    [result_weapon, 'OBJ_GSL_DisassemblyKit'],
+                )
+                returned = read_entry(
+                    combinations,
+                    'ItemCombinationResult',
+                    f'GSL_Disassembly_{recipe_name}_1',
+                )
+                self.assertEqual(returned['Result 1'], source_weapon)
+                self.assertEqual(returned['Result 2'], material)
+
+                weapon = read_entry(weapon_stats, 'entry', result_weapon)
+                template = next(
+                    node for node in templates
+                    if node.find("attribute[@id='Name']").get('value') == result_weapon
+                )
+                map_key = template.find("attribute[@id='MapKey']").get('value')
+                map_keys.add(map_key)
+                self.assertEqual(weapon['RootTemplate'], map_key)
+                self.assertEqual(template.find("attribute[@id='Stats']").get('value'), result_weapon)
+                self.assertIn(weapon['DisplayName'].split(';')[0], localized_ids)
+                self.assertIn(weapon['Description'].split(';')[0], localized_ids)
+
+        self.assertEqual(len(map_keys), len(upgrades))
+
+        component_recipe = read_entry(
+            combinations,
+            'ItemCombination',
+            'GSL_Assembly_AdvancedMusketComponents',
+        )
+        self.assertEqual(
+            [component_recipe[f'Object {slot}'] for slot in range(1, 4)],
+            ['OBJ_GSL_AssemblyKit', 'LOOT_Misc_AdamantineSlag', 'LOOT_Misc_RunePowder'],
+        )
+        component_result = read_entry(
+            combinations,
+            'ItemCombinationResult',
+            'GSL_Assembly_AdvancedMusketComponents_1',
+        )
+        self.assertEqual(component_result['Result 1'], 'OBJ_GSL_AdvancedMusketComponents')
+        component_stats = read_entry(
+            PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerObjects.txt',
+            'entry',
+            'OBJ_GSL_AdvancedMusketComponents',
+        )
+        self.assertEqual(component_stats['using'], 'LOOT_GEN_Metalbar_Mithral_A')
+        component_template = next(
+            node for node in templates
+            if node.find("attribute[@id='Name']").get('value') == 'OBJ_GSL_AdvancedMusketComponents'
+        )
+        self.assertEqual(
+            component_template.find("attribute[@id='ParentTemplateId']").get('value'),
+            'd746d7c3-ed35-4cd4-becc-6ebb3e0a7b46',
+        )
+        self.assertIn(component_stats['DisplayName'].split(';')[0], localized_ids)
+        self.assertIn(component_stats['Description'].split(';')[0], localized_ids)
+
+    def test_firearm_upgrade_effects_and_granted_abilities(self) -> None:
+        data_dir = PUBLIC / 'Stats' / 'Generated' / 'Data'
+        weapons = data_dir / 'Weapon.txt'
+        passives = data_dir / 'GunslingerPassives.txt'
+        spells = data_dir / 'GunslingerSpells.txt'
+
+        quickshot = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_Quickshot')
+        self.assertEqual(quickshot['Rarity'], 'Uncommon')
+        self.assertIn('WeaponEnchantment(1)', quickshot['DefaultBoosts'])
+        self.assertIn('GSL_Flintlock_Upgrade_Grit', quickshot['PassivesOnEquip'])
+        grit_bonus = read_entry(passives, 'entry', 'GSL_Flintlock_Upgrade_Grit')
+        self.assertIn('ActionResource(GunslingerGrit,1,0)', grit_bonus['Boosts'])
+        quick_reload = read_entry(spells, 'entry', 'Shout_GSL_QuickReload_Flintlock')
+        self.assertEqual(quick_reload['UseCosts'], 'GunslingerGrit:1')
+        self.assertIn('RestoreResource(GunslingerFlintlockAmmo,100%,0)', quick_reload['SpellProperties'])
+
+        run_and_gun = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_RunAndGun')
+        self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_Flintlock)', run_and_gun['BoostsOnEquipMainHand'])
+        dash_passive = read_entry(passives, 'entry', 'GSL_Flintlock_DashAndGun_Passive')
+        self.assertIn("SpellId('Shout_Dash')", dash_passive['Conditions'])
+        dash_attack = read_entry(spells, 'entry', 'Projectile_GSL_DashAndGun_Flintlock')
+        self.assertEqual(dash_attack['UseCosts'], 'GunslingerFlintlockAmmo:1')
+
+        diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_Diamond')
+        self.assertIn('WeaponEnchantment(2)', diamond['DefaultBoosts'])
+        self.assertIn('ActionResource(BonusActionPoint,1,0)', diamond['Boosts'])
+        self.assertIn('IgnoreResistance(Piercing,Resistant)', diamond['Boosts'])
+        black_diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_BlackDiamond')
+        self.assertIn('CriticalHit(1)', black_diamond['DefaultBoosts'])
+        darkness = read_entry(passives, 'entry', 'GSL_Flintlock_BlackDiamond_Passive')
+        self.assertIn('Advantage(AttackRoll)', darkness['Boosts'])
+        infernal_diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_InfernalDiamond')
+        self.assertIn('WeaponDamage(2d6,Fire)', infernal_diamond['DefaultBoosts'])
+
+        fire_resistance = read_entry(passives, 'entry', 'GSL_Blunderbuss_FireResistance_Passive')
+        self.assertIn('Resistance(Fire,Resistant)', fire_resistance['Boosts'])
+        infernal_alloy = read_entry(weapons, 'entry', 'WPN_GSL_Blunderbuss_InfernalAlloy')
+        self.assertIn('WeaponDamage(1d4,Fire)', infernal_alloy['DefaultBoosts'])
+        soulfire = read_entry(weapons, 'entry', 'WPN_GSL_Blunderbuss_SoulCoin')
+        self.assertIn('WeaponDamage(1d6,Fire)', soulfire['DefaultBoosts'])
+        self.assertIn('CriticalHit(1)', soulfire['DefaultBoosts'])
+        scattershot = read_entry(spells, 'entry', 'Zone_GSL_Scattershot')
+        self.assertIn('DealDamage(1d4,Fire)', scattershot['SpellSuccess'])
+        enchanted_scattershot = read_entry(
+            weapons,
+            'entry',
+            'WPN_GSL_Blunderbuss_EnrichedInfernalIron',
+        )
+        self.assertIn('WeaponDamage(2d4,Fire)', enchanted_scattershot['DefaultBoosts'])
+        self.assertIn('GROUND:CreateSurface(2,2,Fire)', scattershot['SpellProperties'])
+        self.assertIn('DealDamage(2d4,Fire)', scattershot['SpellSuccess'])
+
+        musket_silver = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Silver')
+        self.assertIn('RollBonus(RangedWeaponAttack,2)', musket_silver['Boosts'])
+        advanced_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Advanced')
+        self.assertIn('WeaponDamage(1d4,Piercing)', advanced_musket['DefaultBoosts'])
+        paralyzing_shot = read_entry(spells, 'entry', 'Projectile_GSL_ParalyzingShot_Musket')
+        self.assertEqual(paralyzing_shot['Cooldown'], 'OncePerShortRest')
+        self.assertIn('SavingThrow(Ability.Constitution', paralyzing_shot['SpellSuccess'])
+        self.assertIn('SG_Paralyzed', paralyzing_shot['SpellSuccess'])
+        mithral_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Mithral')
+        self.assertIn('WeaponDamage(1d6,Piercing)', mithral_musket['DefaultBoosts'])
+        self.assertIn('IgnoreResistance(Piercing,Resistant)', mithral_musket['DefaultBoosts'])
 
 
 if __name__ == '__main__':

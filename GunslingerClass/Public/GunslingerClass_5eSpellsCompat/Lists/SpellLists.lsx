@@ -5,29 +5,34 @@
         <node id="root">
             <children>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Cantrips (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Target_ControlFlames;Target_MindSliver"/>
-                    <attribute id="UUID" type="guid" value="94dcbc4f-dcd9-49c6-8a14-0ab1fcf9ca9d"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Cantrips"/>
+                    <attribute id="Spells" type="LSString" value="Projectile_FireBolt;Projectile_RayOfFrost;Target_ShockingGrasp;Target_ControlFlames;Target_MindSliver"/>
+                    <attribute id="UUID" type="guid" value="ceb7dba3-aeb9-47f7-bebb-41a0c0833c97"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
-                    <attribute id="UUID" type="guid" value="9960eae3-1e75-4226-8b5d-ecf8ee60da2d"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1"/>
+                    <attribute id="Spells" type="LSString" value="Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray;Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
+                    <attribute id="UUID" type="guid" value="93f4be1c-e2b3-4f34-9850-f16b9291d14a"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 2 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce"/>
-                    <attribute id="UUID" type="guid" value="ccfe04a1-ea3c-49d9-a50b-276a6c67c16a"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-2"/>
+                    <attribute id="Spells" type="LSString" value="Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray;Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
+                    <attribute id="UUID" type="guid" value="241f47a5-5bb2-4a11-87cf-a25d87a40fab"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 3 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_AshardalonsStride;Target_EruptingEarth;Target_FlameArrows;Teleportation_ThunderStep"/>
-                    <attribute id="UUID" type="guid" value="a1296e01-7cd7-4e65-bfaf-68d375cf0d3d"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-3"/>
+                    <attribute id="Spells" type="LSString" value="Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Shout_AshardalonsStride;Target_EruptingEarth;Target_FlameArrows;Teleportation_ThunderStep;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray;Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
+                    <attribute id="UUID" type="guid" value="8d085377-16f2-44fd-ac85-013e5d0053d7"/>
                 </node>
                 <node id="SpellList">
-                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 4 (5e Spells)"/>
-                    <attribute id="Spells" type="LSString" value="Shout_ShadowOfMoil;Target_StormSphere;Projectile_VitriolicSphere"/>
-                    <attribute id="UUID" type="guid" value="07ea3488-c5a3-4506-9df8-0eb840e4d45c"/>
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-4"/>
+                    <attribute id="Spells" type="LSString" value="Shout_FireShield;Target_IceStorm;Target_ResilientSphere;Teleportation_DimensionDoor;Shout_ShadowOfMoil;Target_StormSphere;Projectile_VitriolicSphere;Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Shout_AshardalonsStride;Target_EruptingEarth;Target_FlameArrows;Teleportation_ThunderStep;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray;Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
+                    <attribute id="UUID" type="guid" value="5bb50772-adba-4021-b1c8-fecb2ed421a0"/>
+                </node>
+                <node id="SpellList">
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Level 1-5"/>
+                    <attribute id="Spells" type="LSString" value="Zone_ConeOfCold;Target_HoldMonster;Throw_Telekinesis;Target_SteelWindStrike;Target_SynapticStatic;Target_FarStep;Shout_FireShield;Target_IceStorm;Target_ResilientSphere;Teleportation_DimensionDoor;Shout_ShadowOfMoil;Target_StormSphere;Projectile_VitriolicSphere;Target_Counterspell;Target_Haste;Projectile_Fireball;Target_ProtectionFromEnergy;Zone_Fear;Zone_LightningBolt;Shout_AshardalonsStride;Target_EruptingEarth;Target_FlameArrows;Teleportation_ThunderStep;Target_MagicWeapon;Target_MistyStep;Projectile_ScorchingRay;Target_Shatter;Zone_GustOfWind;Target_DragonsBreath;Shout_KineticJaunt;Zone_RimesBindingIce;Projectile_ChromaticOrb;Projectile_MagicMissile;Zone_ColorSpray;Shout_AbsorbElements;Throw_Catapult;Target_ChaosBolt;Shout_ZephyrStrike"/>
+                    <attribute id="UUID" type="guid" value="a6a675d9-ce50-409e-9271-094559fffa43"/>
                 </node>
             </children>
         </node>

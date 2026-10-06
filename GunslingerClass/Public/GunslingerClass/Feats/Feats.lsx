@@ -37,7 +37,7 @@
 							</node>
 							<node id="Feat">
 								<attribute id="Name" type="FixedString" value="GSL_Feat_SpellshotAdept"/>
-								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_SpellshotAdept_Magical;GSL_Feat_SpellshotAdept_Rider;GSL_Feat_SpellshotAdept_RiderDamage;GSL_Feat_SpellshotAdept_Intelligence"/>
+								<attribute id="PassivesAdded" type="LSString" value="GSL_Feat_SpellshotAdept_Magical;GSL_Feat_SpellshotAdept_Rider;GSL_Feat_SpellshotAdept_Intelligence"/>
 								<attribute id="UUID" type="guid" value="9076dc36-67b5-4ba4-a11a-eacffd697a2e"/>
 							</node>
 						</children>

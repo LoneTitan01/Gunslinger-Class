@@ -82,15 +82,20 @@ class IconDataTests(unittest.TestCase):
                 self.assertEqual(struct.unpack_from('>II', png, 16), (size, size))
 
     def test_atlas_cells_are_unique_and_use_expected_slots(self) -> None:
-        self.assertEqual(len(self.cells), 83)
-        self.assertEqual(len({cell['MapKey'] for cell in self.cells}), 83)
-        for index, cell in enumerate(self.cells):
-            column, row = index % 32, index // 32
+        self.assertEqual(len(self.cells), 81)
+        coordinates = set()
+        for cell in self.cells:
+            column = round(float(cell['U1']) * 32)
+            row = round(float(cell['V1']) * 32)
+            coordinates.add((column, row))
             with self.subTest(icon=cell['MapKey']):
                 self.assertEqual(float(cell['U1']), column / 32)
                 self.assertEqual(float(cell['U2']), (column + 1) / 32)
                 self.assertEqual(float(cell['V1']), row / 32)
                 self.assertEqual(float(cell['V2']), (row + 1) / 32)
+                self.assertLess(column, 32)
+                self.assertLess(row, 32)
+        self.assertEqual(len(coordinates), len(self.cells))
 
     def test_all_ability_exports_have_required_dimensions(self) -> None:
         for cell in self.cells:

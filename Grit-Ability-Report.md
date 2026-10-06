@@ -28,7 +28,7 @@ and documented in the README.
 | Bite the Bullet | Fixed 2 grit, temporary HP = 2 x proficiency. | Bonus action; spend 1-3 grit; temporary HP = spent grit x proficiency. | Three spend choices; native TemporaryHP statuses with 1/2/3 x proficiency and the shared TEMPORARY_HP stack. No invented HP functor. |
 | Shot in the Dark | A DARKVISION tag did not grant an actual vision distance. | Bonus action + 1 grit; 60-foot darkvision and ignore blindness for one shot. | Native `DarkvisionRangeMin(18)` and blindness-group immunity, removed on attack. Suppression of an already-active Blind status remains an explicit engine test/gap. |
 | Rapid Repair | Bonus action + 1 grit; fixed DC 12; removed a character-wide misfire. | One grit; Sleight of Hand DC 12 + rarity; repair the gun, not all equipped guns. | Primary/secondary options, each gated to the physical gun's repairable state and DC 12-16. Success clears only that gun's ordinary misfire (a -2 ranged to-hit penalty that no longer blocks firing; a second misfire before repair breaks the gun until long rest). Native checks retain proficiency/expertise handling. Failed rolls retain the misfire and spend the costs. Existing bonus-action timing is preserved because the README did not specify another timing. |
-| Fanning Fire | Action + 2 grit; -2 attack buff refunded one normal action, not a volley. | Action + 1-3 grit; 2-4 shots at -1/-2/-3, selecting up to 1 + grit enemies. | 2/3/4 projectile selections and matching bullet/grit costs. Native penalties are applied before the volley and cleaned on completion/cancellation. No action refund. Repeated-target selection and multi-roll timing require game tests. |
+| Fanning Fire | Action + 2 grit; -2 attack buff refunded one normal action, not a volley. | Action + 1-3 grit; 2-4 shots at -2/-3/-4, selecting up to 1 + grit enemies. | 2/3/4 projectile selections and matching bullet/grit costs. Native penalties are applied before the volley and cleaned on completion/cancellation. No action refund. Repeated-target selection and multi-roll timing require game tests. |
 | Desperado's Luck | Free static +1d4 firearm bonus; not a paid post-miss decision. | Once/turn after a miss: pay 1 grit for +1d4; no Reaction. | Native OnPostRoll decision, `AdjustRoll(1d4)`, grit cost 1 and a turn-reset marker. Offers only potentially useful roll adjustments. Natural-1/critical handling needs a game check. |
 | Double Load | One-grit +1d8 preparatory buff; later shot used one bullet; "broken" only imposed disadvantage. | One grit + two bullets; 1.5x damage; natural 1 destroys the physical gun until long rest, not field-repairable. | Direct action attack, one grit, two bullets, 1.5x weapon damage. Its critical-miss passive records destruction against that gun. Hand-specific locks prevent gun attacks; repair choices exclude destroyed guns. |
 | Close Call | Manually activated Reaction + 1 grit, granting +2 AC without a counterattack. | Reaction + 1 grit; +2 AC for the triggering attack; counterattack if it misses. | Native post-roll prompt subtracts 2 from the incoming roll, equivalent to +2 AC for that attack. Resolution conditionally fires a usable loaded primary gun on a miss, and clears its marker on either result. Counterattack spends one bullet but not a second action/reaction. |
@@ -45,11 +45,10 @@ action retains its separate ammunition pool.
 | Disarming / Winging / Forceful / Bullying Shot | 3 | Action firearm attack, 1 grit; on hit Str save Disarm / Con save Prone / Str save 4.5 m push / Wis save Frightened 1 turn. | Save DCs are 8 + proficiency + Dexterity modifier. |
 | Quickload | 3 | Bonus action, 1 grit; refills every wielded gun's loaded ammunition. | - |
 | Flash Powder | 3 | Action, 1 grit; 1.5 m radius Con save or Blinded 1 turn. | - |
-| Violent Shot | 9 | Linked 1/2/3-grit attacks adding 1d10/2d6/3d4 per grit by gun. | Server rolls d20 after the cast; d20 <= tier misfires the gun through the normal Misfired/broken path. |
+| Violent Shot | 9 | Linked 1/2/3-grit attacks usable with any main-hand firearm, adding 1d8/2d6/3d4 per grit by gun. | Server rolls d20 after the cast; d20 <= tier misfires the gun through the normal Misfired/broken path. |
 | Dazing Shot | 9 | 2 grit attack; Con save or Dazed 1 turn. | - |
 | Piercing Round | 9 | 2 grit, 1 bullet; 18 m line, one attack roll per creature. | Attack roll per target instead of a save. |
-| Hair Trigger | 9 | Native interrupt, Reaction + 1 grit, when an enemy within 9 m hits an ally. | Ally-hit trigger ordering needs a game check. |
-| Ricochet | 13 | 3 grit attack; on hit, bounces to one enemy within 9 m. | - |
+| Hair Trigger | 9 | Native interrupt, Reaction + 1 grit, when an enemy within 9 m attacks an ally. | Ally-attack trigger ordering needs a game check. |
 | Grit and Steel | 13 | Native failed-save reroll interrupt, 2 grit, once per short rest. | - |
 | Bullet Time | 17 | 4 grit, extra action, once per short rest. | - |
 | Hail of Lead | 17 | Action, 5 grit, 1 bullet; weapon attack on every enemy within 18 m; once per long rest. | - |
@@ -57,17 +56,17 @@ action retains its separate ammunition pool.
 | Ante Up | D3 | Bonus action, 1 grit; Advantage on the next firearm attack; on a miss, attackers gain Advantage. | - |
 | Lucky Draw | D3 | 1 grit; reroll 1s and 2s on firearm damage dice this turn. | - |
 | Two-Gun Tango | D3 | Bonus action, 1 grit, off-hand bullet; off-hand shot adds Dex to damage. | Spends off-hand ammunition. |
-| Roll the Bones | D5 | Bonus action, 1 grit; server d6 picks Bust/Hit/Jackpot status for 12 s. | Bust is -1d4 to hit, not lost grit. Jackpot restores 1 grit. |
-| Duck and Weave | D5 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
-| Cheat Death's Odds | D8 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
-| Hot Hand | D8 | After a firearm hit, 2 grit: next firearm attack crits on 18-20. | - |
-| Double or Nothing | D11 | 2 grit; server d20 at cast start, 11+ doubles weapon damage, otherwise the gun misfires afterwards. | - |
-| Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks you. | Triggers on an attack, not on initiative. |
-| Dead Man's Hand | D14 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
-| Last Stand | D14 | 3 grit, 2 turns; the first killing blow leaves you alive; kills restore 1 grit; once per long rest. | - |
-| All In | D17 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
-| Desperado's Fortune | D17 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
-| High Noon | D20 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; free 1d8 to attacks and saves. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
+| Roll the Bones | D7 | Bonus action, 1 grit; server d6 picks Bust/Hit/Jackpot status for 12 s. | Bust is -1d4 to hit, not lost grit. Jackpot restores 1 grit. |
+| Duck and Weave | D7 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
+| Cheat Death's Odds | D7 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
+| Hot Hand | D7 | Native `OnCastHit` interrupt, Reaction + 2 grit, on your own firearm hit: next firearm attack crits on 18-20. | Same trigger shape as Double or Nothing; Cheat Death's Odds refunds through the interrupt functor. |
+| Double or Nothing | D11 | 2 grit; server d20 at cast start, 11+ doubles weapon damage, otherwise the gun misfires afterwards. | The follow-up shot has no attack roll, so its conditional damage is in `SpellProperties`; `SpellSuccess` never resolved without a roll. |
+| Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks. Cancels the attack (`Counterspell()`), refunds it to the attacker, then shoots. | Triggers on an attack, not on initiative. |
+| Ricochet Shot | D11 | Action, 3 grit and 1 bullet; weapon attack chains from the first enemy to up to three more, dealing half damage on each ricochet. | Follows the vanilla Arrow of Ricochet projectile chain. |
+| Dead Man's Hand | D15 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
+| All In | D19 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
+| Desperado's Fortune | D19 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
+| High Noon | D19 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
 
 "D" marks Desperado-only unlock levels.
 
@@ -78,18 +77,21 @@ ability defect:
 
 - All subclasses: two selected abilities and three maximum grit at level 3. The
   level 3 pick is on each subclass's level 3 row, so it follows subclass choice.
-- Marksman/Arcane Gunsman: one additional choice at 5/9/13/17; maximum increases
-  at 7/11/15/19, reaching seven.
-- Desperado: one additional choice at 5/8/11/14/17/20; maximum increases at
-  6/9/12/15/18, reaching eight.
+- Base Gunslinger (every subclass): one additional choice at 5/9/13/17 from the
+  shared pools. Marksman/Arcane Gunsman maximum increases at 7/11/15/18,
+  reaching seven.
+- Desperado: an extra subclass choice at 7/11/15/19, so it picks a grit ability
+  every other level from 3 to 19; maximum increases at 6/9/12/15/18, reaching
+  eight. Only the Desperado's own picks (3/7/11/15/19) offer its exclusive
+  abilities, because base-class picks share one list across subclasses.
 - Tinkerer is no longer in any grit pool (it's a level 4 class feature). Fanning Fire
-  is in the level 7+ pools, so it's first offered at level 8 (Desperado) or 9
-  (Marksman/Arcane Gunsman).
+  is in the level 7+ pools, so it's first offered at level 7 (Desperado) or 9
+  (every subclass's base pick).
 - Grit Adept gives +2 maximum grit and a level-3-pool choice.
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
-  plus three new abilities at 3; Double Load plus two at 5; Close Call plus two at
-  8; Last Word plus two at 11; two at 14; two at 17; and High Noon at 20. They
-  are no longer granted automatically.
+  plus three new abilities at 3; Double Load, Close Call plus four more at 7;
+  Last Word plus two at 11; two at 15; and All In, Desperado's Fortune and High
+  Noon at 19. They are no longer granted automatically.
 - `GSL_GritRecovery` uses native firearm-hit/critical/killing-blow conditions to
   restore one grit. A hit that is both critical and lethal satisfies one OR
   condition, not two independent recovery branches.
@@ -154,13 +156,12 @@ four-shot option remains unavailable. No free reload is inserted into a volley.
 ## Implementation references
 
 - [GunslingerSpells.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerSpells.txt):
-  entry-point menus, line attack, existing Marksman actions, basic shots/reloads.
-- [GunslingerGritSpells.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerGritSpells.txt):
+  entry-point menus, line attack, existing Marksman actions, basic shots/reloads,
   spend tiers, direct weapon attacks, per-hand repair/modification choices,
   reaction shot, extended secondary shot.
 - [GunslingerInterrupts.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerInterrupts.txt):
   Luck, Close Call and its resolution, Last Word.
-- [GunslingerGritStatuses.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerGritStatuses.txt):
+- [GunslingerStatuses.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerStatuses.txt):
   variable temporary HP, volley penalties, cooldowns, hand locks and repair
   eligibility, item damage replacements.
 - [GunslingerPassives.txt](GunslingerClass/Public/GunslingerClass/Stats/Generated/Data/GunslingerPassives.txt):
@@ -241,10 +242,10 @@ Before treating the new build as gameplay-certified:
     clear after the next attack, and Jackpot never exceeds maximum grit.
 15. Cheat Death's Odds: refunds once for 2+ grit casts and interrupts while
     below half HP, and never for 1-grit abilities or above half HP.
-16. Ricochet, Piercing Round, Hail of Lead and All In: check targeting, per-shot
+16. Piercing Round, Hail of Lead and All In: check targeting, per-shot
     rolls, ammunition spent, and that All In's variants match current grit.
-17. Final Judgement, Dead Man's Hand, Last Stand and High Noon: check HP
-    thresholds, guaranteed/expanded crits, death prevention, kill refunds, and
+17. Final Judgement, Dead Man's Hand and High Noon: check HP
+    thresholds, guaranteed/expanded crits, and
     that Desperado's Luck is hidden while Fortune or High Noon is active.
 
 Ordinary field repair is separate from the grit ability: while a firearm is
