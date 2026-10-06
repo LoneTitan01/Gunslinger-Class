@@ -42,7 +42,7 @@ action retains its separate ammunition pool.
 
 | Ability | Unlock | Implementation | Approximation / open question |
 |---|---|---|---|
-| Disarming / Winging / Forceful / Bullying Shot | 3 | Action firearm attack, 1 grit; on hit Str save Disarm / Con save Prone / Str save 4.5 m push / Wis save Frightened 1 turn. | Save DCs are 8 + proficiency + Dexterity modifier. |
+| Trick Shot (Disarming / Winging / Forceful / Bullying Shot) | 3 | One class-action group of four action firearm attacks, each costing 1 grit and a bullet; on hit Str save Disarm / Con save Prone / Str save 4.5 m push / Wis save Frightened 1 turn. | Save DCs are 8 + proficiency + Dexterity modifier. |
 | Quickload | 3 | Bonus action, 1 grit; refills every wielded gun's loaded ammunition. | - |
 | Flash Powder | 3 | Action, 1 grit; 1.5 m radius Con save or Blinded 1 turn. | - |
 | Violent Shot | 9 | Linked 1/2/3-grit attacks usable with any main-hand firearm, adding 1d8/2d6/3d4 per grit by gun. | Server rolls d20 after the cast; d20 <= tier misfires the gun through the normal Misfired/broken path. |
@@ -64,9 +64,9 @@ action retains its separate ammunition pool.
 | Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks. Cancels the attack (`Counterspell()`), refunds it to the attacker, then shoots. | Triggers on an attack, not on initiative. |
 | Ricochet Shot | D11 | Action, 3 grit and 1 bullet; weapon attack chains from the first enemy to up to three more, dealing half damage on each ricochet. | Follows the vanilla Arrow of Ricochet projectile chain. |
 | Dead Man's Hand | D15 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
-| All In | D19 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
-| Desperado's Fortune | D19 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
-| High Noon | D19 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
+| All In | D18 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
+| Desperado's Fortune | D18 | Once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | Replaces Luck; the Luck interrupt is suppressed while Fortune or High Noon is active. |
+| High Noon | D18 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
 
 "D" marks Desperado-only unlock levels.
 
@@ -80,9 +80,9 @@ ability defect:
 - Base Gunslinger (every subclass): one additional choice at 5/9/13/17 from the
   shared pools. Marksman/Arcane Gunsman maximum increases at 7/11/15/18,
   reaching seven.
-- Desperado: an extra subclass choice at 7/11/15/19, so it picks a grit ability
-  every other level from 3 to 19; maximum increases at 6/9/12/15/18, reaching
-  eight. Only the Desperado's own picks (3/7/11/15/19) offer its exclusive
+- Desperado: an extra subclass choice at 7/11/15/18, so it picks a grit ability
+  every other level from 3 to 18; maximum increases at 6/9/12/15/18, reaching
+  eight. Only the Desperado's own picks (3/7/11/15/18) offer its exclusive
   abilities, because base-class picks share one list across subclasses.
 - Tinkerer is no longer in any grit pool (it's a level 4 class feature). Fanning Fire
   is in the level 7+ pools, so it's first offered at level 7 (Desperado) or 9
@@ -91,7 +91,7 @@ ability defect:
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
   plus three new abilities at 3; Double Load, Close Call plus four more at 7;
   Last Word plus two at 11; two at 15; and All In, Desperado's Fortune and High
-  Noon at 19. They are no longer granted automatically.
+  Noon at 18. They are no longer granted automatically.
 - `GSL_GritRecovery` uses native firearm-hit/critical/killing-blow conditions to
   restore one grit. A hit that is both critical and lethal satisfies one OR
   condition, not two independent recovery branches.

@@ -282,7 +282,7 @@ Blunderbusses progress through Infernal Iron (+1, +1 Fire damage), Infernal Allo
 
 The Gunslinger is a firearm-focused class built around precision, timing, and specialized shots. Gunslingers use **grit points** to fuel trick shots and other combat actions, letting them adapt their attacks to the situation. At level 3, a Gunslinger's maximum becomes 3 grit points; it increases by 1 at levels 7, 11, 15, and 18. Gunslingers regain a spent grit point when they kill a creature by any means or land a firearm critical hit, once per attack (a critical kill, or several kills from one attack, restore only 1 grit). The class has a maximum level of 20. Gunslingers start with 8 + their Constitution modifier hit points and gain 5 + their Constitution modifier hit points per level.
 
-At level 3, Gunslingers choose two grit abilities, then choose one additional ability at levels 5, 9, 13, and 17 (a base Gunslinger feature shared by every subclass). Desperados also choose an extra grit ability at levels 7, 11, 15, and 19, so they gain a grit ability every other level after level 3 (levels 3, 5, 7, 9, 11, 13, 15, 17, and 19). The level 3 and Desperado-only picks offer the Desperado's exclusive abilities alongside the shared ones; the base-class picks at 5, 9, 13, and 17 offer only shared abilities. Desperados increase their maximum grit by 1 every three levels starting at level 6 (levels 6, 9, 12, 15, and 18). Subclasses are selected at level 3, before the level 3 grit abilities, so each subclass's grit pool can be offered. Desperados' exclusive grit abilities join their pool at the levels listed below (the levels of the Desperado's own picks); they're chosen like other grit abilities rather than granted automatically.
+At level 3, Gunslingers choose two grit abilities, then choose one additional ability at levels 5, 9, 13, and 17 (a base Gunslinger feature shared by every subclass). Desperados also choose an extra grit ability at levels 7, 11, 15, and 18, so they gain a grit ability every other level after level 3 (levels 3, 5, 7, 9, 11, 13, 15, 17, and 18). The level 3 and Desperado-only picks offer the Desperado's exclusive abilities alongside the shared ones; the base-class picks at 5, 9, 13, and 17 offer only shared abilities. Desperados increase their maximum grit by 1 every three levels starting at level 6 (levels 6, 9, 12, 15, and 18). Subclasses are selected at level 3, before the level 3 grit abilities, so each subclass's grit pool can be offered. Desperados' exclusive grit abilities join their pool at the levels listed below (the levels of the Desperado's own picks); they're chosen like other grit abilities rather than granted automatically.
 
 ### Character Creation
 
@@ -346,6 +346,8 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 
 ### Grit Abilities
 
+Starting at level 4, you may optionally replace one grit ability you know each time you gain a Gunslinger level. The replacement can be any grit ability currently available to your subclass; Desperado abilities are not offered to other subclasses.
+
 | Name | Lvl available | Description | Cost (grit and actions) |
 | --- | --- | --- | --- |
 | Merciless Shot | 3 | Make a firearm attack; each grit spent adds 1d4 damage with a Flintlock or 1d6 with a Blunderbuss or Musket. | 1-3 grit; Action; 1 bullet |
@@ -354,10 +356,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 | Bite the Bullet | 3 | Gain temporary hit points equal to grit spent multiplied by your proficiency bonus. | Up to 3 grit; Bonus Action |
 | Shot in the Dark | 3 | Gain 60-foot darkvision and ignore blindness for 10 turns. | 1 grit; Bonus Action |
 | Rapid Repair | 3 | Make a DC 18 Sleight of Hand check to clear a misfire. Appears next to Repair in a misfired gun's Repair menu. | 1 grit; Bonus Action |
-| Disarming Shot | 3 | On a hit, the target must pass a Strength save or drop its weapon. | 1 grit; Action; 1 bullet |
-| Winging Shot | 3 | On a hit, the target must pass a Constitution save or be knocked Prone. | 1 grit; Action; 1 bullet |
-| Forceful Shot | 3 | On a hit, the target must pass a Strength save or be pushed back 4.5 m. | 1 grit; Action; 1 bullet |
-| Bullying Shot | 3 | On a hit, the target must pass a Wisdom save or be Frightened for 1 turn. | 1 grit; Action; 1 bullet |
+| Trick Shot | 3 | A class-action group offering Disarming Shot (Strength save or drop weapon), Winging Shot (Constitution save or Prone), Forceful Shot (Strength save or pushed back 4.5 m), or Bullying Shot (Wisdom save or Frightened for 1 turn). Effects apply on a hit. | Each option: 1 grit; Action; 1 bullet |
 | Quickload | 3 | Fully reload your main-hand firearm or off-hand Flintlock, or reload both. | 1 grit; no action for one gun, or Bonus Action for both |
 | Flash Powder | 3 | Target a point on the ground or a creature within 9 m. Creatures in a 1.5 m radius must pass a Constitution save or be Blinded for 1 turn. | 1 grit; Action |
 | Fanning Fire | 7 (Desperado); 9 (others) | Make 2-4 firearm attacks against up to 1 + grit spent targets. Each shot takes a penalty of 1 + grit spent: -2 for 1 grit, -3 for 2, or -4 for 3. | 1-3 grit; Action; 2-4 bullets |
@@ -389,9 +388,9 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 | Quick on the Draw | 11 | When an enemy within 9 m starts an attack, cancel it and shoot first. The enemy gets its attack back (an extra weapon attack, or its action for spell attacks). | 2 grit; Reaction; 1 bullet |
 | Ricochet Shot | 11 | Shoot an enemy; the shot ricochets to up to three additional enemies. The first hit deals full weapon damage and each ricochet deals half. | 3 grit; Action; 1 bullet |
 | Dead Man's Hand | 15 | While below 25% of your hit points, make your next firearm attack before the end of your next turn a Critical Hit if it hits. Once per turn. | 3 grit; no action |
-| All In | 19 | Fire a number of shots equal to all your current grit (3-10) at enemies, each at -2 to hit. The matching option is the only one that can be cast. | All current grit; Action; 1 bullet |
-| Desperado's Fortune | 19 | Replaces Desperado's Luck. Once per turn, add 1d8 to a firearm attack roll or a saving throw. | 1 grit; no action |
-| High Noon | 19 | Call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit (only a natural 1 misses), crit on 17-20, and deal an extra 1d8 damage. Once per long rest. | 5 grit; Bonus Action |
+| All In | 18 | Fire a number of shots equal to all your current grit (3-10) at enemies, each at -2 to hit. The matching option is the only one that can be cast. | All current grit; Action; 1 bullet |
+| Desperado's Fortune | 18 | Replaces Desperado's Luck. Once per turn, add 1d8 to a firearm attack roll or a saving throw. | 1 grit; no action |
+| High Noon | 18 | Call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit (only a natural 1 misses), crit on 17-20, and deal an extra 1d8 damage. Once per long rest. | 5 grit; Bonus Action |
 
 ### Subclasses
 
@@ -459,8 +458,8 @@ The Desperado makes greater use of grit, spending it on special effects and vers
 | 15 | Dead Man's Hand joins the grit pool | Choose 1 | 7 |
 | 16 | - | - | 7 |
 | 17 | - | Choose 1 (Gunslinger, shared pool) | 7 |
-| 18 | - | - | 8 |
-| 19 | All In, Desperado's Fortune and High Noon join the grit pool | Choose 1 | 8 |
+| 18 | All In, Desperado's Fortune and High Noon join the grit pool | Choose 1 | 8 |
+| 19 | - | - | 8 |
 | 20 | - | - | 8 |
 
 #### Arcane Gunsman
@@ -618,12 +617,12 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 - Fanning Fire uses 2/3/4 target selections, matching ammunition costs and -2/-3/-4 attack penalties. The penalty is a `RollBonus(RangedWeaponAttack,-N)` on the Fanning Fire passive, gated by `SpellId(...)` (the vanilla Agonizing Blast pattern), so it is part of the roll and the hit-chance preview rather than a status applied around the cast. Shots require enough loaded ammunition for the entire volley: even a capacity-modified Musket holds only three bullets.
 - Shot in the Dark grants native 18-metre darkvision and blindness-group immunity for 10 turns (attacking no longer ends it). Whether this suppresses an already-active Blind status exactly as the design intends still needs an in-game check.
 - **Stable Shot** now spends 6 metres (20 feet) of movement when activated; learning the feature no longer permanently removes that movement from every turn.
-- Desperado's exclusive abilities are grit picks, added to Desperado-only grit pools offered by the Desperado's own picks at levels 3/7/11/15/19. The base-class picks at 5/9/13/17 use the shared pools for every subclass. The level 3 grit pick lives on each subclass's level 3 progression row, so it's offered after the subclass is chosen. Grit Adept still uses the shared level-3 pool.
+- Desperado's exclusive abilities are grit picks, added to Desperado-only grit pools offered by the Desperado's own picks at levels 3/7/11/15/18. The base-class picks at 5/9/13/17 use the shared pools for every subclass. The level 3 grit pick lives on each subclass's level 3 progression row, so it's offered after the subclass is chosen. Grit Adept still uses the shared level-3 pool.
   - **Desperado's Luck:** native post-roll prompt, one grit, +1d4, once-per-turn marker, no Reaction cost.
   - **Double Load:** action attack, one grit, two bullets, +1d4 (Flintlock) or +1d6 (Blunderbuss/Musket) damage; natural 1 marks that physical gun destroyed until long rest.
   - **Close Call:** native post-roll prompt costing a Reaction and two grit. Subtracting two from the incoming roll is equivalent to +2 AC for that attack. The prompt also applies a hidden `GSL_CLOSE_CALL_COUNTER` marker. When the attack resolves, the marker's `OnAttacked` passive fires a loaded, usable main-hand firearm at the attacker only on a miss (the vanilla Riposte `IsMiss()` / `UseSpell(SWAP, ...)` pattern). A companion passive clears the marker on a hit.
   - **Last Word:** a prepared bonus action (three grit, once per long rest) that grants a `DownedStatus` replacement, the same mechanism as vanilla Relentless Endurance. When it triggers, you regain 1 HP and the server fires the counterattack at the most recent attacker. `IsKillingBlow()` is never set during `OnPreDamage`, so a lethal-damage interrupt can't work.
-- **Expanded grit pools.** Fifteen shared abilities unlock at levels 3/9/13/17. Fifteen more Desperado abilities unlock at levels 3/7/11/15/19, giving 19 Desperado-only abilities. Every subclass grit pick offers every ability unlocked at that level or lower. Approximations and deviations from the suggestion list:
+- **Expanded grit pools.** Fifteen shared abilities unlock at levels 3/9/13/17. Fifteen more Desperado abilities unlock at levels 3/7/11/15/18, giving 19 Desperado-only abilities. Every subclass grit pick offers every ability unlocked at that level or lower. Approximations and deviations from the suggestion list:
   - **Violent Shot:** the misfire chance is a server-side d20 roll after the cast, on a result at or below the grit tier. The gun receives the normal Misfired state; a gun that has already misfired breaks.
   - **Double or Nothing:** a reaction (Interrupt_GSL_DoubleOrNothing, Reaction + 2 grit) after a non-lethal firearm hit casts a free follow-up (Projectile_GSL_DoubleOrNothing). The server rolls a d20 when it starts; on 11 or higher the follow-up deals weapon damage again, otherwise the gun misfires. Cheat Death's Odds refunds through the interrupt.
   - **Roll the Bones:** a bust is a -1d4 attack penalty rather than lost grit. Results last 12 seconds (2 turns) or until your next attack; Jackpot restores 1 grit when applied.

@@ -70,6 +70,12 @@
                     <attribute id="SelectorId" type="FixedString" value="GritAbility"/>
                     <attribute id="UUID" type="guid" value="f8b12307-aa80-40e3-8073-33f560c25c1a"/>
                 </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h10000028g0000g4000g8000g000000000002" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h10000028g0000g4000g8000g000000000001" version="1"/>
+                    <attribute id="SelectorId" type="FixedString" value="GritAbilityReplace"/>
+                    <attribute id="UUID" type="guid" value="eec126da-5cc0-47b6-87f2-059759bd89d7"/>
+                </node>
             </children>
         </node>
     </region>

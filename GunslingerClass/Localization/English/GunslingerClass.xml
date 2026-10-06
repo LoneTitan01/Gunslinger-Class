@@ -18,6 +18,8 @@
         <content contentuid="h09ae87ecgaf05g403dga3e6g755069659a6b" version="1">Regain one Grit point when you reduce a creature to 0 hit points or a firearm attack critically hits. Once per attack: a critical kill, or several kills from one attack, restore only one Grit point.</content>
         <content contentuid="h89c95599gd041g4989g9669g1a79faefb1f8" version="1">Grit Abilities</content>
         <content contentuid="hccf67ca5g7e59g453cg926fgbadababbbc05" version="1">Choose from the grit abilities unlocked by your Gunslinger levels.</content>
+        <content contentuid="h10000028g0000g4000g8000g000000000001" version="1">Replace a Grit Ability</content>
+        <content contentuid="h10000028g0000g4000g8000g000000000002" version="1">Optionally replace one grit ability you know with another grit ability available to your subclass at this level.</content>
         <content contentuid="he1255b27g0099g4e4fga984gcea34703c58f" version="1">Spell Slots</content>
         <content contentuid="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1">You gain new Arcane Gunsman spell slots. Spell slots are restored after a long rest, and each spell you learn can be cast with any slot of its level or higher.</content>
         <content contentuid="h10000026g0000g4000g8000g000000000001" version="1">Spellcasting</content>
@@ -295,6 +297,8 @@
         <content contentuid="h0000000eg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire a heavy charge. On a hit, the target must succeed a Strength saving throw or be pushed back 4.5m.</content>
         <content contentuid="h0000000fg0000g4000g8000g000000000001" version="1">Bullying Shot</content>
         <content contentuid="h0000000fg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire a menacing shot. On a hit, the target must succeed a Wisdom saving throw or be Frightened for 1 turn.</content>
+        <content contentuid="h0000002ag0000g4000g8000g000000000001" version="1">Trick Shot</content>
+        <content contentuid="h0000002ag0000g4000g8000g000000000002" version="1">Choose one of four firearm shots: Disarming Shot, Winging Shot, Forceful Shot, or Bullying Shot. Each shot costs 1 grit, an action, and one bullet.</content>
         <content contentuid="h00000010g0000g4000g8000g000000000001" version="1">Quickload</content>
         <content contentuid="h00000010g0000g4000g8000g000000000002" version="1">Spend 1 grit to fully reload your main-hand firearm or off-hand flintlock, or 1 grit and a bonus action to reload both.</content>
         <content contentuid="h10000022g0000g4000g8000g000000000001" version="1">Quickload: Main Hand</content>

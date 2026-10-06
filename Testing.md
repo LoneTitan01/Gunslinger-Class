@@ -23,7 +23,8 @@ These rely on engine behaviour that the local tests can't confirm.
 - [x] Grit, ammo and other resource icons show on the hotbar and level-up screen.
 - [x] The subclass name reads "Arcane Gunsman" (with a space).
 - [x] The level 3 subclass choice appears before the grit ability choice, and each subclass offers its own grit pool.
-- [ ] Grit ability choices appear at the right levels (base class: 3, 5, 9, 13, 17; Desperado: 3, 5, 7, 9, 11, 13, 15, 17, 19). *Retest: the 5/9/13/17 picks moved back to the base Gunslinger class, and the Desperado gets its own extra picks at 7, 11, 15 and 19. Marksman and Arcane Gunsman should still get exactly 3 (x2), 5, 9, 13 and 17.*
+- [ ] Grit ability choices appear at the right levels (base class: 3, 5, 9, 13, 17; Desperado: 3, 5, 7, 9, 11, 13, 15, 17, 18). *Retest: the 5/9/13/17 picks moved back to the base Gunslinger class, and the Desperado gets its own extra picks at 7, 11, 15 and 18. Marksman and Arcane Gunsman should still get exactly 3 (x2), 5, 9, 13 and 17.*
+- [ ] At each level-up from 4 through 20, optionally replace one known grit ability with another currently available to the subclass. Confirm declining keeps the current ability, and non-Desperado subclasses never see Desperado-only choices.
 - [x] Maximum grit matches the README tables for each subclass.
 - [x] Hit points: level 1 gives 8 + Constitution modifier, and each later level adds 5 + Constitution modifier. Check with a Constitution 14 (+2) character: 10 HP at level 1, 17 at level 2.
 - [x] Gunslinger's Draw, Second Attack, Expertise, Tinkerer, Master Tinkerer, Improved Critical and Deadeye apply at their levels. *Retest: the grit abilities were in stats files that load before the spells and statuses they inherit from, so the engine dropped them. They're now merged into the main files.*
@@ -67,10 +68,7 @@ For each ability, also check that it appears under Class Actions on the hotbar (
 - [x] **Shot in the Dark (bonus action, 1 grit):** grants 18 m darkvision and ignores Blindness for 10 turns. Doesn't show status affect in tooltip.
 - [ ] **Rapid Repair (bonus action, 1 grit):** has no separate hotbar entry. It appears next to Repair in a misfired gun's Repair menu and makes a DC 18 Sleight of Hand check. On a success, the misfire clears.
 - [ ] **Fanning Fire (level 7+, action, 1-3 grit):** 1 grit gives 2 attacks at -2 against up to 2 enemies; 2 grit gives 3 attacks at -3 against up to 3 enemies; 3 grit gives 4 attacks at -4 against up to 4 enemies. *Retest: now one Fanning Fire group with 1, 2 and 3 grit options that works with any main-hand firearm, instead of separate per-firearm actions. Each shot spends a bullet. Retest: the to-hit penalty didn't apply; it is now part of the roll itself, so the hit chance shown when targeting should drop by 2/3/4 and the roll breakdown should list it.*
-- [x] **Disarming Shot (level 3+, 1 grit):** on a hit, the target makes a Strength save or drops its weapon.
-- [x] **Winging Shot (level 3+, 1 grit):** on a hit, the target makes a Constitution save or falls Prone.
-- [x] **Forceful Shot (level 3+, 1 grit):** on a hit, the target makes a Strength save or is pushed back 4.5 m.
-- [x] **Bullying Shot (level 3+, 1 grit):** on a hit, the target makes a Wisdom save or is Frightened for 1 turn.
+- [ ] **Trick Shot (level 3+):** one class-action group contains Disarming Shot (Strength save or drop weapon), Winging Shot (Constitution save or Prone), Forceful Shot (Strength save or 4.5 m push), and Bullying Shot (Wisdom save or Frightened for 1 turn). Each option costs an action, 1 grit, and one bullet; its effect applies only on a hit.
 - [x] **Quickload (level 3+, 1 grit):** a group with three options: reload the main hand (no bonus action), reload the off-hand flintlock (no bonus action), or reload both (bonus action). Each option only appears when the matching firearms are equipped.
 - [x] **Flash Powder (level 3+, action, 1 grit):** can be aimed at an empty spot on the ground as well as at a creature within 9 m. Every creature within 1.5 m of that point rolls a Constitution save or is Blinded for 1 turn; barrels and other objects aren't affected.
 - [ ] **Violent Shot (level 9+, 1-3 grit):** adds 1d8 (Flintlock), 2d6 (Blunderbuss) or 3d4 (Musket) damage per grit. Afterwards, a d20 roll at or below the grit spent makes the gun misfire. Retest: the linked menu shows exactly three entries (1/2/3 grit) that work with any equipped firearm.
@@ -91,7 +89,7 @@ For each ability, also check that it appears under Class Actions on the hotbar (
 
 ## Desperado
 
-- [ ] The Desperado's own picks (3, 7, 11, 15, 19) offer its exclusive abilities at the levels listed in the README, and the base-class picks (5, 9, 13, 17) offer only shared abilities. Fanning Fire is first offered at the level 7 pick. *Retest: Desperado ability levels changed to 3/7/11/15/19.*
+- [ ] The Desperado's own picks (3, 7, 11, 15, 18) offer its exclusive abilities at the levels listed in the README, and the base-class picks (5, 9, 13, 17) offer only shared abilities. Fanning Fire is first offered at the level 7 pick. *Retest: Desperado ability levels changed to 3/7/11/15/18.*
 - [x] **Desperado's Luck (level 3+, 1 grit):** an interrupt offered when a firearm attack would miss, at most once per turn. It adds 1d4 to the roll and doesn't use your reaction.
 - [x] **Ante Up (level 3+, bonus action, 1 grit):** gives Advantage on your next firearm attack before the end of your next turn. If that attack misses, attacks against you have Advantage until your next turn. *Retest: the status now lasts 2 turns and is only removed by a weapon attack.*
 - [x] **Lucky Draw (level 3+, 1 grit):** rerolls 1s and 2s on firearm damage dice until the end of your turn. Once per turn.
@@ -107,9 +105,9 @@ For each ability, also check that it appears under Class Actions on the hotbar (
 - [ ] **Quick on the Draw (level 11+, reaction, 2 grit):** offered when an enemy within 9 m starts an attack, and shoots it first. *Retest:* the enemy attack should be cancelled, the Gunslinger shot should resolve, and the enemy should get the attack back (free weapon attack or a restored action for spell attacks).
 - [ ] **Ricochet Shot (level 11+, Desperado, 3 grit):** costs one bullet and fires at an enemy, then ricochets to up to three more enemies. Check separate attack rolls, full weapon damage on the first target, half damage on ricochets, and that only one bullet is spent.
 - [x] **Dead Man's Hand (level 15+, 3 grit):** only usable below 25% HP. Your next firearm attack before the end of your next turn crits if it hits. Once per turn. *Retest: the status now lasts 2 turns and is only removed by a weapon attack.*
-- [ ] **All In (level 19+, all grit (3-10), 1 bullet):** one All In group, usable with any main-hand firearm. Only the option matching your current grit (3-8) is available; it fires one shot per grit at enemies, each at -2 to hit, and leaves you with 0 grit.
-- [ ] **Desperado's Fortune (level 19+, 1 grit):** replaces Desperado's Luck. Once per turn, it adds 1d8 to a firearm attack roll or a saving throw.
-- [ ] **High Noon (level 19+, bonus action, 5 grit):** marks an enemy for 3 turns. Your firearm attacks against it get +20 to hit (only a natural 1 misses) and crit on 17-20; firearm attacks also deal an extra 1d8 damage. Confirm the extra damage appears only on firearm hits and does not add to attack rolls or saving throws. There's no reaction prompt. Once per long rest. *Retest: changed the High Noon 1d8 from an attack-roll and saving-throw bonus to bonus firearm damage.*
+- [ ] **All In (level 18+, all grit (3-10), 1 bullet):** one All In group, usable with any main-hand firearm. Only the option matching your current grit (3-8) is available; it fires one shot per grit at enemies, each at -2 to hit, and leaves you with 0 grit.
+- [ ] **Desperado's Fortune (level 18+, 1 grit):** replaces Desperado's Luck. Once per turn, it adds 1d8 to a firearm attack roll or a saving throw.
+- [ ] **High Noon (level 18+, bonus action, 5 grit):** marks an enemy for 3 turns. Your firearm attacks against it get +20 to hit (only a natural 1 misses) and crit on 17-20; firearm attacks also deal an extra 1d8 damage. Confirm the extra damage appears only on firearm hits and does not add to attack rolls or saving throws. There's no reaction prompt. Once per long rest. *Retest: changed the High Noon 1d8 from an attack-roll and saving-throw bonus to bonus firearm damage.*
 
 ## Arcane Gunsman
 
