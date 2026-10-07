@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="ProgressionDescriptions">
+        <node id="root">
+            <children>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h42e78561gf8c0g5553gbe74gf8eaa40968ea" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h2d64fb40gecc2g56cfg83c8ge48b80e74c1a" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="Gunslinger"/>
+                    <attribute id="ProgressionTableId" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="UUID" type="guid" value="adb9f2ba-2410-4b50-b39e-08db9d7a3e72"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h8b16777ege486g53ecg8ccfge41d591d2882" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h474ae6fbge0f8g50fbg9153g1013fc35955b" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="Marksman"/>
+                    <attribute id="ProgressionTableId" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
+                    <attribute id="UUID" type="guid" value="592bd91c-d30b-4a34-964d-5a41e46458ea"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h62a4ed3ag313cg5413gbb5cg52ae8ee964e3" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h4b3872ddg6a21g5396g8709g70e68bcc379c" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="Desperado"/>
+                    <attribute id="ProgressionTableId" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
+                    <attribute id="UUID" type="guid" value="ab8775de-7913-4678-865f-b273ac83e477"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h4dc4990bg35eeg5a26gbaf1gdecb89eb6cd3" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1"/>
+                    <attribute id="ExactMatch" type="FixedString" value="ArcaneGunsman"/>
+                    <attribute id="ProgressionTableId" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
+                    <attribute id="UUID" type="guid" value="59a1aeb1-e21b-4a54-bb5b-5b2459ead5bd"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="hdc1c56adgf05dg569ag900cgae56bdaf67e3" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hb92cce98g1ecag551ag8629g29b86e5b8806" version="1"/>
+                    <attribute id="ParamMatch" type="FixedString" value="0:GunslingerGrit"/>
+                    <attribute id="ProgressionTableId" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="Type" type="FixedString" value="ActionResource"/>
+                    <attribute id="UUID" type="guid" value="e13f5f88-9377-4d91-af7d-050ca18f36a4"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="hdba6e3b8gda0dg516fg8106gfeb8848fd33d" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="hcca1f6e2g2be7g585cga49bg43f4bab1ac9d" version="1"/>
+                    <attribute id="ParamMatch" type="FixedString" value="0:GunslingerCraftCharges"/>
+                    <attribute id="ProgressionTableId" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="Type" type="FixedString" value="ActionResource"/>
+                    <attribute id="UUID" type="guid" value="9ceae79f-285f-4e94-bdfe-6a5dfad88b29"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h10000026g0000g4000g8000g000000000002" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h10000026g0000g4000g8000g000000000001" version="1"/>
+                    <attribute id="ParamMatch" type="FixedString" value="0:SpellSlot;1:1"/>
+                    <attribute id="ProgressionTableId" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
+                    <attribute id="Type" type="FixedString" value="ActionResource"/>
+                    <attribute id="UUID" type="guid" value="bcbf6dcb-f0b8-4cbd-baf4-7fdc3d4134ba"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="he1255b27g0099g4e4fga984gcea34703c58f" version="1"/>
+                    <attribute id="ParamMatch" type="FixedString" value="0:SpellSlot"/>
+                    <attribute id="ProgressionTableId" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
+                    <attribute id="Type" type="FixedString" value="ActionResource"/>
+                    <attribute id="UUID" type="guid" value="d51712d5-bf26-4e20-bc49-c9ba4e68555a"/>
+                </node>
+                <node id="ProgressionDescription">
+                    <attribute id="Description" type="TranslatedString" handle="hccf67ca5g7e59g453cg926fgbadababbbc05" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h89c95599gd041g4989g9669g1a79faefb1f8" version="1"/>
+                    <attribute id="SelectorId" type="FixedString" value="GritAbility"/>
+                    <attribute id="UUID" type="guid" value="f8b12307-aa80-40e3-8073-33f560c25c1a"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

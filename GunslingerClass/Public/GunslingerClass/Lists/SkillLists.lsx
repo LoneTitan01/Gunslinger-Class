@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="SkillLists">
+        <node id="root">
+            <children>
+                <node id="SkillList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Skill List"/>
+                    <attribute id="Skills" type="LSString" value="SleightOfHand, Acrobatics, Athletics, Deception, Insight, Intimidation, Perception, Persuasion, Stealth"/>
+                    <attribute id="UUID" type="guid" value="145ef419-c6ef-5187-a3ad-ca4ab8c76019"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

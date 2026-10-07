@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="ClassDescriptions">
+        <node id="root">
+            <children>
+                <node id="ClassDescription">
+                    <attribute id="BaseHp" type="int32" value="8"/>
+                    <attribute id="CanLearnSpells" type="bool" value="false"/>
+                    <attribute id="ClassEquipment" type="FixedString" value="EQP_GunslingerClass"/>
+                    <attribute id="CharacterCreationPose" type="guid" value="0f07ec6e-4ef0-434e-9a51-1353260ccff8"/>
+                    <attribute id="CommonHotbarColumns" type="int32" value="2"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h2d64fb40gecc2g56cfg83c8ge48b80e74c1a" version="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="h42e78561gf8c0g5553gbe74gf8eaa40968ea" version="1"/>
+                    <attribute id="HpPerLevel" type="int32" value="5"/>
+                    <attribute id="IsCompatibleWithClassTitles" type="bool" value="true"/>
+                    <attribute id="ItemsHotbarColumns" type="int32" value="2"/>
+                    <attribute id="LearningStrategy" type="uint8" value="1"/>
+                    <attribute id="MustPrepareSpells" type="bool" value="false"/>
+                    <attribute id="Name" type="FixedString" value="Gunslinger"/>
+                    <attribute id="PrimaryAbility" type="uint8" value="2"/>
+                    <attribute id="ProgressionTableUUID" type="guid" value="68521742-30c0-45eb-b95d-48e50e0c0828"/>
+                    <attribute id="SoundClassType" type="FixedString" value="Fighter"/>
+                    <attribute id="SpellCastingAbility" type="uint8" value="0"/>
+                    <attribute id="SubclassTitle" type="TranslatedString" handle="h997cc641g4d65g559fgb8c4g6e4ac4ddcd8c" version="1"/>
+                    <attribute id="UUID" type="guid" value="799af9fb-7ff1-4a4f-a9b3-041a16dbee0c"/>
+                </node>
+                <node id="ClassDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h8b16777ege486g53ecg8ccfge41d591d2882" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h474ae6fbge0f8g50fbg9153g1013fc35955b" version="1"/>
+                    <attribute id="Name" type="FixedString" value="Marksman"/>
+                    <attribute id="ParentGuid" type="guid" value="799af9fb-7ff1-4a4f-a9b3-041a16dbee0c"/>
+                    <attribute id="ProgressionTableUUID" type="guid" value="f49028eb-cd82-499a-8952-04782bfc820c"/>
+                    <attribute id="ShortName" type="TranslatedString" handle="h84a5ae4cg444cg571egb3d8ge0df9d849549" version="1"/>
+                    <attribute id="UUID" type="guid" value="8a0f1d26-da6a-416e-8555-80ae3504216f"/>
+                </node>
+                <node id="ClassDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h62a4ed3ag313cg5413gbb5cg52ae8ee964e3" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h4b3872ddg6a21g5396g8709g70e68bcc379c" version="1"/>
+                    <attribute id="Name" type="FixedString" value="Desperado"/>
+                    <attribute id="ParentGuid" type="guid" value="799af9fb-7ff1-4a4f-a9b3-041a16dbee0c"/>
+                    <attribute id="ProgressionTableUUID" type="guid" value="5497b72b-7459-48cd-b185-d21cf17f75a6"/>
+                    <attribute id="ShortName" type="TranslatedString" handle="h68e3af46g0e28g5b06g8f2cg3dc59fdf32e6" version="1"/>
+                    <attribute id="UUID" type="guid" value="4a518934-644d-4120-ae6a-d922cf7cac34"/>
+                </node>
+                <node id="ClassDescription">
+                    <attribute id="Description" type="TranslatedString" handle="h4dc4990bg35eeg5a26gbaf1gdecb89eb6cd3" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1"/>
+                    <attribute id="Name" type="FixedString" value="ArcaneGunsman"/>
+                    <attribute id="ParentGuid" type="guid" value="799af9fb-7ff1-4a4f-a9b3-041a16dbee0c"/>
+                    <attribute id="ProgressionTableUUID" type="guid" value="bc7315da-8802-4247-ad7a-c50278dd379f"/>
+                    <attribute id="ShortName" type="TranslatedString" handle="hc5873587g2542g5f10gb920g8ef237599f1d" version="1"/>
+                    <attribute id="CanLearnSpells" type="bool" value="true"/>
+                    <attribute id="LearningStrategy" type="uint8" value="1"/>
+                    <attribute id="MustPrepareSpells" type="bool" value="true"/>
+                    <attribute id="SpellCastingAbility" type="uint8" value="4"/>
+                    <attribute id="MulticlassSpellcasterModifier" type="double" value="0.5"/>
+                    <attribute id="UUID" type="guid" value="d4c92275-17af-4a90-acee-547d9fbacf13"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentList>
+        <content contentuid="hb92cce98g1ecag551ag8629g29b86e5b8806" version="1">Grit</content>
+        <content contentuid="hdc1c56adgf05dg569ag900cgae56bdaf67e3" version="1">A gunslinger's pool of nerve and daring. Spend Grit to fuel trick shots and desperate gambits. Grit is restored to its maximum after a long rest, and you regain 1 point whenever you score a critical hit or reduce a creature to 0 hit points with a firearm attack.</content>
+        <content contentuid="h59247562g97d5g5328gb92cgc40a691449d6" version="1">Flintlock Cylinder</content>
+        <content contentuid="h3dd3ac2dg0f1bg537fg90dag3efac0bcf7f8" version="1">Shots loaded in your main-hand flintlock. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="h3e01a812g44b2g4a59g9e79g10f1d0a34c8b" version="1">Offhand Flintlock Cylinder</content>
+        <content contentuid="h947f1d20g4a6bg4d12g8c61g5a9f2c0b4d8e" version="1">Shots loaded in your offhand flintlock. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hd15dec2bg442eg5b67gae9dg9a8f904f50a8" version="1">Blunderbuss Shot</content>
+        <content contentuid="h06431e21g75fbg505fga4b0gd438d071bf5b" version="1">Shots loaded in your equipped blunderbuss. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hd0616debgd485g57aeg82d7g45798f9014a9" version="1">Musket Cartridge</content>
+        <content contentuid="ha6242459g9908g5797gaa4bgf43cc12e9fdf" version="1">Shots loaded in your equipped musket. Spend 1 to fire; a short or long rest also refills it.</content>
+        <content contentuid="hcca1f6e2g2be7g585cga49bg43f4bab1ac9d" version="1">Gunsmithing Charges</content>
+        <content contentuid="hdba6e3b8gda0dg516fg8106gfeb8848fd33d" version="1">The number of firearms and gunsmithing kits you can assemble from raw materials before you must rest and restock components. Restores to maximum after a long rest.</content>
+        <content contentuid="h2d64fb40gecc2g56cfg83c8ge48b80e74c1a" version="1">Gunslinger</content>
+        <content contentuid="h42e78561gf8c0g5553gbe74gf8eaa40968ea" version="1">A firearm-focused duelist who fuels trick shots and desperate gambits with Grit, a pool of nerve and daring that recharges after a long rest.</content>
+        <content contentuid="h3426a5b2gfc09g439bg9e7dg5fba7af1a607" version="1">Grit Recovery</content>
+        <content contentuid="h09ae87ecgaf05g403dga3e6g755069659a6b" version="1">Regain one Grit point when you reduce a creature to 0 hit points or a firearm attack critically hits. Once per attack: a critical kill, or several kills from one attack, restore only one Grit point.</content>
+        <content contentuid="h89c95599gd041g4989g9669g1a79faefb1f8" version="1">Grit Abilities</content>
+        <content contentuid="hccf67ca5g7e59g453cg926fgbadababbbc05" version="1">Choose from the grit abilities unlocked by your Gunslinger levels.</content>
+        <content contentuid="he1255b27g0099g4e4fga984gcea34703c58f" version="1">Spell Slots</content>
+        <content contentuid="hd1ff9e25gbd0ag4b9dgb65bg0c7a0fa346f0" version="1">You gain new Arcane Gunsman spell slots. Spell slots are restored after a long rest, and each spell you learn can be cast with any slot of its level or higher.</content>
+        <content contentuid="h10000026g0000g4000g8000g000000000001" version="1">Spellcasting</content>
+        <content contentuid="h10000026g0000g4000g8000g000000000002" version="1">You can cast Arcane Gunsman spells using Intelligence. You gain 1st-level spell slots, restored after a long rest.</content>
+        <content contentuid="h997cc641g4d65g559fgb8c4g6e4ac4ddcd8c" version="1">Specialization</content>
+        <content contentuid="h8b16777ege486g53ecg8ccfge41d591d2882" version="1">A patient sharpshooter who specializes in accurate, high-range attacks that deal heavy damage. Strongest when enemies are kept at a distance.</content>
+        <content contentuid="h474ae6fbge0f8g50fbg9153g1013fc35955b" version="1">Marksman</content>
+        <content contentuid="h84a5ae4cg444cg571egb3d8ge0df9d849549" version="1">Marksman</content>
+        <content contentuid="h62a4ed3ag313cg5413gbb5cg52ae8ee964e3" version="1">A bold gunfighter who makes greater use of Grit, spending it on special effects and versatile combat techniques.</content>
+        <content contentuid="h4b3872ddg6a21g5396g8709g70e68bcc379c" version="1">Desperado</content>
+        <content contentuid="h68e3af46g0e28g5b06g8f2cg3dc59fdf32e6" version="1">Desperado</content>
+        <content contentuid="h4dc4990bg35eeg5a26gbaf1gdecb89eb6cd3" version="1">A spellcasting gunfighter who imbues shots with magical effects. Intelligence is the Arcane Gunsman's spellcasting ability.</content>
+        <content contentuid="h8dce33fdga011g5f05ga6b6gd138af159b4b" version="1">Arcane Gunsman</content>
+        <content contentuid="hc5873587g2542g5f10gb920g8ef237599f1d" version="1">Arcane Gunsman</content>
+        <content contentuid="h9780c102g240ag52efga3d4gb13e793b2538" version="1">Gunner</content>
+        <content contentuid="hc813199fg372fg5d65g9726gbf91f9de4f02" version="1">Gain proficiency with firearms. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="hd2151e63gd92fg5f28g8a51g47b2555d2fc5" version="1">Firearm Proficiency</content>
+        <content contentuid="h8fe49679gc007g5b01g8776g6de2ec0fcd7c" version="1">You are proficient with firearms.</content>
+        <content contentuid="h822d05e0ge91bg5508gb51fg170bec80fd06" version="1">Firearm Training</content>
+        <content contentuid="hbca83974ga19eg577cga666g8d33a1f10697" version="1">Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h152bfd65g7a13g5210g848egf4b3e6c5ade7" version="1">Quick Reload</content>
+        <content contentuid="h81d8a202gd9d4g5471g873cg64069f5a17d2" version="1">When dual-wielding two Flintlocks, you can reload both as a bonus action instead of an action. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h8f5e4ffag0bb9g5041gb895g914d3ce3104a" version="1">Quick Reload</content>
+        <content contentuid="h63669565gd150g54a6ga29bg14d2e584f6a7" version="1">Full Reload of dual-wielded Flintlocks costs a bonus action, or an action if you have no bonus action left.</content>
+        <content contentuid="hb2be8eb9ga022g57a2g8d81g580b18f771c2" version="1">Quick Reload</content>
+        <content contentuid="h2ec284b9gefa5g5d71g9312g091ef6f06039" version="1">Increase your Dexterity score by 1, to a maximum of 20. Full Reload of dual-wielded Flintlocks costs a bonus action instead of an action, or an action if you have no bonus action left.</content>
+        <content contentuid="hb3ef2296g5489g5323g804fgbc950b19f840" version="1">Grit Adept</content>
+        <content contentuid="h057a18e6gf320g5384g8f0cg935604752fc1" version="1">Increase your maximum grit points by 2 and choose one grit ability available to a level 3 Gunslinger.</content>
+        <content contentuid="h15bd841dgfae1g5147gb414g0ce21b37f52f" version="1">Grit Adept</content>
+        <content contentuid="hb50a250ag92d2g5df8ga2e3gc45d95e4917c" version="1">Increases your maximum grit points by 2.</content>
+        <content contentuid="hfe3fc1adgd09fg528dg9c17g07a9c9ded6a6" version="1">Close-Quarters Gunner</content>
+        <content contentuid="h66b30a07g43c0g5a3agbc41ga9802954ac42" version="1">Firearm attacks no longer have Disadvantage against targets within 5 feet of you. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h50bb50edgd484g5a95gbcfcg1273431e8b4c" version="1">Close-Quarters Gunner</content>
+        <content contentuid="h82212626ge6ccg563cg95d1g231dd57825d0" version="1">Your firearm attacks don't have Disadvantage against targets within [1].</content>
+        <content contentuid="h34a62d26g3dabg5ed2gaaf6g8a1383bf7efb" version="1">Steady Hands</content>
+        <content contentuid="h4d4b0115ge158g5dafgba1eg26e231e3952a" version="1">Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h39d746fcgef1eg5e46gbf97gb2a8b39788e2" version="1">Longarm Specialist</content>
+        <content contentuid="h1dda5dd0g4202g5414g85b2ge2bdc0ff9ae1" version="1">Musket attacks gain 20 feet (6m) of range. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h59aaf8a3g5c11g500aga433gd1f52205f1b3" version="1">Longarm Specialist</content>
+        <content contentuid="hd5c74955gd9dbg5a53gbcfbgf81b55d714f6" version="1">Your musket attacks gain [1] of range.</content>
+        <content contentuid="he363c076g6a22g5ba8g9cb8ge57da773fdd7" version="1">Long Range Training</content>
+        <content contentuid="h559e6207g14c3g5bf9g82d5gc45aa514884a" version="1">Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h87f20920gbd0fg5f9ega347g9fca442b57ad" version="1">Called Shot</content>
+        <content contentuid="h63755c1bg1d36g5c3bg8deeg2be5897f57e7" version="1">Once per turn, when you hit a creature with a firearm from at least 30 feet away, it suffers Disadvantage on its next attack before the end of its next turn. Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="he888357dg677fg5ed9gbf20g36ea7f66d135" version="1">Called Shot</content>
+        <content contentuid="heb0bf59agc5ebg5bccgb4c1gce3b66b7d955" version="1">Disadvantage on your next attack roll.</content>
+        <content contentuid="h32940c53g07deg5162g8e10g7b22025bcf4b" version="1">Called Shot</content>
+        <content contentuid="hde2089a1g083bg58c6gbe7agcae08f66d776" version="1">Once per turn, a firearm hit from 30 feet or more away gives the target Disadvantage on its next attack roll.</content>
+        <content contentuid="hc5fa9067ge726g5d16gb6e0g651d8e55989f" version="1">Marksman's Eye</content>
+        <content contentuid="h8b4fb956g2cccg5daag81dfg7900a636ac15" version="1">Increase your Dexterity score by 1, to a maximum of 20.</content>
+        <content contentuid="h22be4009g1753g5ce0gb5a9g434c53fd8d23" version="1">Spellshot Adept</content>
+        <content contentuid="h0ffdc689g958fg583eg9b51gb8d30604e2f9" version="1">Your firearm attacks count as magical. Once per turn after casting a spell, your next firearm hit deals an extra 1d4 force damage. Increase your Intelligence score by 1, to a maximum of 20.</content>
+        <content contentuid="h343f06f4g032dg50e5gb244g0ef356191cc1" version="1">Spellshot</content>
+        <content contentuid="hd21dc251gbb07g59e5g91feg4c49a09507b5" version="1">Your firearm attacks count as magical.</content>
+        <content contentuid="h2fe64534g03adg5fbdgabecg564403bb298a" version="1">Spellshot Charged</content>
+        <content contentuid="he71d0c39gb3f1g5bacgb76dg8d2484248a0d" version="1">Your next firearm hit before the end of your next turn deals an extra 1d4 Force damage.</content>
+        <content contentuid="h017f038dg644eg5818gbf70g1413605fad0f" version="1">Spellshot Adept</content>
+        <content contentuid="hd7bbfdebg51c3g51d1gb1c6gb4892e6f30ff" version="1">Once per turn, after you cast a spell, your next firearm hit deals an extra 1d4 Force damage.</content>
+        <content contentuid="h1cefb2dagb9fbg5590gaf37g85bee738e876" version="1">Spellshot Adept</content>
+        <content contentuid="h3111a0d2g8b4eg5c39gbc24g1f319ce402ee" version="1">Deals the stored Spellshot bonus damage.</content>
+        <content contentuid="h631f08b1g749ag5440gbdfegde10a9264afe" version="1">Arcane Marksmanship</content>
+        <content contentuid="h45a24d1eg7178g59fegab4fgb70c077dc727" version="1">Increases your Intelligence score by 1.</content>
+        <content contentuid="h247dbfadg7a74g54a7ga7cfgfc42b8d919ed" version="1">Merciless Shot</content>
+        <content contentuid="hc2fb951agcca1g5d76ga1bag82239a48037c" version="1">Unlocks the Merciless Shot grit ability.</content>
+        <content contentuid="h47e712e3g6093g5244g9b7egbd961ca6a71a" version="1">Merciless Shot</content>
+        <content contentuid="hbd9f7ccdg6efag577agb117g7e3939ef1f8d" version="1">Your next firearm attack deals extra damage.</content>
+        <content contentuid="hdfef9eeag71eeg5d1eg8d24gcedc2c925e8c" version="1">Merciless Shot</content>
+        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and make a firearm attack as an action. Each grit point adds half the weapon attack's damage. Consumes one bullet.</content>
+        <content contentuid="hde7e2926g15bfg5332g8e16ga25ae7cef4c6" version="1">Line 'em Up</content>
+        <content contentuid="hbce4e343g1a96g51acg800fga65933f05925" version="1">Unlocks the Line 'em Up grit ability.</content>
+        <content contentuid="h754e9698ga877g5ad9gbae6g65979d3ce3a3" version="1">Line 'em Up</content>
+        <content contentuid="h03055657g5991g5c20g94d1g024a02226283" version="1">Spend an action and 2 grit points. Enemies and neutral creatures in a 20-foot line take half your firearm's weapon damage, or a quarter on a successful Dexterity save. Save DC: 8 + Dexterity modifier + proficiency bonus.</content>
+        <content contentuid="h3246abc9g2b62g5a28g8dd9gd3bedfa41609" version="1">Rapid Shot</content>
+        <content contentuid="h87f37c94g6910g5a30g82ecgc1dd7877f402" version="1">Unlocks the Rapid Shot grit ability.</content>
+        <content contentuid="h9e36cb7agbea2g5843gba93g160ad88227ca" version="1">Rapid Shot</content>
+        <content contentuid="h59be6cb2g6da7g53cfg8bb1g2b4b8e32ec0b" version="1">You can make another firearm attack as a bonus action.</content>
+        <content contentuid="h5dab5e6bg99d5g533dg83fbgfdd630d0f7b7" version="1">Rapid Shot</content>
+        <content contentuid="hec4e9afbg19a5g5af8gbd32g2735c2b99b0d" version="1">Spend 1 grit point to fire again as a bonus action.</content>
+        <content contentuid="h04796cd4g6294g5c71gac0bg46b07c90ba93" version="1">Bite the Bullet</content>
+        <content contentuid="h0e138025gbac2g5889gb433gf971bb126fd6" version="1">Unlocks the Bite the Bullet grit ability.</content>
+        <content contentuid="hafb61727gc03bg5958g90b3ga9044bdf035b" version="1">Bite the Bullet</content>
+        <content contentuid="hfb5aa873gb36eg58a3gaf03gf7b7b26b7d97" version="1">Choose 1, 2, or 3 grit points as a bonus action. Gain &lt;LSTag Tooltip="TemporaryHitPoints"&gt;temporary hit points&lt;/LSTag&gt; equal to the grit spent multiplied by your proficiency bonus. Temporary hit points do not stack.</content>
+        <content contentuid="h23345878g373eg5e32gb6dbgc9ea48ec8971" version="1">Shot in the Dark</content>
+        <content contentuid="hf107b388ga4efg5f00gbf38g1d99812fb35d" version="1">Unlocks the Shot in the Dark grit ability.</content>
+        <content contentuid="h206052b1gafcfg5a4bg8a02g22064a972674" version="1">Shot in the Dark</content>
+        <content contentuid="h58020396gc5cdg5f36g9031g5d29039ab1a6" version="1">You have Darkvision and ignore the Blinded condition.</content>
+        <content contentuid="h9d0667c8gfdaeg5a1cg9463g1ff7de4976e7" version="1">Shot in the Dark</content>
+        <content contentuid="ha1e675dcg7790g5669ga976gd79d71c200f2" version="1">As a bonus action, spend 1 grit point to gain Darkvision out to 60 feet and ignore Blindness for 10 turns.</content>
+        <content contentuid="h5926aed9gaee2g591agb986g656004d615c9" version="1">Rapid Repair</content>
+        <content contentuid="h5955813dg09f5g53b7g87bdg91ad7b4c0f4e" version="1">Unlocks the Rapid Repair grit ability.</content>
+        <content contentuid="h9589d1fbg4953g55b2gbc01g0b1a85bdda5b" version="1">Rapid Repair</content>
+        <content contentuid="h9d3c6ac3gb952g5b62g9a7cg5e1501afdda3" version="1">When one of your firearms is misfired, its Repair menu also offers Rapid Repair: spend a bonus action and 1 grit point to make a DC 18 Sleight of Hand check that clears the misfire.</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000001" version="1">Repair: Main Hand</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000002" version="1">Repair: Off Hand</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000003" version="1">Clear the misfire on the firearm in this hand. Rapid Repair appears here once you know it.</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000004" version="1">Repair</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000005" version="1">Make a DC 15 Sleight of Hand check to clear this firearm's misfire. A failed check spends the action but does not repair the firearm. A broken firearm cannot be repaired until your next long rest.</content>
+        <content contentuid="h10000027g0000g4000g8000g000000000006" version="1">Spend 1 grit point and make a DC 18 Sleight of Hand check to clear this firearm's misfire. A failed check spends the bonus action and grit but does not repair the firearm.</content>
+        <content contentuid="hc29dc490gb036g5e94g88d9g2fd21e9adb3b" version="1">Tinkerer</content>
+        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Use an action to modify your primary or secondary firearm: double its ammunition capacity, add 1d4 to its damage rolls, or increase its range. Modifications persist through long rests until replaced or removed with Remove Modification.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000001" version="1">Tinkered: Capacity</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000002" version="1">This firearm holds twice its base ammunition capacity until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000003" version="1">Tinkered: Damage</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000004" version="1">Add 1d4 to this Flintlock's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000005" version="1">Add 1d4 to this Blunderbuss's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000006" version="1">Add 1d4 to this Musket's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000007" version="1">Tinkered: Range</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000008" version="1">This Flintlock's range is increased by 20 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000009" version="1">This Blunderbuss's range is increased by 10 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000010" version="1">This Musket's range is increased by 40 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000011" version="1">Tinker Master: Ammo</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000012" version="1">This firearm holds three times its base ammunition capacity until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000013" version="1">Tinker Master: Damage</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000014" version="1">Add 2d4 to this Flintlock's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000015" version="1">Add 2d4 to this Blunderbuss's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000016" version="1">Add 2d4 to this Musket's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000017" version="1">Tinker Master: Range</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000018" version="1">This Flintlock's range is increased by 40 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000019" version="1">This Blunderbuss's range is increased by 20 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000020" version="1">This Musket's range is increased by 80 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000021g0000g4000g8000g000000000001" version="1">Flintlock</content>
+        <content contentuid="h10000021g0000g4000g8000g000000000002" version="1">Blunderbuss</content>
+        <content contentuid="h10000021g0000g4000g8000g000000000003" version="1">Musket</content>
+        <content contentuid="h10000021g0000g4000g8000g000000000004" version="1">Firearm</content>
+        <content contentuid="h5cf5a27cg1592g56b4g93a5gc048e11b9ce6" version="1">Tinkerer</content>
+        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend an action to modify the primary or secondary firearm. Choose capacity, damage, or range, or use Remove Modification to clear all upgrades on that firearm. Each physical gun keeps one upgrade (two from level 10 with Master Tinkerer) through long rests; repeating an upgrade with Master Tinkerer grants its Tinker Master tier, and a third upgrade replaces the oldest one.</content>
+        <content contentuid="h4d7604b0g70abg5e29gb0deg24235336a21b" version="1">Fanning Fire</content>
+        <content contentuid="h01862009g89e3g5610gbd73g7cbde620cac9" version="1">Unlocks the Fanning Fire grit ability.</content>
+        <content contentuid="h3178086bg4305g5971g85e1g0a37f8a4c60d" version="1">Fanning Fire</content>
+        <content contentuid="haa822b5cged83g566egb8e6gef6bbe8dd09b" version="1">Spend 1-3 grit points and an action to fire 2-4 shots. Each shot has an attack-roll penalty equal to 1 + the grit spent (-2, -3 or -4) and consumes one bullet. You must have ammunition for the entire volley.</content>
+        <content contentuid="hfdbc6d02gcb7ag56abgaa91g2ea5a90e644d" version="1">Desperado's Luck</content>
+        <content contentuid="h94a64143g6490g531cg90d2g35e4bd2f635b" version="1">Once per turn, when a firearm attack would miss, spend 1 grit point to add 1d4 to the roll. This interrupt does not spend a Reaction point.</content>
+        <content contentuid="h9ff329b1gf028g5572g8be4gf801282dd29e" version="1">Second Attack</content>
+        <content contentuid="h40c7e0efg541ag5499gafe0g0477e6b5cec7" version="1">You can attack twice, instead of once, whenever you take the Attack action.</content>
+        <content contentuid="h3b5cddd1g217eg53baga9fdg40216cf13fa3" version="1">Broken</content>
+        <content contentuid="h49e57206gfd40g54edgbfd8ga997830c330d" version="1">This firearm is broken and cannot fire until your next long rest. It cannot be repaired by any other means.</content>
+        <content contentuid="h40f837d1g07eeg5799g9499gf09ad6bff804" version="1">Double Load</content>
+        <content contentuid="h25cce658g804dg561dgb58cg48280491a5a1" version="1">Spend an action, 1 grit point, and two bullets to make a firearm attack that deals an extra 1d4 damage with a Flintlock, or 1d6 with a Blunderbuss or Musket. A natural 1 destroys this physical gun until a long rest. Rapid Repair cannot restore it.</content>
+        <content contentuid="hc0ecaab8g4357g5f07g8475g5c5ea510dede" version="1">Double Load</content>
+        <content contentuid="hca40d7e3g5210g5ffcg97e8g7e414213dcfa" version="1">Unlocks the Double Load grit ability.</content>
+        <content contentuid="hb1c3fc87gbe52g5aabg8358g288168bb88af" version="1">Close Call</content>
+        <content contentuid="h0a71eea9g6fafg5f5fg8d51g0eebfa2882cb" version="1">+2 Armor Class against the triggering attack.</content>
+        <content contentuid="hd4802716g567dg5be5gb997gc6edb4df8fce" version="1">Close Call</content>
+        <content contentuid="h097c4619ga7e9g54c3gb9d6g6994e1343dcc" version="1">As a reaction, spend 2 grit points to gain +2 AC against an attack. If the attack misses, you automatically make a firearm attack against the attacker.</content>
+        <content contentuid="h5512b895g0359g5f61gbd22g2e6be07c6c4b" version="1">Close Call</content>
+        <content contentuid="h0980456eg2126g5e0aga897gaefb8d6b0096" version="1">Unlocks the Close Call grit ability.</content>
+        <content contentuid="h2edb9dc2g395bg5a39gac97gfd7757788007" version="1">Last Word</content>
+        <content contentuid="h0e487865g269fg5d91g8c99gc4df280202d2" version="1">Once per long rest, spend a bonus action and 3 grit points to arm Last Word until your next long rest. The next time you would be downed, you stay at 1 hit point instead and immediately make one firearm attack against your attacker.</content>
+        <content contentuid="hb837ad61gc723g5b12gacf2g4e03699a648e" version="1">Last Word (Spent)</content>
+        <content contentuid="h53bfe59cg5cf7g5e4egbeaeg29ac8d00fb1c" version="1">Last Word has already been used this long rest.</content>
+        <content contentuid="hd7aaf651g3a0ag505dgbbf6g396a115e4586" version="1">Last Word</content>
+        <content contentuid="h8e995049g0155g5826g8334gf5311ed4f3f9" version="1">Unlocks the Last Word grit ability.</content>
+        <content contentuid="h58deeaf2g7fd6g5cb9gb53dg96830c2e0103" version="1">Lock-on</content>
+        <content contentuid="h44889be1g11d9g55e9ga059g1fc78391eb85" version="1">As a bonus action, lock on to a creature. Your firearm attacks deal additional damage equal to your proficiency bonus to it. Requires concentration and can be used once per short rest. If the target dies before your concentration ends, you can lock on to a new target as a bonus action without using another short rest use.</content>
+        <content contentuid="h1f5b1232ge771g5078ga86eg3ab18359e742" version="1">Long Shot</content>
+        <content contentuid="h3ada472ega21fg5255g8a7bg39be21cc02c2" version="1">Once per turn, deal additional damage based on the distance to your target when you hit with a firearm.</content>
+        <content contentuid="h82b2b368gb4e7g5db6ga986gb2ed358f3cdc" version="1">Stable Shot</content>
+        <content contentuid="h814cafeag14ccg5516gb149g4af6f6b3a298" version="1">Advantage on your next firearm attack before the end of your next turn.</content>
+        <content contentuid="hecb315c0gee58g5b97ga583g28d080dc2c93" version="1">Stable Shot</content>
+        <content contentuid="hd925b749g0648g5f38g86bcg38cc2eefac9e" version="1">Without spending an action, sacrifice 20 feet of movement to gain Advantage on your next firearm attack before the end of your next turn.</content>
+        <content contentuid="hfe429d72g1c5eg5e3fg93fdg722ba2e9dc16" version="1">Stable Shot</content>
+        <content contentuid="h81f3620dgb400g55c5g95abg94ca3c98544b" version="1">Unlocks the Stable Shot class action.</content>
+        <content contentuid="h55c50aabgc3d6g5c1cg9789g505fa5d4bbf5" version="1">Pinpoint Accuracy</content>
+        <content contentuid="h5dc3b18bg56ebg56ddga676g90e61bc78228" version="1">Gain +1 to hit at 50 feet or more, and +2 to hit at 70 feet or more.</content>
+        <content contentuid="h307f1ad2g9657g57fegae92ge5eb6b98b152" version="1">Headshot</content>
+        <content contentuid="ha0adf4aegadfag50f2g9db4g3b88d23072c3" version="1">Spend 5 grit points. Your next firearm attack before the end of your next turn is an automatic critical hit.</content>
+        <content contentuid="h49d8e2cfgc0c1g5807gb097g4a3332ac885a" version="1">Headshot</content>
+        <content contentuid="hfdb35b30g6df4g519dgb124g4e729e4bb9d9" version="1">Your next firearm attack before the end of your next turn is an automatic critical hit.</content>
+        <content contentuid="h25257b3fg6eb7g523fgb456g8e75a6174b9d" version="1">Headshot</content>
+        <content contentuid="h1967be9ag0e70g5e51gba30g5a46615ed9b1" version="1">Unlocks the Headshot grit ability.</content>
+        <content contentuid="h851f176ag3c4bg5951g89d2g98bfe093881d" version="1">Infused Rounds</content>
+        <content contentuid="h963f4738g659eg52e2gae59ga62ebf140a5c" version="1">As a bonus action, infuse your firearm rounds with Fire, Thunder, Lightning, Acid, Cold, or Poison for 10 turns. Your firearm attacks deal an extra 1d4 damage of that type. Improved Infused Rounds raises this to 2d4 and adds Force; Mastered Infused Rounds raises it to 3d4 and adds Radiant and Necrotic.</content>
+        <content contentuid="h8cdc7a84g0159g5e7cgb49eg0f28df2118d3" version="1">Infused Rounds</content>
+        <content contentuid="h7aad8a6dgc1b1g5dcegb5f7ga5fd30e32b02" version="1">Unlocks Infused Rounds: as a bonus action, infuse your firearm rounds with Fire, Thunder, Lightning, Acid, Cold, or Poison for 10 turns, adding 1d4 damage of that type to your firearm attacks.</content>
+        <content contentuid="h60eefb8egaf84g5becgb16fgd1ad6dc9eabc" version="1">Improved Infused Rounds</content>
+        <content contentuid="he70d6377gfb77g57d0g87c5g5ecba5a282e1" version="1">Infused Rounds damage increases to 2d4, and you can infuse your rounds with Force.</content>
+        <content contentuid="hd199df79g10e6g569aga149g1fbac9463bf1" version="1">Arcane Reload</content>
+        <content contentuid="he9ef1003g87b9g5092g9c2dgad911bd9ed4f" version="1">As a bonus action, concentrate to enchant your main-hand firearm so that it magically reloads one bullet at the start of each of your turns.</content>
+        <content contentuid="h77805d86g5fbbg56a8gb488g0e8f63b171eb" version="1">Arcane Reload</content>
+        <content contentuid="hc3f31900g4ab3g5d96ga9a7g32d38d2c8eaf" version="1">Concentrate to enchant your main-hand firearm. At the start of each of your turns, it magically reloads one bullet. Lasts until your concentration ends.</content>
+        <content contentuid="h10000025g0000g4000g8000g000000000001" version="1">This firearm magically reloads one bullet at the start of its wielder's turn while they maintain concentration.</content>
+        <content contentuid="h26c4824dg7049g5673gbc15g10235a0522e1" version="1">Mastered Infused Rounds</content>
+        <content contentuid="h8c2a62c6g7f77g5f66g8e00g396e5bc02689" version="1">Infused Rounds damage increases to 3d4, and you can infuse your rounds with Radiant or Necrotic.</content>
+        <content contentuid="h51ad746eg6129g5681g9bfcg1e8906b3dbdb" version="1">Smart Shooting</content>
+        <content contentuid="h1dfc365eg9984g540dg8e96gdda89a752066" version="1">Add your Intelligence modifier to your firearm attack and damage rolls.</content>
+        <content contentuid="h5561e09fg42e8g53e8gbe0fg73b431e24d87" version="1">Unstable Backfire</content>
+        <content contentuid="hb12fe557g4125g5cf0g9672gcd5e7eb65e22" version="1">An unstable round exploded in your face.</content>
+        <content contentuid="hf278fa11gc46ag56c0gae25g182f6edce2a6" version="1">Unstable Infused Rounds</content>
+        <content contentuid="h74e247efg3524g54b2g990dg6ccc98f89a80" version="1">Requires an active infusion. For 10 turns, your infused rounds deal 5d4 damage of their element instead, but each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
+        <content contentuid="hd2195c52g8934g5fccga564g4ba4149f4fc2" version="1">Unstable Backfire</content>
+        <content contentuid="h8074437bg6d06g5bf5ga37cgf2d96c0dae78" version="1">Deals 3d4 Force damage in a 5-foot radius.</content>
+        <content contentuid="h29545f6fg7760g5aa6ga221g524abfa0561f" version="1">Unstable Infused Rounds</content>
+        <content contentuid="hcf93de15g47cag5a87g87f9g0466eafdf610" version="1">Toggle on or off. While toggled on and an infusion is active, your infused rounds deal 5d4 damage of their element, but each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you. Has no effect while no infusion is active.</content>
+        <content contentuid="h1f13e55bga6a8g53b2g817fgc7d5d78daa13" version="1">Spellstrike Shooter</content>
+        <content contentuid="h30431b39g76dag510dgbee0g4399e51ecb10" version="1">When you cast a leveled spell using your action, you can make one weapon attack without spending an action.</content>
+        <content contentuid="h16e63198g55acg44acgaf01g6d3cc02bd481" version="1">Shoot Flintlock</content>
+        <content contentuid="h75d3c664ga745g48a8g96a9g777428784924" version="1">Shoot Secondary Flintlock</content>
+        <content contentuid="hfd284d25gccf6g401cg8e93g9b3d41f95015" version="1">Shoot Blunderbuss</content>
+        <content contentuid="h699827d0g349bg4f26ga608gf0c828c495bc" version="1">Shoot Musket</content>
+        <content contentuid="h6d052683ga879g4b3cg91abg93d8d8658fa1" version="1">Fire one bullet at a target in a straight line, dealing your firearm's weapon damage.</content>
+        <content contentuid="h20f35133g343bg482dgaf64g7f092e6e9e2c" version="1">Fire one bullet from your secondary flintlock at a target in a straight line.</content>
+        <content contentuid="hc6b76403g31fag55a8g88a0g3b9d6ff4fa2f" version="1">Primary Reload</content>
+        <content contentuid="he8e58efagc245g5e3ag8f88g916c6aa416b8" version="1">Spend a bonus action to reload your flintlock to its full capacity of 3 bullets. If you have no bonus action left, it costs an action instead.</content>
+        <content contentuid="h7b17af36gce8cg4b45g8f1agf2d064081abc" version="1">Secondary Reload</content>
+        <content contentuid="h111c0a45g7c8cg4a9bg8f57g0dc443584a96" version="1">Spend a bonus action to reload your offhand flintlock to its full capacity of 3 bullets. If you have no bonus action left, it costs an action instead.</content>
+        <content contentuid="hcc92f66ag41e6g56b9gaa9egb8b18da05cd1" version="1">Primary Reload</content>
+        <content contentuid="hb047419bg12aeg5f9bg9749g29f46981707e" version="1">Spend a bonus action to reload your blunderbuss to its full capacity of 2 shots. If you have no bonus action left, it costs an action instead.</content>
+        <content contentuid="h6420edcdg4388g58c9g9493g84bc1e6ba114" version="1">Primary Reload</content>
+        <content contentuid="h3c75a550g3896g5965gbe46gd92b0fae9654" version="1">Spend a bonus action to reload your musket's single cartridge. If you have no bonus action left, it costs an action instead.</content>
+        <content contentuid="h72a09d2bg44a1g5992ga61ega64979492f86" version="1">Full Reload</content>
+        <content contentuid="hef22bce8g264fg5930gbdffgd678bbf3a2f0" version="1">Spend your action to reload both of your dual-wielded flintlocks to full capacity.</content>
+        <content contentuid="h626f90efg09e9g533eg8ab0g5c177030675b" version="1">Craft Flintlock</content>
+        <content contentuid="h40ad7fe6gaa84g5b19g87bbgfb7ae24332ba" version="1">Spend a Gunsmithing Charge and your action to assemble a new Flintlock from spare parts.</content>
+        <content contentuid="hd3abae72g0370g5b58g855dg1f67fda83648" version="1">Craft Blunderbuss</content>
+        <content contentuid="h6c8faccag8d90g5a58gb8bfg73d4146ae9a4" version="1">Spend a Gunsmithing Charge and your action to assemble a new Blunderbuss from spare parts.</content>
+        <content contentuid="hb95132f3ga0d5g53acg976bgef7ddc44e472" version="1">Craft Musket</content>
+        <content contentuid="hf7d87054g7ad4g593ega472g5d17db225d9f" version="1">Spend a Gunsmithing Charge and your action to assemble a new Musket from spare parts.</content>
+        <content contentuid="hef9ed75dg331bg4e14gbabagc074f2423ee6" version="1">Craft</content>
+        <content contentuid="hc7a2f010g91d8g49b9g9c57ga1cd2d58f89a" version="1">Spend a Gunsmithing Charge and your action to craft a Flintlock, Musket, Blunderbuss, Assembly Kit, or Disassembly Kit.</content>
+        <content contentuid="hd7f58e20g12a2g4591gb866gfb7f52605655" version="1">Craft Assembly Kit</content>
+        <content contentuid="h583c33e3g501ag4cbcga3f1g0f4794eb479b" version="1">Spend a Gunsmithing Charge and your action to assemble an Assembly Kit, used to fuse a magical weapon to a firearm.</content>
+        <content contentuid="h07f4f43eg5b7dg43e3g9222g705df6ca4a3d" version="1">Craft Disassembly Kit</content>
+        <content contentuid="hd5f6c265g3434g459eg953cgdef79719c644" version="1">Spend a Gunsmithing Charge and your action to assemble a Disassembly Kit, used to separate a fused firearm and magical weapon.</content>
+        <content contentuid="hb7ef5aa0g366ag49adga7c8g4755665e926d" version="1">Assembly Kit</content>
+        <content contentuid="h99797fe3gfab4g4c6fga911gf944c039177f" version="1">A gunsmith's kit of fittings and tools used to fuse a magical weapon to a firearm.</content>
+        <content contentuid="h01d4548cgf39eg44a2gb244gf5b5ca6a4928" version="1">Disassembly Kit</content>
+        <content contentuid="h238c2696gc297g4f35g8d5ag064cb9ef95d1" version="1">A gunsmith's kit of tools used to separate a fused firearm and magical weapon.</content>
+        <content contentuid="hdeba89e0g2bbcg58b5gbb2egc2b68c62f29c" version="1">Misfired</content>
+        <content contentuid="h4c6a6437gc436g5429g8a56gc54551460a5e" version="1">This firearm has misfired. Its ranged attack rolls take a -2 penalty until it is repaired, it breaks, or you take a long rest. Another critical miss with it breaks it until your next long rest.</content>
+        <content contentuid="hcb90881dg412fg51f2g84f7g86701a838704" version="1">Misfire</content>
+        <content contentuid="hf6c7a7d5gbb8dg5f3ega0e9ge42df85e24ff" version="1">When you roll a critical miss with this firearm, it misfires: attack rolls with it take a -2 penalty until it is repaired or you take a long rest. A critical miss with a misfired firearm breaks it, and it cannot fire until your next long rest.</content>
+        <content contentuid="h0a33234fgb0deg5433gbd89g3390e2a211bc" version="1">Flintlock</content>
+        <content contentuid="ha92b53aagade3g5ce4gb4fdg64b144f51378" version="1">A compact one-handed firearm. Holds 3 bullets.</content>
+        <content contentuid="hfa8fd0b5ge50bg5424g87b4g636eebb68c21" version="1">Blunderbuss</content>
+        <content contentuid="h5bbd1e6egb1f5g5127gbfceg8b3d0bea6498" version="1">A two-handed firearm with heavy, short-range stopping power. Holds 2 bullets.</content>
+        <content contentuid="hf7a2a39fgda5eg515cga8bcgfb93ba72bd84" version="1">Musket</content>
+        <content contentuid="h81cfc332ge624g59b6gba71g058b66c79a2d" version="1">A two-handed long-range firearm. Holds 1 bullet.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000001" version="1">Bite the Bullet: 1 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000002" version="1">Bite the Bullet: 2 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000003" version="1">Bite the Bullet: 3 Grit</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000004" version="1">Spend a bonus action and 1 grit point. Gain &lt;LSTag Tooltip="TemporaryHitPoints"&gt;temporary hit points&lt;/LSTag&gt; equal to your proficiency bonus.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000005" version="1">Spend a bonus action and 2 grit points. Gain &lt;LSTag Tooltip="TemporaryHitPoints"&gt;temporary hit points&lt;/LSTag&gt; equal to twice your proficiency bonus.</content>
+        <content contentuid="h10000001g0000g4000g8000g000000000006" version="1">Spend a bonus action and 3 grit points. Gain &lt;LSTag Tooltip="TemporaryHitPoints"&gt;temporary hit points&lt;/LSTag&gt; equal to three times your proficiency bonus.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000001" version="1">Merciless Shot: 1 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000002" version="1">Merciless Shot: 2 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000003" version="1">Merciless Shot: 3 Grit</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra 1d4 damage with a Flintlock, or 1d6 with a Blunderbuss or Musket.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra 2d4 damage with a Flintlock, or 2d6 with a Blunderbuss or Musket.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra 3d4 damage with a Flintlock, or 3d6 with a Blunderbuss or Musket.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000001" version="1">Fanning Fire: 1 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000002" version="1">Fanning Fire: 2 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000003" version="1">Fanning Fire: 3 Grit</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and two bullets to fire two shots, each at -2 to hit.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and three bullets to fire three shots, each at -3 to hit.</content>
+        <content contentuid="h10000003g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and four bullets to fire four shots, each at -4 to hit.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000001" version="1">Tinkerer: Primary Capacity</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000002" version="1">Tinkerer: Primary Damage</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000003" version="1">Tinkerer: Primary Range</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000004" version="1">Tinkerer: Secondary Capacity</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000005" version="1">Tinkerer: Secondary Damage</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000006" version="1">Tinkerer: Secondary Range</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Double this firearm's base ammunition capacity until this modification is replaced or removed. With Master Tinkerer, apply this again to triple its base capacity.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Add 1d4 to this firearm's damage rolls until this modification is replaced or removed. With Master Tinkerer, apply this again to add 2d4 to its damage rolls instead.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until this modification is replaced or removed: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. With Master Tinkerer, apply this again to double that bonus.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000010" version="1">Tinkerer: Primary Remove Modification</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000011" version="1">Tinkerer: Secondary Remove Modification</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000012" version="1">Spend an action to remove all Tinkerer modifications from this firearm, including Tinker Master upgrades. Restore its base capacity, damage, and range without repairing misfires or damage to the firearm. Excess ammunition is discarded if its capacity decreases.</content>
+        <content contentuid="h10000006g0000g4000g8000g000000000001" version="1">Scattershot</content>
+        <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 15-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking half weapon damage on a failed save and no damage on a success.</content>
+        <content contentuid="h10000007g0000g4000g8000g000000000001" version="1">Close Quarters</content>
+        <content contentuid="h10000007g0000g4000g8000g000000000002" version="1">You gain a +1 bonus to ranged weapon attack rolls, and you don't have Disadvantage on ranged attack rolls when a hostile creature is within [1] of you.</content>
+        <content contentuid="h10000008g0000g4000g8000g000000000001" version="1">Gunslinger's Draw</content>
+        <content contentuid="h10000008g0000g4000g8000g000000000002" version="1">Your hand is always near your holster. You gain a +[1] bonus to Initiative.</content>
+        <content contentuid="h10000009g0000g4000g8000g000000000001" version="1">Deadeye</content>
+        <content contentuid="h10000009g0000g4000g8000g000000000002" version="1">When you land a Critical Hit with a firearm, the attack deals an additional [1].</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000001" version="1">Lock-on: New Target</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000002" version="1">Your locked-on target died. As a bonus action, lock on to a new creature while maintaining the same concentration.</content>
+        <content contentuid="h10000010g0000g4000g8000g000000000003" version="1">A Gunslinger has locked on. Their firearm attacks deal additional damage equal to their proficiency bonus to this creature.</content>
+        <content contentuid="h1000000ag0000g4000g8000g000000000001" version="1">Master Tinkerer</content>
+        <content contentuid="h1000000bg0000g4000g8000g000000000001" version="1">Improved Critical</content>
+        <content contentuid="h1000000bg0000g4000g8000g000000000002" version="1">Your weapon attacks score a Critical Hit on a roll of 19 or 20.</content>
+        <content contentuid="h1000000ag0000g4000g8000g000000000002" version="1">Each firearm can hold two Tinkerer upgrades at once. Repeating an upgrade grants Tinker Master: Ammo, Damage, or Range. When a third upgrade is applied, the oldest is replaced.</content>
+        <content contentuid="h0000000cg0000g4000g8000g000000000001" version="1">Disarming Shot</content>
+        <content contentuid="h0000000cg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire your firearm. On a hit, the target must succeed a Strength saving throw or drop its weapon.</content>
+        <content contentuid="h0000000dg0000g4000g8000g000000000001" version="1">Winging Shot</content>
+        <content contentuid="h0000000dg0000g4000g8000g000000000002" version="1">Spend 1 grit and shoot at the legs. On a hit, the target must succeed a Constitution saving throw or be knocked Prone.</content>
+        <content contentuid="h0000000eg0000g4000g8000g000000000001" version="1">Forceful Shot</content>
+        <content contentuid="h0000000eg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire a heavy charge. On a hit, the target must succeed a Strength saving throw or be pushed back 4.5m.</content>
+        <content contentuid="h0000000fg0000g4000g8000g000000000001" version="1">Bullying Shot</content>
+        <content contentuid="h0000000fg0000g4000g8000g000000000002" version="1">Spend 1 grit and fire a menacing shot. On a hit, the target must succeed a Wisdom saving throw or be Frightened for 1 turn.</content>
+        <content contentuid="h0000002ag0000g4000g8000g000000000001" version="1">Trick Shot</content>
+        <content contentuid="h0000002ag0000g4000g8000g000000000002" version="1">Choose one of four firearm shots: Disarming Shot, Winging Shot, Forceful Shot, or Bullying Shot. Each shot costs 1 grit, an action, and one bullet.</content>
+        <content contentuid="h00000010g0000g4000g8000g000000000001" version="1">Quickload</content>
+        <content contentuid="h00000010g0000g4000g8000g000000000002" version="1">Spend 1 grit to fully reload your main-hand firearm or off-hand flintlock, or 1 grit and a bonus action to reload both.</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000001" version="1">Quickload: Main Hand</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000002" version="1">Quickload: Off Hand</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000003" version="1">Quickload: Both Hands</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000004" version="1">Spend 1 grit to fully reload your main-hand firearm. Doesn't use an action or bonus action.</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000005" version="1">Spend 1 grit to fully reload your off-hand flintlock. Doesn't use an action or bonus action.</content>
+        <content contentuid="h10000022g0000g4000g8000g000000000006" version="1">Spend 1 grit and a bonus action to fully reload both of the firearms you're wielding.</content>
+        <content contentuid="h10000024g0000g4000g8000g000000000001" version="1">The next time you would be downed, you stay at 1 hit point instead and immediately make one firearm attack against your attacker.</content>
+        <content contentuid="h00000011g0000g4000g8000g000000000001" version="1">Flash Powder</content>
+        <content contentuid="h00000011g0000g4000g8000g000000000002" version="1">Spend 1 grit and throw a pinch of black powder into a flash. Creatures in a 1.5m radius must succeed a Constitution saving throw or be Blinded for 3 turns.</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000001" version="1">Violent Shot</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000002" version="1">Spend 1 to 3 grit to overcharge a shot. Each grit adds 1d8 (Flintlock), 2d6 (Blunderbuss) or 3d4 (Musket) damage. Roll a d20 afterwards: on a result equal to or lower than the grit spent, the firearm misfires.</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000003" version="1">Violent Shot: 1 Grit</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000004" version="1">Violent Shot: 2 Grit</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000005" version="1">Violent Shot: 3 Grit</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000006" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra 1d8 damage with a Flintlock, 2d6 with a Blunderbuss or 3d4 with a Musket. Afterwards roll a d20: on a result of 1 or lower, the firearm misfires.</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000007" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra 2d8 damage with a Flintlock, 4d6 with a Blunderbuss or 6d4 with a Musket. Afterwards roll a d20: on a result of 2 or lower, the firearm misfires.</content>
+        <content contentuid="h00000012g0000g4000g8000g000000000008" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra 3d8 damage with a Flintlock, 6d6 with a Blunderbuss or 9d4 with a Musket. Afterwards roll a d20: on a result of 3 or lower, the firearm misfires.</content>
+        <content contentuid="h00000013g0000g4000g8000g000000000001" version="1">Stunning Shot</content>
+        <content contentuid="h00000013g0000g4000g8000g000000000002" version="1">Spend 2 grit and fire at the head. On a hit, the target must succeed a Constitution &lt;LSTag Tooltip="SavingThrow"&gt;saving throw&lt;/LSTag&gt; or be &lt;LSTag Type="Status" Tooltip="STUNNED"&gt;Stunned&lt;/LSTag&gt; for 1 turn.</content>
+        <content contentuid="h00000014g0000g4000g8000g000000000001" version="1">Piercing Round</content>
+        <content contentuid="h00000014g0000g4000g8000g000000000002" version="1">Spend 2 grit and fire a hardened round in an 18m line. Make an attack roll against each enemy and neutral creature (but not allies) in the line; every hit deals full weapon damage.</content>
+        <content contentuid="h00000015g0000g4000g8000g000000000001" version="1">Hair Trigger</content>
+        <content contentuid="h00000015g0000g4000g8000g000000000002" version="1">When an enemy within 9m attacks an ally, spend your reaction and 1 grit to shoot the attacker with your loaded firearm.</content>
+        <content contentuid="h00000017g0000g4000g8000g000000000001" version="1">Grit and Steel</content>
+        <content contentuid="h00000017g0000g4000g8000g000000000002" version="1">When you fail a saving throw, spend 2 grit to reroll it. Once per short rest.</content>
+        <content contentuid="h00000018g0000g4000g8000g000000000001" version="1">Bullet Time</content>
+        <content contentuid="h00000018g0000g4000g8000g000000000002" version="1">Spend 4 grit to gain an additional action this turn. Once per short rest.</content>
+        <content contentuid="h00000019g0000g4000g8000g000000000001" version="1">Hail of Lead</content>
+        <content contentuid="h00000019g0000g4000g8000g000000000002" version="1">Spend 5 grit and 1 ammunition to empty your firearm in a storm of shots. Make a weapon attack against every enemy within 18m. Once per long rest.</content>
+        <content contentuid="h0000001ag0000g4000g8000g000000000001" version="1">Final Judgement</content>
+        <content contentuid="h0000001ag0000g4000g8000g000000000002" version="1">Spend 4 grit and fire a fatal shot. If the hit leaves the target below 25% of its hit points, it takes weapon damage again and must succeed a Constitution saving throw or die.</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000001" version="1">Ante Up</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to gain Advantage on your next firearm attack before the end of your next turn. If that attack misses, attacks against you have Advantage until your next turn.</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000003" version="1">Ante Up</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000004" version="1">Your next firearm attack has Advantage.</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000005" version="1">Lost the Ante</content>
+        <content contentuid="h0000001bg0000g4000g8000g000000000006" version="1">Attacks against you have Advantage.</content>
+        <content contentuid="h0000001cg0000g4000g8000g000000000001" version="1">Lucky Draw</content>
+        <content contentuid="h0000001cg0000g4000g8000g000000000002" version="1">Spend 1 grit to reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn.</content>
+        <content contentuid="h0000001cg0000g4000g8000g000000000003" version="1">Reroll 1s and 2s on firearm damage dice.</content>
+        <content contentuid="h0000001dg0000g4000g8000g000000000001" version="1">Two-Gun Tango</content>
+        <content contentuid="h0000001dg0000g4000g8000g000000000002" version="1">Spend 1 grit to fire your off-hand flintlock. Doesn't use an action or bonus action.</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000001" version="1">Roll the Bones</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to roll a d6. 1: -1d4 to your firearm attack rolls. 2-5: +1d6 damage on your next firearm hit. 6: +2d6 damage on your next firearm hit and regain 1 grit.</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000003" version="1">Bust</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000004" version="1">-1d4 to firearm attack rolls.</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000005" version="1">Lucky Roll</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000006" version="1">Your next firearm attack deals an extra 1d6 damage.</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000007" version="1">Jackpot</content>
+        <content contentuid="h0000001eg0000g4000g8000g000000000008" version="1">Your next firearm attack deals an extra 2d6 damage.</content>
+        <content contentuid="h0000001fg0000g4000g8000g000000000001" version="1">Duck and Weave</content>
+        <content contentuid="h0000001fg0000g4000g8000g000000000002" version="1">When a ranged weapon attack is about to damage you, spend your reaction and 1 grit to resist its physical damage, then Disengage and gain 3m of movement.</content>
+        <content contentuid="h0000001fg0000g4000g8000g000000000003" version="1">+3m movement until the end of your next turn.</content>
+        <content contentuid="h00000020g0000g4000g8000g000000000001" version="1">Cheat Death's Odds</content>
+        <content contentuid="h00000020g0000g4000g8000g000000000002" version="1">While you are below half your hit points, grit abilities that cost 2 or more grit refund 1 grit when used.</content>
+        <content contentuid="h00000021g0000g4000g8000g000000000001" version="1">Hot Hand</content>
+        <content contentuid="h00000021g0000g4000g8000g000000000002" version="1">Once per turn, when you hit with a firearm attack, spend 2 grit: your next firearm attack scores a Critical Hit on an 18-20.</content>
+        <content contentuid="h00000021g0000g4000g8000g000000000005" version="1">Your next firearm attack scores a Critical Hit on an 18-20.</content>
+        <content contentuid="h00000022g0000g4000g8000g000000000001" version="1">Double or Nothing</content>
+        <content contentuid="h00000022g0000g4000g8000g000000000002" version="1">Once per turn, when you hit with a firearm attack, spend 2 grit to roll a d20. On 11 or higher, make a free firearm attack against the same target, consuming one bullet. Otherwise the firearm misfires.</content>
+        <content contentuid="h00000023g0000g4000g8000g000000000001" version="1">Quick on the Draw</content>
+        <content contentuid="h00000023g0000g4000g8000g000000000002" version="1">When an enemy within 9m starts an attack, spend your reaction and 2 grit to cancel it and shoot first with your loaded firearm. The enemy gets that attack back.</content>
+        <content contentuid="h00000029g0000g4000g8000g000000000001" version="1">Ricochet Shot</content>
+        <content contentuid="h00000029g0000g4000g8000g000000000002" version="1">Spend 3 grit and 1 bullet to fire a shot that ricochets between up to 4 enemies. The first target takes full weapon damage; each ricochet deals half weapon damage.</content>
+        <content contentuid="h00000024g0000g4000g8000g000000000001" version="1">Dead Man's Hand</content>
+        <content contentuid="h00000024g0000g4000g8000g000000000002" version="1">While you are below 25% of your hit points, spend 3 grit: your next firearm attack before the end of your next turn is a Critical Hit if it hits. Once per turn.</content>
+        <content contentuid="h00000024g0000g4000g8000g000000000003" version="1">Your next firearm hit is a Critical Hit.</content>
+        <content contentuid="h00000027g0000g4000g8000g000000000001" version="1">Desperado's Fortune</content>
+        <content contentuid="h31000002g0000g4000g8000g000000000001" version="1">Desperado's Luck: Evolution</content>
+        <content contentuid="h31000002g0000g4000g8000g000000000002" version="1">If you know Desperado's Luck, it evolves into Desperado's Fortune when you complete this level, without spending a grit ability choice. Fortune replaces Luck's 1d4 reaction with 1d8 after a missed firearm attack or failed saving throw. If you do not know Luck, Fortune is available as a normal grit ability choice instead.</content>
+        <content contentuid="h00000027g0000g4000g8000g000000000002" version="1">Replaces Desperado's Luck. When a firearm attack misses or you fail a saving throw, spend 1 grit to add 1d8 to the roll. Once per turn.</content>
+        <content contentuid="h00000028g0000g4000g8000g000000000001" version="1">High Noon</content>
+        <content contentuid="h00000028g0000g4000g8000g000000000002" version="1">Spend a bonus action and 5 grit to call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit and score a Critical Hit on a 17-20. Your firearm attacks also deal an extra 1d8 damage. Once per long rest.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000001" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000002" version="1">Once per short rest, when a firearm attack reduces a creature to 0 hit points, you can spend 2 grit and 1 bullet to immediately attack another creature within range. If that attack reduces its target to 0 hit points, you can spend 2 grit and 1 bullet to repeat this effect. The streak ends when an attack fails to kill.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000003" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000004" version="1">Once per short rest, after a firearm attack reduces a creature to 0 hit points, spend 2 grit and 1 bullet to make a free attack with your main-hand firearm against a creature within range. This starts a chain that lasts for 2 turns or until you hit with a weapon attack other than Last Man Standing.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000005" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000006" version="1">Your Last Man Standing attack killed its target. Spend 2 grit and 1 bullet to make another free weapon attack against a creature within range and keep the chain going.</content>
+        <content contentuid="h00000028g0000g4000g8000g000000000003" version="1">Called Out</content>
+        <content contentuid="h00000028g0000g4000g8000g000000000004" version="1">A Desperado has called this creature out at High Noon.</content>
+        <content contentuid="h00000028g0000g4000g8000g000000000005" version="1">Firearm attacks against the called-out creature gain +20 to hit and score a Critical Hit on a 17-20. Your firearm attacks deal an extra 1d8 damage.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000001" version="1">Hot Streak</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000002" version="1">Spend a bonus action and 3 Grit to start Hot Streak. All firearm attacks, including regular attacks and Hot Streak recast shots, deal an extra 1d4 damage. Each firearm hit increases the bonus by another 1d4, up to 10d4, and unlocks the next recast shot. Each recast uses one weapon attack and one bullet, and works with Extra Attack. Hot Streak ends when you miss an attack, take a long rest, or land the tenth chained firearm hit. Once per short rest.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000003" version="1">All firearm attacks, including regular attacks and Hot Streak recast shots, gain another 1d4 bonus damage with each chained firearm hit. Ends on an attack miss, a long rest, or the tenth chained firearm hit.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000004" version="1">Hot Streak Shot</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000005" version="1">Your firearm attacks deal an extra [1]d4 damage. A regular firearm hit or Hot Streak recast hit unlocks the next shot and increases the bonus. Ends on an attack miss, a long rest, or the tenth chained firearm hit.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000006" version="1">Hot Streak</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000007" version="1">Fire one bullet from any equipped main-hand firearm: Flintlock, Blunderbuss, or Musket. Uses that firearm's damage, damage type, range, and ammunition, plus Hot Streak's current bonus damage. Uses one weapon attack and works with Extra Attack. A regular firearm hit or recast hit increases the bonus by 1d4 and unlocks the next shot. A miss, a long rest, or the tenth chained firearm hit ends Hot Streak.</content>
+        <content contentuid="h20000001g0000g4000g8000g000000000001" version="1">Bloodletting</content>
+        <content contentuid="h20000001g0000g4000g8000g000000000002" version="1">Fire one bullet from your main-hand Flintlock, dealing normal weapon damage and inflicting Bleeding for 2 turns on a hit. Once per short rest.</content>
+        <content contentuid="h20000002g0000g4000g8000g000000000001" version="1">Incise Ligaments Shot</content>
+        <content contentuid="h20000002g0000g4000g8000g000000000002" version="1">Fire one musket cartridge. On a hit, deal the musket's damage plus 1d6 firearm damage and the target must pass a Dexterity save (DC 2 higher than your Maneuver save DC) or become Slowed for 2 turns. Once per short rest.</content>
+        <content contentuid="h20000003g0000g4000g8000g000000000001" version="1">Bonesaw Musket</content>
+        <content contentuid="h20000003g0000g4000g8000g000000000002" version="1">A +1 musket fitted with Bonesaw's Incise Ligaments action.</content>
+        <content contentuid="h20000004g0000g4000g8000g000000000001" version="1">Pushing Shot</content>
+        <content contentuid="h20000004g0000g4000g8000g000000000002" version="1">Fire one musket cartridge. On a hit, the target must pass a Strength save against your Maneuver save DC or be pushed 5 metres. Once per short rest.</content>
+        <content contentuid="h20000005g0000g4000g8000g000000000001" version="1">Titanstring Musket</content>
+        <content contentuid="h20000005g0000g4000g8000g000000000002" version="1">A +1 musket that adds your Strength modifier to ranged weapon damage and grants Pushing Shot.</content>
+        <content contentuid="h20000006g0000g4000g8000g000000000001" version="1">Absolute Power Shot</content>
+        <content contentuid="h20000006g0000g4000g8000g000000000002" version="1">Fire one musket cartridge, dealing normal weapon damage and 1d6 Force damage. The target must pass a Strength save or be pushed 5 metres. Once per turn.</content>
+        <content contentuid="h20000007g0000g4000g8000g000000000001" version="1">Faithbreaker Musket</content>
+        <content contentuid="h20000007g0000g4000g8000g000000000002" version="1">A +1 musket fitted with Faithbreaker's Absolute Power action.</content>
+        <content contentuid="h20000008g0000g4000g8000g000000000001" version="1">Hush You Shot</content>
+        <content contentuid="h20000008g0000g4000g8000g000000000002" version="1">Fire one musket cartridge, dealing normal weapon damage. The target must pass a Constitution save (DC 2 higher than your Maneuver save DC) or become Silenced for 2 turns. Once per short rest.</content>
+        <content contentuid="h20000009g0000g4000g8000g000000000001" version="1">Witchbreaker Musket</content>
+        <content contentuid="h20000009g0000g4000g8000g000000000002" version="1">A +1 musket that grants Advantage on attacks against concentrating targets and Hush You Shot.</content>
+        <content contentuid="h2000000bg0000g4000g8000g000000000001" version="1">Watcher's Guide Musket</content>
+        <content contentuid="h2000000bg0000g4000g8000g000000000002" version="1">A magical musket that grants True Strike against a target after you miss it with an attack.</content>
+        <content contentuid="h2000000dg0000g4000g8000g000000000001" version="1">Corellon's Grace Musket</content>
+        <content contentuid="h2000000dg0000g4000g8000g000000000002" version="1">A magical musket that grants +1 to firearm attack rolls and damage and +2 to saving throws while you wear no armour.</content>
+        <content contentuid="h2000000fg0000g4000g8000g000000000001" version="1">Intransigent Musket</content>
+        <content contentuid="h2000000fg0000g4000g8000g000000000002" version="1">A magical musket that can knock nearby enemies Prone when you score a critical hit or kill a foe.</content>
+        <content contentuid="h20000013g0000g4000g8000g000000000001" version="1">Jagged Spear Musket</content>
+        <content contentuid="h20000013g0000g4000g8000g000000000002" version="1">A magical musket that can Torture targets on a hit, imposing Disadvantage on their Constitution saving throws.</content>
+        <content contentuid="h2000002ag0000g4000g8000g000000000001" version="1">Melf's First Staff Musket</content>
+        <content contentuid="h2000002ag0000g4000g8000g000000000002" version="1">A musket that grants +1 to spell attack rolls and spell save DC and lets you cast Melf's Acid Arrow at level 2 once per long rest.</content>
+        <content contentuid="h2000002bg0000g4000g8000g000000000001" version="1">Nature's Snare Musket</content>
+        <content contentuid="h2000002bg0000g4000g8000g000000000002" version="1">A magical musket whose hits can Ensnare targets that are not Plants or Beasts.</content>
+        <content contentuid="h2000002cg0000g4000g8000g000000000001" version="1">Rain Dancer Musket</content>
+        <content contentuid="h2000002cg0000g4000g8000g000000000002" version="1">A magical musket that lets you cast Create Water at level 1 once per short rest.</content>
+        <content contentuid="h2000002dg0000g4000g8000g000000000001" version="1">Mumbling Wizard Musket</content>
+        <content contentuid="h2000002dg0000g4000g8000g000000000002" version="1">A magical musket that can cast Fire Bolt at will; each cast has a 1-in-20 chance to cause a Fireball explosion.</content>
+        <content contentuid="h20000037g0000g4000g8000g000000000001" version="1">Staff of Arcane Blessing Musket</content>
+        <content contentuid="h20000037g0000g4000g8000g000000000002" version="1">A magical musket that lets you cast Bless once per long rest; your Bless spells also add 1d4 to spell attack rolls.</content>
+        <content contentuid="h20000038g0000g4000g8000g000000000001" version="1">Staff of Crones Musket</content>
+        <content contentuid="h20000038g0000g4000g8000g000000000002" version="1">A magical musket that lets you cast Ray of Sickness at level 1 once per short rest.</content>
+        <content contentuid="h20000039g0000g4000g8000g000000000001" version="1">Hellrider Musket</content>
+        <content contentuid="h20000039g0000g4000g8000g000000000002" version="1">A +1 musket that grants +3 Initiative and Advantage on Perception checks; once per turn, a hit can inflict Faerie Fire.</content>
+        <content contentuid="h2000003ag0000g4000g8000g000000000001" version="1">Spellthief Musket</content>
+        <content contentuid="h2000003ag0000g4000g8000g000000000002" version="1">A magical musket that restores one level 1 spell slot when you score a critical hit, once per short rest.</content>
+        <content contentuid="h2000003bg0000g4000g8000g000000000001" version="1">Despair of Athkatla Musket</content>
+        <content contentuid="h2000003bg0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1 to spell attack rolls and spell save DC.</content>
+        <content contentuid="h2000003cg0000g4000g8000g000000000001" version="1">Adamantine Longsword Musket</content>
+        <content contentuid="h2000003cg0000g4000g8000g000000000002" version="1">A +1 magical musket that scores critical hits against objects and ignores resistance to piercing damage.</content>
+        <content contentuid="h2000003dg0000g4000g8000g000000000001" version="1">Bigboy's Chew Toy Musket</content>
+        <content contentuid="h2000003dg0000g4000g8000g000000000002" version="1">A +1 magical musket that lets you cast Enlarge on yourself once per long rest.</content>
+        <content contentuid="h2000003eg0000g4000g8000g000000000001" version="1">Blackguard's Sword Musket</content>
+        <content contentuid="h2000003eg0000g4000g8000g000000000002" version="1">A +2 magical musket that can Daze targets hit by your Smite spells if they fail a Constitution save.</content>
+        <content contentuid="h2000005fg0000g4000g8000g000000000001" version="1">Blade of Oppressed Souls Musket</content>
+        <content contentuid="h2000005fg0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Psychic damage and can fire a Crowning Shot to inflict Crown of Madness.</content>
+        <content contentuid="h20000073g0000g4000g8000g000000000001" version="1">Cacophony Musket</content>
+        <content contentuid="h20000073g0000g4000g8000g000000000002" version="1">A +1 magical musket that can fire a Thunderous Smite round once per short rest.</content>
+        <content contentuid="h20000074g0000g4000g8000g000000000001" version="1">Caitiff Staff Musket</content>
+        <content contentuid="h20000074g0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1 to spell attack rolls and spell save DC, and restores an expended Warlock spell slot once per long rest.</content>
+        <content contentuid="h20000075g0000g4000g8000g000000000001" version="1">Charge-Bound Warhammer Musket</content>
+        <content contentuid="h20000075g0000g4000g8000g000000000002" version="1">A +1 magical musket that gains +1 to attack rolls and deals an extra 1d6 Lightning damage while bound or Pact-bound.</content>
+        <content contentuid="h20000063g0000g4000g8000g000000000001" version="1">Crowning Shot</content>
+        <content contentuid="h20000063g0000g4000g8000g000000000002" version="1">Fire a psychic round that can drive a Humanoid target mad.</content>
+        <content contentuid="h20000064g0000g4000g8000g000000000001" version="1">Thunderous Smite Shot</content>
+        <content contentuid="h20000064g0000g4000g8000g000000000002" version="1">Fire a thunderous round that deals extra Thunder damage and can knock the target Prone.</content>
+        <content contentuid="h20000067g0000g4000g8000g000000000001" version="1">Clown Hammer Musket</content>
+        <content contentuid="h20000067g0000g4000g8000g000000000002" version="1">A +2 magical musket whose critical hits can make you and a Humanoid target fall down laughing if either fails a Wisdom save.</content>
+        <content contentuid="h20000068g0000g4000g8000g000000000001" version="1">Creation's Echo Musket</content>
+        <content contentuid="h20000068g0000g4000g8000g000000000002" version="1">A magical musket that grants resistance to Acid, Fire, Lightning, Radiant, or Necrotic damage for 2 turns after you deal damage of that type.</content>
+        <content contentuid="h20000069g0000g4000g8000g000000000001" version="1">Gold Wyrmling Staff Musket</content>
+        <content contentuid="h20000069g0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Fire damage and lets you cast Fire Bolt at will.</content>
+        <content contentuid="h2000006ag0000g4000g8000g000000000001" version="1">Hammer of the Just Musket</content>
+        <content contentuid="h2000006ag0000g4000g8000g000000000002" version="1">A +2 magical musket that deals an extra 1d4 Radiant damage, deals 1d6 extra Piercing damage to Fiends and Undead, and lets you cast Detect Thoughts once per long rest.</content>
+        <content contentuid="h2000006bg0000g4000g8000g000000000001" version="1">Harper Sacredstriker Musket</content>
+        <content contentuid="h2000006bg0000g4000g8000g000000000002" version="1">A +1 magical musket that lets you summon a level 6 Spiritual Weapon once per long rest.</content>
+        <content contentuid="h2000006cg0000g4000g8000g000000000001" version="1">Hollow's Staff Musket</content>
+        <content contentuid="h2000006cg0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Necrotic damage, imposes Disadvantage on saves against your Necromancy spells, and lets you cast Arms of Hadar (level 3) once per long rest.</content>
+        <content contentuid="h2000006dg0000g4000g8000g000000000001" version="1">Ketheric's Warhammer Musket</content>
+        <content contentuid="h2000006dg0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Psychic damage.</content>
+        <content contentuid="h2000006eg0000g4000g8000g000000000001" version="1">Pale Oak Musket</content>
+        <content contentuid="h2000006eg0000g4000g8000g000000000002" version="1">A magical musket that cannot be Entangled by Faithwarden's Vines and lets you cast Faithwarden's Vines once per long rest.</content>
+        <content contentuid="h2000006fg0000g4000g8000g000000000001" version="1">The Sparky Points Musket</content>
+        <content contentuid="h2000006fg0000g4000g8000g000000000002" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h20000070g0000g4000g8000g000000000001" version="1">The Spellsparkler Musket</content>
+        <content contentuid="h20000070g0000g4000g8000g000000000002" version="1">A magical musket that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
+        <content contentuid="h20000071g0000g4000g8000g000000000001" version="1">Staff of Interruption Musket</content>
+        <content contentuid="h20000071g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets you Counterspell (level 5) once per long rest.</content>
+        <content contentuid="h20000072g0000g4000g8000g000000000001" version="1">Staff of the Emperor Musket</content>
+        <content contentuid="h20000072g0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1 to spell attack rolls and spell save DC. When you succeed on a saving throw against a spell, its caster must pass an Intelligence save or be Stunned for 1 turn.</content>
+        <content contentuid="h2000007dg0000g4000g8000g000000000001" version="1">Sword of the Emperor Musket</content>
+        <content contentuid="h2000007dg0000g4000g8000g000000000002" version="1">A +2 magical musket that deals an extra 1d4 damage to shapeshifters and polymorphed creatures and grants +2 to saving throws against spells.</content>
+        <content contentuid="h2000007eg0000g4000g8000g000000000001" version="1">Vicious Battleaxe Musket</content>
+        <content contentuid="h2000007eg0000g4000g8000g000000000002" version="1">A +2 magical musket that deals 7 extra damage on a critical hit.</content>
+        <content contentuid="h2000007fg0000g4000g8000g000000000001" version="1">The Joltshooter Musket</content>
+        <content contentuid="h2000007fg0000g4000g8000g000000000002" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h20000081g0000g4000g8000g000000000001" version="1">Dwarven Thrower Musket</content>
+        <content contentuid="h20000081g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures.</content>
+        <content contentuid="h20000082g0000g4000g8000g000000000001" version="1">Incandescent Staff Musket</content>
+        <content contentuid="h20000082g0000g4000g8000g000000000002" version="1">A magical musket that grants +1 to ranged spell attack rolls and Fire resistance, and lets you cast Fire Bolt at will and Fireball (level 3) once per long rest.</content>
+        <content contentuid="h20000083g0000g4000g8000g000000000001" version="1">Mourning Frost Musket</content>
+        <content contentuid="h20000083g0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Cold damage, adds 1 to Cold damage, and lets you cast Ray of Frost. Cold spell damage can Chill targets.</content>
+        <content contentuid="h20000084g0000g4000g8000g000000000001" version="1">Staff of Cherished Necromancy Musket</content>
+        <content contentuid="h20000084g0000g4000g8000g000000000002" version="1">A +2 magical musket that deals an extra 1d4 Necrotic damage, imposes Disadvantage on saves against your Necromancy spells, and grants Life Essence when a spell kills an enemy.</content>
+        <content contentuid="h20000085g0000g4000g8000g000000000001" version="1">Staff of Spellpower Musket</content>
+        <content contentuid="h20000085g0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1 to spell attack rolls and spell save DC and can make your next spell cost no spell slot once per long rest.</content>
+        <content contentuid="h20000086g0000g4000g8000g000000000001" version="1">Staff of the Ram Musket</content>
+        <content contentuid="h20000086g0000g4000g8000g000000000002" version="1">A +2 magical musket that once per turn can push a target and Stun it if it fails a Constitution save. Dragons and Huge creatures are unaffected.</content>
+        <content contentuid="h20000087g0000g4000g8000g000000000001" version="1">Trident of the Waves Musket</content>
+        <content contentuid="h20000087g0000g4000g8000g000000000002" version="1">A +1 magical musket whose hits make targets Wet and create a small water surface.</content>
+        <content contentuid="h20000088g0000g4000g8000g000000000001" version="1">Voss' Silver Sword Musket</content>
+        <content contentuid="h20000088g0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1d4 to attack and damage rolls against Githyanki, Elementals, Aberrations, and Fiends. Its Wrathful Smite Shot deals +1d6 Psychic damage and can Frighten a target once per short rest.</content>
+        <content contentuid="h20000089g0000g4000g8000g000000000001" version="1">Woe Musket</content>
+        <content contentuid="h20000089g0000g4000g8000g000000000002" version="1">A +2 magical musket that grants +1 to spell attack rolls and spell save DC, heals you when creatures fail saves against your spells, and lets you cast Blight (level 4) once per long rest.</content>
+        <content contentuid="h2000008ag0000g4000g8000g000000000001" version="1">Wrathful Smite Shot</content>
+        <content contentuid="h2000008ag0000g4000g8000g000000000002" version="1">Fire a once-per-short-rest shot that deals firearm damage plus 1d6 Psychic damage and can Frighten its target.</content>
+        <content contentuid="h2000009ag0000g4000g8000g000000000001" version="1">The Dead Shot Musket</content>
+        <content contentuid="h2000009ag0000g4000g8000g000000000002" version="1">A +2 magical musket that reduces your critical-hit threshold by 1 and adds your Proficiency Bonus to ranged weapon attack rolls when you do not have Disadvantage.</content>
+        <content contentuid="h2000001ag0000g4000g8000g000000000001" version="1">Assassin's Shortsword Flintlock</content>
+        <content contentuid="h2000001ag0000g4000g8000g000000000002" version="1">A +1 Flintlock that grants Advantage on Stealth checks.</content>
+        <content contentuid="h2000001bg0000g4000g8000g000000000001" version="1">Assassin's Touch Flintlock</content>
+        <content contentuid="h2000001bg0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 1d4 Necrotic damage to Sleeping or Knocked Out targets.</content>
+        <content contentuid="h2000001cg0000g4000g8000g000000000001" version="1">Hill Giant Flintlock</content>
+        <content contentuid="h2000001cg0000g4000g8000g000000000002" version="1">Your Strength score becomes 19 while this Flintlock is equipped.</content>
+        <content contentuid="h2000001dg0000g4000g8000g000000000001" version="1">Dragon's Grasp Flintlock</content>
+        <content contentuid="h2000001dg0000g4000g8000g000000000002" version="1">A Flintlock that deals an extra 1d4 Piercing damage to Burning targets.</content>
+        <content contentuid="h2000001eg0000g4000g8000g000000000001" version="1">Firestoker Flintlock</content>
+        <content contentuid="h2000001eg0000g4000g8000g000000000002" version="1">A Flintlock that deals an extra 1d4 Piercing damage to Burning targets.</content>
+        <content contentuid="h2000001fg0000g4000g8000g000000000001" version="1">Hunter's Dagger Flintlock</content>
+        <content contentuid="h2000001fg0000g4000g8000g000000000002" version="1">A +1 Flintlock whose hits inflict Ruptured for 3 turns.</content>
+        <content contentuid="h20000020g0000g4000g8000g000000000001" version="1">Murderous Cut Flintlock</content>
+        <content contentuid="h20000020g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 1d4 Piercing damage to targets at or below half HP.</content>
+        <content contentuid="h20000021g0000g4000g8000g000000000001" version="1">Ritual Axe Flintlock</content>
+        <content contentuid="h20000021g0000g4000g8000g000000000002" version="1">A Flintlock that inflicts Bane on hit and can deal 1d6 Piercing damage to you when you have at least half HP.</content>
+        <content contentuid="h20000022g0000g4000g8000g000000000001" version="1">Ritual Dagger Flintlock</content>
+        <content contentuid="h20000022g0000g4000g8000g000000000002" version="1">A Flintlock whose hits Bless you for 1 turn. Blood Sacrifice: spend a bonus action to take 1d4 firearm damage and gain the same Blessing.</content>
+        <content contentuid="h20000023g0000g4000g8000g000000000001" version="1">Ritual Dagger of Shar Flintlock</content>
+        <content contentuid="h20000023g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 1d4 Necrotic damage.</content>
+        <content contentuid="h20000024g0000g4000g8000g000000000001" version="1">Shining Staver-of-Skulls Flintlock</content>
+        <content contentuid="h20000024g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 1d4 Radiant damage and sheds light in a 25-foot radius.</content>
+        <content contentuid="h20000025g0000g4000g8000g000000000001" version="1">Blood Sacrifice</content>
+        <content contentuid="h20000025g0000g4000g8000g000000000002" version="1">Spend a bonus action to take 1d4 firearm damage and gain the Pain Maiden's Blessing for 1 turn.</content>
+        <content contentuid="h20000026g0000g4000g8000g000000000001" version="1">Shortsword of First Blood Flintlock</content>
+        <content contentuid="h20000026g0000g4000g8000g000000000002" version="1">A Flintlock that deals an extra 1d8 firearm damage to targets at full HP.</content>
+        <content contentuid="h20000027g0000g4000g8000g000000000001" version="1">Skybreaker Flintlock</content>
+        <content contentuid="h20000027g0000g4000g8000g000000000002" version="1">A +1 Flintlock with Searing Smite: once per long rest, fire a shot dealing an extra 1d6 Fire damage and inflicting Searing Smite.</content>
+        <content contentuid="h20000028g0000g4000g8000g000000000001" version="1">Speedy Reply Flintlock</content>
+        <content contentuid="h20000028g0000g4000g8000g000000000002" version="1">A Flintlock whose hits grant you 2 turns of Momentum.</content>
+        <content contentuid="h20000029g0000g4000g8000g000000000001" version="1">Sword of Screams Flintlock</content>
+        <content contentuid="h20000029g0000g4000g8000g000000000002" version="1">A Flintlock that deals an extra 1d4 Psychic damage.</content>
+        <content contentuid="h20000030g0000g4000g8000g000000000001" version="1">Searing Smite Shot</content>
+        <content contentuid="h20000030g0000g4000g8000g000000000002" version="1">Fire one Flintlock shot. On a hit, deal normal firearm damage plus 1d6 Fire damage and inflict Searing Smite. Once per long rest.</content>
+        <content contentuid="h20000031g0000g4000g8000g000000000001" version="1">Sylvan Scimitar Flintlock</content>
+        <content contentuid="h20000031g0000g4000g8000g000000000002" version="1">A +1 Flintlock that uses your spellcasting ability modifier instead of Dexterity for attack rolls.</content>
+        <content contentuid="h20000032g0000g4000g8000g000000000001" version="1">Syringe Flintlock</content>
+        <content contentuid="h20000032g0000g4000g8000g000000000002" version="1">A +1 Flintlock with Nostrum Shot: once per short rest, fire a shot that deals extra firearm damage plus 1d6 Necrotic; a failed Dexterity save can Poison the target for 2 turns.</content>
+        <content contentuid="h20000033g0000g4000g8000g000000000001" version="1">Trepan Flintlock</content>
+        <content contentuid="h20000033g0000g4000g8000g000000000002" version="1">A +1 Flintlock with Trephination Shot: a hit deals extra firearm damage plus 1d6 Necrotic; a failed Dexterity save can knock the target Prone for 2 turns.</content>
+        <content contentuid="h20000034g0000g4000g8000g000000000001" version="1">Worgfang Flintlock</content>
+        <content contentuid="h20000034g0000g4000g8000g000000000002" version="1">Goblins have Disadvantage on attack rolls against you while this Flintlock is equipped.</content>
+        <content contentuid="h20000035g0000g4000g8000g000000000001" version="1">Nostrum Shot</content>
+        <content contentuid="h20000035g0000g4000g8000g000000000002" version="1">Fire one Flintlock shot. Deal firearm damage plus your Proficiency Bonus and 1d6 Necrotic damage; on a failed Dexterity save against your Maneuver DC + 2, Poison the target for 2 turns. Once per short rest.</content>
+        <content contentuid="h20000036g0000g4000g8000g000000000001" version="1">Trephination Shot</content>
+        <content contentuid="h20000036g0000g4000g8000g000000000002" version="1">Fire one Flintlock shot. Deal firearm damage plus your Proficiency Bonus and 1d6 Necrotic damage; on a failed Dexterity save against your Maneuver DC + 2, knock the target Prone for 2 turns.</content>
+        <content contentuid="h20000049g0000g4000g8000g000000000001" version="1">Wulbren's Hammer Flintlock</content>
+        <content contentuid="h20000049g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 2d4 Force damage to objects and world objects.</content>
+        <content contentuid="h20000050g0000g4000g8000g000000000001" version="1">Bow of Awareness Flintlock</content>
+        <content contentuid="h20000050g0000g4000g8000g000000000002" version="1">A +1 Flintlock that grants +1 to Initiative while equipped.</content>
+        <content contentuid="h20000051g0000g4000g8000g000000000001" version="1">Hunting Shortbow Flintlock</content>
+        <content contentuid="h20000051g0000g4000g8000g000000000002" version="1">A +1 Flintlock that grants Advantage on attacks against Monstrosities and lets you cast Hunter's Mark once per long rest.</content>
+        <content contentuid="h20000043g0000g4000g8000g000000000001" version="1">Adamantine Scimitar Flintlock</content>
+        <content contentuid="h20000043g0000g4000g8000g000000000002" version="1">A +1 Flintlock whose shots ignore resistance to Piercing damage and are critical hits against objects.</content>
+        <content contentuid="h20000044g0000g4000g8000g000000000001" version="1">Hunter's Mark</content>
+        <content contentuid="h20000044g0000g4000g8000g000000000002" version="1">Mark a creature with Hunter's Mark. Once per long rest.</content>
+        <content contentuid="h20000045g0000g4000g8000g000000000001" version="1">Ambusher Flintlock</content>
+        <content contentuid="h20000045g0000g4000g8000g000000000002" version="1">A +1 Flintlock that grants +1 Initiative, Advantage on Perception checks, and +1d6 Necrotic damage against creatures that have not taken a turn.</content>
+        <content contentuid="h20000046g0000g4000g8000g000000000001" version="1">Cold Snap Flintlock</content>
+        <content contentuid="h20000046g0000g4000g8000g000000000002" version="1">A magical Flintlock that deals an extra 1d4 Cold damage. When held off-hand, it grants +1 AC and Chills attackers that miss you for 2 turns.</content>
+        <content contentuid="h20000047g0000g4000g8000g000000000001" version="1">Dolor Amarus Flintlock</content>
+        <content contentuid="h20000047g0000g4000g8000g000000000002" version="1">A +2 Flintlock whose critical hits deal 7 additional damage.</content>
+        <content contentuid="h20000048g0000g4000g8000g000000000001" version="1">Dread Iron Dagger Flintlock</content>
+        <content contentuid="h20000048g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals an extra 1d6 Necrotic damage while you are Hidden.</content>
+        <content contentuid="h20000052g0000g4000g8000g000000000001" version="1">Fleshrender Flintlock</content>
+        <content contentuid="h20000052g0000g4000g8000g000000000002" version="1">A +2 Flintlock with Part the Flesh Shot. On a hit, the target must pass a Constitution save or be unable to regain hit points for 3 turns; the shot also deals your Proficiency Bonus as Necrotic damage. Once per short rest.</content>
+        <content contentuid="h20000053g0000g4000g8000g000000000001" version="1">Gleamdance Dagger Flintlock</content>
+        <content contentuid="h20000053g0000g4000g8000g000000000002" version="1">A +2 Flintlock with a toggleable light and +1 AC while held in your off hand.</content>
+        <content contentuid="h20000054g0000g4000g8000g000000000001" version="1">Harmonic Dueller Flintlock</content>
+        <content contentuid="h20000054g0000g4000g8000g000000000002" version="1">A +1 Flintlock. Mellow Harmony: pass a DC 15 Performance check to add at least 1 or your Charisma modifier to firearm damage for 10 turns. Once per short rest.</content>
+        <content contentuid="h20000055g0000g4000g8000g000000000001" version="1">Ne'er Misser Flintlock</content>
+        <content contentuid="h20000055g0000g4000g8000g000000000002" version="1">A +1 Flintlock that deals Force damage and can cast Magic Missile at level 3 once per short rest.</content>
+        <content contentuid="h20000056g0000g4000g8000g000000000001" version="1">Part the Flesh Shot</content>
+        <content contentuid="h20000056g0000g4000g8000g000000000002" version="1">Fire one Flintlock shot. Deal firearm damage plus your Proficiency Bonus as Necrotic damage. On a failed Constitution save against your Maneuver DC + 2, prevent the target from regaining hit points for 3 turns. Once per short rest.</content>
+        <content contentuid="h20000057g0000g4000g8000g000000000001" version="1">Mellow Harmony</content>
+        <content contentuid="h20000057g0000g4000g8000g000000000002" version="1">Pass a DC 15 Performance check to add at least 1 or your Charisma modifier to firearm damage for 10 turns. Once per short rest.</content>
+        <content contentuid="h20000058g0000g4000g8000g000000000001" version="1">Magic Missile</content>
+        <content contentuid="h20000058g0000g4000g8000g000000000002" version="1">Cast Magic Missile at level 3. Once per short rest.</content>
+        <content contentuid="h20000059g0000g4000g8000g000000000001" version="1">Salty Scimitar Flintlock</content>
+        <content contentuid="h20000059g0000g4000g8000g000000000002" version="1">A +2 Flintlock that lets you cast Command as a level 1 spell once per long rest.</content>
+        <content contentuid="h20000060g0000g4000g8000g000000000001" version="1">Sickle of BOOOAL Flintlock</content>
+        <content contentuid="h20000060g0000g4000g8000g000000000002" version="1">A magical Flintlock that deals 2d4 firearm damage. While you have BOOOAL's Blessing, gain Advantage against Bleeding targets.</content>
+        <content contentuid="h20000061g0000g4000g8000g000000000001" version="1">Slicing Shortsword Flintlock</content>
+        <content contentuid="h20000061g0000g4000g8000g000000000002" version="1">A +1 Flintlock whose hits made with Advantage can inflict Bleeding for 2 turns.</content>
+        <content contentuid="h20000062g0000g4000g8000g000000000001" version="1">Sussur Dagger Flintlock</content>
+        <content contentuid="h20000062g0000g4000g8000g000000000002" version="1">A +1 Flintlock whose hits can Silence targets that fail a DC 12 Constitution save for 2 turns.</content>
+        <content contentuid="h20000076g0000g4000g8000g000000000001" version="1">Sussur Sickle Flintlock</content>
+        <content contentuid="h20000076g0000g4000g8000g000000000002" version="1">A +1 Flintlock whose hits can Silence targets that fail a DC 12 Constitution save for 2 turns.</content>
+        <content contentuid="h20000077g0000g4000g8000g000000000001" version="1">Sword of Clutching Umbra Flintlock</content>
+        <content contentuid="h20000077g0000g4000g8000g000000000002" version="1">A +1 Flintlock with Shadowsoaked Shot, dealing your Proficiency Bonus and 1d6 Psychic damage without breaking concealment.</content>
+        <content contentuid="h20000078g0000g4000g8000g000000000001" version="1">The Baneful Flintlock</content>
+        <content contentuid="h20000078g0000g4000g8000g000000000002" version="1">A +1 Flintlock that applies Bane on hits while it is bound or Pact-bound. While bound, it also gains +1 to attack and damage rolls.</content>
+        <content contentuid="h20000079g0000g4000g8000g000000000001" version="1">Wavemother's Sickle Flintlock</content>
+        <content contentuid="h20000079g0000g4000g8000g000000000002" version="1">A +2 Flintlock that deals an extra 1d4 Cold damage and grants Advantage on attacks against Wet targets.</content>
+        <content contentuid="h20000080g0000g4000g8000g000000000001" version="1">Shadowsoaked Shot</content>
+        <content contentuid="h20000080g0000g4000g8000g000000000002" version="1">Fire a stealthy shot that deals firearm damage plus your Proficiency Bonus and 1d6 Psychic damage.</content>
+        <content contentuid="h20000093g0000g4000g8000g000000000001" version="1">Larethian's Wrath Flintlock</content>
+        <content contentuid="h20000093g0000g4000g8000g000000000002" version="1">A +1 Flintlock with Razor Gale, a 20-foot line shot that deals firearm damage plus your Proficiency Bonus to targets that fail a Dexterity save, or half damage on a success.</content>
+        <content contentuid="h20000094g0000g4000g8000g000000000001" version="1">Razor Gale</content>
+        <content contentuid="h20000094g0000g4000g8000g000000000002" version="1">Fire a narrow line shot up to 20 feet. Targets that fail a Dexterity save take firearm damage plus your Proficiency Bonus; targets that succeed take half damage.</content>
+        <content contentuid="h20000095g0000g4000g8000g000000000001" version="1">Phalar Aluve Flintlock</content>
+        <content contentuid="h20000095g0000g4000g8000g000000000002" version="1">A +1 Flintlock that grants +1 Performance and Phalar Aluve: Melody. Sing to bolster nearby allies or Shriek to weaken nearby enemies and deal Thunder damage. Once per short rest.</content>
+        <content contentuid="h20000096g0000g4000g8000g000000000001" version="1">Phalar Aluve: Melody</content>
+        <content contentuid="h20000096g0000g4000g8000g000000000002" version="1">Once per short rest, choose Sing or Shriek.</content>
+        <content contentuid="h20000097g0000g4000g8000g000000000001" version="1">Sing</content>
+        <content contentuid="h20000097g0000g4000g8000g000000000002" version="1">For 5 turns, allies within 6 metres gain 1d4 to attack rolls.</content>
+        <content contentuid="h20000098g0000g4000g8000g000000000001" version="1">Shriek</content>
+        <content contentuid="h20000098g0000g4000g8000g000000000002" version="1">For 5 turns, enemies within 6 metres are weakened and take 1d4 Thunder damage when hit.</content>
+        <content contentuid="h20000099g0000g4000g8000g000000000001" version="1">Bow of the Banshee Flintlock</content>
+        <content contentuid="h20000099g0000g4000g8000g000000000002" version="1">A +1 Flintlock whose hits can Frighten targets that fail a DC 12 Wisdom save for 2 turns. Gain +1d4 to firearm attack and damage rolls against Frightened targets.</content>
+        <content contentuid="h20000100g0000g4000g8000g000000000001" version="1">Darkfire Shortbow Flintlock</content>
+        <content contentuid="h20000100g0000g4000g8000g000000000002" version="1">A +2 Flintlock that grants Fire and Cold resistance and lets you cast Haste at level 3 once per long rest.</content>
+        <content contentuid="h30000010g0000g4000g8000g000000000001" version="1">Hoppy Blunderbuss</content>
+        <content contentuid="h30000010g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Revitalizing Shot, dealing firearm and Necrotic damage and restoring 1d6 hit points.</content>
+        <content contentuid="h30000011g0000g4000g8000g000000000001" version="1">Infernal Mace Blunderbuss</content>
+        <content contentuid="h30000011g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals 3 Poison damage on a hit and retains the Infernal Mace's Poison effect.</content>
+        <content contentuid="h30000012g0000g4000g8000g000000000001" version="1">Doom Hammer Blunderbuss</content>
+        <content contentuid="h30000012g0000g4000g8000g000000000002" version="1">A magical Blunderbuss that retains Doom Hammer's Bone Chilled effect on hits.</content>
+        <content contentuid="h30000013g0000g4000g8000g000000000001" version="1">Everburn Blade Blunderbuss</content>
+        <content contentuid="h30000013g0000g4000g8000g000000000002" version="1">A magical Blunderbuss that deals an extra 1d4 Fire damage.</content>
+        <content contentuid="h30000014g0000g4000g8000g000000000001" version="1">Very Heavy Greataxe Blunderbuss</content>
+        <content contentuid="h30000014g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss with a Gargantuan Scattershot that attacks targets in a 20-foot cone and deals bonus firearm damage.</content>
+        <content contentuid="h30000015g0000g4000g8000g000000000001" version="1">Sword of Justice Blunderbuss</content>
+        <content contentuid="h30000015g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Tyr's Protection.</content>
+        <content contentuid="h30000016g0000g4000g8000g000000000001" version="1">Skinburster Blunderbuss</content>
+        <content contentuid="h30000016g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that retains the Force Conduit effect.</content>
+        <content contentuid="h30000017g0000g4000g8000g000000000001" version="1">Undead Bane Blunderbuss</content>
+        <content contentuid="h30000017g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Bludgeoning damage to Undead and Fiends.</content>
+        <content contentuid="h30000018g0000g4000g8000g000000000001" version="1">Gandrel's Aspiration Blunderbuss</content>
+        <content contentuid="h30000018g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Advantage on attacks against Monstrosities.</content>
+        <content contentuid="h30000019g0000g4000g8000g000000000001" version="1">Argument Solver Blunderbuss</content>
+        <content contentuid="h30000019g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Poison Mist Scattershot, adding Poison damage and creating a Poison cloud.</content>
+        <content contentuid="h30000020g0000g4000g8000g000000000001" version="1">Hamarhraft Blunderbuss</content>
+        <content contentuid="h30000020g0000g4000g8000g000000000002" version="1">A magical Blunderbuss that causes thunder damage when you land from a jump.</content>
+        <content contentuid="h30000021g0000g4000g8000g000000000001" version="1">Blooded Greataxe Blunderbuss</content>
+        <content contentuid="h30000021g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d4 Bludgeoning damage while you are at or below half hit points.</content>
+        <content contentuid="h30000022g0000g4000g8000g000000000001" version="1">Corrosive Flail Blunderbuss</content>
+        <content contentuid="h30000022g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Corrosive Shot, adding Acid damage equal to your proficiency bonus and creating an Acid surface.</content>
+        <content contentuid="h30000023g0000g4000g8000g000000000001" version="1">Defender Flail Blunderbuss</content>
+        <content contentuid="h30000023g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants +1 AC and reduces incoming physical damage.</content>
+        <content contentuid="h30000024g0000g4000g8000g000000000001" version="1">Flail of Ages Blunderbuss</content>
+        <content contentuid="h30000024g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Elemental Age.</content>
+        <content contentuid="h30000025g0000g4000g8000g000000000001" version="1">Infernal Mace Blunderbuss</content>
+        <content contentuid="h30000025g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals 3 Poison damage on a hit and retains the Infernal Mace's Poison effect.</content>
+        <content contentuid="h30000026g0000g4000g8000g000000000001" version="1">Defender Greataxe Blunderbuss</content>
+        <content contentuid="h30000026g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that can exchange one point of Enchantment for +1 AC and +1 to saving throws.</content>
+        <content contentuid="h30000027g0000g4000g8000g000000000001" version="1">Drakethroat Blunderbuss</content>
+        <content contentuid="h30000027g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that grants Draconic Elemental Weapon and improves Dragonborn breath attacks.</content>
+        <content contentuid="h30000028g0000g4000g8000g000000000001" version="1">Harmonium Blunderbuss</content>
+        <content contentuid="h30000028g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that increases Strength by 2 (up to 23) and decreases Intelligence and Wisdom by 1.</content>
+        <content contentuid="h30000029g0000g4000g8000g000000000001" version="1">Hellbeard Blunderbuss</content>
+        <content contentuid="h30000029g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals 6 Poison damage on a hit and retains the Hellbeard's Poison effect.</content>
+        <content contentuid="h30000030g0000g4000g8000g000000000001" version="1">Monster Slayer Blunderbuss</content>
+        <content contentuid="h30000030g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals extra damage to Monstrosities and increases jump distance.</content>
+        <content contentuid="h30000031g0000g4000g8000g000000000001" version="1">Moonlight Glaive Blunderbuss</content>
+        <content contentuid="h30000031g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage.</content>
+        <content contentuid="h30000032g0000g4000g8000g000000000001" version="1">Sorrow Blunderbuss</content>
+        <content contentuid="h30000032g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Sorrowful Lash, a once-per-turn bonus-action shot that pulls its target.</content>
+        <content contentuid="h30000033g0000g4000g8000g000000000001" version="1">Sussur Greatsword Blunderbuss</content>
+        <content contentuid="h30000033g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits can Silence targets that fail a DC 12 Constitution save.</content>
+        <content contentuid="h30000034g0000g4000g8000g000000000001" version="1">Harold Blunderbuss</content>
+        <content contentuid="h30000034g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose ranged hits can Bane targets that fail a Charisma save.</content>
+        <content contentuid="h30000035g0000g4000g8000g000000000001" version="1">Punch-Drunk Bastard Blunderbuss</content>
+        <content contentuid="h30000035g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Advantage on firearm attacks while you are Drunk and unlocks a thunderous Scattershot.</content>
+        <content contentuid="h30000036g0000g4000g8000g000000000001" version="1">Sword of Chaos Blunderbuss</content>
+        <content contentuid="h30000036g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that retains Sword of Chaos's life-draining effect.</content>
+        <content contentuid="h30000037g0000g4000g8000g000000000001" version="1">Unseen Menace Blunderbuss</content>
+        <content contentuid="h30000037g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that is invisible while equipped, grants Advantage on attacks, and reduces your critical-hit threshold by 1.</content>
+        <content contentuid="h30000038g0000g4000g8000g000000000001" version="1">Revitalizing Shot</content>
+        <content contentuid="h30000038g0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot, adding Necrotic damage equal to your proficiency bonus and restoring 1d6 hit points. Costs one bullet.</content>
+        <content contentuid="h30000039g0000g4000g8000g000000000001" version="1">Corrosive Shot</content>
+        <content contentuid="h30000039g0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot, adding Acid damage equal to your proficiency bonus and creating an Acid surface. Costs one bullet.</content>
+        <content contentuid="h30000040g0000g4000g8000g000000000001" version="1">Sorrowful Lash</content>
+        <content contentuid="h30000040g0000g4000g8000g000000000002" version="1">As a bonus action, fire one blunderbuss shot that pulls a Large or smaller target toward you. Once per turn; costs one bullet.</content>
+        <content contentuid="h30000041g0000g4000g8000g000000000001" version="1">Poison Mist Scattershot</content>
+        <content contentuid="h30000041g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone, adding Poison damage equal to your proficiency bonus and creating a Poison cloud.</content>
+        <content contentuid="h30000042g0000g4000g8000g000000000001" version="1">Undead Bane</content>
+        <content contentuid="h30000042g0000g4000g8000g000000000002" version="1">Your blunderbuss attacks deal an extra 1d6 Bludgeoning damage to Undead and Fiends.</content>
+        <content contentuid="h30000043g0000g4000g8000g000000000001" version="1">Blooded</content>
+        <content contentuid="h30000043g0000g4000g8000g000000000002" version="1">Your blunderbuss attacks deal an extra 1d4 Bludgeoning damage to targets while you are at or below half hit points.</content>
+        <content contentuid="h30000044g0000g4000g8000g000000000001" version="1">Gargantuan Scattershot</content>
+        <content contentuid="h30000044g0000g4000g8000g000000000002" version="1">Blast a 20-foot cone, dealing firearm damage and an extra 1d6 Bludgeoning damage.</content>
+        <content contentuid="h30000045g0000g4000g8000g000000000001" version="1">Thunderous Scattershot</content>
+        <content contentuid="h30000045g0000g4000g8000g000000000002" version="1">Blast a 15-foot cone. While you are Drunk, each target also takes 1d4 Thunder damage.</content>
+        <content contentuid="h30000046g0000g4000g8000g000000000001" version="1">Punch-Drunk</content>
+        <content contentuid="h30000046g0000g4000g8000g000000000002" version="1">While you are Drunk, your firearm attacks have Advantage.</content>
+        <content contentuid="h30000047g0000g4000g8000g000000000001" version="1">Unseen Menace</content>
+        <content contentuid="h30000047g0000g4000g8000g000000000002" version="1">While equipped, this blunderbuss is invisible; a missed attack makes it visible for 2 turns.</content>
+        <content contentuid="h30000048g0000g4000g8000g000000000001" version="1">Defender Flail</content>
+        <content contentuid="h30000048g0000g4000g8000g000000000002" version="1">While equipped, reduce incoming Bludgeoning damage by 1.</content>
+        <content contentuid="h30000057g0000g4000g8000g000000000001" version="1">Deep Delver Blunderbuss</content>
+        <content contentuid="h30000057g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that marks targets on a hit; subsequent hits on a marked target deal an extra 1d4 Piercing damage.</content>
+        <content contentuid="h30000058g0000g4000g8000g000000000001" version="1">Xyanyde Blunderbuss</content>
+        <content contentuid="h30000058g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that can cast Faerie Fire on a target after a miss, once per Short Rest.</content>
+        <content contentuid="h30000059g0000g4000g8000g000000000001" version="1">Exterminator's Axe Blunderbuss</content>
+        <content contentuid="h30000059g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits deal an extra 1d6 Fire damage to Small or smaller creatures, Plants, and Myconids.</content>
+        <content contentuid="h30000060g0000g4000g8000g000000000001" version="1">Psionic Greatsword Blunderbuss</content>
+        <content contentuid="h30000060g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d4 Psychic damage when wielded by a Githyanki.</content>
+        <content contentuid="h30000061g0000g4000g8000g000000000001" version="1">Light of Creation Blunderbuss</content>
+        <content contentuid="h30000061g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Lightning damage. Its electrical discharge may Stun a non-Construct wielder.</content>
+        <content contentuid="h30000062g0000g4000g8000g000000000001" version="1">Woundseeker Blunderbuss</content>
+        <content contentuid="h30000062g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants a +1d4 bonus to attack rolls against targets that are not at full health.</content>
+        <content contentuid="h30000063g0000g4000g8000g000000000001" version="1">Arcane Force Blunderbuss</content>
+        <content contentuid="h30000063g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that unlocks the Telekinetic Bolt weapon action.</content>
+        <content contentuid="h30000064g0000g4000g8000g000000000001" version="1">Adamantine Mace Blunderbuss</content>
+        <content contentuid="h30000064g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that ignores Bludgeoning resistance and scores Critical Hits against objects.</content>
+        <content contentuid="h30000065g0000g4000g8000g000000000001" version="1">Shattered Flail Blunderbuss</content>
+        <content contentuid="h30000065g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits on hostile creatures can grant Flind's Blessing and restore 1d6 hit points.</content>
+        <content contentuid="h30000066g0000g4000g8000g000000000001" version="1">Twist of Fortune Blunderbuss</content>
+        <content contentuid="h30000066g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that lets you reroll up to two weapon damage dice.</content>
+        <content contentuid="h30000067g0000g4000g8000g000000000001" version="1">Breaching Pikestaff Blunderbuss</content>
+        <content contentuid="h30000067g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Force damage.</content>
+        <content contentuid="h30000068g0000g4000g8000g000000000001" version="1">Corpsegrinder Blunderbuss</content>
+        <content contentuid="h30000068g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Thunder damage and unlocks Gargantuan Scattershot.</content>
+        <content contentuid="h30000069g0000g4000g8000g000000000001" version="1">Jorgoral's Greatsword Blunderbuss</content>
+        <content contentuid="h30000069g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that unlocks an extended-cone Scattershot.</content>
+        <content contentuid="h30000070g0000g4000g8000g000000000001" version="1">Rat Bat Blunderbuss</content>
+        <content contentuid="h30000070g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Piercing damage and grants Advantage against Beasts.</content>
+        <content contentuid="h30000071g0000g4000g8000g000000000001" version="1">Soulbreaker Blunderbuss</content>
+        <content contentuid="h30000071g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage.</content>
+        <content contentuid="h30000072g0000g4000g8000g000000000001" version="1">Giantbreaker Blunderbuss</content>
+        <content contentuid="h30000072g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits can inflict Reeling on a target for 2 turns.</content>
+        <content contentuid="h30000073g0000g4000g8000g000000000001" version="1">Handmaiden's Mace Blunderbuss</content>
+        <content contentuid="h30000073g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that sets your Strength to at least 18.</content>
+        <content contentuid="h30000074g0000g4000g8000g000000000001" version="1">Sacred Star Blunderbuss</content>
+        <content contentuid="h30000074g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage, inflicts Radiating Orb, and can Turn Undead on a hit.</content>
+        <content contentuid="h30000075g0000g4000g8000g000000000001" version="1">Foebreaker Blunderbuss</content>
+        <content contentuid="h30000075g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that ignores Bludgeoning resistance.</content>
+        <content contentuid="h30000076g0000g4000g8000g000000000001" version="1">Halberd of Vigilance Blunderbuss</content>
+        <content contentuid="h30000076g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that grants +1 Initiative, Advantage on Perception checks, and Advantage on reaction attacks.</content>
+        <content contentuid="h30000078g0000g4000g8000g000000000001" version="1">Infernal Mace +1 Blunderbuss</content>
+        <content contentuid="h30000078g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals 3 Poison damage on hit.</content>
+        <content contentuid="h30000079g0000g4000g8000g000000000001" version="1">Hellbeard Halberd Blunderbuss</content>
+        <content contentuid="h30000079g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals 6 Poison damage on hit and can Poison its target.</content>
+        <content contentuid="h30000080g0000g4000g8000g000000000001" version="1">Monster Slayer Glaive Blunderbuss</content>
+        <content contentuid="h30000080g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d4 damage to Monstrosities and increases jump distance.</content>
+        <content contentuid="h30000081g0000g4000g8000g000000000001" version="1">Moonlight Glaive Blunderbuss</content>
+        <content contentuid="h30000081g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage.</content>
+        <content contentuid="h30000082g0000g4000g8000g000000000001" version="1">Sorrow Blunderbuss</content>
+        <content contentuid="h30000082g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that unlocks Sorrowful Lash as a bonus-action shot.</content>
+        <content contentuid="h30000083g0000g4000g8000g000000000001" version="1">Sussur Greatsword Blunderbuss</content>
+        <content contentuid="h30000083g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits can Silence targets that fail a DC 12 Constitution save.</content>
+        <content contentuid="h30000084g0000g4000g8000g000000000001" version="1">Harold Heavy Crossbow Blunderbuss</content>
+        <content contentuid="h30000084g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose ranged hits can inflict Bane on a target that fails a Charisma save.</content>
+        <content contentuid="h30000085g0000g4000g8000g000000000001" version="1">Punch-Drunk Bastard Blunderbuss</content>
+        <content contentuid="h30000085g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Advantage on firearm attacks while you are Drunk and unlocks Thunderous Scattershot.</content>
+        <content contentuid="h30000086g0000g4000g8000g000000000001" version="1">Sword of Chaos Blunderbuss</content>
+        <content contentuid="h30000086g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss whose hits can restore hit points.</content>
+        <content contentuid="h30000087g0000g4000g8000g000000000001" version="1">Unseen Menace Blunderbuss</content>
+        <content contentuid="h30000087g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that is invisible while equipped and gains Advantage on attacks; a miss makes it visible for 2 turns.</content>
+        <content contentuid="h30000088g0000g4000g8000g000000000001" version="1">Artificial Leech Flintlock</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000001" version="1">Ravengard's Scourger Blunderbuss</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that can cast Commander's Strike to direct an ally to make a weapon attack as a reaction.</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000003" version="1">The Long Arm of the Gur Blunderbuss</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000004" version="1">A +2 Blunderbuss that grants +1d4 to firearm attack and damage rolls against Undead.</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000005" version="1">Undead Slayer</content>
+        <content contentuid="h30000077g0000g4000g8000g000000000006" version="1">Gain +1d4 to firearm attack and damage rolls against Undead.</content>
+        <content contentuid="h30000049g0000g4000g8000g000000000001" version="1">Hellfire Greataxe Blunderbuss</content>
+        <content contentuid="h30000049g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d6 Fire damage, builds Heat on hits, and unlocks Gargantuan Scattershot.</content>
+        <content contentuid="h30000050g0000g4000g8000g000000000001" version="1">Sethan Blunderbuss</content>
+        <content contentuid="h30000050g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss adapted from the spiritual greataxe Sethan.</content>
+        <content contentuid="h30000051g0000g4000g8000g000000000001" version="1">Fabricated Arbalest Blunderbuss</content>
+        <content contentuid="h30000051g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that unlocks Sunbeam Shot and Light Tagging Shot.</content>
+        <content contentuid="h30000052g0000g4000g8000g000000000001" version="1">Hellfire Engine Crossbow Blunderbuss</content>
+        <content contentuid="h30000052g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that unlocks Lightning Arrow and Retrieving Shot.</content>
+        <content contentuid="h30000053g0000g4000g8000g000000000001" version="1">Psionic Weapon</content>
+        <content contentuid="h30000053g0000g4000g8000g000000000002" version="1">While wielded by a Githyanki, your ranged weapon attacks deal an extra 1d4 Psychic damage.</content>
+        <content contentuid="h30000054g0000g4000g8000g000000000001" version="1">Woundseeker</content>
+        <content contentuid="h30000054g0000g4000g8000g000000000002" version="1">Gain +1d4 to ranged weapon attack rolls against targets that are not at full health.</content>
+        <content contentuid="h30000055g0000g4000g8000g000000000001" version="1">Fortune's Favor</content>
+        <content contentuid="h30000055g0000g4000g8000g000000000002" version="1">Reroll up to two weapon damage dice on a ranged weapon attack.</content>
+        <content contentuid="h30000056g0000g4000g8000g000000000001" version="1">Soulbreaker Psionics</content>
+        <content contentuid="h30000056g0000g4000g8000g000000000002" version="1">While wielded by a Githyanki, your ranged weapon attacks deal an extra 1d4 Psychic damage.</content>
+        <content contentuid="h35161ff8g5952g5527g927eg2e792bf91519" version="1">Infused Rounds: Fire</content>
+        <content contentuid="hc62f048cg330ag5adeg8562g7b5beddc81de" version="1">Infuse your firearm rounds with Fire for 10 turns. Your firearm attacks deal an extra 1d4 Fire damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h4d4a62efg1664g5149gbcd3gf057859db462" version="1">Infused Rounds: Thunder</content>
+        <content contentuid="h438a6f05g6a9eg5899g9d0dg287367953e37" version="1">Infuse your firearm rounds with Thunder for 10 turns. Your firearm attacks deal an extra 1d4 Thunder damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h1118e0e6g5270g5c02g97a0gc9beb4a92a2a" version="1">Infused Rounds: Lightning</content>
+        <content contentuid="h1df96069gd4dcg541fga392g09b012679503" version="1">Infuse your firearm rounds with Lightning for 10 turns. Your firearm attacks deal an extra 1d4 Lightning damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="ha0e91155gb042g5b0ag907egf7d6600d1245" version="1">Infused Rounds: Acid</content>
+        <content contentuid="h4869b7a6gdbcdg5ad3g8028gce8117ab974f" version="1">Infuse your firearm rounds with Acid for 10 turns. Your firearm attacks deal an extra 1d4 Acid damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="hdca73009gc5f7g55d6gabe0g1cd1f6ef2b6b" version="1">Infused Rounds: Cold</content>
+        <content contentuid="h6d912303g4282g536bg815dg430e1e0781c5" version="1">Infuse your firearm rounds with Cold for 10 turns. Your firearm attacks deal an extra 1d4 Cold damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="hec2b1884g2060g540bgbd08gb57a08f34c5f" version="1">Infused Rounds: Poison</content>
+        <content contentuid="h6ea97210g98c6g5c5egaf13g6f38dcda48ab" version="1">Infuse your firearm rounds with Poison for 10 turns. Your firearm attacks deal an extra 1d4 Poison damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h4b45172bg0410g5e41gadf6g2a0f4f77c507" version="1">Infused Rounds: Force</content>
+        <content contentuid="h4ab030e7g5681g5891g8864g4cac054a0cf6" version="1">Requires Improved Infused Rounds. Infuse your firearm rounds with Force for 10 turns. Your firearm attacks deal an extra 1d4 Force damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h597bebc5g325bg5628g9b09g64b4147d7c4d" version="1">Infused Rounds: Radiant</content>
+        <content contentuid="h04a4ff9cg639bg5c6fgac9fgaa464f593bfa" version="1">Requires Mastered Infused Rounds. Infuse your firearm rounds with Radiant for 10 turns. Your firearm attacks deal an extra 1d4 Radiant damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h080f3be9g2ab1g555egb4d7g744d7d52af24" version="1">Infused Rounds: Necrotic</content>
+        <content contentuid="hf27018a1g0fc9g58d7gbc01g708f867ff04d" version="1">Requires Mastered Infused Rounds. Infuse your firearm rounds with Necrotic for 10 turns. Your firearm attacks deal an extra 1d4 Necrotic damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds).</content>
+        <content contentuid="h16b307cagaef0g5843g97b5g4bdf0dee6380" version="1">Infused Rounds: Unstable</content>
+        <content contentuid="h815414fegecb9g5ecdg8a56g3c7fee420aa2" version="1">Firearm attacks deal an extra 1d4 Fire damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="hf1dcff8bg78beg5ff9gab6eg8c50924ec8c9" version="1">Firearm attacks deal an extra 1d4 Thunder damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="he8554f1bg6290g569fg9a94gf24c6dc4646a" version="1">Firearm attacks deal an extra 1d4 Lightning damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h2ed3281cg1bdeg58d7g839cg6e976e587317" version="1">Firearm attacks deal an extra 1d4 Acid damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h0fdf04a4g4b52g5bb5g8244g01157df2a312" version="1">Firearm attacks deal an extra 1d4 Cold damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h06f4c4e4gae33g57f0g9c4fg07a4351d8346" version="1">Firearm attacks deal an extra 1d4 Poison damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h36fbb006g9d47g5b32gabfag7aa4e4c7d61d" version="1">Firearm attacks deal an extra 1d4 Force damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h8002c15cg70fcg50a9gacaag0935898a2fd4" version="1">Firearm attacks deal an extra 1d4 Radiant damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h98cd80c2g8a53g5549ga7feg2cb202c59869" version="1">Firearm attacks deal an extra 1d4 Necrotic damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
+        <content contentuid="h6c13fa32g88aeg5c1bg9533gb456d7c045e8" version="1">While an infusion is active, infused rounds deal 5d4 damage of their element and each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
+        <content contentuid="h6497dcf3gb9e0g4bacg801fgb6bc57ff8af9" version="1">Quickshot Flintlock</content>
+        <content contentuid="hb4092454g69b4g4558gb150g2e49b62c4d68" version="1">A +1 Flintlock that grants 1 additional Grit. It also grants Quick Reload, which reloads for 1 Grit instead of a bonus action.</content>
+        <content contentuid="hd4cb74c1g6343g4bf5g96d7gedebe42eea8f" version="1">Run-and-Gun Flintlock</content>
+        <content contentuid="hf5feeccfgaddbg411bgb03egce307a7305d1" version="1">A +1 Flintlock that retains Quick Reload and grants Dash and Gun: after you Dash, you can make one free firearm attack.</content>
+        <content contentuid="h6bf7a5c8g9052g48f4g821agb25a5ecbd3d9" version="1">Diamond Flintlock</content>
+        <content contentuid="h0a50e3e5gdcd3g45a4gb6c1gcf44039d94c8" version="1">A +2 Flintlock that retains Quick Reload and Dash and Gun, ignores resistance to piercing damage, and grants one additional bonus action.</content>
+        <content contentuid="h54ebbc4cg2183g4f99gb03cg067c22d99871" version="1">Umbral Flintlock</content>
+        <content contentuid="h1404fc53g68c6g41c9gb2d7g67085e4d6b48" version="1">A +3 Flintlock that retains the Diamond Flintlock's abilities, reduces the critical hit threshold by 1, and grants advantage on attacks while in dim light or darkness.</content>
+        <content contentuid="h04c548f4gdc9bg4c21g8a38gabf9049af7ca" version="1">Hellfire Flintlock</content>
+        <content contentuid="h76e4637ag1ef9g480cgaf4cg34a7fcb82291" version="1">A +3 Flintlock that retains the Diamond Flintlock's abilities and deals an additional 2d6 Fire damage with its shots.</content>
+        <content contentuid="hea372201g5d08g4a4bga5fag559e6b5a2c5b" version="1">Infernal Blunderbuss</content>
+        <content contentuid="h3fa0d41bg1268g44d6ga269g129106554a50" version="1">A +1 Blunderbuss whose shots deal 1 additional Fire damage.</content>
+        <content contentuid="hf2108699ge0b1g4b2cga201gd09f1dc2ba65" version="1">Infernal Alloy Blunderbuss</content>
+        <content contentuid="h010a0e2eg0d9bg4714ga864gac04b7f1c4e3" version="1">A +1 Blunderbuss that grants resistance to Fire damage and deals an additional 1d4 Fire damage with its shots.</content>
+        <content contentuid="hbe620da9g4b96g45ddgbf75g3cf2dbc55fea" version="1">Soulfire Blunderbuss</content>
+        <content contentuid="haec97154g6a93g4c6ega1bdg17b5117d44e2" version="1">A +2 Blunderbuss that grants resistance to Fire damage, increases its critical range by 1, and deals 1d6 Fire damage with regular shots and 1d4 Fire damage with Scattershot.</content>
+        <content contentuid="hcff77ddeg1482g469dgb672gb263f81413b6" version="1">Enriched Infernal Blunderbuss</content>
+        <content contentuid="hd76fce15g2b2dg49a1gb963g51a3343ea492" version="1">A +3 Blunderbuss that grants resistance to Fire damage, deals 2d4 Fire damage with regular shots and Scattershot, and ignites the ground with Scattershot.</content>
+        <content contentuid="h44ac3643g2e85g4da2gaaf9g99185615dc89" version="1">Silvered Musket</content>
+        <content contentuid="hd1239535gfc31g4875g8bfagdcfa6a432cfc" version="1">A +1 Musket with a +2 bonus to hit.</content>
+        <content contentuid="hb6567061g1390g40e1ga98bg5867314ba542" version="1">Advanced Musket</content>
+        <content contentuid="he9f1efaag25eeg44f6ga563g68cc341d885f" version="1">A +1 Musket with a +2 bonus to hit and an additional 1d4 piercing weapon damage.</content>
+        <content contentuid="h38b94c53gb145g45d9ga186g993a8372b9e1" version="1">Paralyzing Musket</content>
+        <content contentuid="h89879830ga8e8g4062g9d1bga9d034d6eea9" version="1">A +2 Musket with a +2 bonus to hit and an additional 1d4 piercing weapon damage. Paralyzing Shot can paralyze a target for 1 turn on a failed Constitution save; usable once per short rest.</content>
+        <content contentuid="hc9b3b62egf5efg4d83gbae0gc5f2aec01077" version="1">Mithral Musket</content>
+        <content contentuid="h0917f273g4e5ag4a9egad0dg67bb45921f43" version="1">A +3 Musket with a +2 bonus to hit, an additional 1d6 piercing weapon damage, and the ability to ignore resistance to piercing damage. It retains Paralyzing Shot.</content>
+        <content contentuid="he890a828g23b6g42efgad16g19d62d096efc" version="1">Advanced Musket Components</content>
+        <content contentuid="hae96983fgf1acg4809g9515g880b6deb9f9a" version="1">Adamantine slag and rune powder refined into advanced components for a musket.</content>
+        <content contentuid="h83c28b0bgb783g4514g9e21gfa8bbfdc4ed2" version="1">Quick Reload</content>
+        <content contentuid="haedbea5cg390bg4236g9dd0g74f75c125ff5" version="1">Reload your Flintlock by spending 1 Grit instead of a bonus action.</content>
+        <content contentuid="h2ab76147g40cbg4c14gb9f3gb1a2dc02ab08" version="1">Dash and Gun</content>
+        <content contentuid="hd8ffc0e7g2ab0g43f8g949dge24a511b171d" version="1">After you Dash, make one free firearm attack. This attack still expends ammunition.</content>
+        <content contentuid="h79098cedg2ba3g4b63gbb78g1525e5c9465a" version="1">Paralyzing Shot</content>
+        <content contentuid="h8f05648ag511eg4921ga658g70694848780e" version="1">Fire a musket shot that deals weapon damage. On a failed Constitution saving throw, the target is Paralyzed for 1 turn. Usable once per short rest.</content>
+</contentList>

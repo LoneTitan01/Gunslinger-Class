@@ -1,0 +1,101 @@
+local rules = dofile("GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\GritRules.lua")
+
+for kind, firearm in pairs(rules.Firearms) do
+    local state = {kind = kind, ammo = firearm.capacity}
+    rules.Modify(state, "Capacity")
+    assert(rules.Capacity(state) == firearm.capacity * 2)
+    assert(state.ammo == firearm.capacity, "A capacity upgrade must not create ammunition")
+    state.ammo = rules.Capacity(state)
+    rules.Modify(state, "Damage")
+    assert(rules.Capacity(state) == firearm.capacity)
+    assert(state.ammo == firearm.capacity, "Replacing capacity must clamp ammunition")
+    local expectedDamage = kind == "Flintlock" and "3d4" or
+        kind == "Blunderbuss" and "1d12+1d4" or "2d6+1d4"
+    assert(rules.DamageDice(state) == expectedDamage)
+    rules.Modify(state, "Range")
+    assert(rules.RangeBonus(state) == firearm.rangeBonus)
+    rules.Misfire(state, false)
+    assert(state.misfire and not state.broken)
+    assert(rules.Repair(state) and not state.misfire)
+    rules.Misfire(state, false)
+    rules.Misfire(state, false)
+    assert(state.broken, "A second misfire before repair must break the gun")
+    rules.LongRest(state)
+    rules.Misfire(state, true)
+    assert(state.broken and not rules.Repair(state))
+    rules.LongRest(state)
+    assert(not state.broken and not state.misfire and rules.HasMod(state, "Range"))
+    assert(rules.RangeBonus(state) == firearm.rangeBonus, "Long rests must preserve modifications")
+    assert(state.ammo == firearm.capacity)
+end
+for _, hand in ipairs({"Main", "Off"}) do
+    for _, mode in ipairs({"Capacity", "Damage", "Range", "Remove"}) do
+        local parsedHand, parsedMode = rules.ParseTinkerer("Shout_GSL_Tinkerer_" .. hand .. mode)
+        assert(parsedHand == hand and parsedMode == mode)
+    end
+end
+assert(rules.ParseTinkerer("Shout_GSL_Tinkerer") == nil)
+assert(rules.ParseTinkerer("Shout_GSL_Tinkerer_BadCapacity") == nil)
+local first = {kind = "Flintlock", ammo = 2}
+local second = {kind = "Flintlock", ammo = 1}
+rules.Modify(first, "Range")
+rules.Misfire(second, true)
+assert(rules.HasMod(first, "Range") and not first.broken)
+assert(not rules.HasMod(second, "Range") and second.broken)
+local master = {kind = "Musket", ammo = 1}
+rules.Modify(master, "Capacity", 2)
+rules.Modify(master, "Capacity", 2)
+assert(#master.mods == 2 and rules.ModCount(master, "Capacity") == 2)
+assert(rules.Capacity(master) == 3, "A second Ammo upgrade must triple base capacity")
+assert(master.ammo == 1, "Capacity upgrades must not create ammunition")
+local damageMaster = {kind = "Flintlock", ammo = 3}
+rules.Modify(damageMaster, "Damage", 2)
+rules.Modify(damageMaster, "Damage", 2)
+assert(rules.DamageDice(damageMaster) == "4d4", "A second Damage upgrade must add another d4")
+local rangeMaster = {kind = "Blunderbuss", ammo = 2}
+rules.Modify(rangeMaster, "Range", 2)
+rules.Modify(rangeMaster, "Range", 2)
+assert(rules.RangeBonus(rangeMaster) == 6, "A second Range upgrade must double its bonus")
+rules.Modify(master, "Damage", 2)
+assert(rules.ModCount(master, "Capacity") == 1 and rules.HasMod(master, "Damage"))
+assert(rules.Capacity(master) == 2)
+rules.Modify(master, "Range", 2)
+assert(not rules.HasMod(master, "Capacity") and rules.HasMod(master, "Damage") and rules.HasMod(master, "Range"))
+assert(master.ammo == 1 and rules.Capacity(master) == 1)
+local legacy = {kind = "Flintlock", ammo = 3, mode = "Damage"}
+rules.Modify(legacy, "Range", 2)
+assert(legacy.mode == nil and rules.HasMod(legacy, "Damage") and rules.HasMod(legacy, "Range"))
+for kind, firearm in pairs(rules.Firearms) do
+    for _, mode in ipairs({"Capacity", "Damage", "Range"}) do
+        for limit = 1, 2 do
+            local state = {kind = kind, ammo = firearm.capacity}
+            for _ = 1, limit do rules.Modify(state, mode, limit) end
+            rules.Misfire(state, true)
+            rules.LongRest(state)
+            assert(rules.ModCount(state, mode) == limit, "Rest must preserve ordinary and master upgrades")
+            assert(state.ammo == rules.Capacity(state) and not state.broken and not state.misfire)
+            rules.RemoveModifications(state)
+            assert(#rules.Mods(state) == 0 and state.ammo == firearm.capacity)
+            assert(rules.Capacity(state) == firearm.capacity and rules.DamageDice(state) == nil)
+            assert(rules.RangeBonus(state) == 0)
+        end
+    end
+end
+local legacyCapacity = {kind = "Flintlock", ammo = 6, mode = "Capacity", misfire = true, broken = true}
+rules.RemoveModifications(legacyCapacity)
+assert(legacyCapacity.mode == nil and #rules.Mods(legacyCapacity) == 0 and legacyCapacity.ammo == 3)
+assert(legacyCapacity.misfire and legacyCapacity.broken, "Removing mods must not repair the gun")
+rules.LongRest(legacy)
+assert(rules.HasMod(legacy, "Damage") and rules.HasMod(legacy, "Range"))
+rules.RemoveModifications(legacy)
+rules.LongRest(legacy)
+assert(#rules.Mods(legacy) == 0, "Rest must not restore removed upgrades")
+assert(not pcall(rules.Modify, {kind = "Flintlock", ammo = 0}, "Range", 3))
+assert(rules.ViolentMisfire(2, 2) and not rules.ViolentMisfire(2, 3) and rules.ViolentMisfire(3, 1))
+assert(rules.RollTheBones(1) == "BUST" and rules.RollTheBones(2) == "HIT" and rules.RollTheBones(5) == "HIT")
+assert(rules.RollTheBones(6) == "JACKPOT")
+assert(rules.GritCost("ActionPoint:1;GunslingerGrit:3;GunslingerFlintlockAmmo:1") == 3)
+assert(rules.GritCost("BonusActionPoint:1") == 0 and rules.GritCost(nil) == 0)
+assert(rules.CheatDeathRefund(2, 0.49) and not rules.CheatDeathRefund(1, 0.1) and not rules.CheatDeathRefund(3, 0.5))
+assert(rules.DoubleOrNothing(11) and rules.DoubleOrNothing(20) and not rules.DoubleOrNothing(10))
+print("Grit rule tests passed: upgrade tiers, capacity/damage/range scaling, replacement, repair, long rest and gamble rolls")

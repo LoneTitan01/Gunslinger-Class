@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="TextureBank">
+        <node id="TextureBank">
+            <children>
+                <node id="Resource">
+                    <attribute id="ID" type="FixedString" value="832eff43-b1dc-49b7-b021-1fc625c94ea4"/>
+                    <attribute id="Localized" type="bool" value="False"/>
+                    <attribute id="Name" type="LSString" value="Icons_GunslingerAbilities"/>
+                    <attribute id="SRGB" type="bool" value="True"/>
+                    <attribute id="SourceFile" type="LSString" value="Public/GunslingerClass/Assets/Textures/Icons/Icons_GunslingerAbilities.dds"/>
+                    <attribute id="Streaming" type="bool" value="True"/>
+                    <attribute id="Template" type="FixedString" value="Icons_Items"/>
+                    <attribute id="Type" type="int32" value="0"/>
+                </node>
+                <node id="Resource">
+                    <attribute id="ID" type="FixedString" value="ff7b5ade-032d-50c1-8e00-ce067cf152c2"/>
+                    <attribute id="Localized" type="bool" value="False"/>
+                    <attribute id="Name" type="LSString" value="Icons_GunslingerFirearms"/>
+                    <attribute id="SRGB" type="bool" value="False"/>
+                    <attribute id="SourceFile" type="LSString" value="Public/GunslingerClass/Assets/Textures/Icons/Icons_GunslingerFirearms.dds"/>
+                    <attribute id="Streaming" type="bool" value="True"/>
+                    <attribute id="Template" type="FixedString" value="Icons_Skills"/>
+                    <attribute id="Type" type="int32" value="1"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

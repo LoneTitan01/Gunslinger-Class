@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="PassiveLists">
+        <node id="root">
+            <children>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Fighting Styles"/>
+                    <attribute id="Passives" type="LSString" value="FightingStyle_Archery,FightingStyle_TwoWeaponFighting,GSL_FightingStyle_CloseQuarters,FightingStyle_Defense"/>
+                    <attribute id="UUID" type="guid" value="f6882a6c-8cab-49d9-8681-acda9106f6f6"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Grit Abilities (lvl 3-4)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock"/>
+                    <attribute id="UUID" type="guid" value="8ac43a03-77f4-433d-952a-82ad94fe929f"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Grit Abilities (lvl 5-6)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock"/>
+                    <attribute id="UUID" type="guid" value="c5ceb81f-9c72-5c9b-ac59-9b34836f11c6"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Grit Abilities (lvl 9-12)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock"/>
+                    <attribute id="UUID" type="guid" value="01d5301f-3363-586e-980e-5500c04331f6"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Grit Abilities (lvl 13-16)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock"/>
+                    <attribute id="UUID" type="guid" value="5f9c6cb5-dad9-5bec-805b-48d35ddf4e26"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Grit Abilities (lvl 17+)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_BulletTimeUnlock,GSL_HailOfLeadUnlock,GSL_FinalJudgementUnlock"/>
+                    <attribute id="UUID" type="guid" value="547d73a4-4847-5212-94ff-0de279651159"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 3-4)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock"/>
+                    <attribute id="UUID" type="guid" value="b6277ce5-4392-5f39-813d-c8034896cf11"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 5-7)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock"/>
+                    <attribute id="UUID" type="guid" value="2a4fc9b2-a425-5607-bf0d-4568d25b786b"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 8-10)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock"/>
+                    <attribute id="UUID" type="guid" value="c1b08d07-d25b-5843-9f71-3f44fed200d4"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 11-13)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock,GSL_Desperado_DeadMansHandUnlock"/>
+                    <attribute id="UUID" type="guid" value="cc00480c-d7cb-5410-baad-d3c8df5de4e0"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 18)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_BulletTimeUnlock,GSL_HailOfLeadUnlock,GSL_FinalJudgementUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock,GSL_Desperado_DeadMansHandUnlock,GSL_Desperado_HighNoonUnlock,GSL_Desperado_DesperadosFortuneUnlock,GSL_NoOneWalksAwayUnlock,GSL_Desperado_HotStreakUnlock"/>
+                    <attribute id="UUID" type="guid" value="24dec295-9139-5c1d-8504-039a62afb38b"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 9-12, merged)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock"/>
+                    <attribute id="UUID" type="guid" value="6718c01b-7020-4908-80c2-8f9ed8075262"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 13-16, merged)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock"/>
+                    <attribute id="UUID" type="guid" value="aebad830-0b8c-4c53-a9c5-2df1d2fdfbe1"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 15-16, merged)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock,GSL_Desperado_DeadMansHandUnlock,GSL_Desperado_DesperadosFortuneUnlock"/>
+                    <attribute id="UUID" type="guid" value="f217d1f0-4af8-4f6c-9683-3ec225414f8d"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Grit Abilities (lvl 17+, merged)"/>
+                    <attribute id="Passives" type="LSString" value="GSL_MercilessShotUnlock,GSL_LineEmUpUnlock,GSL_RapidShotUnlock,GSL_BiteTheBulletUnlock,GSL_ShotInTheDarkUnlock,GSL_RapidRepairUnlock,GSL_TrickShotUnlock,GSL_QuickloadUnlock,GSL_FlashPowderUnlock,GSL_FanningFireUnlock,GSL_ViolentShotUnlock,GSL_DazingShotUnlock,GSL_PiercingRoundUnlock,GSL_HairTriggerUnlock,GSL_GritAndSteelUnlock,GSL_BulletTimeUnlock,GSL_HailOfLeadUnlock,GSL_FinalJudgementUnlock,GSL_Desperado_AnteUpUnlock,GSL_Desperado_LuckyDrawUnlock,GSL_Desperado_TwoGunTangoUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_RollTheBonesUnlock,GSL_Desperado_DuckAndWeaveUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_CheatDeathsOdds,GSL_Desperado_HotHandUnlock,GSL_Desperado_LastWordUnlock,GSL_Desperado_DoubleOrNothingUnlock,GSL_Desperado_QuickOnTheDrawUnlock,GSL_Desperado_RicochetShotUnlock,GSL_Desperado_DeadMansHandUnlock,GSL_Desperado_DesperadosFortuneUnlock"/>
+                    <attribute id="UUID" type="guid" value="c848fa4a-2c1b-4039-9426-54399096d9bd"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Gunslinger Universal Feats"/>
+                    <attribute id="Passives" type="LSString" value="GSL_Feat_Gunner,GSL_Feat_QuickReload,GSL_Feat_GritAdept,GSL_Feat_CloseQuartersGunner,GSL_Feat_LongarmSpecialist,GSL_Feat_CalledShot,GSL_Feat_SpellshotAdept"/>
+                    <attribute id="UUID" type="guid" value="96ab8eff-a1db-4753-91f3-9e5dd229c96b"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Marksman Features"/>
+                    <attribute id="Passives" type="LSString" value="GSL_Marksman_LockOn,GSL_Marksman_LongShot,GSL_Marksman_StableShot,GSL_Marksman_PinpointAccuracy,GSL_Marksman_Headshot"/>
+                    <attribute id="UUID" type="guid" value="9c5ed1ac-e140-404b-9053-1b0d71207b2d"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Desperado Features"/>
+                    <attribute id="Passives" type="LSString" value="GSL_Desperado_DesperadosLuckUnlock,GSL_Desperado_DoubleLoadUnlock,GSL_Desperado_CloseCallUnlock,GSL_Desperado_LastWordUnlock"/>
+                    <attribute id="UUID" type="guid" value="37ea0c13-38af-4f7d-b3ef-0fe9511bbaac"/>
+                </node>
+                <node id="PassiveList">
+                    <attribute id="Name" type="FixedString" value="Arcane Gunsman Features"/>
+                    <attribute id="Passives" type="LSString" value="GSL_ArcaneGunsman_InfusedRoundsUnlock,GSL_ArcaneGunsman_ImprovedInfusedRounds,GSL_ArcaneGunsman_ArcaneReload,GSL_ArcaneGunsman_MasteredInfusedRounds,GSL_ArcaneGunsman_SmartShooting,GSL_ArcaneGunsman_UnstableInfusedRoundsUnlock,GSL_ArcaneGunsman_SpellstrikeShooter"/>
+                    <attribute id="UUID" type="guid" value="8907430f-7a4e-452b-8cd1-18cfed0763d1"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>
