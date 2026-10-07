@@ -1,0 +1,1529 @@
+{
+    "ContextTypes": {
+        "ObservableCollection<T>": 3,
+        "gui::DCCharacterLevelUp": 147,
+        "gui::DCCombatLog": 25,
+        "gui::DCCombatants": 4,
+        "gui::DCCrossplayNotifications": 2,
+        "gui::DCCursorText": 8,
+        "gui::DCFTBParticipants": 3,
+        "gui::DCHotBar": 325,
+        "gui::DCNotifications": 6,
+        "gui::DCOverheads": 4,
+        "gui::DCOverlay": 5,
+        "gui::VMHitChanceDescription": 6,
+        "ls.Character": 90,
+        "ls.LocalPlayer": 1,
+        "ls.MapMarker": 22,
+        "ls.PlayerDragData": 4,
+        "ls.UIData": 17,
+        "ls.VMAbility": 30,
+        "ls.VMActionResource": 3,
+        "ls.VMActionResourceCostPreview": 39,
+        "ls.VMCharacterAction": 57,
+        "ls.VMCharacterCreationPassive": 180,
+        "ls.VMCharacterCreationPassives": 49,
+        "ls.VMCharacterGroup": 1,
+        "ls.VMClass": 4,
+        "ls.VMEquipmentSlot": 4,
+        "ls.VMFloor": 3,
+        "ls.VMFloorSection": 4,
+        "ls.VMHotBar": 54,
+        "ls.VMHotBarSlot": 66,
+        "ls.VMInputEvent": 19,
+        "ls.VMInterrupt": 12,
+        "ls.VMItem": 20,
+        "ls.VMPassive": 24,
+        "ls.VMRangeStat": 3,
+        "ls.VMRegion": 2,
+        "ls.VMRoom": 16,
+        "ls.VMStat": 3,
+        "ls.Widget": 85,
+        "ls.WorldMap": 7,
+        "string": 2
+    },
+    "FortuneName": "Desperado's Fortune",
+    "NodesVisited": 2513,
+    "Rows": [
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.1",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C76F47FEC0)",
+                "IconName": "GSL_MercilessShot",
+                "Name": "hdfef9eeag71eeg5d1eg8d24gcedc2c925e8c",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.2",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C42C0)",
+                "IconName": "GSL_LineEmUp",
+                "Name": "h754e9698ga877g5ad9gbae6g65979d3ce3a3",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.3",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C45C0)",
+                "IconName": "GSL_RapidShot",
+                "Name": "h5dab5e6bg99d5g533dg83fbgfdd630d0f7b7",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.4",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4640)",
+                "IconName": "GSL_BiteTheBullet",
+                "Name": "hafb61727gc03bg5958g90b3ga9044bdf035b",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.5",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C46C0)",
+                "IconName": "GSL_ShotInTheDark",
+                "Name": "h9d0667c8gfdaeg5a1cg9463g1ff7de4976e7",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.6",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4740)",
+                "IconName": "GSL_RapidRepair",
+                "Name": "h9589d1fbg4953g55b2gbc01g0b1a85bdda5b",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.7",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C47C0)",
+                "IconName": "GSL_DisarmingShot",
+                "Name": "h0000002ag0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.8",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4940)",
+                "IconName": "GSL_Quickload",
+                "Name": "h00000010g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.9",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C49C0)",
+                "IconName": "GSL_FlashPowder",
+                "Name": "h00000011g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.10",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4BC0)",
+                "IconName": "GSL_FanningFire",
+                "Name": "h3178086bg4305g5971g85e1g0a37f8a4c60d",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.11",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4C40)",
+                "IconName": "GSL_ViolentShot",
+                "Name": "h00000012g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.12",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4CC0)",
+                "IconName": "GSL_DazingShot",
+                "Name": "h00000013g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.13",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4D40)",
+                "IconName": "GSL_PiercingRound",
+                "Name": "h00000014g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.14",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4DC0)",
+                "IconName": "GSL_HairTrigger",
+                "Name": "h00000015g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.15",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4E40)",
+                "IconName": "GSL_GritAndSteel",
+                "Name": "h00000017g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.16",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5340)",
+                "IconName": "GSL_AnteUp",
+                "Name": "h0000001bg0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.17",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C54C0)",
+                "IconName": "GSL_LuckyDraw",
+                "Name": "h0000001cg0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.18",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C4AC0)",
+                "IconName": "GSL_TwoGunTango",
+                "Name": "h0000001dg0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.19",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5640)",
+                "IconName": "GSL_DoubleLoad",
+                "Name": "h40f837d1g07eeg5799g9499gf09ad6bff804",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.20",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5740)",
+                "IconName": "GSL_RollTheBones",
+                "Name": "h0000001eg0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.21",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C57C0)",
+                "IconName": "GSL_DuckAndWeave",
+                "Name": "h0000001fg0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.22",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C59C0)",
+                "IconName": "GSL_CloseCall",
+                "Name": "hd4802716g567dg5be5gb997gc6edb4df8fce",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.23",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5AC0)",
+                "IconName": "GSL_CheatDeathsOdds",
+                "Name": "h00000020g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.24",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5B40)",
+                "IconName": "GSL_HotHand",
+                "Name": "h00000021g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.25",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": false,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5BC0)",
+                "IconName": "GSL_LastWord",
+                "Name": "h2edb9dc2g395bg5a39gac97gfd7757788007",
+                "Replaced": false,
+                "Value": 1.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.26",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5C40)",
+                "IconName": "GSL_DoubleOrNothing",
+                "Name": "h00000022g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.27",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5CC0)",
+                "IconName": "GSL_QuickOnTheDraw",
+                "Name": "h00000023g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.28",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5D40)",
+                "IconName": "GSL_RicochetShot",
+                "Name": "h00000029g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.29",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5DC0)",
+                "IconName": "GSL_DeadMansHand",
+                "Name": "h00000024g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMCharacterCreationPassive",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2.1.1.1.1.2.1.1.1.3.1.1.1.1.1.1.1.30",
+            "Properties": {
+                "Blocked": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtenderData": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Replaced": {
+                    "ReadOnly": true
+                },
+                "Value": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Blocked": false,
+                "Enabled": true,
+                "ExtenderData": "Noesis::BaseCollection (000001C7749C5F40)",
+                "IconName": "GSL_DesperadosFortune",
+                "Name": "h00000027g0000g4000g8000g000000000001",
+                "Replaced": false,
+                "Value": 0.0
+            }
+        },
+        {
+            "ContextType": "ls.VMInterrupt",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.11.1.5.3.3.2.2.1.2.1.1.1.1.4",
+            "Properties": {
+                "Ask": {
+                    "ReadOnly": true
+                },
+                "Available": {
+                    "ReadOnly": true
+                },
+                "CanUse": {
+                    "ReadOnly": true
+                },
+                "Costs": {
+                    "ReadOnly": true
+                },
+                "Damages": {
+                    "ReadOnly": true
+                },
+                "Description": {
+                    "ReadOnly": true
+                },
+                "Enabled": {
+                    "ReadOnly": true
+                },
+                "ExtraDescription": {
+                    "ReadOnly": true
+                },
+                "Icon": {
+                    "ReadOnly": true
+                },
+                "IconName": {
+                    "ReadOnly": true
+                },
+                "Level": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "OnMissMessages": {
+                    "ReadOnly": true
+                },
+                "OnSaveMessages": {
+                    "ReadOnly": true
+                },
+                "PermanentWarnings": {
+                    "ReadOnly": true
+                },
+                "Properties": {
+                    "ReadOnly": true
+                },
+                "PrototypeID": {
+                    "ReadOnly": true
+                },
+                "ShortDescription": {
+                    "ReadOnly": true
+                },
+                "StatusApplies": {
+                    "ReadOnly": true
+                },
+                "UpcastDescription": {
+                    "ReadOnly": true
+                },
+                "Warnings": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Ask": true,
+                "Available": true,
+                "CanUse": true,
+                "Costs": "Noesis::BaseCollection (000001C7715565C0)",
+                "Damages": "Noesis::BaseCollection (000001C7889B0F40)",
+                "Description": "Noesis::BaseComponent (000001C787C660A0)",
+                "Enabled": true,
+                "ExtraDescription": "Noesis::BaseComponent (000001C78768FBC0)",
+                "Icon": "Noesis::DependencyObject (000001C78950D8A0)",
+                "IconName": "GSL_DesperadosFortune",
+                "Level": 0,
+                "Name": "h00000027g0000g4000g8000g000000000001",
+                "OnMissMessages": "Noesis::BaseCollection (000001C77AAD4640)",
+                "OnSaveMessages": "Noesis::BaseCollection (000001C77AAD09C0)",
+                "PermanentWarnings": "Noesis::BaseCollection (000001C7715564C0)",
+                "Properties": "Noesis::BaseCollection (000001C77A7D5750)",
+                "PrototypeID": "Interrupt_GSL_DesperadosFortune",
+                "ShortDescription": "Noesis::BaseComponent (000001C787C65E00)",
+                "StatusApplies": "Noesis::BaseCollection (000001C77A7D5DB0)",
+                "UpcastDescription": "Noesis::BaseComponent (000001C787C65FC0)",
+                "Warnings": "Noesis::BaseCollection (000001C77A7D6140)"
+            }
+        }
+    ],
+    "Selectors": [
+        {
+            "ContextType": "ls.VMCharacterCreationPassives",
+            "LuaType": "userdata",
+            "NativeType": "Noesis::BaseComponent",
+            "Path": "Root.1.1.1.10.1.1.1.1.3.2.1.2",
+            "Properties": {
+                "Description": {
+                    "ReadOnly": true
+                },
+                "IsComplete": {
+                    "ReadOnly": true
+                },
+                "MaxSelectedPassiveCount": {
+                    "ReadOnly": true
+                },
+                "Name": {
+                    "ReadOnly": true
+                },
+                "Passives": {
+                    "ReadOnly": true
+                },
+                "SelectedPassiveCount": {
+                    "ReadOnly": true
+                },
+                "UpdateState": {
+                    "ReadOnly": true
+                }
+            },
+            "Values": {
+                "Description": "Noesis::BaseComponent (000001C788AE02E0)",
+                "IsComplete": false,
+                "MaxSelectedPassiveCount": 1,
+                "Name": "h89c95599gd041g4989g9669g1a79faefb1f8",
+                "Passives": "Noesis::BaseCollection (000001C7749C41C0)",
+                "SelectedPassiveCount": 0,
+                "UpdateState": "New"
+            }
+        }
+    ],
+    "Sessions": [
+        {
+            "ChangeId": 6,
+            "Character": "Entity (01c0000100000e81)",
+            "CharacterHistory": [
+                {
+                    "Class": "799af9fb-7ff1-4a4f-a9b3-041a16dbee0c",
+                    "Index": 1,
+                    "Level": 1,
+                    "PassiveList": "f6882a6c-8cab-49d9-8681-acda9106f6f6",
+                    "Passives": {
+                        "1": "FightingStyle_TwoWeaponFighting"
+                    },
+                    "SelectorId": "FightingStyle",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 3,
+                    "Level": 3,
+                    "PassiveList": "b6277ce5-4392-5f39-813d-c8034896cf11",
+                    "Passives": {
+                        "1": "GSL_Desperado_AnteUpUnlock",
+                        "2": "GSL_Desperado_LuckyDrawUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 5,
+                    "Level": 5,
+                    "PassiveList": "b6277ce5-4392-5f39-813d-c8034896cf11",
+                    "Passives": {
+                        "1": "GSL_Desperado_TwoGunTangoUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 7,
+                    "Level": 7,
+                    "PassiveList": "2a4fc9b2-a425-5607-bf0d-4568d25b786b",
+                    "Passives": {
+                        "1": "GSL_Desperado_RollTheBonesUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 9,
+                    "Level": 9,
+                    "PassiveList": "6718c01b-7020-4908-80c2-8f9ed8075262",
+                    "Passives": {
+                        "1": "GSL_Desperado_DuckAndWeaveUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 11,
+                    "Level": 11,
+                    "PassiveList": "c1b08d07-d25b-5843-9f71-3f44fed200d4",
+                    "Passives": {
+                        "1": "GSL_Desperado_LastWordUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 13,
+                    "Level": 13,
+                    "PassiveList": "aebad830-0b8c-4c53-a9c5-2df1d2fdfbe1",
+                    "Passives": {
+                        "1": "GSL_Desperado_DesperadosLuckUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                }
+            ],
+            "CharacterPassives": [
+                {
+                    "Id": "GSL_Desperado_DesperadosLuckUnlock",
+                    "Source": "Feat"
+                },
+                {
+                    "Id": "GSL_Desperado_DesperadosFortuneUnlock",
+                    "Source": "Script"
+                }
+            ],
+            "ClientSelection": [
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 1,
+                    "Level": 15,
+                    "PassiveList": "f217d1f0-4af8-4f6c-9683-3ec225414f8d",
+                    "Passives": {
+                        "1": ""
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                }
+            ],
+            "CurrentSelection": [
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 1,
+                    "Level": 15,
+                    "PassiveList": "f217d1f0-4af8-4f6c-9683-3ec225414f8d",
+                    "Passives": {
+                        "1": ""
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                }
+            ],
+            "Dummy": "Entity (01c0000100003d08)",
+            "DummyPassives": [],
+            "NeedsSync": true,
+            "PreviewHistory": [
+                {
+                    "Class": "799af9fb-7ff1-4a4f-a9b3-041a16dbee0c",
+                    "Index": 1,
+                    "Level": 1,
+                    "PassiveList": "f6882a6c-8cab-49d9-8681-acda9106f6f6",
+                    "Passives": {
+                        "1": "FightingStyle_TwoWeaponFighting"
+                    },
+                    "SelectorId": "FightingStyle",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 3,
+                    "Level": 3,
+                    "PassiveList": "b6277ce5-4392-5f39-813d-c8034896cf11",
+                    "Passives": {
+                        "1": "GSL_Desperado_AnteUpUnlock",
+                        "2": "GSL_Desperado_LuckyDrawUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 5,
+                    "Level": 5,
+                    "PassiveList": "b6277ce5-4392-5f39-813d-c8034896cf11",
+                    "Passives": {
+                        "1": "GSL_Desperado_TwoGunTangoUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 7,
+                    "Level": 7,
+                    "PassiveList": "2a4fc9b2-a425-5607-bf0d-4568d25b786b",
+                    "Passives": {
+                        "1": "GSL_Desperado_RollTheBonesUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 9,
+                    "Level": 9,
+                    "PassiveList": "6718c01b-7020-4908-80c2-8f9ed8075262",
+                    "Passives": {
+                        "1": "GSL_Desperado_DuckAndWeaveUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 11,
+                    "Level": 11,
+                    "PassiveList": "c1b08d07-d25b-5843-9f71-3f44fed200d4",
+                    "Passives": {
+                        "1": "GSL_Desperado_LastWordUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                },
+                {
+                    "Class": "4a518934-644d-4120-ae6a-d922cf7cac34",
+                    "Index": 13,
+                    "Level": 13,
+                    "PassiveList": "aebad830-0b8c-4c53-a9c5-2df1d2fdfbe1",
+                    "Passives": {
+                        "1": "GSL_Desperado_DesperadosFortuneUnlock"
+                    },
+                    "SelectorId": "GritAbility",
+                    "SelectorIndex": 1
+                }
+            ],
+            "Session": "Entity (01c0000100003d06)"
+        }
+    ]
+}

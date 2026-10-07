@@ -59,7 +59,11 @@ for node in parsed_files[gui_metadata_path].findall('.//node[@id="Object"]'):
         for attribute in node.findall('children/node[@id="entries"]/attribute')
     }
 resource_definitions = parsed_files[public_root / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx']
-for name in resource_definitions.findall('.//attribute[@id="Name"]'):
+for definition in resource_definitions.findall('.//node[@id="ActionResourceDefinition"]'):
+    hidden = definition.find('attribute[@id="IsHidden"]')
+    if hidden is not None and hidden.get('value') == 'true':
+        continue
+    name = definition.find('attribute[@id="Name"]')
     for quality in ('Assets', 'AssetsLowRes'):
         relative = Path(quality, 'CC', 'icons_resources', f'{name.get("value")}.png')
         values = gui_entries.get(relative.as_posix(), {})

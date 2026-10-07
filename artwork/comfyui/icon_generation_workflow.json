@@ -28,8 +28,8 @@
       "inputs": [{"name": "clip", "type": "CLIP", "link": 2}],
       "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [3, 4], "slot_index": 0}],
       "properties": {"Node name for S&R": "CLIPTextEncode"},
-      "widgets_values": ["A single fantasy RPG ability icon: an antique flintlock pistol firing one large brass projectile through a jagged crimson impact burst. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels."],
-      "title": "POSITIVE - replace subject using icon_prompts.json"
+      "widgets_values": [""],
+      "title": "POSITIVE - prompt loaded from icon_prompts.json"
     },
     {
       "id": 5, "type": "FluxGuidance", "pos": [930, 40], "size": [310, 80], "flags": {}, "order": 6, "mode": 0,

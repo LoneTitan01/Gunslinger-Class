@@ -1,4 +1,4 @@
-"""Stage (and optionally pack) the files LSLib needs for each PAK.
+"""Stage (and optionally pack and zip) the files LSLib needs for each PAK.
 
 Main_Staging       -> Packages/GunslingerClass.pak
 5e_Compat_Staging  -> Packages/GunslingerClass_5eSpellsCompat.pak
@@ -8,7 +8,9 @@ Usage:
 
 With --divine, localization is converted to .loca, Content banks, root
 templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
-(unless --no-pack). Without --divine, the localization .xml and resource .lsx files are
+and compressed into matching Packages/*.zip archives (unless --no-pack).
+Each ZIP contains only its PAK at the archive root; the original PAK is retained.
+Without --divine, the localization .xml and resource .lsx files are
 staged as-is and must be converted (.loca / .lsf / .lsfx) and packed with LSLib's
 ConverterApp.
 """
@@ -17,6 +19,7 @@ import argparse
 import shutil
 import subprocess
 import sys
+from zipfile import ZIP_DEFLATED, ZipFile
 
 repo_root = Path(__file__).resolve().parent
 source_root = repo_root / 'GunslingerClass'
@@ -150,14 +153,16 @@ def pack(divine):
         missing = staged - packed
         if code != 0 or missing:
             fail(f'{name} is missing staged files: {sorted(missing) or output}')
+        with ZipFile(pak.with_suffix('.zip'), 'w', compression=ZIP_DEFLATED) as archive:
+            archive.write(pak, arcname=pak.name)
         built.append((pak, len(staged)))
     return built
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--divine', type=Path, help='Path to LSLib Divine.exe; converts files and packs Packages/*.pak')
-    parser.add_argument('--no-pack', action='store_true', help='With --divine, convert and stage but do not create .pak files')
+    parser.add_argument('--divine', type=Path, help='Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip')
+    parser.add_argument('--no-pack', action='store_true', help='With --divine, convert and stage but do not create .pak or .zip files')
     parser.add_argument('--skip-validation', action='store_true', help='Do not run validate_xml.py first')
     args = parser.parse_args()
 
@@ -200,6 +205,8 @@ def main():
         print('\nPackages:')
         for pak, count in pack(args.divine):
             print(f'  {pak} ({count} files, {pak.stat().st_size:,} bytes)')
+            archive = pak.with_suffix('.zip')
+            print(f'  {archive} ({archive.stat().st_size:,} bytes)')
         print('\nInstall: copy both .pak files to %LOCALAPPDATA%\\Larian Studios\\Baldur\'s Gate 3\\Mods '
               'and enable them in the mod manager (compat PAK only if 5e Spells is installed).')
         return

@@ -25,6 +25,19 @@ class GritDataTests(unittest.TestCase):
     def fields(self, name: str) -> dict[str, str]:
         return resolve_spell(name, self.entries, {})[0]
 
+    def test_all_in_is_removed_from_stats_and_level_up_choices(self) -> None:
+        for name, entry in self.entries.items():
+            self.assertNotIn('AllIn', name)
+            self.assertNotIn('ALL_IN', name)
+            for value in entry.fields.values():
+                self.assertNotIn('AllIn', value, name)
+                self.assertNotIn('ALL_IN', value, name)
+        for path in (PUBLIC / 'Lists' / 'PassiveLists.lsx', PUBLIC / 'Progressions' / 'Progressions.lsx'):
+            self.assertNotIn('AllIn', path.read_text(encoding='utf-8'))
+        localized = ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml')
+        self.assertFalse(any(content.get('contentuid', '').startswith('h31000001')
+                             for content in localized.findall('content')))
+
     def test_class_hit_points_match_d8_progression(self) -> None:
         # The engine adds the Constitution modifier to BaseHp and to each level's HpPerLevel.
         descriptions = ET.parse(PUBLIC / 'ClassDescriptions' / 'ClassDescriptions.lsx')
@@ -75,6 +88,12 @@ class GritDataTests(unittest.TestCase):
         for name in sorted(choices):
             passive = self.fields(name)
             targets = re.findall(r'Unlock(?:Spell|Interrupt)\(([^,)]+)', passive.get('Boosts', ''))
+            if name == 'GSL_NoOneWalksAwayUnlock':
+                # The passive keeps the ability's name while the always-visible action is labelled Start.
+                self.assertEqual(targets, ['Projectile_GSL_NoOneWalksAway_Start'])
+                self.assertEqual(passive['Icon'], self.fields(targets[0])['Icon'])
+                checked.add(name)
+                continue
             if not targets:
                 # Rapid Repair is a marker: the server adds it to a misfired gun's Repair menu.
                 self.assertIn(name, {'GSL_Desperado_CheatDeathsOdds', 'GSL_RapidRepairUnlock'})
@@ -89,6 +108,211 @@ class GritDataTests(unittest.TestCase):
                     self.assertEqual(passive.get('DescriptionParams', ''), ability.get('DescriptionParams', ''))
                 checked.add(name)
         self.assertEqual(checked, choices - {'GSL_Desperado_CheatDeathsOdds', 'GSL_RapidRepairUnlock'})
+
+    def test_no_one_walks_away_chains_free_firearm_attacks_for_grit(self) -> None:
+        pools = {}
+        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
+            attributes = {attribute.get('id'): attribute.get('value') for attribute in node.findall('attribute')}
+            if 'Grit Abilities' in attributes.get('Name', ''):
+                pools[attributes['Name']] = set(attributes['Passives'].split(','))
+        self.assertIn('GSL_NoOneWalksAwayUnlock', pools['Desperado Grit Abilities (lvl 18)'])
+        self.assertTrue(all(
+            'GSL_NoOneWalksAwayUnlock' not in passives
+            for name, passives in pools.items()
+            if name != 'Desperado Grit Abilities (lvl 18)'
+        ))
+        self.assertFalse([name for name in self.entries if name.startswith('Interrupt_GSL_NoOneWalksAway')])
+
+        lsx = (PUBLIC / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx').read_text(encoding='utf-8')
+        self.assertNotIn('NoOneWalksAway', lsx, 'the base-game short-rest cooldown replaces a hidden resource')
+
+        # Great Weapon Master pattern: a kill grants a status that unlocks a player-aimed free attack.
+        passive = self.fields('GSL_NoOneWalksAwayUnlock')
+        self.assertEqual(passive['Boosts'], 'UnlockSpell(Projectile_GSL_NoOneWalksAway_Start)')
+        self.assertEqual(passive['StatsFunctorContext'], 'OnAttack')
+        self.assertEqual(passive['Conditions'], 'IsWeaponAttack()')
+        remove, start_ready, chain_ready = passive['StatsFunctors'].split(';')
+        self.assertTrue(remove.startswith('IF(not IsMiss() and not (SpellId('))
+        self.assertTrue(remove.endswith('RemoveStatus(SELF,GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE)'))
+        for part in ('HasHPLessThan(1)', "IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", 'and not (SpellId('):
+            self.assertIn(part, start_ready)
+        self.assertTrue(start_ready.endswith('ApplyStatus(SELF,GSL_NO_ONE_WALKS_AWAY_START_READY,100,1)'))
+        self.assertIn("HasStatus('GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE',context.Source)", chain_ready)
+        self.assertTrue(chain_ready.endswith('ApplyStatus(SELF,GSL_NO_ONE_WALKS_AWAY_CHAIN_READY,100,1)'))
+
+        chain_status = self.fields('GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE')
+        self.assertEqual(chain_status['TickType'], 'EndTurn')
+        self.assertNotIn('RemoveEvents', chain_status)
+        self.assertIn('DisablePortraitIndicator', chain_status['StatusPropertyFlags'])
+        self.assertNotIn('GSL_NO_ONE_WALKS_AWAY_START_RESOURCE', self.entries)
+
+        self.assertFalse([name for name in self.entries
+                          if name.startswith(('Shout_GSL_NoOneWalksAway', 'Projectile_GSL_NoOneWalksAway_Start_',
+                                              'Projectile_GSL_NoOneWalksAway_Chain_'))],
+                         'one firearm-agnostic Start and Chain spell, not per-weapon variants')
+        self.assertNotIn('Boosts', self.fields('GSL_NO_ONE_WALKS_AWAY_START_READY'))
+        self.assertEqual(self.fields('GSL_NO_ONE_WALKS_AWAY_CHAIN_READY')['Boosts'],
+                         'UnlockSpell(Projectile_GSL_NoOneWalksAway_Chain)')
+
+        start = self.fields('Projectile_GSL_NoOneWalksAway_Start')
+        chain = self.fields('Projectile_GSL_NoOneWalksAway_Chain')
+        for name, spell in (('Projectile_GSL_NoOneWalksAway_Start', start), ('Projectile_GSL_NoOneWalksAway_Chain', chain)):
+            self.assertEqual(self.entries[name].parent, 'Projectile_GSL_ReactionShot')
+            for kind in ('Flintlock', 'Blunderbuss', 'Musket'):
+                self.assertIn(f'UseActionResource(SELF,Gunslinger{kind}Ammo,1,0)', spell['SpellProperties'])
+        self.assertEqual(start['UseCosts'], 'GunslingerGrit:2')
+        self.assertEqual(start['Cooldown'], 'OncePerShortRest', 'shows the base-game rest indicator and warning')
+        self.assertNotIn('Cooldown', chain)
+        self.assertEqual(start['TooltipUseCosts'], start['UseCosts'])
+        self.assertTrue(start['RequirementConditions'].startswith(
+            "HasStatus('GSL_NO_ONE_WALKS_AWAY_START_READY',context.Source) and "),
+            'Start stays on the hotbar but is disabled until a firearm kill')
+        self.assertIn(self.fields('Projectile_GSL_ReactionShot')['RequirementConditions'], start['RequirementConditions'])
+        self.assertTrue(start['SpellProperties'].endswith(
+            'RemoveStatus(SELF,GSL_NO_ONE_WALKS_AWAY_START_READY);'
+            'ApplyStatus(SELF,GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE,100,2)'))
+        self.assertEqual(start['DisplayName'], 'h00000030g0000g4000g8000g000000000003;1')
+        names = {node.get('contentuid'): node.text for node in
+                 ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').iter('content')}
+        for handle in ('1', '3', '5'):
+            self.assertEqual(names[f'h00000030g0000g4000g8000g00000000000{handle}'], 'Last Man Standing')
+
+        self.assertEqual(chain['UseCosts'], 'GunslingerGrit:2')
+        self.assertEqual(chain['TooltipUseCosts'], 'GunslingerGrit:2')
+        self.assertTrue(chain['SpellProperties'].endswith('RemoveStatus(SELF,GSL_NO_ONE_WALKS_AWAY_CHAIN_READY)'))
+        self.assertIn('Temporary', chain['SpellFlags'].split(';'))
+        self.assertNotIn('FollowUpOriginalSpell', chain,
+                         'Chain is its own button in the recast area, like Imperil Recast')
+        self.assertEqual(chain['DisplayName'], 'h00000030g0000g4000g8000g000000000005;1')
+        for name in ('Projectile_GSL_NoOneWalksAway_Start', 'Projectile_GSL_NoOneWalksAway_Chain'):
+            self.assertEqual(passive['StatsFunctors'].count(f"SpellId('{name}')"), 3)
+
+    def test_hot_streak_is_only_a_level_18_desperado_grit_choice(self) -> None:
+        unlock = self.entries['GSL_Desperado_HotStreakUnlock'].fields
+        self.assertEqual(unlock['Boosts'], 'UnlockSpell(Shout_GSL_HotStreak)')
+        ability = self.fields('Shout_GSL_HotStreak')
+        self.assertEqual(ability['UseCosts'], 'BonusActionPoint:1;GunslingerGrit:6')
+        self.assertEqual(ability['TooltipUseCosts'], 'BonusActionPoint:1;GunslingerGrit:6')
+        self.assertEqual(ability['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(ability['SpellProperties'],
+                         'ApplyStatus(SELF,GSL_HOT_STREAK,100,-1);ApplyStatus(SELF,GSL_HOT_STREAK_SHOT_1,100,-1)')
+        self.assertEqual(ability['SpellStyleGroup'], 'Class')
+        self.assertIn("not HasStatus('GSL_HOT_STREAK',context.Source)", ability['RequirementConditions'])
+        status = self.fields('GSL_HOT_STREAK')
+        self.assertEqual(status['StackId'], 'GSL_HOT_STREAK')
+        self.assertEqual(status['RemoveEvents'], 'OnLongRest')
+        self.assertEqual(status['TickType'], 'EndTurn')
+        self.assertEqual(status['Passives'], 'GSL_HotStreak_EndOnMiss;GSL_HotStreak_Advance')
+        self.assertEqual(self.fields('GSL_HOT_STREAK_COUNTER')['Boosts'], '')
+        pools = {}
+        for node in ET.parse(PUBLIC / 'Lists' / 'PassiveLists.lsx').findall('.//node[@id="PassiveList"]'):
+            attributes = {attribute.get('id'): attribute.get('value') for attribute in node.findall('attribute')}
+            if 'Grit Abilities' in attributes.get('Name', ''):
+                pools[attributes['Name']] = set(attributes['Passives'].split(','))
+        self.assertIn('GSL_Desperado_HotStreakUnlock', pools['Desperado Grit Abilities (lvl 18)'])
+        self.assertTrue(all(
+            'GSL_Desperado_HotStreakUnlock' not in passives
+            for name, passives in pools.items()
+            if name != 'Desperado Grit Abilities (lvl 18)'
+        ))
+
+    def test_hot_streak_recasts_scale_through_exactly_ten_weapon_attacks(self) -> None:
+        cleanup = self.fields('GSL_HOT_STREAK')['OnRemoveFunctors']
+        miss = self.entries['GSL_HotStreak_EndOnMiss'].fields
+        self.assertEqual(miss['StatsFunctorContext'], 'OnAttack')
+        self.assertEqual(miss['Conditions'], "IsMiss() and HasStatus('GSL_HOT_STREAK',context.Source)")
+        self.assertEqual(miss['StatsFunctors'], 'RemoveStatus(SELF,GSL_HOT_STREAK)')
+        self.assertEqual(
+            {name for name in self.entries if re.fullmatch(r'Projectile_GSL_HotStreak_\d+', name)},
+            {f'Projectile_GSL_HotStreak_{tier}' for tier in range(1, 11)},
+        )
+        for tier in range(1, 11):
+            with self.subTest(tier=tier):
+                status = self.fields(f'GSL_HOT_STREAK_SHOT_{tier}')
+                shot = self.fields(f'Projectile_GSL_HotStreak_{tier}')
+                self.assertEqual(
+                    status['Boosts'],
+                    f'UnlockSpell(Projectile_GSL_HotStreak_{tier});'
+                    "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())):"
+                    f'CharacterWeaponDamage({tier}d4)',
+                )
+                self.assertEqual(status['StackId'], 'GSL_HOT_STREAK_SHOT')
+                self.assertEqual(status['StackType'], 'Overwrite')
+                self.assertEqual(status['RemoveEvents'], 'OnLongRest')
+                self.assertNotIn('DisablePortraitIndicator', status['StatusPropertyFlags'])
+                self.assertIn(f'RemoveStatus(GSL_HOT_STREAK_SHOT_{tier})', cleanup)
+                self.assertEqual(shot['SpellRoll'], 'Attack(AttackType.RangedWeaponAttack)')
+                self.assertEqual(shot['TargetRadius'], 'RangedMainWeaponRange')
+                self.assertEqual(shot['DualWieldingUseCosts'], '')
+                self.assertEqual(shot['UseCosts'], 'ActionPoint:1')
+                self.assertEqual(shot['TooltipUseCosts'], 'ActionPoint:1')
+                self.assertIn('Temporary', shot['SpellFlags'].split(';'))
+                self.assertIn('IsAttack', shot['SpellFlags'].split(';'))
+                self.assertEqual(shot['SpellFail'], 'RemoveStatus(SELF,GSL_HOT_STREAK)')
+                damage = 'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)'
+                self.assertEqual(shot['TooltipDamageList'], damage)
+                self.assertEqual(shot['SpellSuccess'], f'{damage};ExecuteWeaponFunctors(MainHand)')
+                self.assertEqual(shot['DescriptionParams'], str(tier))
+                ready = ' or '.join(
+                    f"(HasPassive('GSL_{weapon}_MainHand',context.Source) and "
+                    f"HasActionResource('{resource}',1,0))"
+                    for weapon, resource in AMMO.items()
+                )
+                self.assertEqual(
+                    shot['RequirementConditions'],
+                    "HasStatus('GSL_HOT_STREAK',context.Source) and "
+                    "not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Source) and "
+                    f"({ready})",
+                )
+                self.assertEqual(
+                    shot['SpellProperties'],
+                    ';'.join(
+                        f"IF(HasPassive('GSL_{weapon}_MainHand',context.Source)):"
+                        f"UseActionResource(SELF,{resource},1,0)"
+                        for weapon, resource in AMMO.items()
+                    ),
+                )
+                for weapon, resource in AMMO.items():
+                    self.assertIn(f"HasPassive('GSL_{weapon}_MainHand',context.Source)", shot['RequirementConditions'])
+                    self.assertIn(f"HasActionResource('{resource}',1,0)", shot['RequirementConditions'])
+                    self.assertEqual(shot['SpellProperties'].count(f'UseActionResource(SELF,{resource},1,0)'), 1)
+                for sound in ('GSL_Firearm_ShotSound_MainHand', 'GSL_Firearm_BlunderbussSound_MainHand'):
+                    self.assertIn(f"SpellId('Projectile_GSL_HotStreak_{tier}')",
+                                  self.entries[sound].fields['Conditions'])
+        extra_attack = self.entries['GSL_SecondAttack'].fields
+        self.assertIn('ExtraAttackSpellCheck()', extra_attack['Conditions'])
+        self.assertIn("HasUseCosts('ActionPoint', true)", extra_attack['Conditions'])
+
+    def test_hot_streak_regular_attacks_advance_once_without_tier_cascades(self) -> None:
+        advance = self.entries['GSL_HotStreak_Advance'].fields
+        self.assertEqual(advance['StatsFunctorContext'], 'OnAttack')
+        self.assertEqual(
+            advance['Conditions'],
+            "HasStatus('GSL_HOT_STREAK',context.Source) and "
+            "not HasStatus('GSL_HOT_STREAK_ADVANCED',context.Source) and "
+            "IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon()) and "
+            "not (IsMiss() or IsCriticalMiss())",
+        )
+        self.assertNotIn('SpellId(', advance['Conditions'])
+        expected = ['ApplyStatus(SELF,GSL_HOT_STREAK_ADVANCED,100,-1)',
+                    "IF(HasStatus('GSL_HOT_STREAK_SHOT_10',context.Source)):RemoveStatus(SELF,GSL_HOT_STREAK)"]
+        expected.extend(
+            f"IF(HasStatus('GSL_HOT_STREAK_SHOT_{tier}',context.Source)):"
+            f"ApplyStatus(SELF,GSL_HOT_STREAK_SHOT_{tier + 1},100,-1)"
+            for tier in range(9, 0, -1)
+        )
+        self.assertEqual(advance['StatsFunctors'], ';'.join(expected))
+        self.assertIn('RemoveStatus(GSL_HOT_STREAK_ADVANCED)',
+                      self.fields('GSL_HOT_STREAK')['OnRemoveFunctors'])
+
+    def test_hot_streak_removes_legacy_kill_tracking(self) -> None:
+        lua = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua' /
+               'BootstrapServer.lua').read_text()
+        self.assertNotIn('RegisterListener("KilledBy"', lua)
+        self.assertNotIn('RegisterListener("CharacterKilledBy"', lua)
+        self.assertNotIn('data.hotStreaks[killer] = count', lua)
+        self.assertIn('Osi.RemoveStatus(character, hotStreakCounterStatus)', lua)
+        self.assertIn('RegisterListener("StatusRemoved", 4, "after"', lua)
 
     def test_variable_bite_the_bullet_choices(self) -> None:
         parent = self.fields('Shout_GSL_BiteTheBullet')
@@ -197,6 +421,14 @@ class GritDataTests(unittest.TestCase):
         self.assertEqual(shot['UseCosts'], '')
         self.assertEqual(shot['SpellProperties'], '')
         self.assertEqual(shot['SpellSuccess'], '')
+        self.assertEqual(shot['SpellType'], 'Target')
+        self.assertFalse(shot.get('Trajectories'))
+        self.assertFalse(shot.get('ProjectileCount'))
+        self.assertNotIn('IsAttack', shot.get('SpellFlags', '').split(';'))
+        roll_animation = self.fields('Shout_GSL_ClassAction')['SpellAnimation']
+        self.assertTrue(roll_animation)
+        self.assertEqual(shot['SpellAnimation'], roll_animation)
+        self.assertEqual(shot['DualWieldingSpellAnimation'], roll_animation)
         followup = self.fields('Projectile_GSL_DoubleOrNothingAttack')
         self.assertEqual(self.entries['Projectile_GSL_DoubleOrNothingAttack'].parent, 'Projectile_GSL_ReactionShot')
         self.assertIn("HasActionResource('GunslingerFlintlockAmmo',1,0)", followup['RequirementConditions'])
@@ -256,22 +488,6 @@ class GritDataTests(unittest.TestCase):
                           self.fields('GSL_FanningFireUnlock')['Boosts'].split(';'))
         self.assertNotIn('GSL_FANNING_FIRE_1', self.entries)
 
-    def test_all_in_spends_exactly_all_grit_with_any_firearm(self) -> None:
-        options = [f'Projectile_GSL_AllIn_{grit}' for grit in range(3, 11)]
-        self.assertEqual(self.fields('Shout_GSL_AllIn')['ContainerSpells'].split(';'), options)
-        self.assertEqual(self.entries['GSL_ALL_IN'].fields['Boosts'], 'RollBonus(RangedWeaponAttack,-2)')
-        for grit, name in zip(range(3, 11), options):
-            fields = self.fields(name)
-            self.assertEqual(fields['AmountOfTargets'], str(grit))
-            self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:{grit}')
-            upper = f"not HasActionResource('GunslingerGrit',{grit + 1},0,false,false,context.Source)"
-            if grit < 10:
-                self.assertIn(upper, fields['RequirementConditions'])
-            else:
-                self.assertNotIn('GunslingerGrit', fields['RequirementConditions'])
-            for weapon, resource in AMMO.items():
-                self.assertIn(f"HasActionResource('{resource}',1,0)", fields['RequirementConditions'])
-
     def test_double_load_two_bullets_and_bonus_dice(self) -> None:
         fields = self.fields('Projectile_GSL_DoubleLoad')
         self.assertIn(firearm_dice_damage(1), fields['SpellSuccess'])
@@ -308,10 +524,13 @@ class GritDataTests(unittest.TestCase):
             self.assertEqual(fields['SpellRoll'], 'SkillCheck(Skill.SleightOfHand,18)')
             self.assertEqual(fields['SpellSuccess'], f'ApplyStatus(SELF,GSL_REPAIR_{up}_DONE,100,1)')
 
-    def test_tinkerer_is_a_six_choice_per_hand_menu(self) -> None:
+    def test_tinkerer_is_an_eight_choice_per_hand_menu(self) -> None:
         parent = self.fields('Shout_GSL_Tinkerer')
         self.assertEqual(parent['UseCosts'], '')
-        self.assertEqual(len(parent['ContainerSpells'].split(';')), 6)
+        self.assertEqual(set(parent['ContainerSpells'].split(';')), {
+            f'Shout_GSL_Tinkerer_{hand}{mode}'
+            for hand in ('Main', 'Off') for mode in ('Capacity', 'Damage', 'Range', 'Remove')
+        })
         for hand in ('Main', 'Off'):
             for mode in ('Capacity', 'Damage', 'Range'):
                 fields = self.fields(f'Shout_GSL_Tinkerer_{hand}{mode}')
@@ -325,6 +544,13 @@ class GritDataTests(unittest.TestCase):
                 for status in statuses:
                     # Applied to the gun by the engine, like Magic Weapon, so the tooltip shows it without Lua.
                     self.assertIn(f'ApplyEquipmentStatus({slot},{status},100,-1)', fields['SpellProperties'])
+            remove = self.fields(f'Shout_GSL_Tinkerer_{hand}Remove')
+            self.assertEqual(remove['UseCosts'], 'ActionPoint:1')
+            self.assertEqual(remove['TooltipUseCosts'], 'ActionPoint:1')
+            self.assertEqual(remove['SpellContainerID'], 'Shout_GSL_Tinkerer')
+            self.assertEqual(remove['SpellProperties'], '')
+            self.assertEqual(remove['RequirementConditions'],
+                             self.fields(f'Shout_GSL_Tinkerer_{hand}Capacity')['RequirementConditions'])
         extended = self.fields('GSL_OffHand_Flintlock_attack_Range')
         self.assertEqual(extended['TargetRadius'], '19.5')
         self.assertEqual(extended['UseCosts'], 'BonusActionPoint:1;GunslingerOffhandFlintlockAmmo:1')
@@ -334,14 +560,13 @@ class GritDataTests(unittest.TestCase):
                       extended_master['RequirementConditions'])
 
     def test_tinkerer_modifications_are_visible_statuses_on_the_weapon(self) -> None:
-        dice = {'Flintlock': '3d4', 'Blunderbuss': '1d12+1d4', 'Musket': '2d6+1d4'}
-        master_dice = {'Flintlock': '4d4', 'Blunderbuss': '1d12+2d4', 'Musket': '2d6+2d4'}
+        kinds = ('Flintlock', 'Blunderbuss', 'Musket')
         range_bonus = {'Flintlock': '6', 'Blunderbuss': '3', 'Musket': '12'}
         weapon_statuses = ['GSL_TINKERER_CAPACITY'] + [
-            f'GSL_TINKERER_{mode}_{kind.upper()}' for mode in ('DAMAGE', 'RANGE') for kind in dice
+            f'GSL_TINKERER_{mode}_{kind.upper()}' for mode in ('DAMAGE', 'RANGE') for kind in kinds
         ] + ['GSL_TINKERER_MASTER_AMMO'] + [
             f'GSL_TINKERER_MASTER_{mode}_{kind.upper()}'
-            for mode in ('DAMAGE', 'RANGE') for kind in dice
+            for mode in ('DAMAGE', 'RANGE') for kind in kinds
         ]
         for name in weapon_statuses:
             fields = self.fields(name)
@@ -350,16 +575,17 @@ class GritDataTests(unittest.TestCase):
             self.assertIn('DisplayName', fields)
             self.assertIn('Description', fields)
             self.assertNotIn('DisablePortraitIndicator', fields.get('StatusPropertyFlags', ''))
-            self.assertIn('RemoveOnLongRest', fields.get('StatusPropertyFlags', ''))
+            self.assertNotIn('RemoveOnLongRest', fields.get('StatusPropertyFlags', ''))
+            self.assertNotIn('OnLongRest', fields.get('RemoveEvents', ''))
         stacks = {self.fields(name)['StackId'] for name in weapon_statuses}
         self.assertEqual(stacks, {'GSL_TINKERER_CAPACITY', 'GSL_TINKERER_DAMAGE', 'GSL_TINKERER_RANGE'},
                          'Each upgrade tier must replace only its corresponding gun status')
         self.assertEqual(self.fields('GSL_TINKERER_MASTER_AMMO')['StackId'], 'GSL_TINKERER_CAPACITY')
-        for kind, die in dice.items():
+        for kind in ('Flintlock', 'Blunderbuss', 'Musket'):
             self.assertEqual(self.fields(f'GSL_TINKERER_DAMAGE_{kind.upper()}')['Boosts'],
-                             f'WeaponDamageDieOverride({die})')
+                             'WeaponDamage(1d4,Piercing)')
             self.assertEqual(self.fields(f'GSL_TINKERER_MASTER_DAMAGE_{kind.upper()}')['Boosts'],
-                             f'WeaponDamageDieOverride({master_dice[kind]})')
+                             'WeaponDamage(2d4,Piercing)')
             self.assertEqual(self.fields(f'GSL_TINKERER_MASTER_RANGE_{kind.upper()}')['StackId'],
                              'GSL_TINKERER_RANGE')
             boosts = self.fields(f'GSL_TINKERER_MAIN_RANGE_{kind.upper()}')['Boosts']
@@ -372,6 +598,47 @@ class GritDataTests(unittest.TestCase):
         self.assertIn('AttackSpellOverride(GSL_OffHand_Flintlock_attack_RangeMaster',
                       self.fields('GSL_TINKERER_OFF_RANGE_MASTER')['Boosts'])
         self.assertNotIn('GSL_TINKERED', self.entries)
+
+    def test_tinkerer_damage_descriptions_explain_added_damage_rolls(self) -> None:
+        localization = {
+            content.get('contentuid'): content.text
+            for content in ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English'
+                                    / 'GunslingerClass.xml').findall('.//content')
+        }
+        for kind in ('FLINTLOCK', 'BLUNDERBUSS', 'MUSKET'):
+            for tier, dice in (('', '1d4'), ('MASTER_', '2d4')):
+                with self.subTest(kind=kind, tier=tier):
+                    status = self.fields(f'GSL_TINKERER_{tier}DAMAGE_{kind}')
+                    description = localization[status['Description'].split(';')[0]]
+                    self.assertIn(f'Add {dice} to', description)
+                    self.assertIn('damage rolls until this modification is replaced or removed', description)
+                    self.assertNotIn('deals', description)
+        for hand in ('Main', 'Off'):
+            spell = self.fields(f'Shout_GSL_Tinkerer_{hand}Damage')
+            description = localization[spell['Description'].split(';')[0]]
+            self.assertIn('Add 1d4 to', description)
+            self.assertIn('add 2d4 to its damage rolls instead', description)
+
+    def test_tinkerer_descriptions_cover_permanence_and_removal(self) -> None:
+        localization = {
+            content.get('contentuid'): content.text
+            for content in ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English'
+                                    / 'GunslingerClass.xml').findall('.//content')
+        }
+        for name in self.entries:
+            if name.startswith('GSL_TINKERER_') or name.startswith('Shout_GSL_Tinkerer'):
+                fields = self.fields(name)
+                if 'Description' not in fields:
+                    continue
+                description = localization[fields['Description'].split(';')[0]]
+                with self.subTest(name=name):
+                    self.assertNotIn('until the next long rest', description)
+                    self.assertNotIn('until a long rest', description)
+        for hand in ('Main', 'Off'):
+            fields = self.fields(f'Shout_GSL_Tinkerer_{hand}Remove')
+            description = localization[fields['Description'].split(';')[0]]
+            self.assertIn('remove all Tinkerer modifications', description)
+            self.assertIn('including Tinker Master upgrades', description)
 
     def test_reaction_shot_has_no_action_cost_but_consumes_the_equipped_ammo(self) -> None:
         fields = self.fields('Projectile_GSL_ReactionShot')
@@ -471,6 +738,9 @@ class GritDataTests(unittest.TestCase):
         self.assertLess(draw.index('Counterspell()'), draw.index('Projectile_GSL_ReactionShot'))
         self.assertIn('RestoreResource(SELF,ActionPoint,1,0)', self.entries['GSL_QUICK_ON_THE_DRAW_REFUND'].fields['OnApplyFunctors'])
         self.assertIn('AdjustRoll(1d8)', self.entries['Interrupt_GSL_DesperadosFortune'].fields['Properties'])
+        fortune_conditions = self.entries['Interrupt_GSL_DesperadosFortune'].fields['Conditions']
+        self.assertIn('IsFlatValueInterruptInteresting(8,context.Source)', fortune_conditions)
+        self.assertIn('IsFlatValueInterruptInteresting(8,context.Target)', fortune_conditions)
         self.assertNotIn('Interrupt_GSL_HighNoonLuck', self.entries)
         self.assertEqual(self.entries['GSL_Desperado_HighNoonUnlock'].fields['Boosts'], 'UnlockSpell(Target_GSL_HighNoon)')
         noon = self.entries['GSL_HIGH_NOON'].fields['Boosts']
@@ -540,14 +810,17 @@ class GritDataTests(unittest.TestCase):
             'GSL_Desperado_LastWordUnlock': 11, 'GSL_Desperado_DoubleOrNothingUnlock': 11,
             'GSL_Desperado_QuickOnTheDrawUnlock': 11, 'GSL_Desperado_RicochetShotUnlock': 11,
             'GSL_Desperado_DeadMansHandUnlock': 15,
-            'GSL_Desperado_AllInUnlock': 18,
+            'GSL_Desperado_DesperadosFortuneUnlock': 15,
             'GSL_Desperado_HighNoonUnlock': 18,
+            'GSL_Desperado_HotStreakUnlock': 18,
         }
         for passive in (*general, *desperado):
             self.assertEqual(self.entries[passive].kind, 'PassiveData', passive)
         seen = set()
         for row in rows:
-            self.assertFalse(set(row.get('PassivesAdded', '').split(';')) & set(desperado))
+            self.assertFalse(
+                set(row.get('PassivesAdded', '').split(';')) & set(desperado)
+            )
             for list_id in re.findall(r'SelectPassives\(([0-9a-f-]+),\d+,GritAbility\)', row.get('Selectors', '')):
                 pool = lists[list_id]
                 seen.update(pool)
@@ -556,9 +829,13 @@ class GritDataTests(unittest.TestCase):
                 level = int(row['Level'])
                 self.assertEqual({p for p in pool if p in general}, {p for p, lvl in general.items() if lvl <= level})
                 expected = {p for p, lvl in desperado.items() if lvl <= level} if row['Name'] == 'Desperado' else set()
+                if row['Name'] == 'Desperado' and level >= 15:
+                    expected.discard('GSL_Desperado_DesperadosLuckUnlock')
+                    self.assertIn('GSL_Desperado_DesperadosFortuneUnlock', pool)
+                    self.assertNotIn('GSL_Desperado_DesperadosLuckUnlock', pool)
                 self.assertEqual({p for p in pool if p in desperado}, expected)
         self.assertLessEqual(set(general) | set(desperado), seen)
-        self.assertNotIn('GSL_Desperado_DesperadosFortuneUnlock', seen)
+        self.assertIn('GSL_Desperado_DesperadosFortuneUnlock', seen)
 
     def test_desperados_luck_evolves_into_fortune_at_level_15(self) -> None:
         rows = [
@@ -566,13 +843,23 @@ class GritDataTests(unittest.TestCase):
             for node in ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx').findall('.//node[@id="Progression"]')
         ]
         level_15 = next(r for r in rows if r['Name'] == 'Desperado' and r['Level'] == '15')
-        self.assertIn('GSL_Desperado_DesperadosFortuneUnlock', level_15['PassivesAdded'].split(';'))
+        self.assertEqual(level_15['PassivesAdded'], 'GSL_Desperado_FortuneUpgrade')
         self.assertIn('GSL_Desperado_DesperadosLuckUnlock', level_15['PassivesRemoved'].split(';'))
+        upgrade = self.entries['GSL_Desperado_FortuneUpgrade'].fields
+        self.assertNotIn('IsHidden', upgrade.get('Properties', ''))
+        self.assertEqual(upgrade['Icon'], 'GSL_DesperadosFortune')
+        localization = {
+            node.get('contentuid'): node.text or ''
+            for node in ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').iter('content')
+        }
+        self.assertEqual(localization[upgrade['DisplayName'].split(';')[0]], "Desperado's Luck: Evolution")
+        description = localization[upgrade['Description'].split(';')[0]]
+        self.assertIn("If you know Desperado's Luck", description)
+        self.assertIn('without spending a grit ability choice', description)
+        self.assertIn('normal grit ability choice', description)
         fortune = self.entries['GSL_Desperado_DesperadosFortuneUnlock']
-        self.assertIn(
-            "IF(HasPassive('GSL_Desperado_DesperadosLuckUnlock',context.Source)):UnlockInterrupt(Interrupt_GSL_DesperadosFortune)",
-            fortune.fields['Boosts'],
-        )
+        self.assertEqual(fortune.fields['Properties'], 'OncePerTurn;Highlighted')
+        self.assertEqual(fortune.fields['Boosts'], 'UnlockInterrupt(Interrupt_GSL_DesperadosFortune)')
 
     def test_optional_grit_ability_replacement_is_removed(self) -> None:
         progressions = ET.parse(PUBLIC / 'Progressions' / 'Progressions.lsx')
@@ -604,7 +891,7 @@ class GritDataTests(unittest.TestCase):
                 if child not in spells:
                     spells.add(child)
                     pending.append(child)
-        self.assertGreater(len(spells), 60)
+        self.assertGreater(len(spells), 50)
         not_class = sorted(name for name in spells if self.fields(name).get('SpellStyleGroup') != 'Class')
         self.assertEqual(not_class, [], 'grit abilities should show under Class Actions on the hotbar')
 
@@ -797,7 +1084,7 @@ class GritDataTests(unittest.TestCase):
             row = {a.get('id'): a.get('value', '') for a in node.findall('attribute')}
             lists[row['UUID']] = row['Passives'].split(',')
         self.assertEqual(lists[list_id], [
-            'FightingStyle_Archery', 'FightingStyle_TwoWeaponFighting', 'FightingStyle_Dueling',
+            'FightingStyle_Archery', 'FightingStyle_TwoWeaponFighting',
             'GSL_FightingStyle_CloseQuarters', 'FightingStyle_Defense',
         ])
         selectors = []
@@ -808,7 +1095,6 @@ class GritDataTests(unittest.TestCase):
         passive = self.fields('GSL_FightingStyle_CloseQuarters')
         self.assertEqual(passive['Boosts'], 'RollBonus(RangedWeaponAttack,1);RollBonus(RangedOffHandWeaponAttack,1);IgnorePointBlankDisadvantage(Ammunition)')
         self.assertEqual(passive['Icon'], 'GSL_FightingStyle_CloseQuarters')
-
     def test_close_quarters_gunner_removes_point_blank_disadvantage(self) -> None:
         feats = {}
         for node in ET.parse(PUBLIC / 'Feats' / 'Feats.lsx').findall('.//node[@id="Feat"]'):
@@ -842,6 +1128,26 @@ class GritDataTests(unittest.TestCase):
                     self.assertNotIn('OnTurn', self.fields(status).get('RemoveEvents', ''))
         for status in ('GSL_STABLE_SHOT', 'GSL_HEADSHOT', 'GSL_ANTE_UP', 'GSL_HOT_HAND', 'GSL_DEAD_MANS_HAND', 'GSL_SPELLSHOT_CHARGED'):
             self.assertEqual(self.fields(status)['RemoveEvents'], 'OnAttack')
+
+    def test_double_or_nothing_and_hot_hand_have_independent_once_per_turn_limits(self) -> None:
+        descriptions = {
+            node.get('contentuid'): node.text
+            for node in ET.parse(ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').iter('content')
+        }
+        markers = {'DoubleOrNothing': 'GSL_DOUBLE_OR_NOTHING_USED', 'HotHand': 'GSL_HOT_HAND_USED'}
+        for ability, marker in markers.items():
+            with self.subTest(ability=ability):
+                interrupt = self.fields(f'Interrupt_GSL_{ability}')
+                self.assertIn(f"not HasStatus('{marker}',context.Observer)", interrupt['Conditions'])
+                self.assertTrue(interrupt['Properties'].startswith(
+                    f'ApplyStatus(OBSERVER_OBSERVER,{marker},100,1);'))
+                for other in set(markers.values()) - {marker}:
+                    self.assertNotIn(other, interrupt['Conditions'])
+                status = self.fields(marker)
+                self.assertEqual(status['StackId'], marker)
+                self.assertEqual(status['RemoveEvents'], 'OnTurn')
+                self.assertIn('DisablePortraitIndicator', status['StatusPropertyFlags'])
+                self.assertTrue(descriptions[interrupt['Description'].split(';')[0]].startswith('Once per turn,'))
 
     def test_hot_hand_interrupt_on_firearm_hit_has_no_reaction_cost(self) -> None:
         self.assertEqual(self.fields('GSL_Desperado_HotHandUnlock')['Boosts'], 'UnlockInterrupt(Interrupt_GSL_HotHand)')

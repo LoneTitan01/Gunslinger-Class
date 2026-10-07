@@ -226,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', default='http://127.0.0.1:8188', help='Local ComfyUI API')
     parser.add_argument('--catalog', type=Path, default=HERE / 'icon_prompts.json')
-    parser.add_argument('--workflow', type=Path, default=HERE / 'Gunslinger_Icons_FLUX.json')
+    parser.add_argument('--workflow', type=Path, default=HERE / 'icon_generation_workflow.json')
     parser.add_argument('--output', type=Path, default=HERE / 'generated')
     parser.add_argument('--group', choices=('all', 'abilities', 'resources', 'classes'), default='all')
     parser.add_argument('--icons', nargs='+', help='Exact catalog keys; otherwise generate the selected group')

@@ -1,5 +1,5 @@
 {
-  "instructions": "For each icon, combine style_prefix + subject + style_suffix and paste into CLIPTextEncode. Set all five SaveImage basenames to the exact icon key. One icon per queue. Resource keys use the 48px output; ability keys use 380px, 144px and 64px outputs. Class keys use the 1024px master, exported to the 300px class icon and 140px hotbar class icon by export_class_icons.py.",
+  "instructions": "Each icon has one subject prompt below. generate_icons.py combines style_prefix + subject + the category style suffix and injects it into the CLIPTextEncode node. For manual workflow use, combine those same fields and paste the result into CLIPTextEncode. Set all five SaveImage basenames to the exact icon key. One icon per queue. Resource keys use the 48px output; ability keys use 380px, 144px and 64px outputs. Class keys use the 1024px master, exported to the 300px class icon and 140px hotbar class icon by export_class_icons.py.",
   "style_prefix": "A single fantasy RPG ability icon: ",
   "style_suffix": ". Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
   "resource_style_suffix": ". A single simple fantasy RPG resource glyph, thick compact silhouette, engraved brass, dark steel and warm ivory highlights, clean crisp edges. One centered isolated emblem on a flat charcoal background with generous empty margin. No text, numbers, border, scenery, modern ammunition cartridges, tiny details or extra objects. Strong recognizable silhouette when reduced to 48 pixels.",
@@ -80,11 +80,12 @@
     "GSL_DuckAndWeave": "A wide-brimmed hat flying off as a bullet whizzes past a ducking figure",
     "GSL_CheatDeathsOdds": "A skull wearing a wide-brimmed hat winking over a hand of cards",
     "GSL_HotHand": "A glowing red-hot gloved hand holding a smoking flintlock pistol",
+    "GSL_HotStreak": "one large round lead musket ball engulfed in vivid orange and crimson flames, its unmistakably spherical dark lead center and bright metallic highlights clearly visible between curling tongues of fire; bold compact centered emblem, no trail, no pistol, no targets, no scene",
     "GSL_DoubleOrNothing": "A spinning silver coin split in half by a bullet",
     "GSL_QuickOnTheDraw": "A pistol half-drawn from a holster with motion blur and a spark",
     "GSL_DeadMansHand": "A poker hand of black aces and eights fanned beside a flintlock pistol",
+    "GSL_NoOneWalksAway": "a waist-up silhouette of a frontier gunslinger in a wide-brimmed hat, facing directly forward and aiming one antique flintlock pistol straight at the viewer; the foreshortened round flintlock muzzle centered prominently in the foreground, both hands gripping the pistol, shoulders and torso clearly visible behind it, bold dark silhouette with crisp warm ivory edge highlights, compact iconic composition, no firing flash, no targets, no scene",
     "GSL_RicochetShot": "exactly three small dark enemy bust silhouettes, one at upper left, one at upper right, one at lower center, no other figures; a single clearly visible small round golden musket ball flies on an angular zig-zag path between all three silhouettes, with a thick bright ivory trail and sharp corners; simple flat graphic icon on a plain charcoal background, no scene, no plaque, no frame, no ground, no shadows, no cartridge, no long projectile, no smoke, no wavy trail",
-    "GSL_AllIn": "a mountain of poker chips shoved forward with bullets scattered among them",
     "GSL_DesperadosFortune": "A golden horseshoe wrapped around a pistol lock with sparkles",
     "GSL_HighNoon": "A blazing sun directly overhead casting a single long shadow of a gunslinger"
   },

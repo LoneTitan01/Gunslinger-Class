@@ -117,33 +117,33 @@
         <content contentuid="h10000027g0000g4000g8000g000000000005" version="1">Make a DC 15 Sleight of Hand check to clear this firearm's misfire. A failed check spends the action but does not repair the firearm. A broken firearm cannot be repaired until your next long rest.</content>
         <content contentuid="h10000027g0000g4000g8000g000000000006" version="1">Spend 1 grit point and make a DC 18 Sleight of Hand check to clear this firearm's misfire. A failed check spends the bonus action and grit but does not repair the firearm.</content>
         <content contentuid="hc29dc490gb036g5e94g88d9g2fd21e9adb3b" version="1">Tinkerer</content>
-        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Use an action to modify your primary or secondary firearm until a long rest: double its ammunition capacity, add 1d4 damage, or increase its range.</content>
+        <content contentuid="h390f2026gce29g565dga887g67ac46d9781d" version="1">Use an action to modify your primary or secondary firearm: double its ammunition capacity, add 1d4 to its damage rolls, or increase its range. Modifications persist through long rests until replaced or removed with Remove Modification.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000001" version="1">Tinkered: Capacity</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000002" version="1">This firearm holds twice its base ammunition capacity until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000002" version="1">This firearm holds twice its base ammunition capacity until this modification is replaced or removed.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000003" version="1">Tinkered: Damage</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000004" version="1">This Flintlock deals 3d4 damage until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000005" version="1">This Blunderbuss deals 1d12 + 1d4 damage until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000006" version="1">This Musket deals 2d6 + 1d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000004" version="1">Add 1d4 to this Flintlock's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000005" version="1">Add 1d4 to this Blunderbuss's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000006" version="1">Add 1d4 to this Musket's damage rolls until this modification is replaced or removed.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000007" version="1">Tinkered: Range</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000008" version="1">This Flintlock's range is increased by 20 feet until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000009" version="1">This Blunderbuss's range is increased by 10 feet until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000010" version="1">This Musket's range is increased by 40 feet until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000008" version="1">This Flintlock's range is increased by 20 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000009" version="1">This Blunderbuss's range is increased by 10 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000010" version="1">This Musket's range is increased by 40 feet until this modification is replaced or removed.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000011" version="1">Tinker Master: Ammo</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000012" version="1">This firearm holds three times its base ammunition capacity until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000012" version="1">This firearm holds three times its base ammunition capacity until this modification is replaced or removed.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000013" version="1">Tinker Master: Damage</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000014" version="1">This Flintlock deals 4d4 damage until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000015" version="1">This Blunderbuss deals 1d12 + 2d4 damage until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000016" version="1">This Musket deals 2d6 + 2d4 damage until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000014" version="1">Add 2d4 to this Flintlock's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000015" version="1">Add 2d4 to this Blunderbuss's damage rolls until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000016" version="1">Add 2d4 to this Musket's damage rolls until this modification is replaced or removed.</content>
         <content contentuid="h10000020g0000g4000g8000g000000000017" version="1">Tinker Master: Range</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000018" version="1">This Flintlock's range is increased by 40 feet until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000019" version="1">This Blunderbuss's range is increased by 20 feet until the next long rest.</content>
-        <content contentuid="h10000020g0000g4000g8000g000000000020" version="1">This Musket's range is increased by 80 feet until the next long rest.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000018" version="1">This Flintlock's range is increased by 40 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000019" version="1">This Blunderbuss's range is increased by 20 feet until this modification is replaced or removed.</content>
+        <content contentuid="h10000020g0000g4000g8000g000000000020" version="1">This Musket's range is increased by 80 feet until this modification is replaced or removed.</content>
         <content contentuid="h10000021g0000g4000g8000g000000000001" version="1">Flintlock</content>
         <content contentuid="h10000021g0000g4000g8000g000000000002" version="1">Blunderbuss</content>
         <content contentuid="h10000021g0000g4000g8000g000000000003" version="1">Musket</content>
         <content contentuid="h10000021g0000g4000g8000g000000000004" version="1">Firearm</content>
         <content contentuid="h5cf5a27cg1592g56b4g93a5gc048e11b9ce6" version="1">Tinkerer</content>
-        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend an action to modify the primary or secondary firearm. Choose capacity, damage, or range. Each physical gun keeps one upgrade (two from level 10 with Master Tinkerer) until a long rest; repeating an upgrade with Master Tinkerer grants its Tinker Master tier, and a third upgrade replaces the oldest one.</content>
+        <content contentuid="h43d2552eg84cag5d31gae6eg6266846b7252" version="1">Spend an action to modify the primary or secondary firearm. Choose capacity, damage, or range, or use Remove Modification to clear all upgrades on that firearm. Each physical gun keeps one upgrade (two from level 10 with Master Tinkerer) through long rests; repeating an upgrade with Master Tinkerer grants its Tinker Master tier, and a third upgrade replaces the oldest one.</content>
         <content contentuid="h4d7604b0g70abg5e29gb0deg24235336a21b" version="1">Fanning Fire</content>
         <content contentuid="h01862009g89e3g5610gbd73g7cbde620cac9" version="1">Unlocks the Fanning Fire grit ability.</content>
         <content contentuid="h3178086bg4305g5971g85e1g0a37f8a4c60d" version="1">Fanning Fire</content>
@@ -279,9 +279,12 @@
         <content contentuid="h10000004g0000g4000g8000g000000000004" version="1">Tinkerer: Secondary Capacity</content>
         <content contentuid="h10000004g0000g4000g8000g000000000005" version="1">Tinkerer: Secondary Damage</content>
         <content contentuid="h10000004g0000g4000g8000g000000000006" version="1">Tinkerer: Secondary Range</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Double this firearm's base ammunition capacity until the next long rest. With Master Tinkerer, apply this again to triple its base capacity.</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Add 1d4 damage until the next long rest: Flintlock 3d4, Blunderbuss 1d12 + 1d4, Musket 2d6 + 1d4. With Master Tinkerer, apply this again to add another 1d4.</content>
-        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until the next long rest: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. With Master Tinkerer, apply this again to double that bonus.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000007" version="1">Double this firearm's base ammunition capacity until this modification is replaced or removed. With Master Tinkerer, apply this again to triple its base capacity.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000008" version="1">Add 1d4 to this firearm's damage rolls until this modification is replaced or removed. With Master Tinkerer, apply this again to add 2d4 to its damage rolls instead.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000009" version="1">Increase this firearm's range until this modification is replaced or removed: Flintlock +20 feet, Blunderbuss +10 feet, Musket +40 feet. With Master Tinkerer, apply this again to double that bonus.</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000010" version="1">Tinkerer: Primary Remove Modification</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000011" version="1">Tinkerer: Secondary Remove Modification</content>
+        <content contentuid="h10000004g0000g4000g8000g000000000012" version="1">Spend an action to remove all Tinkerer modifications from this firearm, including Tinker Master upgrades. Restore its base capacity, damage, and range without repairing misfires or damage to the firearm. Excess ammunition is discarded if its capacity decreases.</content>
         <content contentuid="h10000006g0000g4000g8000g000000000001" version="1">Scattershot</content>
         <content contentuid="h10000006g0000g4000g8000g000000000002" version="1">Spend an action and one bullet to blast a 15-foot cone. Each creature in the cone makes a Dexterity saving throw (DC 8 + your Dexterity modifier + your proficiency bonus), taking half weapon damage on a failed save and no damage on a success.</content>
         <content contentuid="h10000007g0000g4000g8000g000000000001" version="1">Close Quarters</content>
@@ -315,17 +318,9 @@
         <content contentuid="h10000022g0000g4000g8000g000000000004" version="1">Spend 1 grit to fully reload your main-hand firearm. Doesn't use an action or bonus action.</content>
         <content contentuid="h10000022g0000g4000g8000g000000000005" version="1">Spend 1 grit to fully reload your off-hand flintlock. Doesn't use an action or bonus action.</content>
         <content contentuid="h10000022g0000g4000g8000g000000000006" version="1">Spend 1 grit and a bonus action to fully reload both of the firearms you're wielding.</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000001" version="1">All In: 3 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000002" version="1">All In: 4 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000003" version="1">All In: 5 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000004" version="1">All In: 6 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000005" version="1">All In: 7 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000006" version="1">All In: 8 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000007" version="1">All In: 9 Grit</content>
-        <content contentuid="h10000023g0000g4000g8000g000000000008" version="1">All In: 10 Grit</content>
         <content contentuid="h10000024g0000g4000g8000g000000000001" version="1">The next time you would be downed, you stay at 1 hit point instead and immediately make one firearm attack against your attacker.</content>
         <content contentuid="h00000011g0000g4000g8000g000000000001" version="1">Flash Powder</content>
-        <content contentuid="h00000011g0000g4000g8000g000000000002" version="1">Spend 1 grit and throw a pinch of black powder into a flash. Creatures in a 1.5m radius must succeed a Constitution saving throw or be Blinded for 1 turn.</content>
+        <content contentuid="h00000011g0000g4000g8000g000000000002" version="1">Spend 1 grit and throw a pinch of black powder into a flash. Creatures in a 1.5m radius must succeed a Constitution saving throw or be Blinded for 3 turns.</content>
         <content contentuid="h00000012g0000g4000g8000g000000000001" version="1">Violent Shot</content>
         <content contentuid="h00000012g0000g4000g8000g000000000002" version="1">Spend 1 to 3 grit to overcharge a shot. Each grit adds 1d8 (Flintlock), 2d6 (Blunderbuss) or 3d4 (Musket) damage. Roll a d20 afterwards: on a result equal to or lower than the grit spent, the firearm misfires.</content>
         <content contentuid="h00000012g0000g4000g8000g000000000003" version="1">Violent Shot: 1 Grit</content>
@@ -373,10 +368,10 @@
         <content contentuid="h00000020g0000g4000g8000g000000000001" version="1">Cheat Death's Odds</content>
         <content contentuid="h00000020g0000g4000g8000g000000000002" version="1">While you are below half your hit points, grit abilities that cost 2 or more grit refund 1 grit when used.</content>
         <content contentuid="h00000021g0000g4000g8000g000000000001" version="1">Hot Hand</content>
-        <content contentuid="h00000021g0000g4000g8000g000000000002" version="1">When you hit with a firearm attack, use your reaction and 2 grit: your next firearm attack scores a Critical Hit on an 18-20.</content>
+        <content contentuid="h00000021g0000g4000g8000g000000000002" version="1">Once per turn, when you hit with a firearm attack, spend 2 grit: your next firearm attack scores a Critical Hit on an 18-20.</content>
         <content contentuid="h00000021g0000g4000g8000g000000000005" version="1">Your next firearm attack scores a Critical Hit on an 18-20.</content>
         <content contentuid="h00000022g0000g4000g8000g000000000001" version="1">Double or Nothing</content>
-        <content contentuid="h00000022g0000g4000g8000g000000000002" version="1">When you hit with a firearm attack, use your reaction and spend 2 grit to roll a d20. On 11 or higher the shot deals its weapon damage again. Otherwise the firearm misfires.</content>
+        <content contentuid="h00000022g0000g4000g8000g000000000002" version="1">Once per turn, when you hit with a firearm attack, spend 2 grit to roll a d20. On 11 or higher, make a free firearm attack against the same target, consuming one bullet. Otherwise the firearm misfires.</content>
         <content contentuid="h00000023g0000g4000g8000g000000000001" version="1">Quick on the Draw</content>
         <content contentuid="h00000023g0000g4000g8000g000000000002" version="1">When an enemy within 9m starts an attack, spend your reaction and 2 grit to cancel it and shoot first with your loaded firearm. The enemy gets that attack back.</content>
         <content contentuid="h00000029g0000g4000g8000g000000000001" version="1">Ricochet Shot</content>
@@ -384,16 +379,28 @@
         <content contentuid="h00000024g0000g4000g8000g000000000001" version="1">Dead Man's Hand</content>
         <content contentuid="h00000024g0000g4000g8000g000000000002" version="1">While you are below 25% of your hit points, spend 3 grit: your next firearm attack before the end of your next turn is a Critical Hit if it hits. Once per turn.</content>
         <content contentuid="h00000024g0000g4000g8000g000000000003" version="1">Your next firearm hit is a Critical Hit.</content>
-        <content contentuid="h00000026g0000g4000g8000g000000000001" version="1">All In</content>
-        <content contentuid="h00000026g0000g4000g8000g000000000002" version="1">Spend all of your grit (3 to 8) and 1 bullet to fire that many shots at enemies, each with a -2 penalty to the attack roll. Only the option matching your current grit can be cast.</content>
-        <content contentuid="h00000026g0000g4000g8000g000000000003" version="1">-2 to firearm attack rolls.</content>
         <content contentuid="h00000027g0000g4000g8000g000000000001" version="1">Desperado's Fortune</content>
-        <content contentuid="h00000027g0000g4000g8000g000000000002" version="1">Replaces Desperado's Luck. When you make a firearm attack roll or a saving throw, spend 1 grit to add 1d8 to the roll. Once per turn.</content>
+        <content contentuid="h31000002g0000g4000g8000g000000000001" version="1">Desperado's Luck: Evolution</content>
+        <content contentuid="h31000002g0000g4000g8000g000000000002" version="1">If you know Desperado's Luck, it evolves into Desperado's Fortune when you complete this level, without spending a grit ability choice. Fortune replaces Luck's 1d4 reaction with 1d8 after a missed firearm attack or failed saving throw. If you do not know Luck, Fortune is available as a normal grit ability choice instead.</content>
+        <content contentuid="h00000027g0000g4000g8000g000000000002" version="1">Replaces Desperado's Luck. When a firearm attack misses or you fail a saving throw, spend 1 grit to add 1d8 to the roll. Once per turn.</content>
         <content contentuid="h00000028g0000g4000g8000g000000000001" version="1">High Noon</content>
         <content contentuid="h00000028g0000g4000g8000g000000000002" version="1">Spend a bonus action and 5 grit to call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit and score a Critical Hit on a 17-20. Your firearm attacks also deal an extra 1d8 damage. Once per long rest.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000001" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000002" version="1">Once per short rest, when a firearm attack reduces a creature to 0 hit points, you can spend 2 grit and 1 bullet to immediately attack another creature within range. If that attack reduces its target to 0 hit points, you can spend 2 grit and 1 bullet to repeat this effect. The streak ends when an attack fails to kill.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000003" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000004" version="1">Once per short rest, after a firearm attack reduces a creature to 0 hit points, spend 2 grit and 1 bullet to make a free attack with your main-hand firearm against a creature within range. This starts a chain that lasts for 2 turns or until you hit with a weapon attack other than Last Man Standing.</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000005" version="1">Last Man Standing</content>
+        <content contentuid="h00000030g0000g4000g8000g000000000006" version="1">Your Last Man Standing attack killed its target. Spend 2 grit and 1 bullet to make another free weapon attack against a creature within range and keep the chain going.</content>
         <content contentuid="h00000028g0000g4000g8000g000000000003" version="1">Called Out</content>
         <content contentuid="h00000028g0000g4000g8000g000000000004" version="1">A Desperado has called this creature out at High Noon.</content>
         <content contentuid="h00000028g0000g4000g8000g000000000005" version="1">Firearm attacks against the called-out creature gain +20 to hit and score a Critical Hit on a 17-20. Your firearm attacks deal an extra 1d8 damage.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000001" version="1">Hot Streak</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000002" version="1">Spend a bonus action and 3 Grit to start Hot Streak. All firearm attacks, including regular attacks and Hot Streak recast shots, deal an extra 1d4 damage. Each firearm hit increases the bonus by another 1d4, up to 10d4, and unlocks the next recast shot. Each recast uses one weapon attack and one bullet, and works with Extra Attack. Hot Streak ends when you miss an attack, take a long rest, or land the tenth chained firearm hit. Once per short rest.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000003" version="1">All firearm attacks, including regular attacks and Hot Streak recast shots, gain another 1d4 bonus damage with each chained firearm hit. Ends on an attack miss, a long rest, or the tenth chained firearm hit.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000004" version="1">Hot Streak Shot</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000005" version="1">Your firearm attacks deal an extra [1]d4 damage. A regular firearm hit or Hot Streak recast hit unlocks the next shot and increases the bonus. Ends on an attack miss, a long rest, or the tenth chained firearm hit.</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000006" version="1">Hot Streak</content>
+        <content contentuid="h00000031g0000g4000g8000g000000000007" version="1">Fire one bullet from any equipped main-hand firearm: Flintlock, Blunderbuss, or Musket. Uses that firearm's damage, damage type, range, and ammunition, plus Hot Streak's current bonus damage. Uses one weapon attack and works with Extra Attack. A regular firearm hit or recast hit increases the bonus by 1d4 and unlocks the next shot. A miss, a long rest, or the tenth chained firearm hit ends Hot Streak.</content>
         <content contentuid="h20000001g0000g4000g8000g000000000001" version="1">Bloodletting</content>
         <content contentuid="h20000001g0000g4000g8000g000000000002" version="1">Fire one bullet from your main-hand Flintlock, dealing normal weapon damage and inflicting Bleeding for 2 turns on a hit. Once per short rest.</content>
         <content contentuid="h20000002g0000g4000g8000g000000000001" version="1">Incise Ligaments Shot</content>

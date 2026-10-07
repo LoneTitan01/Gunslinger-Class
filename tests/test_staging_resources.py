@@ -3,11 +3,74 @@ import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
+from zipfile import ZIP_DEFLATED, ZipFile
 
 import stage_packages
 
 
 class StagingResourceTests(unittest.TestCase):
+    def test_pack_creates_and_replaces_compressed_archives_for_both_packages(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output_dir = root / 'Packages'
+            output_dir.mkdir()
+            packages = tuple((root / staging.name, name) for staging, name in stage_packages.packages)
+            payload = b'package contents' * 100
+            for staging, name in packages:
+                staging.mkdir()
+                (staging / 'resource.lsf').write_bytes(b'compiled')
+                (output_dir / Path(name).with_suffix('.zip')).write_bytes(b'stale archive')
+
+            def divine(command: Path, *args: str) -> tuple[int, str]:
+                if args[1] == 'create-package':
+                    Path(args[args.index('-d') + 1]).write_bytes(payload)
+                    return 0, ''
+                return 0, 'resource.lsf\tmetadata'
+
+            with patch.object(stage_packages, 'packages', packages), \
+                    patch.object(stage_packages, 'packages_dir', output_dir), \
+                    patch.object(stage_packages, 'run_divine', side_effect=divine):
+                built = stage_packages.pack(Path('Divine.exe'))
+
+            self.assertEqual(built, [(output_dir / name, 1) for _, name in packages])
+            for pak, _ in built:
+                self.assertEqual(pak.read_bytes(), payload)
+                with ZipFile(pak.with_suffix('.zip')) as archive:
+                    self.assertEqual(archive.namelist(), [pak.name])
+                    self.assertEqual(archive.read(pak.name), payload)
+                    self.assertEqual(archive.getinfo(pak.name).compress_type, ZIP_DEFLATED)
+                    self.assertLess(archive.getinfo(pak.name).compress_size, len(payload))
+                    self.assertIsNone(archive.testzip())
+
+    def test_failed_package_creation_does_not_create_archive(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(stage_packages, 'packages', ((root / 'staging', 'GunslingerClass.pak'),)), \
+                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
+                    patch.object(stage_packages, 'run_divine', return_value=(1, 'packing failed')):
+                with self.assertRaisesRegex(SystemExit, 'packing failed'):
+                    stage_packages.pack(Path('Divine.exe'))
+            self.assertFalse((root / 'Packages' / 'GunslingerClass.zip').exists())
+
+    def test_unverified_package_does_not_create_archive(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            staging = root / 'staging'
+            staging.mkdir()
+            (staging / 'resource.lsf').write_bytes(b'compiled')
+
+            def divine(command: Path, *args: str) -> tuple[int, str]:
+                if args[1] == 'create-package':
+                    Path(args[args.index('-d') + 1]).write_bytes(b'package')
+                return 0, ''
+
+            with patch.object(stage_packages, 'packages', ((staging, 'GunslingerClass.pak'),)), \
+                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
+                    patch.object(stage_packages, 'run_divine', side_effect=divine):
+                with self.assertRaisesRegex(SystemExit, 'missing staged files'):
+                    stage_packages.pack(Path('Divine.exe'))
+            self.assertFalse((root / 'Packages' / 'GunslingerClass.zip').exists())
+
     def test_converts_root_templates_and_content_banks(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             staging = Path(directory)

@@ -12,6 +12,8 @@ local pendingRefresh = {}
 local pendingLastWord = {}
 local recentAttackers = {}
 local pendingAttackTargets = {}
+local pendingSessionRefresh = false
+local cleanupRemovedAbilities
 
 Ext.Vars.RegisterModVariable(Rules.ModuleUUID, "Firearms", {
     Server = true, WriteableOnServer = true, Persistent = true
@@ -26,6 +28,164 @@ end
 local function save(data)
     Ext.Vars.GetModVariables(Rules.ModuleUUID).Firearms = data
 end
+
+local hotStreakStatus = "GSL_HOT_STREAK"
+local hotStreakCounterStatus = "GSL_HOT_STREAK_COUNTER"
+local hotStreakSource = "GSL_HOT_STREAK"
+
+local function clearHotStreak(character)
+    local data = database()
+    local streak = data.hotStreaks and data.hotStreaks[character]
+    if type(streak) == "table" and streak.boost then
+        Osi.RemoveBoosts(character, streak.boost, 0, hotStreakSource, character)
+    end
+    if data.hotStreaks then data.hotStreaks[character] = nil end
+    save(data)
+    Osi.RemoveStatus(character, hotStreakCounterStatus)
+end
+
+local luckPassive = "GSL_Desperado_DesperadosLuckUnlock"
+local fortunePassive = "GSL_Desperado_DesperadosFortuneUnlock"
+local fortuneUpgradePassive = "GSL_Desperado_FortuneUpgrade"
+local respecInProgress = {}
+local pendingLuckCleanup = {}
+local reportedLuckCleanup = {}
+local fortunePreviewLeases = {}
+local pendingFortunePreviewMessages = {}
+local previewTick = 0
+
+Ext.RegisterNetListener("GSL_FortunePreview", function(_, payload)
+    local message = Ext.Json.Parse(payload)
+    assert(type(message) == "table" and type(message.Character) == "string" and
+        type(message.Open) == "boolean", "Invalid Fortune preview message")
+    pendingFortunePreviewMessages[#pendingFortunePreviewMessages + 1] = message
+end)
+
+local function fortunePreviewEligible(character)
+    local entity = Ext.Entity.Get(character)
+    if not entity or Osi.HasPassive(character, luckPassive) ~= 1 then return false end
+    local classLevels = 0
+    for _, level in pairs(entity.LevelUp and entity.LevelUp.LevelUps or {}) do
+        if tostring(level.Class) == "799af9fb-7ff1-4a4f-a9b3-041a16dbee0c" then
+            classLevels = classLevels + 1
+        end
+    end
+    return classLevels == 14
+end
+
+local function finishFortunePreview(character)
+    local data = database()
+    if not data.fortunePreviews or not data.fortunePreviews[character] then return end
+    if not Ext.Entity.Get(character) then return end
+    if Osi.HasPassive(character, fortuneUpgradePassive) == 1 and not respecInProgress[character] then
+        data.fortuneUpgrades = data.fortuneUpgrades or {}
+        data.fortuneUpgrades[character] = true
+    else
+        Osi.RemovePassive(character, fortunePassive)
+    end
+    data.fortunePreviews[character] = nil
+    fortunePreviewLeases[character] = nil
+    save(data)
+end
+
+local function updateFortunePreviews()
+    previewTick = previewTick + 1
+    local data = database()
+    for _, message in ipairs(pendingFortunePreviewMessages) do
+        local character = message.Character
+        if message.Open then
+            if data.fortunePreviews and data.fortunePreviews[character] then
+                fortunePreviewLeases[character] = previewTick + 600
+            elseif fortunePreviewEligible(character) and Osi.HasPassive(character, fortunePassive) ~= 1 then
+                data.fortunePreviews = data.fortunePreviews or {}
+                data.fortunePreviews[character] = true
+                save(data)
+                Osi.AddPassive(character, fortunePassive)
+                fortunePreviewLeases[character] = previewTick + 600
+            end
+        elseif data.fortunePreviews and data.fortunePreviews[character] then
+            -- Let progression changes settle before deciding whether the preview was confirmed.
+            fortunePreviewLeases[character] = previewTick + 2
+        end
+    end
+    pendingFortunePreviewMessages = {}
+    for character, expires in pairs(fortunePreviewLeases) do
+        if expires <= previewTick then finishFortunePreview(character) end
+    end
+end
+
+local function selectedDesperadosLuck(character)
+    local entity = assert(Ext.Entity.Get(character), "Desperado has no entity")
+    for _, level in pairs(entity.LevelUp and entity.LevelUp.LevelUps or {}) do
+        for _, selector in pairs(level.Upgrades.Passives) do
+            for _, passive in pairs(selector.Passives) do
+                if passive == luckPassive then return true end
+            end
+        end
+    end
+    return false
+end
+
+local function reportPersistentLuck(character)
+    if reportedLuckCleanup[character] then return end
+    reportedLuckCleanup[character] = true
+    Ext.Utils.Print("[Gunslinger] WARNING: Luck remains owned after Fortune upgrade and RemovePassive: " .. character)
+end
+
+local function upgradeDesperadosLuck(character)
+    if respecInProgress[character] then return end
+    local data = database()
+    if data.fortunePreviews and data.fortunePreviews[character] then
+        if Osi.HasPassive(character, fortuneUpgradePassive) ~= 1 then return end
+        finishFortunePreview(character)
+    end
+    local hasLuck = Osi.HasPassive(character, luckPassive) == 1
+    local hasFortune = Osi.HasPassive(character, fortunePassive) == 1
+    if not hasLuck then
+        pendingLuckCleanup[character] = nil
+    end
+    if not hasFortune and (Osi.HasPassive(character, fortuneUpgradePassive) ~= 1 or
+        (not hasLuck and not selectedDesperadosLuck(character))) then return end
+    if not hasFortune then
+        Osi.AddPassive(character, fortunePassive)
+        local data = database()
+        data.fortuneUpgrades = data.fortuneUpgrades or {}
+        data.fortuneUpgrades[character] = true
+        save(data)
+    end
+    if hasLuck then
+        Osi.RemovePassive(character, luckPassive)
+        pendingLuckCleanup[character] = 2
+    end
+end
+
+local function refreshClassFeatures(character)
+    upgradeDesperadosLuck(character)
+    cleanupRemovedAbilities(character)
+end
+
+Ext.Osiris.RegisterListener("LeveledUp", 1, "after", refreshClassFeatures)
+local function finishRespec(character)
+    respecInProgress[character] = nil
+    refreshClassFeatures(character)
+end
+Ext.Osiris.RegisterListener("RespecCompleted", 1, "after", finishRespec)
+Ext.Osiris.RegisterListener("RespecCancelled", 1, "after", finishRespec)
+Ext.Osiris.RegisterListener("StartRespec", 1, "before", function(character)
+    respecInProgress[character] = true
+    finishFortunePreview(character)
+    cleanupRemovedAbilities(character)
+    pendingLuckCleanup[character] = nil
+    local data = database()
+    if not data.fortuneUpgrades or not data.fortuneUpgrades[character] then return end
+    -- Return script-granted upgrades to the original selection before the engine rebuilds the class.
+    Osi.RemovePassive(character, fortunePassive)
+    if Osi.HasPassive(character, fortuneUpgradePassive) == 1 then
+        Osi.AddPassive(character, luckPassive)
+    end
+    data.fortuneUpgrades[character] = nil
+    save(data)
+end)
 
 local function equipped(character, hand)
     local item = Osi.GetEquippedItem(character, slots[hand])
@@ -58,6 +218,21 @@ local function status(object, name, enabled)
     local present = Osi.HasActiveStatus(object, name) == 1
     if enabled and not present then Osi.ApplyStatus(object, name, -1, 1, object) end
     if not enabled and present then Osi.RemoveStatus(object, name) end
+end
+
+cleanupRemovedAbilities = function(character)
+    -- Retire All In unlocks and dynamic boosts from existing saves.
+    if Osi.HasPassive(character, "GSL_Desperado_AllInUnlock") == 1 then
+        Osi.RemovePassive(character, "GSL_Desperado_AllInUnlock")
+    end
+    local data = database()
+    local previous = data.allInBoosts and data.allInBoosts[character]
+    if previous then
+        Osi.RemoveBoosts(character, previous, 0, "GSL_AllIn", character)
+        data.allInBoosts[character] = nil
+        save(data)
+    end
+    status(character, "GSL_ALL_IN_READY", false)
 end
 
 local BonusActionPoint = "420c8df5-45c2-4253-93c2-7ec44e127930"
@@ -179,6 +354,7 @@ local function refreshNow(character, restoreAmmo)
     end
     save(data)
     updateReloadCosts(character)
+    cleanupRemovedAbilities(character)
 end
 
 local function refresh(character, restoreAmmo)
@@ -262,6 +438,9 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     if Osi.HasActiveStatus(character, "GSL_GRIT_RECOVERY_SPENT") == 1 then
         Osi.RemoveStatus(character, "GSL_GRIT_RECOVERY_SPENT")
     end
+    if Osi.HasActiveStatus(character, "GSL_HOT_STREAK_ADVANCED") == 1 then
+        Osi.RemoveStatus(character, "GSL_HOT_STREAK_ADVANCED")
+    end
     if not spell:find("GSL_", 1, true) then return end
     refresh(character, false)
     local hand, mode = Rules.ParseTinkerer(spell)
@@ -276,12 +455,10 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
         casts[character].doubleOrNothingWin = Rules.DoubleOrNothing(Ext.Math.Random(1, 20))
         casts[character].lose = not casts[character].doubleOrNothingWin
     end
-    if spell:match("^Projectile_GSL_AllIn_") then Osi.ApplyStatus(character, "GSL_ALL_IN", -1, 1, character) end
 end)
 
 local function clearShotStatuses(character, spell)
     if spell:match("^Projectile_GSL_DoubleLoad$") then Osi.RemoveStatus(character, "GSL_DOUBLE_LOAD") end
-    if spell:match("^Projectile_GSL_AllIn_") then Osi.RemoveStatus(character, "GSL_ALL_IN") end
 end
 
 local function cheatDeathsOdds(character, spell)
@@ -300,8 +477,13 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         if cast.mode then
             assert(cast.item, "Tinkerer resolved without an equipped firearm")
             local data = database()
-            local limit = Osi.HasPassive(character, "GSL_MasterTinkerer") == 1 and 2 or 1
-            Rules.Modify(assert(data.weapons[cast.item]), cast.mode, limit)
+            local state = assert(data.weapons[cast.item])
+            if cast.mode == "Remove" then
+                Rules.RemoveModifications(state)
+            else
+                local limit = Osi.HasPassive(character, "GSL_MasterTinkerer") == 1 and 2 or 1
+                Rules.Modify(state, cast.mode, limit)
+            end
             save(data)
             refresh(character, true)
         end
@@ -318,7 +500,7 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         clearShotStatuses(character, spell)
         -- Volleys hit several targets, so their bullets are spent once per cast here rather than per target in stats.
         local volley = tonumber(spell:match("^Projectile_GSL_FanningFire_(%d)$"))
-        local shots = volley and volley + 1 or (spell:match("^Projectile_GSL_AllIn_%d+$") and 1)
+        local shots = volley and volley + 1
         local volleyState = shots and cast.item and database().weapons[cast.item]
         if volleyState then
             local entry, entity = resource(character, "Main", volleyState)
@@ -339,6 +521,7 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         snapshot(character)
         refresh(character, false)
     end
+    cleanupRemovedAbilities(character)
 end)
 
 Ext.Osiris.RegisterListener("CastSpellFailed", 5, "after", function(character, spell, _, _, action)
@@ -351,6 +534,7 @@ Ext.Osiris.RegisterListener("CastSpellFailed", 5, "after", function(character, s
         snapshot(character)
         refresh(character, false)
     end
+    cleanupRemovedAbilities(character)
 end)
 
 -- Last Word's Downed replacement and the lethal hit's AttackedBy event can arrive in either order.
@@ -363,7 +547,9 @@ local function lastWordShot(character, attacker)
 end
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, _, action)
-    if applied == "GSL_LASTWORD_PENDING" then
+    if applied == hotStreakStatus then
+        clearHotStreak(character)
+    elseif applied == "GSL_LASTWORD_PENDING" then
         if recentAttackers[character] then
             lastWordShot(character, recentAttackers[character])
         else
@@ -390,6 +576,10 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
     end
 end)
 
+Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(character, removed)
+    if removed == hotStreakStatus then clearHotStreak(character) end
+end)
+
 Ext.Osiris.RegisterListener("AttackedBy", 7, "after", function(defender, _, attacker)
     recentAttackers[defender] = attacker
     if attacker and attacker ~= defender then pendingAttackTargets[attacker] = defender end
@@ -409,8 +599,52 @@ end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
     if database().owners[character] then pendingRefresh[character] = 2 end
 end)
+-- Osiris databases are nil until the story is bound (main menu, or after a failed story compile/merge).
+local function playerDatabase()
+    local ok, db = pcall(function() return Osi.DB_Players end)
+    return ok and db or nil
+end
+local function refreshLoadedSession()
+    for character in pairs(database().fortunePreviews or {}) do finishFortunePreview(character) end
+    for character in pairs(database().fortuneUpgrades or {}) do
+        if Ext.Entity.Get(character) then upgradeDesperadosLuck(character) end
+    end
+    for _, player in pairs(playerDatabase():Get(nil)) do
+        local character = player[1]
+        if Ext.Entity.Get(character) then refreshClassFeatures(character) end
+    end
+    for character in pairs(database().owners) do
+        if Ext.Entity.Get(character) then
+            upgradeDesperadosLuck(character)
+            refresh(character, true)
+        end
+    end
+end
+
 Ext.Events.Tick:Subscribe(function()
+    local players = playerDatabase()
+    if not players then return end
+    if pendingSessionRefresh then
+        pendingSessionRefresh = false
+        refreshLoadedSession()
+    end
+    updateFortunePreviews()
+    for _, player in pairs(players:Get(nil)) do
+        local character = player[1]
+        if Ext.Entity.Get(character) then cleanupRemovedAbilities(character) end
+    end
     recentAttackers = {}
+    for character, ticks in pairs(pendingLuckCleanup) do
+        if ticks > 0 then
+            pendingLuckCleanup[character] = ticks - 1
+        else
+            pendingLuckCleanup[character] = nil
+            if not respecInProgress[character] and Osi.HasPassive(character, fortunePassive) == 1 and
+                Osi.HasPassive(character, luckPassive) == 1 then
+                reportPersistentLuck(character)
+            end
+        end
+    end
     for character, ticks in pairs(pendingRefresh) do
         if ticks > 0 then
             pendingRefresh[character] = ticks - 1
@@ -423,6 +657,11 @@ Ext.Events.Tick:Subscribe(function()
     if reloadPollTicks >= 5 then
         reloadPollTicks = 0
         for character in pairs(database().owners) do updateReloadCosts(character) end
+        -- Progression passives can arrive after LeveledUp; retry independently of equipped firearms.
+        for _, player in pairs(players:Get(nil)) do
+            local character = player[1]
+            if Ext.Entity.Get(character) then upgradeDesperadosLuck(character) end
+        end
     end
 end)
 -- Arcane Reload's concentration status sits on the firearm itself, so the bullet follows the enchanted gun.
@@ -444,6 +683,7 @@ local function arcaneReload(character)
 end
 
 Ext.Osiris.RegisterListener("TurnStarted", 1, "after", function(character)
+    upgradeDesperadosLuck(character)
     status(character, "GSL_GRIT_RECOVERY_SPENT", false)
     if database().owners[character] then
         refresh(character, false)
@@ -467,8 +707,11 @@ Ext.Events.SessionLoaded:Subscribe(function()
     pendingLastWord = {}
     recentAttackers = {}
     pendingAttackTargets = {}
-    for character in pairs(database().owners) do
-        if Ext.Entity.Get(character) then refresh(character, true) end
-    end
-    Ext.Utils.Print("[Gunslinger] Persistent firearm/grit runtime loaded")
+    pendingLuckCleanup = {}
+    reportedLuckCleanup = {}
+    fortunePreviewLeases = {}
+    pendingFortunePreviewMessages = {}
+    previewTick = 0
+    -- SessionLoaded restricts Osiris calls; gameplay initialization must wait for Tick.
+    pendingSessionRefresh = true
 end)

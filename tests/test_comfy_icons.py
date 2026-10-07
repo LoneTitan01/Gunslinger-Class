@@ -9,6 +9,7 @@ from threading import Thread
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import unittest
 from unittest.mock import patch
+import xml.etree.ElementTree as ET
 import zlib
 
 
@@ -68,14 +69,14 @@ class FakeComfyHandler(BaseHTTPRequestHandler):
 class ComfyIconTests(unittest.TestCase):
     def setUp(self) -> None:
         self.catalog = icons.load_json(HERE / 'icon_prompts.json')
-        self.workflow = icons.load_json(HERE / 'Gunslinger_Icons_FLUX.json')
+        self.workflow = icons.load_json(HERE / 'icon_generation_workflow.json')
 
     def graph(self, name: str = 'GSL_MercilessShot') -> dict:
         text = icons.catalog_icons(self.catalog, 'all', [name])[0][1]
         return icons.api_graph(self.workflow, name, text, icons.icon_seed(123, name))
 
     def test_catalog_coverage_selection_and_current_edits(self) -> None:
-        self.assertEqual(len(icons.catalog_icons(self.catalog, 'all', None)), 92)
+        self.assertEqual(len(icons.catalog_icons(self.catalog, 'all', None)), 93)
         self.assertEqual(len(icons.catalog_icons(self.catalog, 'resources', None)), 6)
         self.assertEqual([name for name, _ in icons.catalog_icons(self.catalog, 'classes', None)],
                          ['Gunslinger', 'Marksman', 'Desperado', 'ArcaneGunsman'])
@@ -86,8 +87,40 @@ class ComfyIconTests(unittest.TestCase):
         with self.assertRaises(icons.GenerationError):
             icons.catalog_icons(self.catalog, 'resources', ['GSL_MercilessShot'])
 
+    def test_catalog_covers_every_registered_generated_icon(self) -> None:
+        source = ROOT / 'GunslingerClass'
+        expected = {
+            'abilities': {
+                attribute.get('value')
+                for attribute in ET.parse(
+                    source / 'Public' / 'GunslingerClass' / 'GUI' / 'Icons_GunslingerAbilities.lsx'
+                ).findall('.//attribute[@id="MapKey"]')
+            },
+            'resources': {
+                attribute.get('value')
+                for attribute in ET.parse(
+                    source / 'Public' / 'GunslingerClass' / 'ActionResourceDefinitions'
+                    / 'ActionResourceDefinitions.lsx'
+                ).findall('.//attribute[@id="Name"]')
+            },
+            'classes': {
+                attribute.get('value')
+                for attribute in ET.parse(
+                    source / 'Public' / 'GunslingerClass' / 'ClassDescriptions' / 'ClassDescriptions.lsx'
+                ).findall('.//attribute[@id="Name"]')
+            },
+        }
+        for group, registered in expected.items():
+            with self.subTest(group=group):
+                self.assertEqual(set(self.catalog[group]), registered)
+                self.assertTrue(all(subject.strip() for subject in self.catalog[group].values()))
+
     def test_api_conversion_preserves_alpha_and_sampler_wiring(self) -> None:
         graph = self.graph()
+        self.assertEqual(
+            graph['4']['inputs']['text'],
+            icons.catalog_icons(self.catalog, 'all', ['GSL_MercilessShot'])[0][1],
+        )
         self.assertEqual(graph['8']['inputs']['cfg'], 1)
         self.assertNotIn('fixed', graph['8']['inputs'].values())
         self.assertEqual(graph['12']['inputs']['mask'], ['11', 0])

@@ -2,7 +2,20 @@ local root = "GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\"
 local rules = dofile(root .. "GritRules.lua")
 local listeners, events, entities, inventory, statuses = {}, {}, {}, {}, {}
 local variables, passives, rolls, durations = {}, {}, {}, {}
+local hotStreakStacks = {}
 local doubleOrNothingAttacks = 0
+local players = {{"charlie"}}
+local interrupts = {}
+local printed = {}
+local protectedPassives = {}
+local netListeners = {}
+local allInBoosts = {}
+local allInChanges = 0
+local passiveInterrupts = {
+    GSL_Desperado_DesperadosLuckUnlock = "Interrupt_GSL_DesperadosLuck",
+    GSL_Desperado_DesperadosFortuneUnlock = "Interrupt_GSL_DesperadosFortune"
+}
+local osirisRestricted = false
 local spellStats = {
     GSL_MainHand_Flintlock_attack = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     GSL_OffHand_Flintlock_attack = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
@@ -42,6 +55,8 @@ Ext = {
         return roll
     end},
     Events = {},
+    RegisterNetListener = function(channel, callback) netListeners[channel] = callback end,
+    Json = {Parse = function(payload) return payload end},
     Stats = {
         GetStats = function()
             local names = {}
@@ -51,28 +66,50 @@ Ext = {
         Get = function(name) return spellStats[name] end,
         Sync = function() end
     },
-    Osiris = {RegisterListener = function(name, _, phase, callback) listeners[name .. ":" .. phase] = callback end},
-    Utils = {Print = function() end}
+    Osiris = {RegisterListener = function(name, arity, phase, callback)
+        assert(name ~= "CharacterKilledBy", "BG3 uses KilledBy, not the Divinity CharacterKilledBy event")
+        if name == "KilledBy" then assert(arity == 4, "BG3 KilledBy has four arguments") end
+        listeners[name .. ":" .. phase] = callback
+    end},
+    Utils = {Print = function(message) printed[#printed + 1] = message end},
+    DumpExport = function() error("Unexpected runtime debug serialization") end
 }
 for _, name in ipairs({"StatsLoaded", "SessionLoaded", "Tick"}) do
-    Ext.Events[name] = {Subscribe = function(_, callback) events[name] = callback end}
+    Ext.Events[name] = {Subscribe = function(_, callback)
+        events[name] = function(...)
+            osirisRestricted = name == "SessionLoaded" or name == "StatsLoaded"
+            local ok, err = pcall(callback, ...)
+            osirisRestricted = false
+            assert(ok, err)
+        end
+    end}
 end
 local function ammo(char, hand)
     local id = hand == "Off" and rules.OffhandResource or rules.Firearms.Flintlock.resource
     return entities[char].ActionResources.Resources[id][1]
 end
 Osi = {
+    DB_Players = {Get = function() return players end},
     GetEquippedItem = function(char, slot) return inventory[char] and inventory[char][slot] end,
     GetEquippedWeapon = function() return "melee" end,
     GetTemplate = function(item) return entities[item].template end,
     HasActiveStatus = function(id, status) return statuses[id] and statuses[id][status] and 1 or 0 end,
-    ApplyStatus = function(id, status, duration)
+    ApplyStatus = function(id, status, duration, force, source)
         durations[status] = duration
         statuses[id] = statuses[id] or {}
         statuses[id][status] = true
+        if status == "GSL_HOT_STREAK_COUNTER" then
+            assert(force == 1 and source == id,
+                "Hot Streak counter must be applied from its gunslinger")
+            hotStreakStacks[id] = duration / 6
+        end
     end,
-    RemoveStatus = function(id, status) if statuses[id] then statuses[id][status] = nil end end,
-    AddBoosts = function(char, boost)
+    RemoveStatus = function(id, status)
+        if statuses[id] then statuses[id][status] = nil end
+        if status == "GSL_HOT_STREAK_COUNTER" then hotStreakStacks[id] = nil end
+    end,
+    AddBoosts = function(char, boost, source)
+        assert(source ~= "GSL_AllIn", "Removed All In must never grant new boosts")
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
         local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
@@ -80,7 +117,13 @@ Osi = {
         entry.MaxAmount = entry.MaxAmount + tonumber(amount)
         entry.Amount = entry.Amount + tonumber(amount)
     end,
-    RemoveBoosts = function(char, boost)
+    RemoveBoosts = function(char, boost, _, source)
+        if source == "GSL_AllIn" then
+            assert(allInBoosts[char] == boost, "All In must remove exactly its previous variant")
+            allInBoosts[char] = nil
+            allInChanges = allInChanges + 1
+            return
+        end
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
         local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
@@ -90,6 +133,21 @@ Osi = {
     end,
     IsDead = function() return 0 end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
+    AddPassive = function(char, passive)
+        passives[char] = passives[char] or {}
+        passives[char][passive] = true
+        if passiveInterrupts[passive] then
+            interrupts[char] = interrupts[char] or {}
+            interrupts[char][passiveInterrupts[passive]] = true
+        end
+    end,
+    RemovePassive = function(char, passive)
+        if protectedPassives[char] and protectedPassives[char][passive] then return end
+        if passives[char] then passives[char][passive] = nil end
+        if interrupts[char] and passiveInterrupts[passive] then
+            interrupts[char][passiveInterrupts[passive]] = nil
+        end
+    end,
     UseSpell = function(char, spell, target)
         assert(char == "alice" and target == "bob")
         assert(spell == "Projectile_GSL_DoubleOrNothingAttack" or spell == "Projectile_GSL_ReactionShot")
@@ -98,6 +156,19 @@ Osi = {
         end
     end
 }
+for name, callback in pairs(Osi) do
+    if type(callback) == "function" then
+        Osi[name] = function(...)
+            assert(not osirisRestricted, "Attempted to call Osiris function in restricted context: " .. name)
+            return callback(...)
+        end
+    end
+end
+local getPlayers = Osi.DB_Players.Get
+Osi.DB_Players.Get = function(...)
+    assert(not osirisRestricted, "Attempted to query Osiris database in restricted context")
+    return getPlayers(...)
+end
 local function character(id)
     entities[id] = {
         ActionResources = {Resources = {
@@ -118,6 +189,7 @@ local function gun(id)
 end
 character("alice")
 character("bob")
+character("charlie")
 gun("first")
 entities.first.template = "a710ad68-179b-4b0e-8ef2-3b37609a3f12"
 gun("second")
@@ -197,6 +269,16 @@ assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") 
 cast("Shout_GSL_Tinkerer_MainDamage", 40)
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 1,
     "A remaining single Range upgrade must use the ordinary range boost")
+cast("Shout_GSL_Tinkerer_OffDamage", 41)
+cast("Shout_GSL_Tinkerer_OffDamage", 42)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 1,
+    "Master Tinkerer damage must be applied to the modified firearm")
+cast("Shout_GSL_Tinkerer_MainRange", 43)
+cast("Shout_GSL_Tinkerer_MainRange", 44)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1,
+    "Master Tinkerer range must be applied to the modified firearm")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
+    "Master Tinkerer range must affect attacks with the modified firearm")
 fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 ammo("alice", "Off").Amount = 2
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 4)
@@ -256,13 +338,22 @@ fire("Equipped", "after", "first", "bob")
 ticks()
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_DISABLED") == 0)
 assert(Osi.HasActiveStatus("bob", "GSL_FIREARM_MAIN_DISABLED") == 1, "Broken state must follow the physical gun")
-assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 1, "Range must follow the physical gun")
+assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
+    "Master range must follow the physical gun")
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0)
-statuses.first.GSL_TINKERER_RANGE_FLINTLOCK = nil
+statuses.first.GSL_TINKERER_MASTER_RANGE_FLINTLOCK = nil
 variables.Firearms.weapons.second.baseRange = 13.5
 entities.second.Weapon.WeaponRange = 19.5
 events.SessionLoaded()
-assert(Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 1, "Saved modification must be reapplied")
+local boundPlayers = Osi.DB_Players
+Osi.DB_Players = nil
+local printedBefore = #printed
+for _ = 1, 6 do events.Tick() end
+assert(#printed == printedBefore, "Session refresh must wait until the Osiris story is bound")
+Osi.DB_Players = boundPlayers
+ticks()
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1,
+    "Saved master modification must be reapplied")
 assert(entities.second.Weapon.WeaponRange == 13.5 and not variables.Firearms.weapons.second.baseRange,
     "Legacy Weapon component range edits must be undone")
 fire("LongRestFinished", "after")
@@ -273,7 +364,14 @@ assert(Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 0)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 1,
+    "Long rests must preserve master damage on the physical gun")
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_RANGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 0)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1)
+assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
+    "Long rests must preserve the wielder's master range bonus")
 assert(ammo("bob", "Main").Amount == 3 and ammo("alice", "Off").Amount == 3)
 fire("Unequipped", "before", "first", "bob")
 inventory.bob["Ranged Main Weapon"] = nil
@@ -281,6 +379,44 @@ fire("Unequipped", "after", "first", "bob")
 inventory.alice["Ranged Main Weapon"] = "first"
 fire("Equipped", "after", "first", "alice")
 ticks()
+cast("Shout_GSL_Tinkerer_MainCapacity", 70)
+cast("Shout_GSL_Tinkerer_MainCapacity", 71)
+fire("LongRestFinished", "after")
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_AMMO") == 1)
+assert(ammo("alice", "Main").MaxAmount == 9 and ammo("alice", "Main").Amount == 9,
+    "Long rests must refill the upgraded capacity without removing it")
+fire("UsingSpell", "before", "alice", "Shout_GSL_Tinkerer_MainRemove", "", "", 72)
+fire("CastSpellFailed", "after", "alice", "Shout_GSL_Tinkerer_MainRemove", "", "", 72)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_AMMO") == 1,
+    "A cancelled removal must leave upgrades intact")
+cast("Shout_GSL_Tinkerer_MainRemove", 73)
+assert(#variables.Firearms.weapons.first.mods == 0)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_AMMO") == 0)
+assert(ammo("alice", "Main").MaxAmount == 3 and ammo("alice", "Main").Amount == 3,
+    "Removing capacity must remove the resource boost and clamp excess bullets")
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 1,
+    "Primary removal must not affect the secondary firearm")
+cast("Shout_GSL_Tinkerer_OffRemove", 74)
+assert(#variables.Firearms.weapons.second.mods == 0)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 0)
+cast("Shout_GSL_Tinkerer_MainRange", 75)
+cast("Shout_GSL_Tinkerer_MainDamage", 76)
+cast("Shout_GSL_Tinkerer_OffRange", 77)
+cast("Shout_GSL_Tinkerer_OffRange", 78)
+cast("Shout_GSL_Tinkerer_MainRemove", 79)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0,
+    "Removal must clear mixed modifications and their wielder bonuses")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 1)
+cast("Shout_GSL_Tinkerer_OffRemove", 80)
+assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 0)
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 0)
+events.SessionLoaded()
+ticks()
+fire("LongRestFinished", "after")
+assert(#variables.Firearms.weapons.first.mods == 0 and #variables.Firearms.weapons.second.mods == 0,
+    "Removed modifications must stay removed after save/load and rest")
 fire("UsingSpell", "before", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 fire("CastSpellFailed", "after", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 assert(variables.Firearms.weapons.first.ammo == ammo("alice", "Main").Amount)
@@ -330,17 +466,6 @@ shot("Projectile_GSL_DoubleOrNothing", 53, 10)
 assert(variables.Firearms.weapons.first.misfire, "A losing Double or Nothing misfires")
 assert(Osi.HasActiveStatus("alice", "GSL_CHEAT_DEATHS_ODDS_REFUND") == 0)
 fire("LongRestFinished", "after")
-fire("UsingSpell", "before", "alice", "Projectile_GSL_AllIn_4", "", "", 54)
-assert(Osi.HasActiveStatus("alice", "GSL_ALL_IN") == 1)
-fire("CastSpellFailed", "after", "alice", "Projectile_GSL_AllIn_4", "", "", 54)
-assert(Osi.HasActiveStatus("alice", "GSL_ALL_IN") == 0)
-ammo("alice", "Main").Amount = 3
-fire("UsingSpell", "before", "alice", "Projectile_GSL_AllIn_4", "", "", 60)
-fire("CastedSpell", "after", "alice", "Projectile_GSL_AllIn_4", "", "", 60)
-assert(ammo("alice", "Main").Amount == 2, "All In spends exactly one bullet per cast")
-fire("UsingSpell", "before", "alice", "Projectile_GSL_AllIn_10", "", "", 600)
-fire("CastedSpell", "after", "alice", "Projectile_GSL_AllIn_10", "", "", 600)
-assert(ammo("alice", "Main").Amount == 1, "The 10-grit All In variant also spends one bullet")
 ammo("alice", "Main").Amount = 2
 fire("UsingSpell", "before", "alice", "Projectile_GSL_FanningFire_1", "", "", 61)
 fire("CastedSpell", "after", "alice", "Projectile_GSL_FanningFire_1", "", "", 61)
@@ -436,4 +561,265 @@ passives.carol.GSL_Feat_LongarmSpecialist_Range = nil
 fire("TurnStarted", "after", "carol")
 assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 0,
     "A failed refresh must not lock out every later refresh for that character")
-print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, all in, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery")
+local luck = "GSL_Desperado_DesperadosLuckUnlock"
+local fortune = "GSL_Desperado_DesperadosFortuneUnlock"
+local upgrade = "GSL_Desperado_FortuneUpgrade"
+character("desperado")
+Osi.AddPassive("desperado", upgrade)
+fire("LeveledUp", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 0, "Level 15 must not grant Fortune without selecting Luck")
+Osi.AddPassive("desperado", luck)
+Osi.RemovePassive("desperado", upgrade)
+fire("LeveledUp", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 0, "Luck must not upgrade before Desperado level 15")
+assert(Osi.HasPassive("desperado", luck) == 1)
+Osi.AddPassive("desperado", upgrade)
+fire("LeveledUp", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 1, "Luck upgrades to an owned Fortune class feature without a firearm")
+assert(Osi.HasPassive("desperado", luck) == 0, "The upgrade replaces Luck")
+assert(not interrupts.desperado.Interrupt_GSL_DesperadosLuck and
+    interrupts.desperado.Interrupt_GSL_DesperadosFortune, "Upgrade must retain only the Fortune reaction")
+assert(variables.Firearms.fortuneUpgrades.desperado)
+fire("LeveledUp", "after", "desperado")
+events.SessionLoaded()
+ticks()
+assert(Osi.HasPassive("desperado", fortune) == 1, "Later levels and loading must preserve the upgrade")
+fire("StartRespec", "before", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 0, "Script-granted Fortune must not survive into a new build")
+assert(Osi.HasPassive("desperado", luck) == 1, "Respec restores the original selection")
+fire("RespecCancelled", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 1 and Osi.HasPassive("desperado", luck) == 0)
+assert(not interrupts.desperado.Interrupt_GSL_DesperadosLuck and
+    interrupts.desperado.Interrupt_GSL_DesperadosFortune, "Cancelling respec must restore only the Fortune reaction")
+fire("StartRespec", "before", "desperado")
+Osi.RemovePassive("desperado", luck)
+fire("RespecCompleted", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 0, "Respeccing without Luck must leave Fortune unowned and untaken")
+Osi.AddPassive("desperado", luck)
+fire("RespecCompleted", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 1 and Osi.HasPassive("desperado", luck) == 0,
+    "Respeccing with Luck at level 15 must perform the upgrade")
+fire("StartRespec", "before", "desperado")
+Osi.RemovePassive("desperado", upgrade)
+fire("RespecCompleted", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 0, "Respeccing below Desperado level 15 must not grant Fortune")
+Osi.RemovePassive("desperado", luck)
+Osi.AddPassive("desperado", upgrade)
+Osi.AddPassive("desperado", fortune)
+fire("LeveledUp", "after", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 1, "An explicitly selected Fortune must work without Luck")
+fire("StartRespec", "before", "desperado")
+assert(Osi.HasPassive("desperado", fortune) == 1, "Only script-granted Fortune is removed by the respec listener")
+character("lateUpgrade")
+players[#players + 1] = {"lateUpgrade"}
+Osi.AddPassive("lateUpgrade", luck)
+fire("LeveledUp", "after", "lateUpgrade")
+Osi.AddPassive("lateUpgrade", upgrade)
+for _ = 1, 10 do events.Tick() end
+assert(Osi.HasPassive("lateUpgrade", fortune) == 1 and Osi.HasPassive("lateUpgrade", luck) == 0,
+    "The upgrade must recover when progression passives arrive after the level-up event")
+
+character("loadedUpgrade")
+players[#players + 1] = {"loadedUpgrade"}
+Osi.AddPassive("loadedUpgrade", luck)
+Osi.AddPassive("loadedUpgrade", upgrade)
+assert(not variables.Firearms.owners.loadedUpgrade and not variables.Firearms.fortuneUpgrades.loadedUpgrade)
+events.SessionLoaded()
+assert(Osi.HasPassive("loadedUpgrade", fortune) == 0, "SessionLoaded must defer Osiris calls until Tick")
+events.Tick()
+assert(Osi.HasPassive("loadedUpgrade", fortune) == 1 and Osi.HasPassive("loadedUpgrade", luck) == 0,
+    "Loading must upgrade eligible players who have no tracked firearm or previous upgrade")
+fire("StartRespec", "before", "loadedUpgrade")
+for _ = 1, 10 do events.Tick() end
+fire("TurnStarted", "after", "loadedUpgrade")
+assert(Osi.HasPassive("loadedUpgrade", fortune) == 0 and Osi.HasPassive("loadedUpgrade", luck) == 1,
+    "Recovery must not convert Luck while a respec is in progress")
+Osi.RemovePassive("loadedUpgrade", luck)
+fire("RespecCompleted", "after", "loadedUpgrade")
+for _ = 1, 10 do events.Tick() end
+assert(Osi.HasPassive("loadedUpgrade", fortune) == 0, "Recovery must never grant Fortune without Luck")
+character("staleLuck")
+players[#players + 1] = {"staleLuck"}
+Osi.AddPassive("staleLuck", luck)
+Osi.AddPassive("staleLuck", fortune)
+events.SessionLoaded()
+events.Tick()
+assert(Osi.HasPassive("staleLuck", luck) == 0 and Osi.HasPassive("staleLuck", fortune) == 1,
+    "Existing Fortune owners must lose leftover Luck even without an upgrade marker")
+assert(not interrupts.staleLuck.Interrupt_GSL_DesperadosLuck and
+    interrupts.staleLuck.Interrupt_GSL_DesperadosFortune, "Save-load cleanup must retain only the Fortune reaction")
+Osi.AddPassive("staleLuck", luck)
+for _ = 1, 10 do events.Tick() end
+assert(Osi.HasPassive("staleLuck", luck) == 0 and not interrupts.staleLuck.Interrupt_GSL_DesperadosLuck,
+    "Periodic recovery must remove reapplied Luck and its reaction")
+character("protectedLuck")
+character("nativeUpgrade")
+players[#players + 1] = {"nativeUpgrade"}
+entities.nativeUpgrade.LevelUp = {LevelUps = {
+    {Upgrades = {Passives = {{Passives = {luck, "GSL_Desperado_AnteUpUnlock"}}}}}
+}}
+Osi.AddPassive("nativeUpgrade", upgrade)
+fire("LeveledUp", "after", "nativeUpgrade")
+assert(Osi.HasPassive("nativeUpgrade", fortune) == 1 and Osi.HasPassive("nativeUpgrade", luck) == 0,
+    "Native progression removal must preserve the Fortune prerequisite through recorded selections")
+assert(interrupts.nativeUpgrade.Interrupt_GSL_DesperadosFortune and
+    not interrupts.nativeUpgrade.Interrupt_GSL_DesperadosLuck, "Native upgrade must only own the Fortune reaction")
+character("nativeWithoutLuck")
+players[#players + 1] = {"nativeWithoutLuck"}
+entities.nativeWithoutLuck.LevelUp = {LevelUps = {
+    {Upgrades = {Passives = {{Passives = {"GSL_Desperado_AnteUpUnlock"}}}}}
+}}
+Osi.AddPassive("nativeWithoutLuck", upgrade)
+fire("LeveledUp", "after", "nativeWithoutLuck")
+assert(Osi.HasPassive("nativeWithoutLuck", fortune) == 0, "Other grit choices must not satisfy the Fortune prerequisite")
+players[#players + 1] = {"protectedLuck"}
+protectedPassives.protectedLuck = {[luck] = true}
+entities.protectedLuck.PassiveContainer = {Passives = {"luckSource", "fortuneSource"}}
+entities.luckSource = {Passive = {PassiveId = luck}}
+entities.fortuneSource = {Passive = {PassiveId = fortune}}
+Osi.AddPassive("protectedLuck", luck)
+Osi.AddPassive("protectedLuck", upgrade)
+fire("LeveledUp", "after", "protectedLuck")
+local beforeDiagnostic = #printed
+ticks()
+assert(#printed == beforeDiagnostic + 1, "A failed Luck removal must report one warning, without debug dumps")
+assert(printed[beforeDiagnostic + 1]:find("WARNING: Luck remains owned", 1, true))
+for _ = 1, 20 do events.Tick() end
+assert(#printed == beforeDiagnostic + 1, "A failed Luck removal must not spam every tick")
+assert(Osi.HasPassive("protectedLuck", fortune) == 1, "A cleanup failure must not revoke Fortune")
+local allInPassive = "GSL_Desperado_AllInUnlock"
+character("legacyAllIn")
+players[#players + 1] = {"legacyAllIn"}
+Osi.AddPassive("legacyAllIn", allInPassive)
+local oldVariant = "UnlockSpellVariant(SpellId('Projectile_GSL_AllIn'),ModifyNumberOfTargets(AdditiveBase,6,false))"
+allInBoosts.legacyAllIn = oldVariant
+variables.Firearms.allInBoosts = {}
+variables.Firearms.allInBoosts.legacyAllIn = oldVariant
+events.SessionLoaded()
+events.Tick()
+assert(Osi.HasPassive("legacyAllIn", allInPassive) == 0, "Removed All In must be revoked from existing saves")
+assert(not allInBoosts.legacyAllIn, "Old native variants must be removed from existing saves")
+local oldContainer = "UnlockSpell(Shout_GSL_AllIn_9_Musket);IF(SpellId('Projectile_GSL_AllIn_9_Musket')):RollBonus(RangedWeaponAttack,-2)"
+allInBoosts.legacyAllIn = oldContainer
+variables.Firearms.allInBoosts.legacyAllIn = oldContainer
+Osi.ApplyStatus("legacyAllIn", "GSL_ALL_IN_READY", -1)
+events.Tick()
+assert(not allInBoosts.legacyAllIn and Osi.HasActiveStatus("legacyAllIn", "GSL_ALL_IN_READY") == 0,
+    "Old dynamic containers and ready markers must be removed from existing saves")
+local unchanged = allInChanges
+ticks()
+assert(allInChanges == unchanged, "Retired ability cleanup must be idempotent")
+local function previewCharacter(id, hasLuck, levelCount)
+    character(id)
+    players[#players + 1] = {id}
+    entities[id].LevelUp = {LevelUps = {}}
+    for _ = 1, levelCount do
+        entities[id].LevelUp.LevelUps[#entities[id].LevelUp.LevelUps + 1] = {
+            Class = "799af9fb-7ff1-4a4f-a9b3-041a16dbee0c",
+            Upgrades = {Passives = {}}
+        }
+    end
+    if hasLuck then Osi.AddPassive(id, luck) end
+end
+local function previewMessage(id, open)
+    netListeners.GSL_FortunePreview("GSL_FortunePreview", {Character = id, Open = open})
+    events.Tick()
+end
+for _, luckLevel in ipairs({5, 7, 9, 11, 13}) do
+    local id = "previewLuckAt" .. luckLevel
+    previewCharacter(id, true, 14)
+    for level = 5, 13, 2 do
+        entities[id].LevelUp.LevelUps[level].Upgrades.Passives[1] = {
+            Class = "4a518934-644d-4120-ae6a-d922cf7cac34", Level = level, SelectorId = "GritAbility",
+            Passives = {level == luckLevel and luck or "GSL_Desperado_AnteUpUnlock"}
+        }
+    end
+    previewMessage(id, true)
+    assert(Osi.HasPassive(id, fortune) == 1 and Osi.HasPassive(id, luck) == 1,
+        "Luck picked at level " .. luckLevel .. " must receive temporary preview Fortune")
+    previewMessage(id, false)
+    ticks()
+    assert(Osi.HasPassive(id, fortune) == 0 and Osi.HasPassive(id, luck) == 1,
+        "Cancellation must preserve Luck picked at level " .. luckLevel)
+    -- Exercise recorded-choice recovery after native level-15 removal, without a preview grant.
+    Osi.RemovePassive(id, luck)
+    Osi.AddPassive(id, upgrade)
+    fire("LeveledUp", "after", id)
+    assert(Osi.HasPassive(id, fortune) == 1 and Osi.HasPassive(id, luck) == 0 and
+        interrupts[id].Interrupt_GSL_DesperadosFortune and not interrupts[id].Interrupt_GSL_DesperadosLuck,
+        "Luck picked at level " .. luckLevel .. " must permanently evolve after native removal")
+    assert(entities[id].LevelUp.LevelUps[luckLevel].Upgrades.Passives[1].Passives[1] == luck,
+        "Upgrading must preserve the original Luck selection")
+end
+previewCharacter("previewCancel", true, 14)
+previewMessage("previewCancel", true)
+assert(Osi.HasPassive("previewCancel", fortune) == 1 and Osi.HasPassive("previewCancel", luck) == 1,
+    "Preview must own Fortune before confirmation without retiring Luck early")
+assert(variables.Firearms.fortunePreviews.previewCancel and not variables.Firearms.fortuneUpgrades.previewCancel)
+ticks()
+assert(Osi.HasPassive("previewCancel", luck) == 1, "Periodic upgrade checks must leave an unconfirmed build unchanged")
+previewMessage("previewCancel", false)
+ticks()
+assert(Osi.HasPassive("previewCancel", fortune) == 0 and Osi.HasPassive("previewCancel", luck) == 1,
+    "Cancelling must revoke temporary Fortune and preserve Luck")
+assert(not interrupts.previewCancel.Interrupt_GSL_DesperadosFortune)
+previewMessage("previewCancel", true)
+events.SessionLoaded()
+events.Tick()
+assert(Osi.HasPassive("previewCancel", fortune) == 0, "Loading must clear saved unconfirmed grants")
+
+previewCharacter("previewConfirm", true, 14)
+previewMessage("previewConfirm", true)
+Osi.AddPassive("previewConfirm", upgrade)
+Osi.RemovePassive("previewConfirm", luck)
+fire("LeveledUp", "after", "previewConfirm")
+previewMessage("previewConfirm", false)
+ticks()
+assert(Osi.HasPassive("previewConfirm", fortune) == 1 and Osi.HasPassive("previewConfirm", luck) == 0,
+    "Confirmation must retain Fortune and retire Luck")
+assert(variables.Firearms.fortuneUpgrades.previewConfirm and not variables.Firearms.fortunePreviews.previewConfirm)
+
+previewCharacter("previewWithoutLuck", false, 14)
+previewMessage("previewWithoutLuck", true)
+assert(Osi.HasPassive("previewWithoutLuck", fortune) == 0, "The server must reject preview ownership without Luck")
+previewCharacter("previewTooEarly", true, 13)
+previewMessage("previewTooEarly", true)
+assert(Osi.HasPassive("previewTooEarly", fortune) == 0, "The server must reject preview ownership below class level 14")
+previewCharacter("previewOwned", true, 14)
+Osi.AddPassive("previewOwned", fortune)
+previewMessage("previewOwned", true)
+previewMessage("previewOwned", false)
+ticks()
+assert(Osi.HasPassive("previewOwned", fortune) == 1, "Cancellation must never revoke pre-existing Fortune")
+previewCharacter("previewDisconnect", true, 14)
+previewMessage("previewDisconnect", true)
+for _ = 1, 601 do events.Tick() end
+assert(Osi.HasPassive("previewDisconnect", fortune) == 0 and Osi.HasPassive("previewDisconnect", luck) == 1,
+    "A lost client must not leave an unconfirmed Fortune grant behind")
+previewCharacter("previewHeartbeat", true, 14)
+previewMessage("previewHeartbeat", true)
+for _ = 1, 450 do events.Tick() end
+previewMessage("previewHeartbeat", true)
+for _ = 1, 450 do events.Tick() end
+assert(Osi.HasPassive("previewHeartbeat", fortune) == 1, "Renewal must keep Fortune owned while the chooser stays open")
+fire("StartRespec", "before", "previewHeartbeat")
+assert(Osi.HasPassive("previewHeartbeat", fortune) == 0, "Starting respec must clear any unrelated preview grant")
+fire("RespecCancelled", "after", "previewHeartbeat")
+Osi.ApplyStatus("alice", "GSL_HOT_STREAK_COUNTER", 12, 1, "alice")
+variables.Firearms.hotStreaks = {alice = 3}
+Osi.ApplyStatus("alice", "GSL_HOT_STREAK", -1, 1, "alice")
+fire("StatusApplied", "after", "alice", "GSL_HOT_STREAK", "", 0)
+assert(not listeners["KilledBy:after"], "Hot Streak recasts must not use a kill counter")
+assert(hotStreakStacks.alice == nil, "Starting redesigned Hot Streak must clear the old counter")
+assert(variables.Firearms.hotStreaks.alice == nil, "Starting redesigned Hot Streak must clear saved kill counts")
+Osi.ApplyStatus("alice", "GSL_HOT_STREAK_ADVANCED", -1, 1, "alice")
+fire("UsingSpell", "before", "alice", "Projectile_MainHandAttack", "", "", 201)
+assert(Osi.HasActiveStatus("alice", "GSL_HOT_STREAK_ADVANCED") == 0,
+    "Regular attacks must re-arm Hot Streak's once-per-attack advancement")
+Osi.ApplyStatus("alice", "GSL_HOT_STREAK_COUNTER", 12, 1, "alice")
+Osi.RemoveStatus("alice", "GSL_HOT_STREAK")
+fire("StatusRemoved", "after", "alice", "GSL_HOT_STREAK", "", 0)
+assert(hotStreakStacks.alice == nil, "Ending Hot Streak must clear any legacy counter")
+print("Fortune preview ownership passed: eligibility, ownership before confirmation, cancellation, confirmation, load cleanup, existing ownership, lost client and renewal")
+print("Removed All In cleanup passed: saved passive, native variant, dynamic container, ready marker and idempotence")
+print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec and persistent Luck diagnostics")

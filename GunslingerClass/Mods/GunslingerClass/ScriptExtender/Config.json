@@ -1,5 +1,5 @@
 {
-    "RequiredVersion": 20,
+    "RequiredVersion": 29,
     "ModTable": "GunslingerClass",
     "FeatureFlags": ["Lua"]
 }

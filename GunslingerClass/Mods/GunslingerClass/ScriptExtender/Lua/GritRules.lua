@@ -15,6 +15,7 @@ function Rules.ParseTinkerer(spell)
     local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Capacity)$")
     if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Damage)$") end
     if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Range)$") end
+    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Remove)$") end
     if hand ~= "Main" and hand ~= "Off" then return nil end
     return hand, mode
 end
@@ -70,6 +71,12 @@ function Rules.Modify(state, mode, limit)
     state.ammo = math.min(state.ammo or 0, Rules.Capacity(state))
 end
 
+function Rules.RemoveModifications(state)
+    state.mode = nil
+    state.mods = {}
+    state.ammo = math.min(state.ammo or 0, Rules.Capacity(state))
+end
+
 function Rules.Misfire(state, doubleLoad)
     state.broken = state.broken or doubleLoad or state.misfire == true
     state.misfire = true
@@ -104,8 +111,6 @@ function Rules.DoubleOrNothing(roll)
 end
 
 function Rules.LongRest(state)
-    state.mode = nil
-    state.mods = {}
     state.misfire = false
     state.broken = false
     state.ammo = Rules.Capacity(state)

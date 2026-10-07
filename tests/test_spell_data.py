@@ -122,9 +122,8 @@ class SpellDataTests(unittest.TestCase):
             'Shout_GSL_HailOfLead': 'Target_Volley',
             'Projectile_GSL_FinalJudgement': 'Projectile_SneakAttack',
             'Shout_GSL_AnteUp': 'Target_Bless',
-            'Projectile_GSL_DoubleOrNothing': 'Projectile_SneakAttack',
+            'Projectile_GSL_DoubleOrNothing': 'Shout_SecondWind',
             'Shout_GSL_DeadMansHand': 'Target_Bane',
-            'Projectile_GSL_AllIn_8': 'Target_Volley',
             'Target_GSL_HighNoon': 'Target_HuntersMark',
         }
         for name, source in sources.items():
@@ -132,6 +131,9 @@ class SpellDataTests(unittest.TestCase):
                 fields = self.spell(name)
                 expected = resolve_spell(source, {}, vanilla)[0]
                 for key in ('SpellAnimation', 'PrepareEffect', 'CastEffect', 'CastSound'):
+                    if name == 'Projectile_GSL_DoubleOrNothing' and key in ('PrepareEffect', 'CastEffect'):
+                        self.assertFalse(fields.get(key, ''), key)
+                        continue
                     if key == 'CastSound' and name.startswith('Projectile_GSL_'):
                         continue
                     self.assertEqual(fields.get(key, ''), expected.get(key, ''), key)
@@ -533,6 +535,7 @@ class SpellDataTests(unittest.TestCase):
         self.assertEqual(fields['TargetConditions'], 'not Item() and not Dead()')
         self.assertEqual(fields['CycleConditions'], 'Enemy() and not Dead()')
         self.assertIn('RangeIgnoreVerticalThreshold', fields['SpellFlags'].split(';'))
+        self.assertEqual(fields['SpellSuccess'], 'ApplyStatus(BLINDED,100,3)')
 
     def test_firearm_base_ranges_and_straight_projectiles(self) -> None:
         ranges = {'Flintlock': (45, 1350), 'Blunderbuss': (25, 750), 'Musket': (80, 2400)}

@@ -13,7 +13,7 @@ multi-target attack timing, and reaction UI still require the acceptance checks
 at the end. In particular, Last Word and suppression of existing blindness must
 not be treated as certified full parity yet.
 
-BG3 Script Extender is now **required**, with the declared minimum version 20.
+BG3 Script Extender is now **required**, with the declared minimum version 29 for the Fortune chooser's read-only native row wrapper.
 It is not a PAK dependency with a fabricated module UUID: the requirement is
 declared in [Config.json](GunslingerClass/Mods/GunslingerClass/ScriptExtender/Config.json)
 and documented in the README.
@@ -59,14 +59,14 @@ action retains its separate ammunition pool.
 | Roll the Bones | D7 | Bonus action, 1 grit; server d6 picks Bust/Hit/Jackpot status for 12 s. | Bust is -1d4 to hit, not lost grit. Jackpot restores 1 grit. |
 | Duck and Weave | D7 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
 | Cheat Death's Odds | D7 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
-| Hot Hand | D7 | Native `OnCastHit` interrupt, 2 grit and no Reaction cost, on your own firearm hit: next firearm attack crits on 18-20. | Same trigger shape as Double or Nothing; Cheat Death's Odds refunds through the interrupt functor. |
-| Double or Nothing | D11 | 2 grit; on a server d20 result of 11+, makes a free firearm attack against the original target; otherwise the gun misfires. | The additional attack has its own attack roll and spends one bullet, but no action, grit, or Reaction. |
+| Hot Hand | D7 | Once-per-turn native `OnCastHit` interrupt, 2 grit and no Reaction cost, on your own firearm hit: next firearm attack crits on 18-20. | Independent used marker resets on turn; consuming the buff does not refresh the ability. Cheat Death's Odds refunds through the interrupt functor. |
+| Double or Nothing | D11 | Once per turn, 2 grit; on a server d20 result of 11+, makes a free firearm attack against the original target; otherwise the gun misfires. | Independent used marker resets on turn, even after a failed roll. The additional attack has its own attack roll and spends one bullet, but no action, grit, or Reaction. |
 | Quick on the Draw | D11 | Native interrupt, Reaction + 2 grit, when an enemy within 9 m attacks. Cancels the attack (`Counterspell()`), refunds it to the attacker, then shoots. | Triggers on an attack, not on initiative. |
 | Ricochet Shot | D11 | Action, 3 grit and 1 bullet; weapon attack chains from the first enemy to up to three more, dealing half damage on each ricochet. | Follows the vanilla Arrow of Ricochet projectile chain. |
 | Dead Man's Hand | D15 | Below 25% HP, 3 grit: next firearm hit this turn is a crit. | No two-gun attack. |
-| All In | D18 | Linked 3-8 grit variants; that many shots at -2, one bullet. | Capped at 8 grit. |
-| Desperado's Fortune | D15 | If Desperado's Luck is known, it upgrades automatically at level 15 and removes the Luck passive; once per turn, 1 grit: +1d8 to a firearm attack roll or saving throw. | No grit selection or cost for the upgrade; the Luck interrupt is suppressed while Fortune or High Noon is active. |
+| Desperado's Fortune | D15 | If Desperado's Luck is known, it upgrades automatically after completing level 15 and replaces Luck with the highlighted Fortune class feature; shows as taken in level-15+ pools only while that feature is owned; once per turn, 1 grit: +1d8 after a missed firearm attack or failed saving throw. | No grit selection or cost for the upgrade. Without Luck, Fortune is an untaken grit selection. Respec rebuilds the conditional upgrade; the Luck interrupt is suppressed while Fortune or High Noon is active. |
 | High Noon | D18 | Bonus action, 5 grit, 3 turns: +20 to hit and crit on 17-20 against the target; firearm attacks deal +1d8 damage. Once per long rest. | `RollBonus(Attack,20)` approximates "only a natural 1 misses". |
+
 
 "D" marks Desperado-only unlock levels.
 
@@ -91,7 +91,7 @@ ability defect:
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
   plus three new abilities at 3; Double Load, Close Call plus four more at 7;
   Last Word plus two at 11; Dead Man's Hand at 15 (Fortune upgrades Luck
-  automatically if known); and All In and High Noon at 18. These remain
+  automatically if known); and High Noon at 18. These remain
   selectable unlock choices.
 - `GSL_GritRecovery` uses native firearm-hit/critical/killing-blow conditions to
   restore one grit. A hit that is both critical and lethal satisfies one OR
@@ -191,7 +191,7 @@ Validation completed for this update:
 
 - 75 Python regression tests passed.
 - Both Lua rule and mocked runtime suites passed, including the new gamble
-  rolls, Violent Shot misfires, All In, Roll the Bones and Cheat Death refunds.
+  rolls, Violent Shot misfires, Roll the Bones and Cheat Death refunds.
 - XML/layout/localization checks passed for 23 XML files; local stats/reference
   validation passed for 157 custom spells.
 - Editor diagnostics reported no errors in the changed Python files.
@@ -245,8 +245,8 @@ Before treating the new build as gameplay-certified:
     clear after the next attack, and Jackpot never exceeds maximum grit.
 15. Cheat Death's Odds: refunds once for 2+ grit casts and interrupts while
     below half HP, and never for 1-grit abilities or above half HP.
-16. Piercing Round, Hail of Lead and All In: check targeting, per-shot
-    rolls, ammunition spent, and that All In's variants match current grit.
+16. Piercing Round and Hail of Lead: check targeting, per-shot rolls, and
+    ammunition spent.
 17. Final Judgement, Dead Man's Hand and High Noon: check HP
     thresholds, guaranteed/expanded crits, and
     that Desperado's Luck is hidden while Fortune or High Noon is active.

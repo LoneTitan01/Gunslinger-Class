@@ -82,7 +82,7 @@ class IconDataTests(unittest.TestCase):
                 self.assertEqual(struct.unpack_from('>II', png, 16), (size, size))
 
     def test_atlas_cells_are_unique_and_use_expected_slots(self) -> None:
-        self.assertEqual(len(self.cells), 82)
+        self.assertEqual(len(self.cells), 83)
         coordinates = set()
         for cell in self.cells:
             column = round(float(cell['U1']) * 32)
@@ -121,7 +121,12 @@ class IconDataTests(unittest.TestCase):
 
     def test_resource_icons_match_resource_names_in_all_ui_states(self) -> None:
         resources = ET.parse(PUBLIC / 'ActionResourceDefinitions' / 'ActionResourceDefinitions.lsx')
-        names = [a.get('value') for a in resources.findall('.//attribute[@id="Name"]')]
+        names = [
+            node.find('attribute[@id="Name"]').get('value')
+            for node in resources.findall('.//node[@id="ActionResourceDefinition"]')
+            if node.find('attribute[@id="IsHidden"]') is None
+            or node.find('attribute[@id="IsHidden"]').get('value') != 'true'
+        ]
         self.assertEqual(len(names), 6)
         gui = SOURCE / 'Mods' / 'GunslingerClass' / 'GUI'
         metadata = ET.parse(gui / 'metadata.lsx')
