@@ -505,21 +505,36 @@ class GritDataTests(unittest.TestCase):
             for menu in (plain, rapid):
                 self.assertEqual(menu['SpellFlags'], 'IsLinkedSpellContainer')
                 self.assertEqual(menu['UseCosts'], '')
-            self.assertEqual(plain['ContainerSpells'], f'Shout_GSL_FieldRepair_{hand}')
+                slot = 'RangedMainHand' if hand == 'Main' else 'RangedOffHand'
+                item = f'GetItemInEquipmentSlot(EquipmentSlot.{slot},context.Source)'
+                self.assertEqual(menu['RequirementConditions'],
+                                 f"HasStatus('GSL_FIREARM_ITEM_MISFIRED',{item}) and "
+                                 f"not HasStatus('GSL_FIREARM_ITEM_DESTROYED',{item})")
+            self.assertEqual(plain['ContainerSpells'],
+                             f'Shout_GSL_FieldRepair_{hand};Shout_GSL_RapidRepair_{hand}')
             self.assertEqual(rapid['ContainerSpells'],
                              f'Shout_GSL_FieldRepair_{hand}_R;Shout_GSL_RapidRepair_{hand}')
-            self.assertEqual(self.fields(f'GSL_REPAIR_MENU_{up}')['Boosts'], f'UnlockSpell(Shout_GSL_Repair_{hand})')
-            self.assertEqual(self.fields(f'GSL_REPAIR_MENU_{up}_RAPID')['Boosts'],
-                             f'UnlockSpell(Shout_GSL_Repair_{hand}_Rapid)')
+            for suffix, spell_suffix in (('', ''), ('_RAPID', '_Rapid')):
+                status = self.fields(f'GSL_REPAIR_MENU_{up}{suffix}')
+                passive_name = f'GSL_Firearm_Misfired_{hand}{spell_suffix}'
+                self.assertEqual(status['Passives'], passive_name)
+                self.assertEqual(status['Boosts'], '')
+                self.assertIn('DisablePortraitIndicator', status['StatusPropertyFlags'])
+                self.assertIn('IsHidden', self.fields(passive_name)['Properties'])
+                self.assertNotIn('UnlockSpell', self.fields(passive_name)['Boosts'])
             for name, container in ((f'Shout_GSL_FieldRepair_{hand}', f'Shout_GSL_Repair_{hand}'),
                                     (f'Shout_GSL_FieldRepair_{hand}_R', f'Shout_GSL_Repair_{hand}_Rapid')):
                 fields = self.fields(name)
+                self.assertEqual(fields['RequirementConditions'], plain['RequirementConditions'])
                 self.assertEqual(fields['SpellContainerID'], container)
                 self.assertEqual(fields['UseCosts'], 'ActionPoint:1')
                 self.assertEqual(fields['SpellRoll'], 'SkillCheck(Skill.SleightOfHand,15)')
                 self.assertEqual(fields['SpellSuccess'], f'ApplyStatus(SELF,GSL_FIELD_REPAIR_{up}_DONE,100,1)')
             fields = self.fields(f'Shout_GSL_RapidRepair_{hand}')
-            self.assertEqual(fields['SpellContainerID'], f'Shout_GSL_Repair_{hand}_Rapid')
+            self.assertEqual(fields['RequirementConditions'],
+                             "HasPassive('GSL_RapidRepairUnlock',context.Source) and " +
+                             plain['RequirementConditions'])
+            self.assertEqual(fields['SpellContainerID'], f'Shout_GSL_Repair_{hand}')
             self.assertEqual(fields['UseCosts'], 'BonusActionPoint:1;GunslingerGrit:1')
             self.assertEqual(fields['SpellRoll'], 'SkillCheck(Skill.SleightOfHand,18)')
             self.assertEqual(fields['SpellSuccess'], f'ApplyStatus(SELF,GSL_REPAIR_{up}_DONE,100,1)')
@@ -1002,23 +1017,21 @@ class GritDataTests(unittest.TestCase):
         self.assertFalse(any('GSL_TinkererUnlock' in a.get('value', '') for a in lists))
 
     def test_misfire_is_a_to_hit_penalty_not_a_firing_lock(self) -> None:
-        self.assertIn('RollBonus(RangedWeaponAttack,-2)', self.fields('GSL_FIREARM_MAIN_MISFIRED')['Boosts'])
-        self.assertIn('RollBonus(RangedOffHandWeaponAttack,-2)', self.fields('GSL_FIREARM_OFF_MISFIRED')['Boosts'])
-        self.assertNotIn('Disadvantage', self.fields('GSL_MISFIRE')['Boosts'])
-        self.assertNotIn('-99', self.fields('GSL_MISFIRE')['Boosts'])
+        for trigger in ('GSL_MISFIRE', 'GSL_DOUBLE_LOAD_BROKEN'):
+            fields = self.fields(trigger)
+            self.assertEqual(fields['Boosts'], '')
+            for hidden in ('DisableCombatlog', 'DisablePortraitIndicator', 'InstantlyDisappears'):
+                self.assertIn(hidden, fields['StatusPropertyFlags'])
         for hand in ('MAIN', 'OFF'):
             self.assertEqual(self.fields(f'GSL_FIREARM_{hand}_DISABLED')['Boosts'], '')
             self.assertIn('DisablePortraitIndicator', self.fields(f'GSL_FIREARM_{hand}_DISABLED')['StatusPropertyFlags'])
-        # The penalty is a character BOOST status (like vanilla Archery's per-hand RollBonus), so the hit-chance
-        # breakdown and combat log name it; each hand only penalises its own attack roll type.
-        for hand, roll, other in (('MAIN', 'RangedWeaponAttack', 'RangedOffHandWeaponAttack'),
-                                  ('OFF', 'RangedOffHandWeaponAttack', 'RangedWeaponAttack')):
-            fields = self.fields(f'GSL_FIREARM_{hand}_MISFIRED')
-            self.assertEqual(fields['StatusType'], 'BOOST')
-            self.assertTrue(fields['DisplayName'] and fields['Description'] and fields['Icon'])
-            self.assertNotIn(f'RollBonus({other},', fields['Boosts'])
-            for hidden in ('DisableCombatlog', 'DisablePortraitIndicator'):
-                self.assertNotIn(hidden, fields.get('StatusPropertyFlags', ''))
+        for hand, roll, other in (('Main', 'RangedWeaponAttack', 'RangedOffHandWeaponAttack'),
+                                  ('Off', 'RangedOffHandWeaponAttack', 'RangedWeaponAttack')):
+            for suffix in ('', '_Rapid'):
+                fields = self.fields(f'GSL_Firearm_Misfired_{hand}{suffix}')
+                self.assertTrue(fields['DisplayName'] and fields['Description'] and fields['Icon'])
+                self.assertIn(f'RollBonus({roll},-2)', fields['Boosts'])
+                self.assertNotIn(f'RollBonus({other},', fields['Boosts'])
         self.assertEqual(self.fields('GSL_FIREARM_ITEM_MISFIRED').get('Boosts', ''), '')
         # Basic shots keep the vanilla main-hand/off-hand attack rolls the boosts target.
         self.assertEqual(self.fields('Projectile_GSL_FirearmAttack')['SpellRoll'], 'Attack(AttackType.RangedWeaponAttack)')

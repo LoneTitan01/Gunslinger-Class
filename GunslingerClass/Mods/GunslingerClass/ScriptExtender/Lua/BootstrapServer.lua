@@ -254,6 +254,11 @@ end
 local function applyItem(item, state)
     status(item, "GSL_FIREARM_ITEM_MISFIRED", state.misfire and not state.broken)
     status(item, "GSL_FIREARM_ITEM_DESTROYED", state.broken)
+    for slot in pairs(slots) do
+        -- Item status passives do not grant their spells to the wielder.
+        status(item, "GSL_REPAIR_MENU_" .. slot:upper(), false)
+        status(item, "GSL_REPAIR_MENU_" .. slot:upper() .. "_RAPID", false)
+    end
     local capacityCount = Rules.ModCount(state, "Capacity")
     status(item, "GSL_TINKERER_CAPACITY", capacityCount == 1)
     status(item, "GSL_TINKERER_MASTER_AMMO", capacityCount >= 2)
@@ -298,6 +303,8 @@ local function refreshNow(character, restoreAmmo)
     local data = database()
     local owner = data.owners[character] or {}
     data.owners[character] = owner
+    status(character, "GSL_MISFIRE", false)
+    status(character, "GSL_DOUBLE_LOAD_BROKEN", false)
     for hand in pairs(slots) do
         local item, kind = equipped(character, hand)
         local changed = owner[hand] ~= item
@@ -317,8 +324,8 @@ local function refreshNow(character, restoreAmmo)
         end
         owner[hand] = item
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DISABLED", state and state.broken)
-        status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", state and state.misfire and not state.broken)
-        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", state and state.broken)
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", false)
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", false)
         if hand == "Off" then
             local rangeCount = state and Rules.ModCount(state, "Range") or 0
             status(character, "GSL_TINKERER_OFF_RANGE", rangeCount == 1)
@@ -335,11 +342,6 @@ local function refreshNow(character, restoreAmmo)
                     rangeCount >= 2)
             end
         end
-        local repairable = state and state.misfire and not state.broken
-        -- Each misfired hand gets its own Repair menu; Rapid Repair joins it once the passive is known.
-        local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
-        status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
-        status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", rapid)
         if state then
             applyItem(item, state)
             local entry, entity = resource(character, hand, state)
@@ -351,6 +353,10 @@ local function refreshNow(character, restoreAmmo)
                 state.ammo = math.min(entry.Amount, Rules.Capacity(state))
             end
         end
+        local repairable = state and state.misfire and not state.broken
+        local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", rapid)
     end
     save(data)
     updateReloadCosts(character)
@@ -378,22 +384,46 @@ end
 local ammoSpells = {Zone_GSL_LineEmUp = true, Zone_GSL_PiercingRound = true, Shout_GSL_HailOfLead = true}
 local rollTheBones = {"GSL_RTB_BUST", "GSL_RTB_HIT", "GSL_RTB_JACKPOT"}
 
+local function workingFirearmCondition(hand, character)
+    local slot = hand == "Off" and "RangedOffHand" or "RangedMainHand"
+    return "not HasStatus('GSL_FIREARM_ITEM_DESTROYED',GetItemInEquipmentSlot(EquipmentSlot." ..
+        slot .. "," .. character .. "))"
+end
+
+local function requireWorkingFirearm(stat, field, hand, character)
+    local condition = workingFirearmCondition(hand, character)
+    local previous = stat[field] or ""
+    if not previous:find(condition, 1, true) then
+        stat[field] = (previous ~= "" and "(" .. previous .. ") and " or "") .. condition
+    end
+end
+
 Ext.Events.StatsLoaded:Subscribe(function()
     -- Every magical firearm has its own root template; map them all from their weapon stats.
     for _, name in ipairs(Ext.Stats.GetStats("Weapon")) do
         local kind = name:match("^WPN_GSL_(%a+)")
         local root = kind and Rules.Firearms[kind] and Ext.Stats.Get(name).RootTemplate
-        if root and root ~= "" then templates[root:lower()] = kind end
+        if root and root ~= "" then
+            templates[root:lower()] = kind
+            local weapon = Ext.Stats.Get(name)
+            -- Fused guns can override their base gun's equipment boosts.
+            for _, hand in ipairs(kind == "Flintlock" and {"Main", "Off"} or {"Main"}) do
+                local field = "BoostsOnEquip" .. hand .. "Hand"
+                local unlock = "UnlockSpell(Shout_GSL_Repair_" .. hand .. ")"
+                local boosts = weapon[field] or ""
+                if not boosts:find(unlock, 1, true) then
+                    weapon[field] = (boosts ~= "" and boosts .. ";" or "") .. unlock
+                end
+            end
+            Ext.Stats.Sync(name)
+        end
     end
     for _, name in ipairs(Ext.Stats.GetStats("SpellData")) do
         local spell = Ext.Stats.Get(name)
-        if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or ammoSpells[name] then
-            local hand = name:find("OffHand", 1, true) and "OFF" or "MAIN"
-            local condition = "not HasStatus('GSL_FIREARM_" .. hand .. "_DISABLED',context.Source)"
-            if not spell.RequirementConditions:find("GSL_FIREARM_" .. hand .. "_DISABLED", 1, true) then
-                if spell.RequirementConditions ~= "" then condition = "(" .. spell.RequirementConditions .. ") and " .. condition end
-                spell.RequirementConditions = condition
-            end
+        if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or
+            name:match("^Zone_GSL_Scattershot") or ammoSpells[name] then
+            local hand = name:find("OffHand", 1, true) and "Off" or "Main"
+            requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
             if ammoSpells[name] then
                 local ready = {}
                 local costs = {}
@@ -424,12 +454,19 @@ Ext.Events.StatsLoaded:Subscribe(function()
                     costs[#costs + 1] = "IF(" .. passive .. "):UseActionResource(SELF," .. ammo .. ",1,0)"
                 end
             end
-            local condition = "(not (" .. table.concat(equippedGun, " or ") .. ") or (not HasStatus('GSL_FIREARM_" ..
-                (offhand and "OFF" or "MAIN") .. "_DISABLED',context.Source) and (" .. table.concat(ready, " or ") .. ")))"
+            local condition = "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
+                workingFirearmCondition(offhand and "Off" or "Main", "context.Source") ..
+                " and (" .. table.concat(ready, " or ") .. ")))"
             spell.RequirementConditions = (spell.RequirementConditions ~= "" and "(" .. spell.RequirementConditions .. ") and " or "") .. condition
             spell.SpellProperties = (spell.SpellProperties ~= "" and spell.SpellProperties .. ";" or "") .. table.concat(costs, ";")
             Ext.Stats.Sync(name)
         end
+    end
+    for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
+        "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do
+        local interrupt = assert(Ext.Stats.Get(name), "Missing firearm interrupt: " .. name)
+        requireWorkingFirearm(interrupt, "Conditions", "Main", "context.Observer")
+        Ext.Stats.Sync(name)
     end
 end)
 
@@ -490,7 +527,9 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         if spell == "Projectile_GSL_DoubleOrNothing" then
             local target = pendingAttackTargets[character]
             pendingAttackTargets[character] = nil
-            if cast.doubleOrNothingWin then
+            local item = equipped(character, "Main")
+            if cast.doubleOrNothingWin and item and
+                Osi.HasActiveStatus(item, "GSL_FIREARM_ITEM_DESTROYED") == 0 then
                 target = assert(target, "Double or Nothing resolved without its triggering attack target")
                 if Osi.IsDead(target) == 0 then
                     Osi.UseSpell(character, "Projectile_GSL_DoubleOrNothingAttack", target)
@@ -541,7 +580,10 @@ end)
 local function lastWordShot(character, attacker)
     pendingLastWord[character] = nil
     Osi.RemoveStatus(character, "GSL_LASTWORD_PENDING")
-    if attacker and attacker ~= character and Osi.IsDead(character) == 0 and Osi.IsDead(attacker) == 0 then
+    local item = equipped(character, "Main")
+    if attacker and attacker ~= character and item and
+        Osi.HasActiveStatus(item, "GSL_FIREARM_ITEM_DESTROYED") == 0 and
+        Osi.IsDead(character) == 0 and Osi.IsDead(attacker) == 0 then
         Osi.UseSpell(character, "Projectile_GSL_ReactionShot", attacker)
     end
 end
@@ -593,8 +635,16 @@ Ext.Osiris.RegisterListener("Equipped", 2, "after", function(_, character)
         pendingRefresh[character] = 2
     end
 end)
-Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(_, character)
+Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(item, character)
     snapshot(character)
+    for hand in pairs(slots) do
+        if equipped(character, hand) == item then
+            status(character, "GSL_REPAIR_MENU_" .. hand:upper(), false)
+            status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", false)
+        end
+    end
+    local state = database().weapons[item]
+    if state then applyItem(item, state) end
 end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
     if database().owners[character] then pendingRefresh[character] = 2 end
