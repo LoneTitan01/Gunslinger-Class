@@ -507,14 +507,14 @@ class SpellDataTests(unittest.TestCase):
 
     def test_firearm_class_actions_listed_on_weapon_tooltips(self) -> None:
         expected = {
-            ('Flintlock', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Flintlock'],
+            ('Flintlock', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Flintlock', 'Shout_GSL_Repair_Main'],
             ('Flintlock', 'BoostsOnEquipOffHand'): [
-                'Shout_GSL_Reload_OffhandFlintlock', 'Shout_GSL_Reload_DualFlintlock',
+                'Shout_GSL_Reload_OffhandFlintlock', 'Shout_GSL_Reload_DualFlintlock', 'Shout_GSL_Repair_Off',
             ],
             ('Blunderbuss', 'BoostsOnEquipMainHand'): [
-                'Shout_GSL_Reload_Blunderbuss', 'Zone_GSL_Scattershot',
+                'Shout_GSL_Reload_Blunderbuss', 'Zone_GSL_Scattershot', 'Shout_GSL_Repair_Main',
             ],
-            ('Musket', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Musket'],
+            ('Musket', 'BoostsOnEquipMainHand'): ['Shout_GSL_Reload_Musket', 'Shout_GSL_Repair_Main'],
         }
         for (weapon, field), spells in expected.items():
             with self.subTest(weapon=weapon, field=field):
@@ -694,6 +694,10 @@ class SpellDataTests(unittest.TestCase):
             fields['SpellSuccess'].startswith(
                 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType);'
             )
+        )
+        self.assertEqual(
+            fields['TooltipDamageList'],
+            'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)',
         )
         self.assertIn(
             "IF(HasPassive('GSL_Blunderbuss_SoulCoin_Passive',context.Source)):DealDamage(1d4,Fire)",

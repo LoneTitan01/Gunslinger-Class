@@ -510,7 +510,8 @@ class GritDataTests(unittest.TestCase):
                 self.assertEqual(menu['RequirementConditions'],
                                  f"HasStatus('GSL_FIREARM_ITEM_MISFIRED',{item}) and "
                                  f"not HasStatus('GSL_FIREARM_ITEM_DESTROYED',{item})")
-            self.assertEqual(plain['ContainerSpells'], f'Shout_GSL_FieldRepair_{hand}')
+            self.assertEqual(plain['ContainerSpells'],
+                             f'Shout_GSL_FieldRepair_{hand};Shout_GSL_RapidRepair_{hand}')
             self.assertEqual(rapid['ContainerSpells'],
                              f'Shout_GSL_FieldRepair_{hand}_R;Shout_GSL_RapidRepair_{hand}')
             for suffix, spell_suffix in (('', ''), ('_RAPID', '_Rapid')):
@@ -518,8 +519,9 @@ class GritDataTests(unittest.TestCase):
                 passive_name = f'GSL_Firearm_Misfired_{hand}{spell_suffix}'
                 self.assertEqual(status['Passives'], passive_name)
                 self.assertEqual(status['Boosts'], '')
-                self.assertIn(f'UnlockSpell(Shout_GSL_Repair_{hand}{spell_suffix})',
-                              self.fields(passive_name)['Boosts'])
+                self.assertIn('DisablePortraitIndicator', status['StatusPropertyFlags'])
+                self.assertIn('IsHidden', self.fields(passive_name)['Properties'])
+                self.assertNotIn('UnlockSpell', self.fields(passive_name)['Boosts'])
             for name, container in ((f'Shout_GSL_FieldRepair_{hand}', f'Shout_GSL_Repair_{hand}'),
                                     (f'Shout_GSL_FieldRepair_{hand}_R', f'Shout_GSL_Repair_{hand}_Rapid')):
                 fields = self.fields(name)
@@ -529,8 +531,10 @@ class GritDataTests(unittest.TestCase):
                 self.assertEqual(fields['SpellRoll'], 'SkillCheck(Skill.SleightOfHand,15)')
                 self.assertEqual(fields['SpellSuccess'], f'ApplyStatus(SELF,GSL_FIELD_REPAIR_{up}_DONE,100,1)')
             fields = self.fields(f'Shout_GSL_RapidRepair_{hand}')
-            self.assertEqual(fields['RequirementConditions'], plain['RequirementConditions'])
-            self.assertEqual(fields['SpellContainerID'], f'Shout_GSL_Repair_{hand}_Rapid')
+            self.assertEqual(fields['RequirementConditions'],
+                             "HasPassive('GSL_RapidRepairUnlock',context.Source) and " +
+                             plain['RequirementConditions'])
+            self.assertEqual(fields['SpellContainerID'], f'Shout_GSL_Repair_{hand}')
             self.assertEqual(fields['UseCosts'], 'BonusActionPoint:1;GunslingerGrit:1')
             self.assertEqual(fields['SpellRoll'], 'SkillCheck(Skill.SleightOfHand,18)')
             self.assertEqual(fields['SpellSuccess'], f'ApplyStatus(SELF,GSL_REPAIR_{up}_DONE,100,1)')
