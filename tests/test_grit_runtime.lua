@@ -284,27 +284,57 @@ ammo("alice", "Off").Amount = 2
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 4)
 assert(variables.Firearms.weapons.second.misfire and not variables.Firearms.weapons.first.misfire)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 0, "A misfire must not stop the gun firing")
-assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 1)
+assert(Osi.HasActiveStatus("second", "GSL_FIREARM_ITEM_MISFIRED") == 1)
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 1, "A misfired gun gets its own Repair menu")
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF_RAPID") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_MAIN") == 0, "Only the misfired hand shows a Repair menu")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF") == 1, "The misfired gun owns its Repair passive")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF_RAPID") == 0)
+assert(Osi.HasActiveStatus("first", "GSL_REPAIR_MENU_MAIN") == 0, "Only the misfired gun grants Repair")
+assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 0, "Repair must not be character-owned")
+fire("Unequipped", "before", "second", "alice")
+inventory.alice["Ranged Offhand Weapon"] = nil
+fire("Unequipped", "after", "second", "alice")
+inventory.bob["Ranged Main Weapon"] = "second"
+fire("Equipped", "after", "second", "bob")
+ticks()
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_MAIN") == 1 and
+    Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF") == 0,
+    "A transferred misfired gun must grant Repair for its new hand")
+fire("Unequipped", "before", "second", "bob")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_MAIN") == 0,
+    "Unequipping must remove the old repair passive and its attack penalty")
+inventory.bob["Ranged Main Weapon"] = nil
+fire("Unequipped", "after", "second", "bob")
+ticks()
+inventory.alice["Ranged Offhand Weapon"] = "second"
+local legacyStatuses = {
+    "GSL_FIREARM_MAIN_DESTROYED", "GSL_FIREARM_OFF_MISFIRED", "GSL_REPAIR_MENU_MAIN_RAPID",
+    "GSL_MISFIRE", "GSL_DOUBLE_LOAD_BROKEN"
+}
+for _, name in ipairs(legacyStatuses) do Osi.ApplyStatus("alice", name, -1, 1, "alice") end
+fire("Equipped", "after", "second", "alice")
+ticks()
+for _, name in ipairs(legacyStatuses) do
+    assert(Osi.HasActiveStatus("alice", name) == 0, "Refresh must retire saved character status " .. name)
+end
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF") == 1)
 fire("UsingSpell", "before", "alice", "Shout_GSL_FieldRepair_Off", "", "", 45)
 fire("CastedSpell", "after", "alice", "Shout_GSL_FieldRepair_Off", "", "", 45)
 assert(variables.Firearms.weapons.second.misfire, "A failed field repair must leave the firearm misfired")
 fire("CastedSpell", "after", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 passives.alice.GSL_RapidRepairUnlock = true
 fire("UsingSpell", "before", "alice", "Shout_GSL_RapidRepair_Off", "", "", 5)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF_RAPID") == 1, "Rapid Repair joins the hand's Repair menu")
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 0)
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF_RAPID") == 1, "Rapid Repair joins the gun's Repair passive")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF") == 0)
 fire("StatusApplied", "after", "alice", "GSL_REPAIR_OFF_DONE", "alice", 5)
 fire("CastedSpell", "after", "alice", "Shout_GSL_RapidRepair_Off", "", "", 5)
 assert(not variables.Firearms.weapons.second.misfire)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF_RAPID") == 0, "Repairing removes the Repair menu")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF_RAPID") == 0, "Repairing removes the Repair passive")
+assert(Osi.HasActiveStatus("second", "GSL_FIREARM_ITEM_MISFIRED") == 0)
 fire("UsingSpell", "before", "alice", "GSL_MainHand_Flintlock_attack", "", "", 43)
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 43)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_MAIN_RAPID") == 1)
+assert(Osi.HasActiveStatus("first", "GSL_REPAIR_MENU_MAIN_RAPID") == 1)
 fire("CastedSpell", "after", "alice", "GSL_MainHand_Flintlock_attack", "", "", 43)
 fire("UsingSpell", "before", "alice", "Shout_GSL_FieldRepair_Main_R", "", "", 44)
 fire("StatusApplied", "after", "alice", "GSL_FIELD_REPAIR_MAIN_DONE", "alice", 44)
@@ -321,15 +351,21 @@ end
 assert(variables.Firearms.weapons.second.broken, "Misfiring a misfired gun must break it")
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 1)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_MISFIRED") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DESTROYED") == 1, "Breaking must replace Misfired with the visible Broken condition")
+assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DESTROYED") == 0, "Broken belongs only to the gun")
 assert(Osi.HasActiveStatus("second", "GSL_FIREARM_ITEM_DESTROYED") == 1 and Osi.HasActiveStatus("second", "GSL_FIREARM_ITEM_MISFIRED") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF_RAPID") == 0, "A broken gun cannot be repaired")
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 0)
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF_RAPID") == 0, "A broken gun cannot grant Repair")
+assert(Osi.HasActiveStatus("second", "GSL_REPAIR_MENU_OFF") == 0)
+fire("UsingSpell", "before", "alice", "Shout_GSL_FieldRepair_Main_R", "", "", 100)
+assert(Osi.HasActiveStatus("first", "GSL_REPAIR_MENU_MAIN_RAPID") == 1,
+    "A broken offhand gun must not block repairing the misfired main-hand gun")
+fire("StatusApplied", "after", "alice", "GSL_FIELD_REPAIR_MAIN_DONE", "alice", 100)
+fire("CastedSpell", "after", "alice", "Shout_GSL_FieldRepair_Main_R", "", "", 100)
+assert(not variables.Firearms.weapons.first.misfire and variables.Firearms.weapons.second.broken)
 fire("UsingSpell", "before", "alice", "Projectile_GSL_DoubleLoad", "", "", 6)
 fire("StatusApplied", "after", "alice", "GSL_DOUBLE_LOAD_BROKEN", "alice", 6)
 fire("CastedSpell", "after", "alice", "Projectile_GSL_DoubleLoad", "", "", 6)
 assert(variables.Firearms.weapons.first.broken)
-assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_MAIN_RAPID") == 0)
+assert(Osi.HasActiveStatus("first", "GSL_REPAIR_MENU_MAIN_RAPID") == 0)
 fire("Unequipped", "before", "first", "alice")
 inventory.alice["Ranged Main Weapon"] = nil
 fire("Unequipped", "after", "first", "alice")
@@ -338,6 +374,24 @@ fire("Equipped", "after", "first", "bob")
 ticks()
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_DISABLED") == 0)
 assert(Osi.HasActiveStatus("bob", "GSL_FIREARM_MAIN_DISABLED") == 1, "Broken state must follow the physical gun")
+gun("replacement")
+inventory.alice["Ranged Main Weapon"] = "replacement"
+fire("Equipped", "after", "replacement", "alice")
+ticks()
+fire("UsingSpell", "before", "alice", "GSL_MainHand_Flintlock_attack", "", "", 101)
+fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 101)
+fire("CastedSpell", "after", "alice", "GSL_MainHand_Flintlock_attack", "", "", 101)
+assert(Osi.HasActiveStatus("replacement", "GSL_REPAIR_MENU_MAIN_RAPID") == 1,
+    "A newly crafted replacement must grant Repair even while the original gun is broken")
+fire("UsingSpell", "before", "alice", "Shout_GSL_FieldRepair_Main_R", "", "", 102)
+fire("StatusApplied", "after", "alice", "GSL_FIELD_REPAIR_MAIN_DONE", "alice", 102)
+fire("CastedSpell", "after", "alice", "Shout_GSL_FieldRepair_Main_R", "", "", 102)
+assert(not variables.Firearms.weapons.replacement.misfire and variables.Firearms.weapons.first.broken,
+    "Repair must affect only the replacement, leaving the original broken")
+fire("Unequipped", "before", "replacement", "alice")
+inventory.alice["Ranged Main Weapon"] = nil
+fire("Unequipped", "after", "replacement", "alice")
+ticks()
 assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
     "Master range must follow the physical gun")
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0)
@@ -453,7 +507,7 @@ end
 shot("Projectile_GSL_ViolentShot_2", 50, 3)
 assert(not variables.Firearms.weapons.first.misfire, "Violent Shot misfires only on d20 <= grit")
 shot("Projectile_GSL_ViolentShot_2", 51, 2)
-assert(variables.Firearms.weapons.first.misfire and Osi.HasActiveStatus("alice", "GSL_FIREARM_MAIN_MISFIRED") == 1)
+assert(variables.Firearms.weapons.first.misfire and Osi.HasActiveStatus("first", "GSL_FIREARM_ITEM_MISFIRED") == 1)
 fire("LongRestFinished", "after")
 rolls[1] = 11
 fire("AttackedBy", "after", "bob", "alice", "alice", "Piercing", 10, "Attack", 52)
@@ -550,7 +604,7 @@ assert(Osi.HasActiveStatus("carol", "GSL_DOUBLE_LOAD") == 1, "Double Load's misf
 fire("StatusApplied", "after", "carol", "GSL_MISFIRE", "carol", 70)
 fire("CastedSpell", "after", "carol", "Projectile_GSL_DoubleLoad", "", "", 70)
 assert(variables.Firearms.weapons.longarm.broken, "A Double Load critical miss must break a working gun")
-assert(Osi.HasActiveStatus("carol", "GSL_FIREARM_MAIN_DESTROYED") == 1, "Double Load must show the Broken condition")
+assert(Osi.HasActiveStatus("carol", "GSL_FIREARM_MAIN_DESTROYED") == 0, "Double Load must not mark the character Broken")
 assert(Osi.HasActiveStatus("carol", "GSL_FIREARM_MAIN_MISFIRED") == 0)
 assert(Osi.HasActiveStatus("carol", "GSL_DOUBLE_LOAD") == 0)
 local musketAmmo = entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource]

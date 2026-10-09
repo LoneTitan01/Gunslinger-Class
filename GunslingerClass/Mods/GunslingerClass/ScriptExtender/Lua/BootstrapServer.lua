@@ -251,9 +251,14 @@ local function updateReloadCosts(character)
     status(character, "GSL_QUICK_FULL_RELOAD", bonus and Osi.HasPassive(character, "GSL_Feat_QuickReload_Marker") == 1)
 end
 
-local function applyItem(item, state)
+local function applyItem(item, state, hand, rapid)
     status(item, "GSL_FIREARM_ITEM_MISFIRED", state.misfire and not state.broken)
     status(item, "GSL_FIREARM_ITEM_DESTROYED", state.broken)
+    for slot in pairs(slots) do
+        local repairable = slot == hand and state.misfire and not state.broken
+        status(item, "GSL_REPAIR_MENU_" .. slot:upper(), repairable and not rapid)
+        status(item, "GSL_REPAIR_MENU_" .. slot:upper() .. "_RAPID", repairable and rapid)
+    end
     local capacityCount = Rules.ModCount(state, "Capacity")
     status(item, "GSL_TINKERER_CAPACITY", capacityCount == 1)
     status(item, "GSL_TINKERER_MASTER_AMMO", capacityCount >= 2)
@@ -298,6 +303,8 @@ local function refreshNow(character, restoreAmmo)
     local data = database()
     local owner = data.owners[character] or {}
     data.owners[character] = owner
+    status(character, "GSL_MISFIRE", false)
+    status(character, "GSL_DOUBLE_LOAD_BROKEN", false)
     for hand in pairs(slots) do
         local item, kind = equipped(character, hand)
         local changed = owner[hand] ~= item
@@ -317,8 +324,8 @@ local function refreshNow(character, restoreAmmo)
         end
         owner[hand] = item
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DISABLED", state and state.broken)
-        status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", state and state.misfire and not state.broken)
-        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", state and state.broken)
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", false)
+        status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", false)
         if hand == "Off" then
             local rangeCount = state and Rules.ModCount(state, "Range") or 0
             status(character, "GSL_TINKERER_OFF_RANGE", rangeCount == 1)
@@ -335,13 +342,11 @@ local function refreshNow(character, restoreAmmo)
                     rangeCount >= 2)
             end
         end
-        local repairable = state and state.misfire and not state.broken
-        -- Each misfired hand gets its own Repair menu; Rapid Repair joins it once the passive is known.
-        local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
-        status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
-        status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", rapid)
+        -- Retire character-owned repair unlocks from existing saves.
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper(), false)
+        status(character, "GSL_REPAIR_MENU_" .. hand:upper() .. "_RAPID", false)
         if state then
-            applyItem(item, state)
+            applyItem(item, state, hand, Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1)
             local entry, entity = resource(character, hand, state)
             if newItem then state.ammo = entry.Amount end
             if changed or restoreAmmo then
@@ -593,8 +598,10 @@ Ext.Osiris.RegisterListener("Equipped", 2, "after", function(_, character)
         pendingRefresh[character] = 2
     end
 end)
-Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(_, character)
+Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(item, character)
     snapshot(character)
+    local state = database().weapons[item]
+    if state then applyItem(item, state) end
 end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
     if database().owners[character] then pendingRefresh[character] = 2 end
