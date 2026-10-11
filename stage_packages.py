@@ -4,7 +4,10 @@ Main_Staging       -> Packages/GunslingerClass.pak
 5e_Compat_Staging  -> Packages/GunslingerClass_5eSpellsCompat.pak
 
 Usage:
-    python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation]
+    python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation] [--weapon-compat]
+
+With --weapon-compat, also stage and pack the optional weapon-copy compatibility
+add-ons. These require their named source mods and are not included in the base PAK.
 
 With --divine, localization is converted to .loca, Content banks, root
 templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
@@ -25,6 +28,7 @@ repo_root = Path(__file__).resolve().parent
 source_root = repo_root / 'GunslingerClass'
 main_staging = repo_root / 'Main_Staging'
 compat_staging = repo_root / '5e_Compat_Staging'
+weapon_compat_staging = repo_root / 'Weapon_Compat_Staging'
 packages_dir = repo_root / 'Packages'
 packages = (
     (main_staging, 'GunslingerClass.pak'),
@@ -109,6 +113,10 @@ def stage_content_banks(divine):
     if gui_metadata_path.is_file():
         banks.append(gui_metadata_path)
         banks.sort()
+    return convert_banks(divine, banks)
+
+
+def convert_banks(divine, banks):
     if divine is None:
         return banks
     for lsx in banks:
@@ -124,6 +132,24 @@ def stage_content_banks(divine):
     return []
 
 
+def stage_weapon_compat(divine):
+    modules = sorted((source_root / 'Mods').glob('*_WeaponCopiesCompat'))
+    if not modules:
+        fail('No weapon-copy compatibility modules found.')
+    reset(weapon_compat_staging)
+    staged_packages = []
+    unconverted = []
+    for module in modules:
+        staging = weapon_compat_staging / module.name
+        copy_dirs((Path('Mods') / module.name, Path('Public') / module.name), staging)
+        banks = sorted((staging / 'Public' / module.name / 'RootTemplates').glob('*.lsx'))
+        if not banks:
+            fail(f'Missing weapon-copy root templates: {module.name}')
+        unconverted.extend(convert_banks(divine, banks))
+        staged_packages.append((staging, f'{module.name}.pak'))
+    return tuple(staged_packages), unconverted
+
+
 def print_tree(folder):
     print(f'\n{folder.name}/')
     for path in sorted(folder.rglob('*')):
@@ -136,10 +162,10 @@ def run_divine(divine, *args):
     return result.returncode, f'{result.stdout}{result.stderr}'
 
 
-def pack(divine):
+def pack(divine, extra_packages=()):
     packages_dir.mkdir(exist_ok=True)
     built = []
-    for staging, name in packages:
+    for staging, name in (*packages, *extra_packages):
         pak = packages_dir / name
         if pak.exists():
             pak.unlink()
@@ -164,6 +190,7 @@ def main():
     parser.add_argument('--divine', type=Path, help='Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip')
     parser.add_argument('--no-pack', action='store_true', help='With --divine, convert and stage but do not create .pak or .zip files')
     parser.add_argument('--skip-validation', action='store_true', help='Do not run validate_xml.py first')
+    parser.add_argument('--weapon-compat', action='store_true', help='Also build optional weapon-copy compatibility PAKs')
     args = parser.parse_args()
 
     if args.divine is not None and not args.divine.is_file():
@@ -182,9 +209,15 @@ def main():
     converted = stage_localization(args.divine)
     unconverted_banks = stage_content_banks(args.divine)
     copy_dirs(compat_dirs, compat_staging)
+    extra_packages = ()
+    if args.weapon_compat:
+        extra_packages, unconverted_weapons = stage_weapon_compat(args.divine)
+        unconverted_banks.extend(unconverted_weapons)
 
     print_tree(main_staging)
     print_tree(compat_staging)
+    for staging, _ in extra_packages:
+        print_tree(staging)
 
     if not converted:
         staged_xml = main_staging / localization_xml
@@ -203,12 +236,15 @@ def main():
 
     if args.divine is not None and not args.no_pack:
         print('\nPackages:')
-        for pak, count in pack(args.divine):
+        for pak, count in pack(args.divine, extra_packages):
             print(f'  {pak} ({count} files, {pak.stat().st_size:,} bytes)')
             archive = pak.with_suffix('.zip')
             print(f'  {archive} ({archive.stat().st_size:,} bytes)')
         print('\nInstall: copy both .pak files to %LOCALAPPDATA%\\Larian Studios\\Baldur\'s Gate 3\\Mods '
               'and enable them in the mod manager (compat PAK only if 5e Spells is installed).')
+        if extra_packages:
+            print('Weapon-copy add-ons: enable only with their required source mods, '
+                  'after GunslingerClass and those mods in the load order.')
         return
 
     print(
@@ -217,6 +253,8 @@ def main():
         f'  {main_staging} -> GunslingerClass.pak\n'
         f'  {compat_staging} -> GunslingerClass_5eSpellsCompat.pak'
     )
+    for staging, name in extra_packages:
+        print(f'  {staging} -> {name}')
 
 
 if __name__ == '__main__':

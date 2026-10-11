@@ -9,6 +9,63 @@ import stage_packages
 
 
 class StagingResourceTests(unittest.TestCase):
+    def test_optional_weapon_modules_stage_separately_and_compile_templates(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source'
+            name = 'GunslingerClass_Test_WeaponCopiesCompat'
+            meta = source / 'Mods' / name / 'meta.lsx'
+            template = source / 'Public' / name / 'RootTemplates' / '_merged.lsx'
+            stats = source / 'Public' / name / 'Stats' / 'Generated' / 'ItemCombos.txt'
+            for path in (meta, template, stats):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('<save/>' if path.suffix == '.lsx' else 'recipes', encoding='utf-8')
+
+            def convert(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+                Path(command[command.index('-d') + 1]).write_bytes(b'compiled')
+                return subprocess.CompletedProcess(command, 0, '', '')
+
+            staging = root / 'Weapon_Compat_Staging'
+            with patch.object(stage_packages, 'source_root', source), \
+                    patch.object(stage_packages, 'weapon_compat_staging', staging), \
+                    patch.object(stage_packages.subprocess, 'run', side_effect=convert):
+                packages, unconverted = stage_packages.stage_weapon_compat(Path('Divine.exe'))
+            self.assertEqual(packages, ((staging / name, f'{name}.pak'),))
+            self.assertEqual(unconverted, [])
+            self.assertTrue((staging / name / meta.relative_to(source)).is_file())
+            self.assertEqual((staging / name / stats.relative_to(source)).read_text(), 'recipes')
+            self.assertFalse((staging / name / template.relative_to(source)).exists())
+            self.assertEqual(
+                (staging / name / template.relative_to(source).with_suffix('.lsf')).read_bytes(),
+                b'compiled',
+            )
+
+    def test_optional_weapon_modules_require_source_modules(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(stage_packages, 'source_root', Path(directory)):
+                with self.assertRaisesRegex(SystemExit, 'No weapon-copy compatibility modules'):
+                    stage_packages.stage_weapon_compat(None)
+
+    def test_pack_includes_explicit_optional_packages(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            staging = root / 'weapon-compat'
+            staging.mkdir()
+            (staging / 'resource.lsf').write_bytes(b'compiled')
+
+            def divine(command: Path, *args: str) -> tuple[int, str]:
+                if args[1] == 'create-package':
+                    Path(args[args.index('-d') + 1]).write_bytes(b'package')
+                    return 0, ''
+                return 0, 'resource.lsf\tmetadata'
+
+            with patch.object(stage_packages, 'packages', ()), \
+                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
+                    patch.object(stage_packages, 'run_divine', side_effect=divine):
+                built = stage_packages.pack(Path('Divine.exe'), ((staging, 'Optional.pak'),))
+            self.assertEqual(built, [(root / 'Packages' / 'Optional.pak', 1)])
+            self.assertTrue((root / 'Packages' / 'Optional.zip').is_file())
+
     def test_pack_creates_and_replaces_compressed_archives_for_both_packages(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

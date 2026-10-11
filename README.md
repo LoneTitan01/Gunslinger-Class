@@ -61,6 +61,24 @@ Use the Assembly Kit with the current firearm and its listed material; the kit a
 
 Blunderbusses progress through Infernal Iron (+1, +1 Fire damage), Infernal Alloy (+1, fire resistance and +1d4 Fire damage), Soul Coin (+2, +1 critical range, +1d6 Fire on regular shots and +1d4 on Scattershot), and Enriched Infernal Iron (+3, +2d4 Fire on regular shots and Scattershot, which also ignites the ground). Muskets progress through Silver (+1, +2 to hit), Advanced Musket Components (+1d4 weapon damage), Karabasan's Gift (+2 and Paralyzing Shot once per short rest), and Mithral (+3, +1d6 weapon damage and piercing-resistance bypass). Craft Advanced Musket Components from Adamantine Slag and Rune Powder.
 
+### Optional modded weapon-copy compatibility
+
+Crafting matches internal item stats, not the name displayed in inventory. A mod's copy of a supported vanilla weapon can therefore show **Invalid Combination**, even if its name and abilities look identical. The optional weapon-copy add-ons accept explicitly verified copies of existing supported weapons; they do not add conversions for entirely new weapons or silently replace differing magical abilities.
+
+An October 2026 audit of 76 installed PAKs (74 inputs after excluding the two Gunslinger packages) found 953 weapon declarations across 12 packages, including 11 verified copies suitable for existing recipes:
+
+| Optional PAK | Required source mod | Supported copies |
+| --- | --- | --- |
+| `GunslingerClass_EO_WeaponCopiesCompat.pak` | Encounters Overhaul | Sickle of BOOOAL, Titanstring Bow, Charge-Bound Warhammer, Clutching Umbra, Hoppy, Slicing Shortsword, Hellbeard Halberd, Harmonic Dueller, Ambusher |
+| `GunslingerClass_CL_WeaponCopiesCompat.pak` | Community Library | Unbound Hill Giant club (`CL_WPN_MAG_HillGiant_Club`) |
+| `GunslingerClass_JWL_WeaponCopiesCompat.pak` | JWL Soul Smithing | Faithbreaker UP1 (`JWL_GOB_GoblinKing_Warhammer_UP1`) only |
+
+The Encounters Overhaul add-on also supports the same copied IDs with its optional 5e Spells patch installed; load the Gunslinger copy add-on after that patch as well. Many More Monsters adds no verified equivalent requiring a recipe. Act Two Expansion, Artificer, Invocations Expanded, JWL Coffers - Inaccessibles, Sussur Weapons, UnlockLevelCurve, and Utut's Core Library contain new or altered weapons, not equivalent supported copies. Bound Community Library variants, other Soul Smithing upgrades, Encounters Overhaul's altered Woe/crossbow, and runtime Transmog copies are deliberately excluded. Sussur Weapons also changes existing vanilla templates; this patch does not certify or override those changes. These findings describe the audited installed versions, not all future versions of those mods.
+
+Build these add-ons with `python stage_packages.py --divine <path to Divine.exe> --weapon-compat`. Their separate PAKs and ZIPs are written to `Packages/`; the ordinary base and 5e compatibility packages remain separate. Enable each weapon-copy add-on only with its required source mod, and place it **after GunslingerClass and that source mod** in the load order. No load-order or installed-mod files are changed by the build.
+
+Assembly still needs an Assembly Kit, the copied magical weapon, and the matching base firearm. The resulting firearm inherits the existing conversion's abilities and appearance. Its separate internal identity preserves the ingredient's origin: disassembly returns the **source mod's weapon**, not the vanilla equivalent. Keep the source mod and compatibility add-on enabled while using these fused firearms. Vanilla recipes and results are unchanged.
+
 <details>
 <summary>Flintlock-compatible weapons</summary>
 
@@ -666,3 +684,4 @@ This mod is implemented entirely through BG3's stats/.lsx data format (no custom
 - Run the focused regression suite with `python -m unittest discover -s tests -p test_spell_data.py -v`. After installing a rebuilt PAK and restarting the game, test all five Craft choices; empty/refill each basic firearm ammo pool; fire and reload both flintlocks separately; then check class actions, field repair, Rapid Repair, Infused Rounds, and unstable backfire in combat. Verify resource costs on misses as well as hits.
 - After verifying each PAK, `stage_packages.py --divine` also creates `Packages/GunslingerClass.zip` and `Packages/GunslingerClass_5eSpellsCompat.zip` using ZIP deflate compression. Each archive contains only its matching PAK at the archive root; the original PAK files remain available for installation. ZIPs are replaced on subsequent successful builds. `--no-pack` skips both PAK and ZIP creation.
 - Run `python -m unittest discover -s tests -p test_staging_resources.py -v` to check root-template and visual-bank conversion, manual-conversion reporting, conversion failure handling, and compressed ZIP creation for verified packages.
+- Run `python -m unittest discover -s tests -p test_weapon_copy_compat.py -v` to check optional copied-weapon recipes, source-preserving disassembly, firearm inheritance, unique stats/templates, and module dependencies. Compiled packages still require an in-game assembly, firing/reload/repair, and disassembly check.

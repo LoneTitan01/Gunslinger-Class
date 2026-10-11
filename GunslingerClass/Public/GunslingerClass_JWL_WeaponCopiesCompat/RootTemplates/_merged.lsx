@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="331"/>
+    <region id="Templates">
+        <node id="Templates">
+            <children>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a11"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_Faithbreaker_JWL"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="a4cb4693-6b1a-495c-bd22-e6b97cc72b84"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_Faithbreaker_JWL"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

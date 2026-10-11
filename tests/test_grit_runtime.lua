@@ -50,7 +50,9 @@ local weaponStats = {
     WPN_GSL_Musket = {RootTemplate = "1da91e88-3f0e-4ccc-ac25-0bdf00426880",
         BoostsOnEquipMainHand = "UnlockSpell(Shout_GSL_Reload_Musket)"},
     WPN_GSL_Blunderbuss = {RootTemplate = "4a7854fd-718a-4a4e-b9db-3875b5788065",
-        BoostsOnEquipMainHand = "UnlockSpell(Zone_GSL_Scattershot)"}
+        BoostsOnEquipMainHand = "UnlockSpell(Zone_GSL_Scattershot)"},
+    WPN_GSL_Blunderbuss_Hoppy_EO = {RootTemplate = "803d4d12-1c23-4107-836a-2c783c967a05",
+        BoostsOnEquipMainHand = "UnlockSpell(Projectile_GSL_RevitalizingShot_Blunderbuss)"}
 }
 for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
     "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do

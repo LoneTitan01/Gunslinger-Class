@@ -4,6 +4,7 @@ examples/
 # Packaging staging output (stage_packages.py)
 Main_Staging/
 5e_Compat_Staging/
+Weapon_Compat_Staging/
 Packages/
 *.pak
 
