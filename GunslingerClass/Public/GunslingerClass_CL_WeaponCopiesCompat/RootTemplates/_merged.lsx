@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="331"/>
+    <region id="Templates">
+        <node id="Templates">
+            <children>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a10"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_HillGiantStrength_CL"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="8cd6852f-c528-4f7a-9488-a1ed92014f92"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_HillGiantStrength_CL"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

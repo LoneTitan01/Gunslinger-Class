@@ -53,6 +53,181 @@ class CraftingRecipeTests(unittest.TestCase):
                     ingredients = [key for key in fields if re.fullmatch(r'Object \d+', key)]
                     self.assertEqual(len(ingredients), expected_slots + 1)
 
+    def test_crafted_firearms_inherit_base_and_repair_action(self) -> None:
+        combinations = PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt'
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        text = combinations.read_text(encoding='utf-8')
+        base_actions = {
+            kind: read_entry(weapon_stats, 'entry', f'WPN_GSL_{kind}')[
+                'BoostsOnEquipMainHand'
+            ]
+            for kind in ('Flintlock', 'Musket', 'Blunderbuss')
+        }
+        recipes = re.finditer(
+            r'^new ItemCombination "(GSL_Assembly_(Flintlock|Musket|Blunderbuss)_[^"]+)"\n'
+            r'(.*?)(?=^new |\Z)',
+            text,
+            re.MULTILINE | re.DOTALL,
+        )
+        counts = {kind: 0 for kind in base_actions}
+        for recipe in recipes:
+            fields = dict(re.findall(r'^data "([^"]+)" "([^"]*)"', recipe[3], re.MULTILINE))
+            kind = recipe[2]
+            base = f'WPN_GSL_{kind}'
+            if fields.get('Object 3') != base:
+                continue
+            result = read_entry(combinations, 'ItemCombinationResult', f'{recipe[1]}_1')['Result 1']
+            weapon = read_entry(weapon_stats, 'entry', result)
+            with self.subTest(weapon=result):
+                self.assertEqual(weapon.get('using'), base)
+                boosts = weapon.get('BoostsOnEquipMainHand', base_actions[kind])
+                self.assertIn('UnlockSpell(Shout_GSL_Repair_Main)', boosts)
+            counts[kind] += 1
+        self.assertTrue(all(count > 0 for count in counts.values()), counts)
+
+    def test_converted_weapons_preserve_magical_properties_and_enchantment(self) -> None:
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        expected_boosts = {
+            'WPN_GSL_Flintlock_ArtificialLeech': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Flintlock_AssassinShortsword': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Flintlock_HillGiantStrength': 'WeaponProperty(Magical)',
+            'WPN_GSL_Flintlock_Skybreaker': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Flintlock_PhalarAluve': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Musket_Bonesaw': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Musket_Witchbreaker': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Musket_Titanstring': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Musket_MelfsFirstStaff': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Musket_Hellrider': 'WeaponEnchantment(1);WeaponProperty(Magical)',
+            'WPN_GSL_Blunderbuss_ShatteredFlail': 'WeaponEnchantment(2);WeaponProperty(Magical)',
+        }
+        for weapon_name, expected in expected_boosts.items():
+            with self.subTest(weapon=weapon_name):
+                weapon = read_entry(weapon_stats, 'entry', weapon_name)
+                self.assertEqual(weapon['DefaultBoosts'], expected)
+
+    def test_converted_weapons_keep_source_weapon_functors_and_technical_statuses(self) -> None:
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        gustav_data = (
+            ROOT / 'examples' / 'BG3 Gustav Reference' / 'Public' / 'Gustav'
+            / 'Stats' / 'Generated' / 'Data'
+        )
+        shared_dev_data = (
+            ROOT / 'examples' / 'BG3 Reference' / 'Public' / 'SharedDev'
+            / 'Stats' / 'Generated' / 'Data'
+        )
+        target_weapons = {
+            'EverburnBlade': 'WPN_GSL_Blunderbuss_EverburnBlade',
+            'SwordOfJustice': 'WPN_GSL_Blunderbuss_SwordOfJustice',
+        }
+        source_weapons = {
+            'EverburnBlade': read_entry(
+                gustav_data / 'Weapon.txt',
+                'entry',
+                'MAG_Fire_AlwaysDippedInFire_Greatsword',
+            ),
+            'SwordOfJustice': read_entry(
+                gustav_data / 'Weapon.txt',
+                'entry',
+                'PLA_WPN_SwordOfJustice',
+            ),
+        }
+        for name, target_name in target_weapons.items():
+            with self.subTest(weapon=name):
+                target = read_entry(weapon_stats, 'entry', target_name)
+                source = source_weapons[name]
+                field = 'WeaponFunctors' if name == 'EverburnBlade' else 'StatusOnEquip'
+                self.assertEqual(target[field], source[field])
+
+        punch_drunk_source = read_entry(
+            shared_dev_data / 'Weapon.txt',
+            'entry',
+            'MAG_TWN_Brewery_Greatclub',
+        )
+        punch_drunk = read_entry(
+            weapon_stats,
+            'entry',
+            'WPN_GSL_Blunderbuss_PunchDrunkBastard',
+        )
+        self.assertEqual(punch_drunk['StatusOnEquip'], punch_drunk_source['StatusOnEquip'])
+        self.assertIn(
+            'MAG_TWN_Brewer_DrunkardRage_Passive',
+            punch_drunk['PassivesOnEquip'],
+        )
+
+    def test_converted_blunderbuss_passives_match_source_effects(self) -> None:
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        local_passives = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerPassives.txt'
+        source_gustav = (
+            ROOT / 'examples' / 'BG3 Gustav Reference' / 'Public' / 'Gustav'
+            / 'Stats' / 'Generated' / 'Data'
+        )
+        source_gustav_dev = (
+            ROOT / 'examples' / 'BG3 Gustav Reference' / 'Public' / 'GustavDev'
+            / 'Stats' / 'Generated' / 'Data'
+        )
+
+        undead_source = read_entry(
+            source_gustav_dev / 'Passive.txt',
+            'entry',
+            'MAG_WYRM_UndeadBane_GreatAxe_Passive',
+        )
+        undead = read_entry(local_passives, 'entry', 'GSL_Blunderbuss_UndeadBane_Passive')
+        self.assertIn('DamageBonus(1d6, Slashing, false)', undead_source['Boosts'])
+        self.assertIn('DamageBonus(1d6,Slashing,false)', undead['Boosts'])
+
+        blooded_source = read_entry(
+            source_gustav / 'Passive.txt',
+            'entry',
+            'MAG_LowHP_IncreaseDamage_Passive',
+        )
+        blooded = read_entry(local_passives, 'entry', 'GSL_Blunderbuss_Blooded_Passive')
+        self.assertIn(
+            'HasHPPercentageWithoutTemporaryHPEqualOrLessThan(50, context.Source)',
+            blooded_source['Conditions'],
+        )
+        self.assertIn('DealDamage(1d4,Slashing,Magical)', blooded_source['StatsFunctors'])
+        self.assertIn(
+            'HasHPPercentageWithoutTemporaryHPEqualOrLessThan(50,context.Source)',
+            blooded['Boosts'],
+        )
+        self.assertIn('DamageBonus(1d4,Slashing,false)', blooded['Boosts'])
+
+        defender_source = read_entry(
+            source_gustav_dev / 'Passive.txt',
+            'entry',
+            'MAG_PhysicalDamageReduction_Passive',
+        )
+        defender = read_entry(local_passives, 'entry', 'GSL_Blunderbuss_DefenderFlail_Passive')
+        for damage_type in ('Piercing', 'Bludgeoning', 'Slashing'):
+            with self.subTest(damage_type=damage_type):
+                expected = f'DamageReduction({damage_type}, Flat, 1)'
+                self.assertIn(expected, defender_source['Boosts'])
+                self.assertIn(expected, defender['Boosts'])
+
+        moonlight_source = read_entry(
+            source_gustav_dev / 'Passive.txt',
+            'entry',
+            'MAG_Light_MoonlightGlaive_Passive',
+        )
+        moonlight = read_entry(
+            local_passives,
+            'entry',
+            'GSL_Blunderbuss_MoonlightGlaive_Passive',
+        )
+        moonlight_weapon = read_entry(
+            weapon_stats,
+            'entry',
+            'WPN_GSL_Blunderbuss_MoonlightGlaive',
+        )
+        self.assertEqual(moonlight['using'], 'MAG_Light_MoonlightGlaive_Passive')
+        self.assertIn('EquipmentSlot.MeleeMainHand', moonlight_source['ToggleOnFunctors'])
+        self.assertIn('EquipmentSlot.RangedMainHand', moonlight['ToggleOnFunctors'])
+        self.assertIn('EquipmentSlot.RangedMainHand', moonlight['ToggleOffFunctors'])
+        self.assertEqual(
+            moonlight_weapon['StatusOnEquip'],
+            'MAG_MOONLIGHT_GLAIVE_LIGHT_TECHNICAL',
+        )
+
     def test_combination_firearm_display_names_are_unique(self) -> None:
         weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
         localization = ET.parse(
@@ -398,9 +573,9 @@ class CraftingRecipeTests(unittest.TestCase):
         undead_bane = read_entry(passives, 'entry', 'GSL_Blunderbuss_UndeadBane_Passive')
         blooded = read_entry(passives, 'entry', 'GSL_Blunderbuss_Blooded_Passive')
         self.assertIn("Tagged('UNDEAD') or Tagged('FIEND')", undead_bane['Boosts'])
-        self.assertIn('DamageBonus(1d6,Bludgeoning,false)', undead_bane['Boosts'])
-        self.assertIn('HasHPPercentageWithoutTemporaryHPEqualOrLessThan(50,context.Target)', blooded['Boosts'])
-        self.assertIn('DamageBonus(1d4,Bludgeoning,false)', blooded['Boosts'])
+        self.assertIn('DamageBonus(1d6,Slashing,false)', undead_bane['Boosts'])
+        self.assertIn('HasHPPercentageWithoutTemporaryHPEqualOrLessThan(50,context.Source)', blooded['Boosts'])
+        self.assertIn('DamageBonus(1d4,Slashing,false)', blooded['Boosts'])
 
         drunk = read_entry(passives, 'entry', 'GSL_Blunderbuss_PunchDrunk_Passive')
         unseen = read_entry(passives, 'entry', 'GSL_Blunderbuss_UnseenMenace_Passive')
@@ -410,10 +585,62 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('ApplyEquipmentStatus(SELF, RangedMainHand', unseen['StatsFunctors'])
         unseen_weapon = read_entry(data_dir / 'Weapon.txt', 'entry', 'WPN_GSL_Blunderbuss_UnseenMenace')
         self.assertIn('CriticalHit(1)', unseen_weapon['DefaultBoosts'])
-        self.assertEqual(defender['Boosts'], 'DamageReduction(Bludgeoning, Flat, 1)')
+        self.assertEqual(
+            defender['Boosts'],
+            'DamageReduction(Piercing, Flat, 1);'
+            'DamageReduction(Bludgeoning, Flat, 1);'
+            'DamageReduction(Slashing, Flat, 1)',
+        )
         for passive in (undead_bane, blooded, drunk, unseen, defender):
             self.assertIn(passive['DisplayName'].split(';')[0], localized_ids)
             self.assertIn(passive['Description'].split(';')[0], localized_ids)
+
+    def test_magical_firearm_shots_keep_source_recharge_and_regular_hit_damage(self) -> None:
+        spells = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerSpells.txt'
+        expected = {
+            'Projectile_GSL_ShadowsoakedShot_Flintlock': (
+                'GunslingerFlintlockAmmo',
+                'DealDamage(MainRangedWeapon+ProficiencyBonus,MainRangedWeaponDamageType)',
+                'DealDamage(1d6,Psychic)',
+            ),
+            'Projectile_GSL_CrowningShot_Musket': (
+                'GunslingerMusketAmmo',
+                'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)',
+                'DealDamage(ProficiencyBonus,Psychic)',
+            ),
+            'Projectile_GSL_RevitalizingShot_Blunderbuss': (
+                'GunslingerBlunderbussAmmo',
+                'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)',
+                'DealDamage(ProficiencyBonus,Necrotic)',
+            ),
+            'Projectile_GSL_CorrosiveShot_Blunderbuss': (
+                'GunslingerBlunderbussAmmo',
+                'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)',
+                'DealDamage(ProficiencyBonus,Acid)',
+            ),
+        }
+        for name, (ammo, shot_damage, magical_damage) in expected.items():
+            with self.subTest(spell=name):
+                spell = read_entry(spells, 'entry', name)
+                self.assertEqual(spell['Cooldown'], 'OncePerShortRest')
+                self.assertIn(ammo, spell['UseCosts'])
+                self.assertIn(shot_damage, spell['SpellSuccess'])
+                self.assertIn(magical_damage, spell['SpellSuccess'])
+                self.assertIn(
+                    'DealDamage(MainRangedWeapon+ProficiencyBonus,MainRangedWeaponDamageType)',
+                    spell['TooltipDamageList'],
+                )
+
+        revitalizing = read_entry(
+            spells,
+            'entry',
+            'Projectile_GSL_RevitalizingShot_Blunderbuss',
+        )
+        self.assertIn('RegainHitPoints(SELF,1d6)', revitalizing['SpellSuccess'])
+        self.assertEqual(
+            revitalizing['ExtraDescriptionParams'],
+            'RegainHitPoints(1d6)',
+        )
 
     def test_musket_action_recipes_are_reversible(self) -> None:
         combinations = PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt'
@@ -1284,7 +1511,10 @@ class CraftingRecipeTests(unittest.TestCase):
             'entry',
             'MAG_WYR_Hellrider_Longbow_Passive',
         )
-        self.assertEqual(hellrider['DefaultBoosts'], 'WeaponEnchantment(1)')
+        self.assertEqual(
+            hellrider['DefaultBoosts'],
+            'WeaponEnchantment(1);WeaponProperty(Magical)',
+        )
         self.assertIn('MAG_PHB_Sentinel_Shield_Passive', hellrider['PassivesOnEquip'])
         self.assertIn('MAG_WYR_Hellrider_Longbow_Passive', hellrider['PassivesOnEquip'])
         self.assertEqual(sentinel_passive['Boosts'], 'Initiative(3);Advantage(Skill, Perception)')
@@ -1632,10 +1862,10 @@ class CraftingRecipeTests(unittest.TestCase):
         )
 
         expected_weapons = {
-            'Bonesaw': ('Uncommon', 'WeaponEnchantment(1)'),
+            'Bonesaw': ('Uncommon', 'WeaponEnchantment(1);WeaponProperty(Magical)'),
             'Faithbreaker': ('Uncommon', 'WeaponEnchantment(1);WeaponProperty(Magical)'),
-            'Witchbreaker': ('Uncommon', 'WeaponEnchantment(1)'),
-            'Titanstring': ('Rare', 'WeaponEnchantment(1)'),
+            'Witchbreaker': ('Uncommon', 'WeaponEnchantment(1);WeaponProperty(Magical)'),
+            'Titanstring': ('Rare', 'WeaponEnchantment(1);WeaponProperty(Magical)'),
         }
         for name, (rarity, boosts) in expected_weapons.items():
             fused = read_entry(data_dir / 'Weapon.txt', 'entry', f'WPN_GSL_Musket_{name}')
@@ -1755,7 +1985,10 @@ class CraftingRecipeTests(unittest.TestCase):
             'entry',
             'WPN_GSL_Flintlock_AssassinShortsword',
         )
-        self.assertEqual(stealth['DefaultBoosts'], 'WeaponEnchantment(1)')
+        self.assertEqual(
+            stealth['DefaultBoosts'],
+            'WeaponEnchantment(1);WeaponProperty(Magical)',
+        )
         self.assertEqual(stealth['Boosts'], 'Advantage(Skill,Stealth)')
 
         assassin_touch = read_entry(
@@ -2175,7 +2408,10 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('GSL_Firearm_Misfire_Passive', first_blood['PassivesOnEquip'])
 
         skybreaker = read_entry(weapon_stats, 'entry', 'WPN_GSL_Flintlock_Skybreaker')
-        self.assertEqual(skybreaker['DefaultBoosts'], 'WeaponEnchantment(1)')
+        self.assertEqual(
+            skybreaker['DefaultBoosts'],
+            'WeaponEnchantment(1);WeaponProperty(Magical)',
+        )
         self.assertIn('UnlockSpell(Projectile_GSL_SearingSmite_Flintlock)', skybreaker['Boosts'])
         source_skybreaker = read_entry(
             source_gustav / 'Spell_Target.txt',
@@ -2592,12 +2828,16 @@ class CraftingRecipeTests(unittest.TestCase):
     def test_fused_firearm_has_plus_one_enchantment_and_framework_action(self) -> None:
         weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
         fused = read_entry(weapon_stats, 'entry', 'WPN_GSL_Flintlock_ArtificialLeech')
-        self.assertEqual(fused['DefaultBoosts'], 'WeaponEnchantment(1)')
+        self.assertEqual(
+            fused['DefaultBoosts'],
+            'WeaponEnchantment(1);WeaponProperty(Magical)',
+        )
         self.assertEqual(fused['Rarity'], 'Uncommon')
         self.assertEqual(
             fused['BoostsOnEquipMainHand'],
             'UnlockSpell(Shout_GSL_Reload_Flintlock);'
-            'UnlockSpell(Projectile_GSL_Bloodletting_Flintlock)',
+            'UnlockSpell(Projectile_GSL_Bloodletting_Flintlock);'
+            'UnlockSpell(Shout_GSL_Repair_Main)',
         )
 
         templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx')

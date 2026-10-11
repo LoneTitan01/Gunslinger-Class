@@ -1,0 +1,44 @@
+new entry "WPN_GSL_Flintlock_SickleOfBoooal_EO"
+type "Weapon"
+using "WPN_GSL_Flintlock_SickleOfBoooal"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a01"
+
+new entry "WPN_GSL_Musket_Titanstring_EO"
+type "Weapon"
+using "WPN_GSL_Musket_Titanstring"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a02"
+
+new entry "WPN_GSL_Musket_ChargeBound_EO"
+type "Weapon"
+using "WPN_GSL_Musket_ChargeBound"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a03"
+
+new entry "WPN_GSL_Flintlock_ClutchingUmbra_EO"
+type "Weapon"
+using "WPN_GSL_Flintlock_ClutchingUmbra"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a04"
+
+new entry "WPN_GSL_Blunderbuss_Hoppy_EO"
+type "Weapon"
+using "WPN_GSL_Blunderbuss_Hoppy"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a05"
+
+new entry "WPN_GSL_Flintlock_SlicingShortsword_EO"
+type "Weapon"
+using "WPN_GSL_Flintlock_SlicingShortsword"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a06"
+
+new entry "WPN_GSL_Blunderbuss_Hellbeard_EO"
+type "Weapon"
+using "WPN_GSL_Blunderbuss_Hellbeard"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a07"
+
+new entry "WPN_GSL_Flintlock_HarmonicDueller_EO"
+type "Weapon"
+using "WPN_GSL_Flintlock_HarmonicDueller"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a08"
+
+new entry "WPN_GSL_Flintlock_Ambusher_EO"
+type "Weapon"
+using "WPN_GSL_Flintlock_Ambusher"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a09"

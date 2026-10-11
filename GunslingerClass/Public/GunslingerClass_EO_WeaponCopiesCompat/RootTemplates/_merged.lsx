@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="331"/>
+    <region id="Templates">
+        <node id="Templates">
+            <children>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a01"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SickleOfBoooal_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="68a8cce8-b06d-40ac-bfab-e38eff79a0c5"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SickleOfBoooal_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a02"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_Titanstring_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="ec5739f1-f22d-48c8-9a88-315e7fd6b532"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_Titanstring_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a03"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_ChargeBound_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="a484be6e-1d0f-4cf2-8a76-5c3451fea2bd"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_ChargeBound_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a04"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_ClutchingUmbra_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="a7c0449e-073f-48a6-b795-e9e8f6439c8f"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_ClutchingUmbra_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a05"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_Hoppy_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="698fe5a5-0985-427d-9d59-9cc716af2d6d"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_Hoppy_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a06"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SlicingShortsword_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="390d7428-073b-44ca-b002-fb06e1abb451"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SlicingShortsword_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a07"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_Hellbeard_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="9b85b8a3-63f3-43f2-b055-815b3ab179b7"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_Hellbeard_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a08"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_HarmonicDueller_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="fa4fb291-8d5e-499e-9185-3240c6ff917a"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_HarmonicDueller_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="MapKey" type="FixedString" value="803d4d12-1c23-4107-836a-2c783c967a09"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_Ambusher_EO"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="26332c4e-3aea-4f56-93dd-d04a9e76fc1a"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_Ambusher_EO"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

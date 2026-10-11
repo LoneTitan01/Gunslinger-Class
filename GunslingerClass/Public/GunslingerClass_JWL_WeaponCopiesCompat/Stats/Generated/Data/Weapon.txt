@@ -1,0 +1,4 @@
+new entry "WPN_GSL_Musket_Faithbreaker_JWL"
+type "Weapon"
+using "WPN_GSL_Musket_Faithbreaker"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a11"

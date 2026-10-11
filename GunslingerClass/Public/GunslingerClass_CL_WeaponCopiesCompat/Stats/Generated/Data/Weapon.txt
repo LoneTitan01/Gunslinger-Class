@@ -1,0 +1,4 @@
+new entry "WPN_GSL_Flintlock_HillGiantStrength_CL"
+type "Weapon"
+using "WPN_GSL_Flintlock_HillGiantStrength"
+data "RootTemplate" "803d4d12-1c23-4107-836a-2c783c967a10"

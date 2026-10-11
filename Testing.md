@@ -161,6 +161,7 @@ The command runs only when invoked. It records passive row values/property writa
 
 - [x] Firearms and ammunition can be crafted from level 2, and the crafted items have the correct stats and icons.
 - [x] Using an Assembly Kit opens a combine window with exactly two slots (firearm + magic weapon) and makes the combined firearm. Using a Disassembly Kit opens one slot, and disassembling a combined firearm returns the firearm and the magic weapon.
+- [ ] With each optional weapon-copy compatibility add-on enabled after its dependencies, assemble every listed copied weapon with its base firearm; verify inherited abilities, ammunition, reload, and repair. Disassemble and check that the original modded weapon returns, not its vanilla equivalent. Retest vanilla assembly/disassembly and confirm unrelated modded weapons remain unsupported.
 - [ ] Craft and disassemble each Flintlock, Blunderbuss, and Musket upgrade. Verify the two alternative Flintlock +3 recipes both require the Diamond Flintlock, and Advanced Musket Components combine Adamantine Slag with Rune Powder.
 - [x] Verify Quick Reload spends 1 Grit and no bonus action; Dash and Gun unlocks one free Flintlock attack after Dash; Paralyzing Shot consumes one musket cartridge and applies Paralyzed only on a failed Constitution save.
 - [ ] Verify each upgrade's enchantment, attack bonus, critical range, bonus action, damage, fire resistance, piercing-resistance bypass, and Scattershot fire surface effect in-game.
