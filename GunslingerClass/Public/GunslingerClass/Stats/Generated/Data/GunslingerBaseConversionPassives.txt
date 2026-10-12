@@ -1,0 +1,28 @@
+new entry "GSL_Base_KnifeUndermountain"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "Boosts" "ReduceCriticalAttackThreshold(1);IF(IsRangedWeaponAttack() and (IsInDarkness() or IsInDimLight())):Advantage(AttackRoll)"
+
+
+new entry "GSL_Base_LoviatarScourge"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "StatsFunctors" "IF(IsRangedWeaponAttack() and HasDamageEffectFlag(DamageFlags.Hit)):DealDamage(SELF,1d6,Necrotic,Magical)"
+
+
+new entry "GSL_Base_Pelorsun"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "Boosts" "IF(IsRangedWeaponAttack() and Tagged('UNDEAD')):Advantage(AttackRoll)"
+
+
+new entry "GSL_Base_RenderMindAndBody"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "Boosts" "IF(IsRangedWeaponAttack() and HasAdvantage() and not HasDisadvantage()):DamageBonus(1d4,Psychic,false)"
+
+
+new entry "GSL_Base_ViciousCritical"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "Boosts" "IF(IsRangedWeaponAttack() and IsCritical()):DamageBonus(7,Piercing,false)"

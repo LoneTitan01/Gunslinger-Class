@@ -1,0 +1,8 @@
+new entry "Zone_GSL_WhirlwindShot_Flintlock"
+using "Zone_GSL_Scattershot"
+data "UseCosts" "ActionPoint:1;GunslingerFlintlockAmmo:1"
+data "Range" "6"
+data "RequirementConditions" "HasPassive('GSL_Flintlock_MainHand',context.Source) and not HasStatus('GSL_FIREARM_MAIN_DISABLED',context.Source)"
+data "DisplayName" "h3ffb0b0eg8404g5433g890dg98a5c83c9141;1"
+data "Description" "h957107adg27b9g5cbcgbb28g0221af3f0633;1"
+data "TooltipUseCosts" "ActionPoint:1;GunslingerFlintlockAmmo:1"
