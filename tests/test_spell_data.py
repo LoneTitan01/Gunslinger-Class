@@ -619,7 +619,7 @@ class SpellDataTests(unittest.TestCase):
                 self.assertEqual(set(handles), {'DisplayName', 'Description'})
                 for handle in handles.values():
                     self.assertTrue(localization.get(handle), handle)
-        self.assertEqual(weapons, 163)
+        self.assertEqual(weapons, 183)
 
     def test_firearm_handedness_and_animation_equipment_types(self) -> None:
         templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx')

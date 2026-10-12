@@ -5,6 +5,7 @@ from uuid import UUID
 import xml.etree.ElementTree as ET
 
 from validate_stats import read_stats
+from generate_jwl_compat import load_tiers
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'GunslingerClass'
@@ -40,7 +41,7 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                 'CL_WPN_MAG_HillGiant_Club': 'WPN_GSL_Flintlock_HillGiantStrength',
             },
             'GunslingerClass_JWL_WeaponCopiesCompat': {
-                'JWL_GOB_GoblinKing_Warhammer_UP1': 'WPN_GSL_Musket_Faithbreaker',
+                tier.source: tier.parent for tier in load_tiers()
             },
         }
         actual = {}
@@ -98,7 +99,11 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                         base = f'WPN_GSL_{kind[1]}'
                         self.assertIn(weapon.parent, main_stats)
                         self.assertEqual(weapon.kind, 'Weapon')
-                        self.assertEqual(set(weapon.fields), {'RootTemplate'})
+                        if module.name != 'GunslingerClass_JWL_WeaponCopiesCompat':
+                            self.assertEqual(set(weapon.fields), {'RootTemplate'})
+                        else:
+                            self.assertIn('Rarity', weapon.fields)
+                            self.assertIn('DefaultBoosts', weapon.fields)
                         root = weapon.fields['RootTemplate']
                         UUID(root)
                         self.assertNotIn(root, all_templates)
