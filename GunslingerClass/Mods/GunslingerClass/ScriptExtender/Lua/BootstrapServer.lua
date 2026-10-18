@@ -304,6 +304,7 @@ local function refreshNow(character, restoreAmmo)
     local owner = data.owners[character] or {}
     data.owners[character] = owner
     status(character, "GSL_MISFIRE", false)
+    status(character, "GSL_MISFIRE_OFF", false)
     status(character, "GSL_DOUBLE_LOAD_BROKEN", false)
     for hand in pairs(slots) do
         local item, kind = equipped(character, hand)
@@ -345,12 +346,20 @@ local function refreshNow(character, restoreAmmo)
         if state then
             applyItem(item, state)
             local entry, entity = resource(character, hand, state)
+            local capacity = Rules.Capacity(state)
+            local maxChanged = entry.MaxAmount ~= capacity
+            entry.MaxAmount = capacity
             if newItem then state.ammo = entry.Amount end
             if changed or restoreAmmo then
                 entry.Amount = math.min(state.ammo, entry.MaxAmount)
                 entity:Replicate("ActionResources")
             else
-                state.ammo = math.min(entry.Amount, Rules.Capacity(state))
+                local amount = math.min(entry.Amount, capacity)
+                if amount ~= entry.Amount or maxChanged then
+                    entry.Amount = amount
+                    entity:Replicate("ActionResources")
+                end
+                state.ammo = amount
             end
         end
         local repairable = state and state.misfire and not state.broken
@@ -597,9 +606,11 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, app
         else
             pendingLastWord[character] = true
         end
-    elseif applied == "GSL_MISFIRE" or applied == "GSL_DOUBLE_LOAD_BROKEN" then
+    elseif applied == "GSL_MISFIRE" or applied == "GSL_MISFIRE_OFF" or applied == "GSL_DOUBLE_LOAD_BROKEN" then
+        local hand = applied == "GSL_MISFIRE_OFF" and "Off" or "Main"
         local cast = casts[character]
-        local item = cast and cast.item or equipped(character, "Main") or equipped(character, "Off")
+        if cast and (cast.action ~= action or cast.itemHand ~= hand) then cast = nil end
+        local item = cast and cast.item or equipped(character, hand)
         Osi.RemoveStatus(character, applied)
         -- Any critical miss during Double Load breaks the gun, even if only the ordinary misfire passive fired.
         misfireItem(character, item, applied == "GSL_DOUBLE_LOAD_BROKEN" or

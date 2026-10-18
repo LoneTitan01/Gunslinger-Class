@@ -141,10 +141,6 @@ Osi = {
         assert(source ~= "GSL_AllIn", "Removed All In must never grant new boosts")
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
-        local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
-        local entry = ammo(char, hand)
-        entry.MaxAmount = entry.MaxAmount + tonumber(amount)
-        entry.Amount = entry.Amount + tonumber(amount)
     end,
     RemoveBoosts = function(char, boost, _, source)
         if source == "GSL_AllIn" then
@@ -155,10 +151,6 @@ Osi = {
         end
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
-        local hand = resource:find("Offhand", 1, true) and "Off" or "Main"
-        local entry = ammo(char, hand)
-        entry.MaxAmount = entry.MaxAmount - tonumber(amount)
-        entry.Amount = math.min(entry.Amount, entry.MaxAmount)
     end,
     IsDead = function() return 0 end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
@@ -291,9 +283,12 @@ assert(specialCosts == 3, "Native actions must not double-charge on stats reload
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
+local function castAs(char, spell, action)
+    fire("UsingSpell", "before", char, spell, "", "", action)
+    fire("CastedSpell", "after", char, spell, "", "", action)
+end
 local function cast(spell, action)
-    fire("UsingSpell", "before", "alice", spell, "", "", action)
-    fire("CastedSpell", "after", "alice", spell, "", "", action)
+    castAs("alice", spell, action)
 end
 cast("Shout_GSL_Tinkerer_MainCapacity", 1)
 assert(ammo("alice", "Main").MaxAmount == 6 and ammo("alice", "Main").Amount == 3)
@@ -358,7 +353,7 @@ assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") 
     "Master Tinkerer range must affect attacks with the modified firearm")
 fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 ammo("alice", "Off").Amount = 2
-fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 4)
+fire("StatusApplied", "after", "alice", "GSL_MISFIRE_OFF", "alice", 4)
 assert(variables.Firearms.weapons.second.misfire and not variables.Firearms.weapons.first.misfire)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 0, "A misfire must not stop the gun firing")
 assert(Osi.HasActiveStatus("second", "GSL_FIREARM_ITEM_MISFIRED") == 1)
@@ -388,7 +383,7 @@ ticks()
 inventory.alice["Ranged Offhand Weapon"] = "second"
 local legacyStatuses = {
     "GSL_FIREARM_MAIN_DESTROYED", "GSL_FIREARM_OFF_MISFIRED", "GSL_REPAIR_MENU_MAIN_RAPID",
-    "GSL_MISFIRE", "GSL_DOUBLE_LOAD_BROKEN"
+    "GSL_MISFIRE", "GSL_MISFIRE_OFF", "GSL_DOUBLE_LOAD_BROKEN"
 }
 for _, name in ipairs(legacyStatuses) do Osi.ApplyStatus("alice", name, -1, 1, "alice") end
 Osi.ApplyStatus("second", "GSL_REPAIR_MENU_OFF", -1, 1, "second")
@@ -441,7 +436,7 @@ fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", 99)
 assert(variables.Firearms.weapons.first.misfire, "An untracked nat 1 must misfire the equipped firearm, not the melee weapon")
 for action = 41, 42 do
     fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", action)
-    fire("StatusApplied", "after", "alice", "GSL_MISFIRE", "alice", action)
+    fire("StatusApplied", "after", "alice", "GSL_MISFIRE_OFF", "alice", action)
     fire("CastedSpell", "after", "alice", "GSL_OffHand_Flintlock_attack", "", "", action)
     if action == 41 then
         assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_MAIN_RAPID") == 1 and
@@ -1001,6 +996,100 @@ Osi.ApplyStatus("alice", "GSL_HOT_STREAK_COUNTER", 12, 1, "alice")
 Osi.RemoveStatus("alice", "GSL_HOT_STREAK")
 fire("StatusRemoved", "after", "alice", "GSL_HOT_STREAK", "", 0)
 assert(hotStreakStacks.alice == nil, "Ending Hot Streak must clear any legacy counter")
+gun("combined")
+entities.combined.template = "a710ad68-179b-4b0e-8ef2-3b37609a3f12"
+inventory.bob["Ranged Main Weapon"] = "combined"
+fire("Equipped", "after", "combined", "bob")
+ticks()
+assert(variables.Firearms.weapons.combined.kind == "Flintlock",
+    "Magical combination templates must be tracked as their base firearm")
+castAs("bob", "Shout_GSL_Tinkerer_MainCapacity", 900)
+assert(ammo("bob", "Main").MaxAmount == 6)
+castAs("bob", "Shout_GSL_Tinkerer_MainDamage", 901)
+local combinedMods = variables.Firearms.weapons.combined.mods
+assert(#combinedMods == 1 and combinedMods[1] == "Damage")
+assert(ammo("bob", "Main").MaxAmount == 3 and
+    Osi.HasActiveStatus("combined", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("combined", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1,
+    "At level 4, the new magical-weapon upgrade must replace the previous one")
+passives.bob = {GSL_MasterTinkerer = true}
+castAs("bob", "Shout_GSL_Tinkerer_MainRemove", 902)
+castAs("bob", "Shout_GSL_Tinkerer_MainCapacity", 903)
+castAs("bob", "Shout_GSL_Tinkerer_MainDamage", 904)
+castAs("bob", "Shout_GSL_Tinkerer_MainRange", 905)
+combinedMods = variables.Firearms.weapons.combined.mods
+assert(#combinedMods == 2 and combinedMods[1] == "Damage" and combinedMods[2] == "Range",
+    "At level 10, adding a third magical-weapon upgrade must evict the oldest")
+assert(ammo("bob", "Main").MaxAmount == 3 and
+    Osi.HasActiveStatus("combined", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("combined", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1 and
+    Osi.HasActiveStatus("combined", "GSL_TINKERER_RANGE_FLINTLOCK") == 1,
+    "Evicting the oldest magical-weapon capacity upgrade must restore base capacity")
+local dataRoot = "GunslingerClass\\Public\\GunslingerClass\\Stats\\Generated\\Data\\"
+local function readStats(name)
+    local file = assert(io.open(dataRoot .. name, "r"))
+    local text = file:read("*a")
+    file:close()
+    return text
+end
+local misfirePassive = readStats("GunslingerPassives.txt"):match(
+    'new entry "GSL_Firearm_Misfire_Passive"(.-)\nnew entry')
+assert(misfirePassive:find("IF(not IsOffHandAttack()):ApplyStatus(SELF,GSL_MISFIRE,100,-1)", 1, true))
+assert(misfirePassive:find("IF(IsOffHandAttack()):ApplyStatus(SELF,GSL_MISFIRE_OFF,100,-1)", 1, true))
+local offTrigger = readStats("GunslingerStatuses.txt"):match('new entry "GSL_MISFIRE_OFF"(.-)\nnew entry')
+assert(offTrigger and offTrigger:find('using "GSL_MISFIRE"', 1, true) and
+    offTrigger:find('data "StackId" "GSL_MISFIRE_OFF"', 1, true),
+    "The off-hand trigger must inherit the hidden, boost-free misfire status with its own stack")
+local pairsToTest = {
+    {"a710ad68-179b-4b0e-8ef2-3b37609a3f12", "3d8b177d-89db-4826-8068-9f2d777faf04"},
+    {"3d8b177d-89db-4826-8068-9f2d777faf04", "a710ad68-179b-4b0e-8ef2-3b37609a3f12"},
+    {"a710ad68-179b-4b0e-8ef2-3b37609a3f12", "a710ad68-179b-4b0e-8ef2-3b37609a3f12"},
+    {"3d8b177d-89db-4826-8068-9f2d777faf04", "3d8b177d-89db-4826-8068-9f2d777faf04"}
+}
+local shotPairs = {
+    {Main = "GSL_MainHand_Flintlock_attack", Off = "GSL_OffHand_Flintlock_attack"},
+    {Main = "Projectile_MainHandAttack", Off = "Projectile_OffhandAttack"},
+    {Main = "Projectile_GSL_DisarmingShot", Off = "Projectile_GSL_TwoGunTango_OffHand"}
+}
+for pairIndex, pair in ipairs(pairsToTest) do
+    for _, hand in ipairs({"Main", "Off"}) do
+        for shotIndex, spells in ipairs(shotPairs) do
+            for _, delayed in ipairs({false, true}) do
+                local char = "misfire" .. pairIndex .. hand .. shotIndex .. tostring(delayed)
+                local main, off = char .. "Main", char .. "Off"
+                character(char)
+                gun(main)
+                gun(off)
+                entities[main].template, entities[off].template = pair[1], pair[2]
+                inventory[char]["Ranged Main Weapon"] = main
+                inventory[char]["Ranged Offhand Weapon"] = off
+                fire("Equipped", "after", main, char)
+                ticks()
+                local item = hand == "Main" and main or off
+                local other = hand == "Main" and off or main
+                local trigger = hand == "Main" and "GSL_MISFIRE" or "GSL_MISFIRE_OFF"
+                for action = 1001, 1002 do
+                    -- A different action's cast must never choose this attack's gun or break it early.
+                    local stale = hand == "Main" and "GSL_OffHand_Flintlock_attack" or "Projectile_GSL_DoubleLoad"
+                    fire("UsingSpell", "before", char, stale, "", "", action - 1)
+                    fire("UsingSpell", "before", char, spells[hand], "", "", action)
+                    if delayed then fire("CastedSpell", "after", char, spells[hand], "", "", action) end
+                    fire("StatusApplied", "after", char, trigger, char, action)
+                    if not delayed then fire("CastedSpell", "after", char, spells[hand], "", "", action) end
+                    local state, otherState = variables.Firearms.weapons[item], variables.Firearms.weapons[other]
+                    assert(state.misfire and state.broken == (action == 1002),
+                        char .. ": only the second critical miss must break the firing gun")
+                    assert(not otherState.misfire and not otherState.broken,
+                        char .. ": a critical miss must leave the other gun untouched")
+                    assert(Osi.HasActiveStatus(item, action == 1001 and
+                        "GSL_FIREARM_ITEM_MISFIRED" or "GSL_FIREARM_ITEM_DESTROYED") == 1)
+                    assert(Osi.HasActiveStatus(char, trigger) == 0, "The hand-specific trigger must be consumed")
+                end
+            end
+        end
+    end
+end
+print("Dual-wield misfire correlation passed: 48 magical/non-magical, hand, shot and callback-order combinations")
 print("Fortune preview ownership passed: eligibility, ownership before confirmation, cancellation, confirmation, load cleanup, existing ownership, lost client and renewal")
 print("Removed All In cleanup passed: saved passive, native variant, dynamic container, ready marker and idempotence")
-print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec and persistent Luck diagnostics")
+print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec, persistent Luck diagnostics and magical weapon Tinkerer replacement")

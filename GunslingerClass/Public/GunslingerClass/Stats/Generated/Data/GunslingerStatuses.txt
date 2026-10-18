@@ -228,6 +228,11 @@ data "RemoveEvents" "OnLongRest"
 data "Boosts" ""
 data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;DisablePortraitIndicator;InstantlyDisappears"
 
+new entry "GSL_MISFIRE_OFF"
+type "StatusData"
+using "GSL_MISFIRE"
+data "StackId" "GSL_MISFIRE_OFF"
+
 new entry "GSL_FIREARM_ITEM_MISFIRED"
 type "StatusData"
 data "StatusType" "BOOST"
