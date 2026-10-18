@@ -286,7 +286,7 @@ class SpellDataTests(unittest.TestCase):
             self.assertEqual(fields['Icon'], icon)
             self.assertNotIn('Boosts', fields)
         self.assertIn('RemoveOnLongRest', self.entries['GSL_FIREARM_ITEM_MISFIRED'].fields['StatusPropertyFlags'])
-        # Like Tinkerer, the engine marks the gun itself; the script only reconciles repair/break/long rest.
+        # The engine marks the gun itself; the script only reconciles repair/break/long rest.
         functors = self.entries['GSL_Firearm_Misfire_Passive'].fields['StatsFunctors']
         self.assertTrue(functors.startswith('ApplyStatus(SELF,GSL_MISFIRE,100,-1);'))
         for slot, hand in (('RangedMainHand', 'not IsOffHandAttack()'), ('RangedOffHand', 'IsOffHandAttack()')):

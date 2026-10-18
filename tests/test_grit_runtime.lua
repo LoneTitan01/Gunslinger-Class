@@ -152,6 +152,13 @@ Osi = {
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
     end,
+    GetInventoryOwner = function(item)
+        for char, slots in pairs(inventory) do
+            for _, equippedItem in pairs(slots) do
+                if equippedItem == item then return char end
+            end
+        end
+    end,
     IsDead = function() return 0 end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
     AddPassive = function(char, passive)
@@ -283,8 +290,21 @@ assert(specialCosts == 3, "Native actions must not double-charge on stats reload
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
+local function markTinkerer(char, hand, mode, causee, action)
+    local item = inventory[char][hand == "Off" and "Ranged Offhand Weapon" or "Ranged Main Weapon"]
+    local marker = "GSL_TINKER_" .. hand:upper() .. "_" .. mode:upper()
+    Osi.ApplyStatus(item, marker, 1, 1, causee)
+    fire("StatusApplied", "after", item, marker, causee, action)
+    assert(Osi.HasActiveStatus(item, marker) == 0, "Tinkerer markers must not linger on the gun")
+end
 local function castAs(char, spell, action)
     fire("UsingSpell", "before", char, spell, "", "", action)
+    local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%u%l+)(%u%l+)$")
+    if hand then
+        -- The engine applies the sub-spell's equipment marker, and cast events may name the container instead.
+        markTinkerer(char, hand, mode, char, action)
+        spell = "Shout_GSL_Tinkerer"
+    end
     fire("CastedSpell", "after", char, spell, "", "", action)
 end
 local function cast(spell, action)
@@ -582,6 +602,28 @@ assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 1)
 cast("Shout_GSL_Tinkerer_OffRemove", 80)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 0)
+-- The marker alone drives Tinkerer, even without any matching cast events or a reported causee.
+passives.alice.GSL_MasterTinkerer = nil
+markTinkerer("alice", "Main", "Capacity", nil, 81)
+assert(ammo("alice", "Main").MaxAmount == 6 and Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 1,
+    "A Tinkerer marker must apply without cast-event correlation")
+markTinkerer("alice", "Main", "Damage", "alice", 82)
+assert(ammo("alice", "Main").MaxAmount == 3 and Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1,
+    "A new Tinkerer marker must replace the previous modification")
+markTinkerer("alice", "Main", "Remove", "alice", 83)
+assert(#variables.Firearms.weapons.first.mods == 0 and Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+-- Statuses stacked by the old engine-side application are reconciled away by the next refresh.
+statuses.first.GSL_TINKERER_CAPACITY = true
+statuses.first.GSL_TINKERER_RANGE_FLINTLOCK = true
+fire("TurnStarted", "after", "alice")
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 0,
+    "Stale Tinkerer statuses must be removed when the gun's record has no modifications")
+assert(not pcall(fire, "StatusApplied", "after", "first", "GSL_TINKER_OFF_CAPACITY", "alice", 84),
+    "A marker for the wrong hand must be rejected")
+assert(#variables.Firearms.weapons.first.mods == 0)
+passives.alice.GSL_MasterTinkerer = true
 events.SessionLoaded()
 ticks()
 fire("LongRestFinished", "after")

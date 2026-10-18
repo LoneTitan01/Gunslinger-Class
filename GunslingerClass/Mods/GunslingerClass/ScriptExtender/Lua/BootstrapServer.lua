@@ -489,11 +489,10 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     end
     if not spell:find("GSL_", 1, true) then return end
     refresh(character, false)
-    local hand, mode = Rules.ParseTinkerer(spell)
     local shotHand = spell:match("^Shout_GSL_%a+Repair_(%a+)") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")
-    local item = equipped(character, hand or shotHand)
-    casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand, itemHand = hand or shotHand}
+    local item = equipped(character, shotHand)
+    casts[character] = {spell = spell, item = item, action = action, itemHand = shotHand}
     -- Applied before the attack roll so Double Load's critical-miss passive is active for this shot.
     if spell == "Projectile_GSL_DoubleLoad" then Osi.ApplyStatus(character, "GSL_DOUBLE_LOAD", -1, 1, character) end
     casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_(%d)$"))
@@ -520,19 +519,6 @@ end
 Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell, _, _, action)
     local cast = casts[character]
     if cast and cast.spell == spell and cast.action == action then
-        if cast.mode then
-            assert(cast.item, "Tinkerer resolved without an equipped firearm")
-            local data = database()
-            local state = assert(data.weapons[cast.item])
-            if cast.mode == "Remove" then
-                Rules.RemoveModifications(state)
-            else
-                local limit = Osi.HasPassive(character, "GSL_MasterTinkerer") == 1 and 2 or 1
-                Rules.Modify(state, cast.mode, limit)
-            end
-            save(data)
-            refresh(character, true)
-        end
         if spell == "Projectile_GSL_DoubleOrNothing" then
             local target = pendingAttackTargets[character]
             pendingAttackTargets[character] = nil
@@ -597,8 +583,31 @@ local function lastWordShot(character, attacker)
     end
 end
 
-Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, _, action)
-    if applied == hotStreakStatus then
+-- Tinkerer spells are container sub-spells, whose cast events cannot be correlated by name,
+-- so each one marks the chosen gun and the server applies the change to that gun's record.
+local function tinker(item, marker, causee)
+    local hand, mode = Rules.ParseTinkererStatus(marker)
+    Osi.RemoveStatus(item, marker)
+    local kind = templates[(Osi.GetTemplate(item) or ""):sub(-36):lower()]
+    assert(kind, "Tinkerer marked an object that is not a firearm")
+    local wielder = causee
+    if not wielder or equipped(wielder, hand) ~= item then wielder = Osi.GetInventoryOwner(item) end
+    assert(wielder and equipped(wielder, hand) == item, "Tinkerer marked a firearm its wielder does not hold in that hand")
+    local data = database()
+    local state = itemState(data, item, kind)
+    if mode == "Remove" then
+        Rules.RemoveModifications(state)
+    else
+        Rules.Modify(state, mode, Osi.HasPassive(wielder, "GSL_MasterTinkerer") == 1 and 2 or 1)
+    end
+    save(data)
+    refresh(wielder, true)
+end
+
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, causee, action)
+    if Rules.ParseTinkererStatus(applied) then
+        tinker(character, applied, causee)
+    elseif applied == hotStreakStatus then
         clearHotStreak(character)
     elseif applied == "GSL_LASTWORD_PENDING" then
         if recentAttackers[character] then

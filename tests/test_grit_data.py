@@ -547,24 +547,25 @@ class GritDataTests(unittest.TestCase):
             for hand in ('Main', 'Off') for mode in ('Capacity', 'Damage', 'Range', 'Remove')
         })
         for hand in ('Main', 'Off'):
-            for mode in ('Capacity', 'Damage', 'Range'):
+            slot = 'RangedMainHand' if hand == 'Main' else 'RangedOffHand'
+            for mode in ('Capacity', 'Damage', 'Range', 'Remove'):
                 fields = self.fields(f'Shout_GSL_Tinkerer_{hand}{mode}')
                 self.assertEqual(fields['UseCosts'], 'ActionPoint:1')
-                self.assertNotIn('GunslingerGrit', fields['TooltipUseCosts'])
+                self.assertEqual(fields['TooltipUseCosts'], 'ActionPoint:1')
+                self.assertEqual(fields['SpellContainerID'], 'Shout_GSL_Tinkerer')
                 self.assertIn(f'GSL_FIREARM_{hand.upper()}_DISABLED', fields['RequirementConditions'])
-                slot = 'RangedMainHand' if hand == 'Main' else 'RangedOffHand'
-                kinds = ('FLINTLOCK', 'BLUNDERBUSS', 'MUSKET') if hand == 'Main' else ('FLINTLOCK',)
-                statuses = ['GSL_TINKERER_CAPACITY'] if mode == 'Capacity' else [
-                    f'GSL_TINKERER_{mode.upper()}_{kind}' for kind in kinds]
-                for status in statuses:
-                    # Applied to the gun by the engine, like Magic Weapon, so the tooltip shows it without Lua.
-                    self.assertIn(f'ApplyEquipmentStatus({slot},{status},100,-1)', fields['SpellProperties'])
-            remove = self.fields(f'Shout_GSL_Tinkerer_{hand}Remove')
-            self.assertEqual(remove['UseCosts'], 'ActionPoint:1')
-            self.assertEqual(remove['TooltipUseCosts'], 'ActionPoint:1')
-            self.assertEqual(remove['SpellContainerID'], 'Shout_GSL_Tinkerer')
-            self.assertEqual(remove['SpellProperties'], '')
-            self.assertEqual(remove['RequirementConditions'],
+                # Container sub-spell cast events can't be matched by name, so each choice only marks the gun;
+                # the server owns the gun's record and every visible Tinkerer status.
+                marker = f'GSL_TINKER_{hand.upper()}_{mode.upper()}'
+                self.assertEqual(fields['SpellProperties'], f'ApplyEquipmentStatus({slot},{marker},100,1)')
+                self.assertNotIn('GSL_TINKERER_', fields['SpellProperties'])
+                status = self.fields(marker)
+                self.assertEqual(status['StackId'], marker)
+                self.assertEqual(status['RemoveEvents'], '')
+                self.assertNotIn('Boosts', status)
+                for flag in ('DisableOverhead', 'DisableCombatlog', 'DisablePortraitIndicator'):
+                    self.assertIn(flag, status['StatusPropertyFlags'])
+            self.assertEqual(self.fields(f'Shout_GSL_Tinkerer_{hand}Remove')['RequirementConditions'],
                              self.fields(f'Shout_GSL_Tinkerer_{hand}Capacity')['RequirementConditions'])
         extended = self.fields('GSL_OffHand_Flintlock_attack_Range')
         self.assertEqual(extended['TargetRadius'], '19.5')

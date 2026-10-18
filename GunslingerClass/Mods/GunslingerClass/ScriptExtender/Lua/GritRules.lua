@@ -11,13 +11,14 @@ Rules.Firearms = {
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
 
-function Rules.ParseTinkerer(spell)
-    local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Capacity)$")
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Damage)$") end
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Range)$") end
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Remove)$") end
-    if hand ~= "Main" and hand ~= "Off" then return nil end
-    return hand, mode
+local tinkerHands = {MAIN = "Main", OFF = "Off"}
+local tinkerModes = {CAPACITY = "Capacity", DAMAGE = "Damage", RANGE = "Range", REMOVE = "Remove"}
+
+-- Tinkerer spells mark the chosen gun with GSL_TINKER_<HAND>_<MODE>; the server turns that into the gun's record.
+function Rules.ParseTinkererStatus(status)
+    local hand, mode = status:match("^GSL_TINKER_(%u+)_(%u+)$")
+    if not tinkerHands[hand] or not tinkerModes[mode] then return nil end
+    return tinkerHands[hand], tinkerModes[mode]
 end
 
 function Rules.Mods(state)
