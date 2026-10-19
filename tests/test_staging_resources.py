@@ -189,6 +189,34 @@ class StagingResourceTests(unittest.TestCase):
                         stage_packages.stage_content_banks(Path('Divine.exe'))
             self.assertTrue(source.exists())
 
+    def test_stage_weapon_compat_discovers_jwl_eo_and_cl(self) -> None:
+        packages, unconverted = stage_packages.stage_weapon_compat(None)
+        expected_names = {
+            'GunslingerClass_CL_WeaponCopiesCompat.pak',
+            'GunslingerClass_EO_WeaponCopiesCompat.pak',
+            'GunslingerClass_JWL_WeaponCopiesCompat.pak',
+        }
+        self.assertEqual({name for _, name in packages}, expected_names)
+        self.assertTrue(unconverted)
+
+    def test_main_stages_weapon_compat_by_default(self) -> None:
+        with patch.object(stage_packages, 'copy_dirs'), \
+                patch.object(stage_packages, 'stage_localization', return_value=True), \
+                patch.object(stage_packages, 'stage_content_banks', return_value=[]), \
+                patch.object(stage_packages, 'stage_weapon_compat', return_value=((), [])) as mock_compat, \
+                patch.object(stage_packages, 'print_tree'):
+            stage_packages.main(['--skip-validation', '--no-pack'])
+            mock_compat.assert_called_once_with(None)
+
+    def test_main_omits_weapon_compat_with_flag(self) -> None:
+        with patch.object(stage_packages, 'copy_dirs'), \
+                patch.object(stage_packages, 'stage_localization', return_value=True), \
+                patch.object(stage_packages, 'stage_content_banks', return_value=[]), \
+                patch.object(stage_packages, 'stage_weapon_compat') as mock_compat, \
+                patch.object(stage_packages, 'print_tree'):
+            stage_packages.main(['--skip-validation', '--no-pack', '--no-weapon-compat'])
+            mock_compat.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,16 +1,19 @@
 """Stage (and optionally pack and zip) the files LSLib needs for each PAK.
 
-Main_Staging       -> Packages/GunslingerClass.pak
-5e_Compat_Staging  -> Packages/GunslingerClass_5eSpellsCompat.pak
+Main_Staging                                                  -> Packages/GunslingerClass.pak
+5e_Compat_Staging                                             -> Packages/GunslingerClass_5eSpellsCompat.pak
+Weapon_Compat_Staging/GunslingerClass_CL_WeaponCopiesCompat   -> Packages/GunslingerClass_CL_WeaponCopiesCompat.pak
+Weapon_Compat_Staging/GunslingerClass_EO_WeaponCopiesCompat   -> Packages/GunslingerClass_EO_WeaponCopiesCompat.pak
+Weapon_Compat_Staging/GunslingerClass_JWL_WeaponCopiesCompat  -> Packages/GunslingerClass_JWL_WeaponCopiesCompat.pak
 
 Usage:
-    python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation] [--weapon-compat]
+    python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation] [--no-weapon-compat]
 
-With --weapon-compat, also stage and pack the optional weapon-copy compatibility
-add-ons. These require their named source mods and are not included in the base PAK.
+Compatibility add-ons for Community Library, Encounters Overhaul, and JWL Soul
+Smithing are staged and built as well by default. Use --no-weapon-compat to omit them.
 
 With --divine, localization is converted to .loca, Content banks, root
-templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and both staging folders are packed into Packages/*.pak
+templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and all staging folders are packed into Packages/*.pak
 and compressed into matching Packages/*.zip archives (unless --no-pack).
 Each ZIP contains only its PAK at the archive root; the original PAK is retained.
 Without --divine, the localization .xml and resource .lsx files are
@@ -185,13 +188,18 @@ def pack(divine, extra_packages=()):
     return built
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('--divine', type=Path, help='Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip')
     parser.add_argument('--no-pack', action='store_true', help='With --divine, convert and stage but do not create .pak or .zip files')
     parser.add_argument('--skip-validation', action='store_true', help='Do not run validate_xml.py first')
-    parser.add_argument('--weapon-compat', action='store_true', help='Also build optional weapon-copy compatibility PAKs')
-    args = parser.parse_args()
+    parser.add_argument(
+        '--weapon-compat',
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help='Build weapon-copy compatibility PAKs (enabled by default; use --no-weapon-compat to skip)',
+    )
+    args = parser.parse_args(argv)
 
     if args.divine is not None and not args.divine.is_file():
         fail(f'Divine.exe not found: {args.divine}')
@@ -240,7 +248,7 @@ def main():
             print(f'  {pak} ({count} files, {pak.stat().st_size:,} bytes)')
             archive = pak.with_suffix('.zip')
             print(f'  {archive} ({archive.stat().st_size:,} bytes)')
-        print('\nInstall: copy both .pak files to %LOCALAPPDATA%\\Larian Studios\\Baldur\'s Gate 3\\Mods '
+        print('\nInstall: copy the .pak files to %LOCALAPPDATA%\\Larian Studios\\Baldur\'s Gate 3\\Mods '
               'and enable them in the mod manager (compat PAK only if 5e Spells is installed).')
         if extra_packages:
             print('Weapon-copy add-ons: enable only with their required source mods, '

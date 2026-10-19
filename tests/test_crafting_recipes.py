@@ -622,7 +622,7 @@ class CraftingRecipeTests(unittest.TestCase):
         for name, (ammo, shot_damage, magical_damage) in expected.items():
             with self.subTest(spell=name):
                 spell = read_entry(spells, 'entry', name)
-                self.assertEqual(spell['Cooldown'], 'OncePerShortRest')
+                self.assertEqual(spell['Cooldown'], 'OncePerShortRestPerItem')
                 self.assertIn(ammo, spell['UseCosts'])
                 self.assertIn(shot_damage, spell['SpellSuccess'])
                 self.assertIn(magical_damage, spell['SpellSuccess'])
@@ -1219,7 +1219,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn("Tagged('FIEND',context.Target)", voss_passive['Boosts'])
         self.assertIn('RollBonus(RangedWeaponAttack,1d4)', voss_passive['Boosts'])
         self.assertIn('CharacterWeaponDamage(1d4,MainRangedWeaponDamageType)', voss_passive['Boosts'])
-        self.assertEqual(smite['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(smite['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('DealDamage(1d6,Psychic,Magical)', smite['SpellSuccess'])
         self.assertIn('SavingThrow(Ability.Wisdom', smite['SpellSuccess'])
         self.assertIn('ApplyStatus(FRIGHTENED,100,2)', smite['SpellSuccess'])
@@ -1694,7 +1694,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('UnlockSpell(Projectile_GSL_ThunderousSmite_Musket)', cacophony['BoostsOnEquipMainHand'])
         self.assertIn('WeaponEnchantment(1)', cacophony['DefaultBoosts'])
         self.assertEqual(thunderous_source['Cooldown'], 'OncePerShortRestPerItem')
-        self.assertEqual(thunderous['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(thunderous['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('DealDamage(2d6,Thunder,Magical)', thunderous['SpellSuccess'])
         self.assertIn('PRONE_THUNDEROUS_SMITE', thunderous['SpellSuccess'])
 
@@ -1782,7 +1782,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         self.assertIn('ApplyStatus(SLOW,100,2)', source_incise['SpellSuccess'])
         self.assertEqual(incise['UseCosts'], 'ActionPoint:1;GunslingerMusketAmmo:1')
-        self.assertEqual(incise['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(incise['Cooldown'], 'OncePerShortRestPerItem')
         self.assertEqual(incise['SpellRoll'], 'Attack(AttackType.RangedWeaponAttack)')
         self.assertIn('SavingThrow(Ability.Dexterity,ManeuverSaveDC()+2)', incise['SpellSuccess'])
         self.assertIn('DealDamage(1d6,MainRangedWeaponDamageType)', incise['SpellSuccess'])
@@ -1827,7 +1827,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         self.assertIn('ApplyStatus(SILENCED,100,2)', source_hush['SpellSuccess'])
         self.assertEqual(hush['UseCosts'], 'ActionPoint:1;GunslingerMusketAmmo:1')
-        self.assertEqual(hush['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(hush['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('SavingThrow(Ability.Constitution,ManeuverSaveDC()+2)', hush['SpellSuccess'])
         self.assertIn('ApplyStatus(SILENCED,100,2)', hush['SpellSuccess'])
 
@@ -1840,7 +1840,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertEqual(source_push['Cooldown'], 'OncePerShortRest')
         self.assertIn('Force(5)', source_push['SpellSuccess'])
         self.assertEqual(push['UseCosts'], 'ActionPoint:1;GunslingerMusketAmmo:1')
-        self.assertEqual(push['Cooldown'], source_push['Cooldown'])
+        self.assertEqual(push['Cooldown'], 'OncePerShortRestPerItem')
         self.assertEqual(push['SpellRoll'], 'Attack(AttackType.RangedWeaponAttack)')
         self.assertIn('SavingThrow(Ability.Strength,ManeuverSaveDC())', push['SpellSuccess'])
         self.assertIn('Force(5)', push['SpellSuccess'])
@@ -2432,7 +2432,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         self.assertIn('DealDamage(1d6, Fire,Magical)', source_searing['SpellSuccess'])
         self.assertIn('ApplyStatus(SEARING_SMITE, 100, 10)', source_searing['SpellSuccess'])
-        self.assertEqual(searing_shot['Cooldown'], 'OncePerLongRest')
+        self.assertEqual(searing_shot['Cooldown'], 'OncePerRestPerItem')
         self.assertIn('DealDamage(1d6,Fire,Magical)', searing_shot['SpellSuccess'])
         self.assertIn('ApplyStatus(SEARING_SMITE,100,10)', searing_shot['SpellSuccess'])
         self.assertIn('GunslingerFlintlockAmmo:1', searing_shot['UseCosts'])
@@ -2584,7 +2584,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertEqual(source_syringe['RootTemplate'], '95c3af3c-83b9-4cc0-b633-1493b7daca4d')
         self.assertIn('ApplyStatus(POISONED,100,2)', source_syringe_action['SpellSuccess'])
         self.assertIn('DealDamage(1d6, Necrotic)', source_syringe_action['SpellSuccess'])
-        self.assertEqual(nostrum['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(nostrum['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('GunslingerFlintlockAmmo:1', nostrum['UseCosts'])
         self.assertIn('ApplyStatus(POISONED,100,2)', nostrum['SpellSuccess'])
         self.assertIn('DealDamage(1d6,Necrotic)', nostrum['SpellSuccess'])
@@ -2615,7 +2615,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('ApplyStatus(PRONE,100,2)', trephination['SpellSuccess'])
         self.assertIn('DealDamage(1d6,Necrotic)', trephination['SpellSuccess'])
         self.assertIn('ManeuverSaveDC()+2', trephination['SpellSuccess'])
-        self.assertEqual(trephination['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(trephination['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('GunslingerFlintlockAmmo:1', trephination['UseCosts'])
 
         source_worgfang = read_entry(
@@ -2796,7 +2796,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertEqual(hunters_mark['SpellProperties'], base_hunters_mark['SpellProperties'])
         self.assertEqual(hunters_mark['TargetConditions'], base_hunters_mark['TargetConditions'])
         self.assertEqual(hunters_mark['SpellFlags'], base_hunters_mark['SpellFlags'])
-        self.assertEqual(hunters_mark['Cooldown'], 'OncePerLongRest')
+        self.assertEqual(hunters_mark['Cooldown'], 'OncePerRestPerItem')
         self.assertEqual(hunters_mark['UseCosts'], 'BonusActionPoint:1')
         self.assertIn('GSL_FIREARM_MAIN_DISABLED', hunters_mark['RequirementConditions'])
 
@@ -2881,7 +2881,7 @@ class CraftingRecipeTests(unittest.TestCase):
             shot['SpellSuccess'] + ';IF(Character()):ApplyStatus(BLEEDING,100,2)',
         )
         self.assertNotIn('BLEEDING', bloodletting.get('SpellFail', ''))
-        self.assertEqual(bloodletting['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(bloodletting['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('GSL_FIREARM_MAIN_DISABLED', bloodletting['RequirementConditions'])
 
     def test_ambusher_cold_snap_dolor_dread_combinations_are_reversible(self) -> None:
@@ -3140,7 +3140,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('ApplyStatus(MAG_FLESHREND,100,3)', fleshrend_action['SpellSuccess'])
         self.assertIn('BlockRegainHP()', fleshrend_status['Boosts'])
         self.assertIn('UnlockSpell(Projectile_GSL_PartTheFlesh_Flintlock)', fleshrender['Boosts'])
-        self.assertEqual(fleshrend_shot['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(fleshrend_shot['Cooldown'], 'OncePerShortRestPerItem')
         self.assertEqual(
             fleshrend_shot['UseCosts'],
             'ActionPoint:1;GunslingerFlintlockAmmo:1',
@@ -3218,7 +3218,7 @@ class CraftingRecipeTests(unittest.TestCase):
             harmony_shout['SpellSuccess'],
             'ApplyStatus(GSL_FLINTLOCK_HARMONIC_HARMONY,100,10)',
         )
-        self.assertEqual(harmony_shout['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(harmony_shout['Cooldown'], 'OncePerShortRestPerItem')
 
         missile_source = read_entry(source_weapons, 'entry', 'MAG_MagicMissile_HandCrossbow')
         missile_source_spell = read_entry(
@@ -3240,7 +3240,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertEqual(missile_source_spell['Cooldown'], 'OncePerShortRestPerItem')
         self.assertEqual(magic_missile['using'], 'Projectile_MagicMissile_3')
         self.assertEqual(magic_missile['Level'], missile_source_spell['Level'])
-        self.assertEqual(magic_missile['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(magic_missile['Cooldown'], missile_source_spell['Cooldown'])
         self.assertEqual(magic_missile['UseCosts'], 'ActionPoint:1')
         self.assertNotIn('FlintlockAmmo', magic_missile['UseCosts'])
         self.assertIn('GSL_Flintlock_MainHand', magic_missile['RequirementConditions'])
@@ -3690,7 +3690,7 @@ class CraftingRecipeTests(unittest.TestCase):
         shriek = read_entry(spells, 'entry', 'Shout_GSL_PhalarShriek_Flintlock')
         self.assertIn('Skill(Performance, 1)', phalar['Boosts'])
         self.assertEqual(phalar['StatusOnEquip'], 'MAG_SWORD_IN_STONE_TECHNICAL')
-        self.assertEqual(melody['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(melody['Cooldown'], 'OncePerShortRestPerItem')
         self.assertEqual(
             melody['ContainerSpells'],
             'Shout_GSL_PhalarSing_Flintlock;Shout_GSL_PhalarShriek_Flintlock',
@@ -3907,7 +3907,7 @@ class CraftingRecipeTests(unittest.TestCase):
         advanced_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Advanced')
         self.assertIn('WeaponDamage(1d4,Piercing)', advanced_musket['DefaultBoosts'])
         paralyzing_shot = read_entry(spells, 'entry', 'Projectile_GSL_ParalyzingShot_Musket')
-        self.assertEqual(paralyzing_shot['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(paralyzing_shot['Cooldown'], 'OncePerShortRestPerItem')
         self.assertIn('SavingThrow(Ability.Constitution', paralyzing_shot['SpellSuccess'])
         self.assertIn('SG_Paralyzed', paralyzing_shot['SpellSuccess'])
         mithral_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Mithral')

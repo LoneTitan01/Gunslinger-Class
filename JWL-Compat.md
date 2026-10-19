@@ -41,7 +41,7 @@ python generate_jwl_compat.py --check
 python -m unittest tests.test_base_conversions
 python -m unittest discover -s tests -p "test_*compat.py"
 python validate_xml.py
-python stage_packages.py --divine <path to Divine.exe> --weapon-compat
+python stage_packages.py --divine <path to Divine.exe>
 ```
 
 `tests/test_jwl_compat.py` covers scoped completeness, deterministic output,
@@ -434,7 +434,7 @@ focused assertion for the intended delta.
    weapon families and 221 tiers.
 3. Document that the add-on must load after both required mods and remain
    enabled while any compatibility firearm exists in a save.
-4. Keep `stage_packages.py --weapon-compat` as the packaging entry point.
+4. Keep `stage_packages.py` as the packaging entry point (compatibility add-ons build by default).
 5. Build the optional PAK with Divine so `_merged.lsx` is converted to LSF.
 
 Exit criterion: the staged PAK contains the generated stats, recipes, compiled
@@ -473,7 +473,7 @@ Run the smallest relevant validation first:
 ```powershell
 python -m unittest tests.test_weapon_copy_compat tests.test_crafting_recipes tests.test_staging_resources
 python validate_xml.py
-python stage_packages.py --no-pack --weapon-compat
+python stage_packages.py --no-pack
 ```
 
 Then run the full test suite before packaging.
