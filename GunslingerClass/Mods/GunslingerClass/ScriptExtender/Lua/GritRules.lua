@@ -10,6 +10,15 @@ Rules.Firearms = {
         resource = "6c4658a0-74d6-4bec-851f-d91ee914484d"}
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
+-- Craft spells apply these markers; the server creates ordinary items, since summoned ones vanish
+-- when their summoner dies or respecs.
+Rules.CraftTemplates = {
+    GSL_CRAFT_FLINTLOCK = "3d8b177d-89db-4826-8068-9f2d777faf04",
+    GSL_CRAFT_BLUNDERBUSS = "4a7854fd-718a-4a4e-b9db-3875b5788065",
+    GSL_CRAFT_MUSKET = "1da91e88-3f0e-4ccc-ac25-0bdf00426880",
+    GSL_CRAFT_ASSEMBLY_KIT = "4f9578e8-e638-447a-835b-cd7aa282d921",
+    GSL_CRAFT_DISASSEMBLY_KIT = "69a4dba2-7023-4f78-8509-dff4201821ad"
+}
 
 local tinkerHands = {MAIN = "Main", OFF = "Off"}
 local tinkerModes = {CAPACITY = "Capacity", DAMAGE = "Damage", RANGE = "Range", REMOVE = "Remove"}

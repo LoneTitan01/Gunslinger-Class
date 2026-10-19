@@ -607,6 +607,9 @@ end
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, causee, action)
     if Rules.ParseTinkererStatus(applied) then
         tinker(character, applied, causee)
+    elseif Rules.CraftTemplates[applied] then
+        Osi.RemoveStatus(character, applied)
+        Osi.TemplateAddTo(Rules.CraftTemplates[applied], character, 1, 1)
     elseif applied == hotStreakStatus then
         clearHotStreak(character)
     elseif applied == "GSL_LASTWORD_PENDING" then

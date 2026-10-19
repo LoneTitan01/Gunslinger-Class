@@ -7,6 +7,7 @@ local doubleOrNothingAttacks = 0
 local players = {{"charlie"}}
 local interrupts = {}
 local printed = {}
+local crafted = {}
 local protectedPassives = {}
 local netListeners = {}
 local allInBoosts = {}
@@ -175,6 +176,9 @@ Osi = {
         if interrupts[char] and passiveInterrupts[passive] then
             interrupts[char][passiveInterrupts[passive]] = nil
         end
+    end,
+    TemplateAddTo = function(template, holder, count, notify)
+        crafted[#crafted + 1] = {template = template, holder = holder, count = count, notify = notify}
     end,
     UseSpell = function(char, spell, target)
         assert(char == "alice" and target == "bob")
@@ -1131,7 +1135,15 @@ for pairIndex, pair in ipairs(pairsToTest) do
         end
     end
 end
+for marker, template in pairs(rules.CraftTemplates) do
+    crafted = {}
+    Osi.ApplyStatus("alice", marker, 1, 1, "alice")
+    fire("StatusApplied", "after", "alice", marker, "alice", 950)
+    assert(#crafted == 1 and crafted[1].template == template and crafted[1].holder == "alice" and
+        crafted[1].count == 1, marker .. " must create one ordinary item in the crafter's inventory")
+    assert(Osi.HasActiveStatus("alice", marker) == 0, "Craft markers must not linger on the crafter")
+end
 print("Dual-wield misfire correlation passed: 48 magical/non-magical, hand, shot and callback-order combinations")
 print("Fortune preview ownership passed: eligibility, ownership before confirmation, cancellation, confirmation, load cleanup, existing ownership, lost client and renewal")
 print("Removed All In cleanup passed: saved passive, native variant, dynamic container, ready marker and idempotence")
-print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec, persistent Luck diagnostics and magical weapon Tinkerer replacement")
+print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec, persistent Luck diagnostics, magical weapon Tinkerer replacement and unsummoned crafting")
