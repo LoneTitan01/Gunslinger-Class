@@ -35,9 +35,9 @@ Broken-weapon checks read the equipped gun's own status for basic shots, firearm
 | --- | --- | --- | --- | --- | --- |
 | Flintlock | One-handed | 3 bullets | 2d4 | Piercing | 45 ft |
 | Blunderbuss | Two-handed | 2 bullets | 1d12 | Bludgeoning | 25 ft |
-| Musket | Two-handed | 1 bullet | 2d6 | Piercing | 80 ft |
+| Musket | Two-handed | 1 bullet | 1d10 | Piercing | 80 ft |
 
-Weapon range values are **1350 / 750 / 2400**, respectively, using the game's shortbow scale of 1800 = 60 feet. Main-hand shooting spells use the equipped weapon's range, extended by a hidden spell-variant status (`ModifyTargetRadius`) while the main-hand gun has Tinkerer's range modification; the secondary flintlock uses 13.5 metres, or a 19.5-metre override with Tinkerer's range modification. The modified secondary attack is also explicitly unlocked as a selectable action. High-ground range extensions remain inherited from vanilla ranged attacks.
+Weapon range values are **1350 / 750 / 2400**, respectively, using the game's shortbow scale of 1800 = 60 feet. Main-hand shooting spells use the equipped weapon's range; Tinkerer's range modification raises that gun's own Weapon range, which both targeting and the out-of-range check read; the secondary flintlock uses 13.5 metres, or a 19.5-metre override with Tinkerer's range modification. The modified secondary attack is also explicitly unlocked as a selectable action. The script also raises the secondary gun's Weapon range by the same amount, since the engine otherwise gives "out of range" Disadvantage beyond the weapon's own range. High-ground range extensions remain inherited from vanilla ranged attacks.
 
 Blunderbuss and Musket use BG3's exact `Twohanded` weapon-property token, matching Heavy and Light Crossbows. The display-style spelling `Two-Handed` is not a valid stats property.
 
@@ -410,7 +410,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 | Desperado's Luck | 3 | Once per turn, when a firearm attack would miss, add 1d4 to the roll, potentially turning it into a hit. Does not spend a Reaction point. | 1 grit; no action |
 | Ante Up | 3 | Gain Advantage on your next firearm attack before the end of your next turn. If it misses, attacks against you have Advantage until your next turn. | 1 grit; Bonus Action |
 | Lucky Draw | 3 | Reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn. | 1 grit; no action |
-| Two-Gun Tango | 3 | Fire your off-hand Flintlock. | 1 grit; no action; 1 off-hand bullet |
+| Two-Gun Tango | 3 | Fire your off-hand Flintlock. | 1 grit; no action; 1 off-hand bullet; once per turn |
 | Double Load | 7 | Make an attack with two bullets, dealing an extra 1d4 damage with a Flintlock or 1d6 with a Blunderbuss or Musket. A natural 1 destroys the weapon until a long rest restores it; it cannot be repaired. | 1 grit; Action; 2 bullets |
 | Roll the Bones | 7 | Roll a d6: 1 gives -1d4 to firearm attack rolls; 2-5 adds 1d6 damage on the next firearm hit; 6 adds 2d6 damage and restores 1 grit. Lasts until your next attack or 2 turns. | 1 grit; Bonus Action |
 | Duck and Weave | 7 | When a ranged weapon attack is about to damage you, resist its physical damage, then Disengage and gain 3 m of movement. | 1 grit; Reaction |

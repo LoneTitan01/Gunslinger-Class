@@ -10,7 +10,7 @@ for kind, firearm in pairs(rules.Firearms) do
     assert(rules.Capacity(state) == firearm.capacity)
     assert(state.ammo == firearm.capacity, "Replacing capacity must clamp ammunition")
     local expectedDamage = kind == "Flintlock" and "3d4" or
-        kind == "Blunderbuss" and "1d12+1d4" or "2d6+1d4"
+        kind == "Blunderbuss" and "1d12+1d4" or "1d10+1d4"
     assert(rules.DamageDice(state) == expectedDamage)
     rules.Modify(state, "Range")
     assert(rules.RangeBonus(state) == firearm.rangeBonus)

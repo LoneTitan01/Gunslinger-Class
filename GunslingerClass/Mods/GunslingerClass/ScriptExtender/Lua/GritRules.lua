@@ -6,7 +6,7 @@ Rules.Firearms = {
         resource = "c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"},
     Blunderbuss = {capacity = 2, dice = "1d12", rangeBonus = 3,
         resource = "7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"},
-    Musket = {capacity = 1, dice = "2d6", rangeBonus = 12,
+    Musket = {capacity = 1, dice = "1d10", rangeBonus = 12,
         resource = "6c4658a0-74d6-4bec-851f-d91ee914484d"}
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
@@ -61,7 +61,7 @@ function Rules.DamageDice(state)
     if upgrades == 0 then return nil end
     if state.kind == "Flintlock" then return (2 + upgrades) .. "d4" end
     if state.kind == "Blunderbuss" then return "1d12+" .. upgrades .. "d4" end
-    if state.kind == "Musket" then return "2d6+" .. upgrades .. "d4" end
+    if state.kind == "Musket" then return "1d10+" .. upgrades .. "d4" end
     error("Unknown firearm kind: " .. tostring(state.kind))
 end
 

@@ -82,7 +82,7 @@ class IconDataTests(unittest.TestCase):
                 self.assertEqual(struct.unpack_from('>II', png, 16), (size, size))
 
     def test_atlas_cells_are_unique_and_use_expected_slots(self) -> None:
-        self.assertEqual(len(self.cells), 83)
+        self.assertEqual(len(self.cells), 86)
         coordinates = set()
         for cell in self.cells:
             column = round(float(cell['U1']) * 32)

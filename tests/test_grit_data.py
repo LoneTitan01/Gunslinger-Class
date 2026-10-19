@@ -553,6 +553,8 @@ class GritDataTests(unittest.TestCase):
                 self.assertEqual(fields['UseCosts'], 'ActionPoint:1')
                 self.assertEqual(fields['TooltipUseCosts'], 'ActionPoint:1')
                 self.assertEqual(fields['SpellContainerID'], 'Shout_GSL_Tinkerer')
+                if mode != 'Remove':
+                    self.assertEqual(fields['Icon'], f'GSL_Tinkerer{mode}')
                 self.assertIn(f'GSL_FIREARM_{hand.upper()}_DISABLED', fields['RequirementConditions'])
                 # Container sub-spell cast events can't be matched by name, so each choice only marks the gun;
                 # the server owns the gun's record and every visible Tinkerer status.
@@ -577,7 +579,6 @@ class GritDataTests(unittest.TestCase):
 
     def test_tinkerer_modifications_are_visible_statuses_on_the_weapon(self) -> None:
         kinds = ('Flintlock', 'Blunderbuss', 'Musket')
-        range_bonus = {'Flintlock': '6', 'Blunderbuss': '3', 'Musket': '12'}
         weapon_statuses = ['GSL_TINKERER_CAPACITY'] + [
             f'GSL_TINKERER_{mode}_{kind.upper()}' for mode in ('DAMAGE', 'RANGE') for kind in kinds
         ] + ['GSL_TINKERER_MASTER_AMMO'] + [
@@ -587,12 +588,15 @@ class GritDataTests(unittest.TestCase):
         for name in weapon_statuses:
             fields = self.fields(name)
             self.assertEqual(fields['StatusType'], 'BOOST')
-            self.assertEqual(fields['Icon'], 'GSL_Tinkerer')
+            mode = 'Capacity' if 'CAPACITY' in name or 'AMMO' in name else name.split('_')[-2].title()
+            self.assertEqual(fields['Icon'], f'GSL_Tinkerer{mode}')
             self.assertIn('DisplayName', fields)
             self.assertIn('Description', fields)
             self.assertNotIn('DisablePortraitIndicator', fields.get('StatusPropertyFlags', ''))
             self.assertNotIn('RemoveOnLongRest', fields.get('StatusPropertyFlags', ''))
             self.assertNotIn('OnLongRest', fields.get('RemoveEvents', ''))
+            self.assertIn('IgnoreResting', fields['StatusPropertyFlags'],
+                          name + ' is permanent, so it must not show or end at a long rest')
         stacks = {self.fields(name)['StackId'] for name in weapon_statuses}
         self.assertEqual(stacks, {'GSL_TINKERER_CAPACITY', 'GSL_TINKERER_DAMAGE', 'GSL_TINKERER_RANGE'},
                          'Each upgrade tier must replace only its corresponding gun status')
@@ -604,11 +608,9 @@ class GritDataTests(unittest.TestCase):
                              'WeaponDamage(2d4,Piercing)')
             self.assertEqual(self.fields(f'GSL_TINKERER_MASTER_RANGE_{kind.upper()}')['StackId'],
                              'GSL_TINKERER_RANGE')
-            boosts = self.fields(f'GSL_TINKERER_MAIN_RANGE_{kind.upper()}')['Boosts']
-            self.assertIn(f'ModifyTargetRadius(AdditiveFinal,{range_bonus[kind]})', boosts)
-            self.assertIn("HasStringInSpellRoll('AttackType.RangedWeaponAttack')", boosts)
-            master_boosts = self.fields(f'GSL_TINKERER_MAIN_RANGE_MASTER_{kind.upper()}')['Boosts']
-            self.assertIn(f'ModifyTargetRadius(AdditiveFinal,{int(range_bonus[kind]) * 2})', master_boosts)
+            # Main-hand range is added to the Weapon component by script; targeting reads it from there.
+            for name in (f'GSL_TINKERER_MAIN_RANGE_{kind.upper()}', f'GSL_TINKERER_MAIN_RANGE_MASTER_{kind.upper()}'):
+                self.assertEqual(self.fields(name)['Boosts'], '', name + ' must not add range a second time')
         self.assertIn('AttackSpellOverride(GSL_OffHand_Flintlock_attack_Range',
                       self.fields('GSL_TINKERER_OFF_RANGE')['Boosts'])
         self.assertIn('AttackSpellOverride(GSL_OffHand_Flintlock_attack_RangeMaster',
@@ -925,14 +927,18 @@ class GritDataTests(unittest.TestCase):
                 if feat != 'QuickReload':
                     self.assertNotIn('Reload', description, 'a copied description describes another feat')
 
+    def test_boosted_range_cap_fits_longest_musket(self) -> None:
+        # Vanilla caps boosted range at 30 m; a Tinker Master musket with Longarm Specialist reaches 24 + 24 + 6.
+        data = (PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Data.txt').read_text(encoding='utf-8')
+        self.assertIn('key "RangeBoostedGlobalCap","54"', data)
+
     def test_longarm_specialist_adds_musket_range_without_advantage(self) -> None:
         fields = self.entries['GSL_Feat_LongarmSpecialist_Range'].fields
         self.assertNotIn('Boosts', fields)
         self.assertEqual(fields['DescriptionParams'], 'Distance(6)')
         status = self.entries['GSL_LONGARM_SPECIALIST_RANGE']
-        self.assertEqual(status.parent, 'GSL_TINKERER_MAIN_RANGE_FLINTLOCK')
         self.assertEqual(status.fields['StackId'], 'GSL_LONGARM_SPECIALIST_RANGE')
-        self.assertIn('ModifyTargetRadius(AdditiveFinal,6)', self.entries[status.parent].fields['Boosts'])
+        self.assertIn('ModifyTargetRadius(AdditiveFinal,6)', status.fields['Boosts'])
         lua = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua' / 'BootstrapServer.lua').read_text()
         self.assertIn('"GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket"', lua)
 
