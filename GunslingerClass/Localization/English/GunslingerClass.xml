@@ -362,7 +362,7 @@
         <content contentuid="h0000001cg0000g4000g8000g000000000002" version="1">Spend 1 grit to reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn.</content>
         <content contentuid="h0000001cg0000g4000g8000g000000000003" version="1">Reroll 1s and 2s on firearm damage dice.</content>
         <content contentuid="h0000001dg0000g4000g8000g000000000001" version="1">Two-Gun Tango</content>
-        <content contentuid="h0000001dg0000g4000g8000g000000000002" version="1">Spend 1 grit to fire your off-hand flintlock. Doesn't use an action or bonus action.</content>
+        <content contentuid="h0000001dg0000g4000g8000g000000000002" version="1">Spend 1 grit to fire your off-hand flintlock. Doesn't use an action or bonus action. Once per turn.</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000001" version="1">Roll the Bones</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to roll a d6. 1: -1d4 to your firearm attack rolls. 2-5: +1d6 damage on your next firearm hit. 6: +2d6 damage on your next firearm hit and regain 1 grit.</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000003" version="1">Bust</content>

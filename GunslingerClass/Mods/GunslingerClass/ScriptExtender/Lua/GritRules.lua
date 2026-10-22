@@ -6,11 +6,10 @@ Rules.Firearms = {
         resource = "c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"},
     Blunderbuss = {capacity = 2, dice = "1d12", rangeBonus = 3,
         resource = "7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"},
-    Musket = {capacity = 1, dice = "2d6", rangeBonus = 12,
+    Musket = {capacity = 1, dice = "1d10", rangeBonus = 12,
         resource = "6c4658a0-74d6-4bec-851f-d91ee914484d"}
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
-
 -- Craft spells apply these markers; the server creates ordinary items, since summoned ones vanish
 -- when their summoner dies or respecs.
 Rules.CraftTemplates = {
@@ -31,14 +30,11 @@ Rules.CraftNotes = {
 local tinkerHands = {MAIN = "Main", OFF = "Off"}
 local tinkerModes = {CAPACITY = "Capacity", DAMAGE = "Damage", RANGE = "Range", REMOVE = "Remove"}
 
--- Tinkerer shout names encode the hand and modification applied by the server.
-function Rules.ParseTinkerer(spell)
-    local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Capacity)$")
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Damage)$") end
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Range)$") end
-    if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Remove)$") end
-    if hand ~= "Main" and hand ~= "Off" then return nil end
-    return hand, mode
+-- Tinkerer spells mark the chosen gun with GSL_TINKER_<HAND>_<MODE>; the server turns that into the gun's record.
+function Rules.ParseTinkererStatus(status)
+    local hand, mode = status:match("^GSL_TINKER_(%u+)_(%u+)$")
+    if not tinkerHands[hand] or not tinkerModes[mode] then return nil end
+    return tinkerHands[hand], tinkerModes[mode]
 end
 
 function Rules.Mods(state)
@@ -72,7 +68,7 @@ function Rules.DamageDice(state)
     if upgrades == 0 then return nil end
     if state.kind == "Flintlock" then return (2 + upgrades) .. "d4" end
     if state.kind == "Blunderbuss" then return "1d12+" .. upgrades .. "d4" end
-    if state.kind == "Musket" then return "2d6+" .. upgrades .. "d4" end
+    if state.kind == "Musket" then return "1d10+" .. upgrades .. "d4" end
     error("Unknown firearm kind: " .. tostring(state.kind))
 end
 

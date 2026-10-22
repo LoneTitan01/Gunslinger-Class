@@ -10,7 +10,7 @@ for kind, firearm in pairs(rules.Firearms) do
     assert(rules.Capacity(state) == firearm.capacity)
     assert(state.ammo == firearm.capacity, "Replacing capacity must clamp ammunition")
     local expectedDamage = kind == "Flintlock" and "3d4" or
-        kind == "Blunderbuss" and "1d12+1d4" or "2d6+1d4"
+        kind == "Blunderbuss" and "1d12+1d4" or "1d10+1d4"
     assert(rules.DamageDice(state) == expectedDamage)
     rules.Modify(state, "Range")
     assert(rules.RangeBonus(state) == firearm.rangeBonus)
@@ -30,12 +30,15 @@ for kind, firearm in pairs(rules.Firearms) do
 end
 for _, hand in ipairs({"Main", "Off"}) do
     for _, mode in ipairs({"Capacity", "Damage", "Range", "Remove"}) do
-        local parsedHand, parsedMode = rules.ParseTinkerer("Shout_GSL_Tinkerer_" .. hand .. mode)
+        local parsedHand, parsedMode = rules.ParseTinkererStatus("GSL_TINKER_" .. hand:upper() .. "_" .. mode:upper())
         assert(parsedHand == hand and parsedMode == mode)
     end
 end
-assert(rules.ParseTinkerer("Shout_GSL_Tinkerer") == nil)
-assert(rules.ParseTinkerer("Shout_GSL_Tinkerer_BadCapacity") == nil)
+assert(rules.ParseTinkererStatus("GSL_TINKER_BAD_CAPACITY") == nil)
+assert(rules.ParseTinkererStatus("GSL_TINKER_MAIN_SPEED") == nil)
+-- The visible upgrade statuses must never be mistaken for markers.
+assert(rules.ParseTinkererStatus("GSL_TINKERER_OFF_RANGE") == nil)
+assert(rules.ParseTinkererStatus("GSL_TINKERER_CAPACITY") == nil)
 local first = {kind = "Flintlock", ammo = 2}
 local second = {kind = "Flintlock", ammo = 1}
 rules.Modify(first, "Range")

@@ -9,6 +9,9 @@ local slots = {Main = "Ranged Main Weapon", Off = "Ranged Offhand Weapon"}
 local casts = {}
 local refreshing = {}
 local pendingRefresh = {}
+local refreshRetries = {}
+-- Ticks to wait for an equipped gun's OnEquip ammo boost to populate before treating it as missing.
+local resourceWaitTicks = 30
 local pendingLastWord = {}
 local recentAttackers = {}
 local pendingAttackTargets = {}
@@ -19,10 +22,33 @@ Ext.Vars.RegisterModVariable(Rules.ModuleUUID, "Firearms", {
     Server = true, WriteableOnServer = true, Persistent = true
 })
 
+-- Osiris names an object "<name>_<uuid>", and the name changes when a combination transforms a gun in place,
+-- so physical guns are identified by UUID alone.
+local function itemId(item)
+    local uuid = item and item:match("%x%x%x%x%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%x%x%x%x%x%x%x%x$")
+    return uuid and uuid:lower() or item
+end
+
 local function database()
     local vars = Ext.Vars.GetModVariables(Rules.ModuleUUID)
-    if not vars.Firearms then vars.Firearms = {weapons = {}, owners = {}} end
-    return vars.Firearms
+    if not vars.Firearms then vars.Firearms = {weapons = {}, owners = {}, uuidKeys = true} end
+    local data = vars.Firearms
+    if not data.uuidKeys then
+        -- Older saves keyed guns by their full Osiris name; merge any records split by a rename.
+        local weapons = {}
+        for item, state in pairs(data.weapons) do
+            local id = itemId(item)
+            local existing = weapons[id]
+            if not existing or #Rules.Mods(state) > #Rules.Mods(existing) then weapons[id] = state end
+        end
+        data.weapons = weapons
+        for _, owner in pairs(data.owners) do
+            for hand in pairs(slots) do owner[hand] = itemId(owner[hand]) end
+        end
+        data.uuidKeys = true
+        vars.Firearms = data
+    end
+    return data
 end
 
 local function save(data)
@@ -187,13 +213,23 @@ Ext.Osiris.RegisterListener("StartRespec", 1, "before", function(character)
     save(data)
 end)
 
-local function equipped(character, hand)
-    local item = Osi.GetEquippedItem(character, slots[hand])
+-- Combinations transform a gun in place and can leave it on a template other than its stats' root template,
+-- so fall back to the stats ID (WPN_GSL_<Kind>...), which the transform always sets.
+local function firearmKind(item)
     if not item then return nil end
     local template = Osi.GetTemplate(item)
     local kind = template and templates[template:sub(-36):lower()]
+    if kind then return kind end
+    local ok, statsId = pcall(function() return Ext.Entity.Get(item).Data.StatsId end)
+    kind = ok and type(statsId) == "string" and statsId:match("^WPN_GSL_(%a+)")
+    return kind and Rules.Firearms[kind] and kind or nil
+end
+
+local function equipped(character, hand)
+    local item = Osi.GetEquippedItem(character, slots[hand])
+    local kind = firearmKind(item)
     if not kind then return nil end
-    return item, kind
+    return itemId(item), kind
 end
 
 local function itemState(data, item, kind)
@@ -203,15 +239,16 @@ local function itemState(data, item, kind)
     return data.weapons[item]
 end
 
+-- Returns nil and the resource ID when the ammo entry is not populated, which happens for a few ticks after
+-- equipping while the gun's OnEquip ActionResource boost is applied.
 local function resource(character, hand, state)
     local entity = assert(Ext.Entity.Get(character), "Firearm wielder has no entity")
     local id = hand == "Off" and Rules.OffhandResource or Rules.Firearms[state.kind].resource
     local entries = assert(entity.ActionResources, "Wielder has no ActionResources").Resources[id]
-    assert(entries, "Equipped firearm ammunition resource is missing: " .. id)
-    for _, entry in pairs(entries) do
+    for _, entry in pairs(entries or {}) do
         if entry.Level == 0 then return entry, entity end
     end
-    error("Ammunition resource has no level-zero entry: " .. id)
+    return nil, id
 end
 
 local function status(object, name, enabled)
@@ -271,17 +308,18 @@ local function applyItem(item, state)
         status(item, "GSL_TINKERER_RANGE_" .. kind:upper(), rangeCount == 1)
         status(item, "GSL_TINKERER_MASTER_RANGE_" .. kind:upper(), rangeCount >= 2)
     end
-    -- Older versions edited the Weapon component directly; restore it once, since range now comes from statuses.
-    if state.baseRange then
-        local entity = Ext.Entity.Get(item)
-        pcall(function()
-            if entity.Weapon.WeaponRange ~= state.baseRange then
-                entity.Weapon.WeaponRange = state.baseRange
-                entity:Replicate("Weapon")
-            end
-        end)
-        state.baseRange = nil
-    end
+    -- Statuses extend targeting, but the engine gives "out of range" Disadvantage past the Weapon component's
+    -- range, so the component must carry the same bonus. The unmodified range is remembered per gun.
+    local entity = Ext.Entity.Get(item)
+    pcall(function()
+        local weapon = entity.Weapon
+        state.baseRange = state.baseRange or weapon.WeaponRange
+        local range = state.baseRange + Rules.RangeBonus(state)
+        if weapon.WeaponRange ~= range then
+            weapon.WeaponRange = range
+            entity:Replicate("Weapon")
+        end
+    end)
 end
 
 local function snapshot(character)
@@ -293,7 +331,7 @@ local function snapshot(character)
         if item and owner[hand] == item then
             local state = data.weapons[item]
             local entry = resource(character, hand, state)
-            state.ammo = math.min(entry.Amount, Rules.Capacity(state))
+            if entry then state.ammo = math.min(entry.Amount, Rules.Capacity(state)) end
         end
     end
     save(data)
@@ -306,6 +344,7 @@ local function refreshNow(character, restoreAmmo)
     status(character, "GSL_MISFIRE", false)
     status(character, "GSL_MISFIRE_OFF", false)
     status(character, "GSL_DOUBLE_LOAD_BROKEN", false)
+    local missing
     for hand in pairs(slots) do
         local item, kind = equipped(character, hand)
         local changed = owner[hand] ~= item
@@ -323,7 +362,6 @@ local function refreshNow(character, restoreAmmo)
             if boost then Osi.AddBoosts(character, boost, source, character) end
             owner[hand .. "Boost"] = boost
         end
-        owner[hand] = item
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DISABLED", state and state.broken)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_MISFIRED", false)
         status(character, "GSL_FIREARM_" .. hand:upper() .. "_DESTROYED", false)
@@ -335,17 +373,25 @@ local function refreshNow(character, restoreAmmo)
             -- Longarm Specialist's range is a spell-variant boost, so it is applied only while a musket is held.
             status(character, "GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket" and
                 Osi.HasPassive(character, "GSL_Feat_LongarmSpecialist_Range") == 1)
+            -- Main-hand targeting reads the Weapon component, which applyItem extends, so the old
+            -- targeting statuses would count the bonus twice; clear them from older saves.
             for gun in pairs(Rules.Firearms) do
-                local rangeCount = state and state.kind == gun and Rules.ModCount(state, "Range") or 0
-                status(character, "GSL_TINKERER_MAIN_RANGE_" .. gun:upper(),
-                    rangeCount == 1)
-                status(character, "GSL_TINKERER_MAIN_RANGE_MASTER_" .. gun:upper(),
-                    rangeCount >= 2)
+                status(character, "GSL_TINKERER_MAIN_RANGE_" .. gun:upper(), false)
+                status(character, "GSL_TINKERER_MAIN_RANGE_MASTER_" .. gun:upper(), false)
             end
         end
+        local entry, entity
         if state then
             applyItem(item, state)
-            local entry, entity = resource(character, hand, state)
+            entry, entity = resource(character, hand, state)
+        end
+        if state and not entry then
+            -- Leave the hand unclaimed so the retry still restores this gun's saved ammo.
+            missing = entity
+        else
+            owner[hand] = item
+        end
+        if entry then
             local capacity = Rules.Capacity(state)
             local maxChanged = entry.MaxAmount ~= capacity
             entry.MaxAmount = capacity
@@ -370,20 +416,28 @@ local function refreshNow(character, restoreAmmo)
     save(data)
     updateReloadCosts(character)
     cleanupRemovedAbilities(character)
+    return missing
 end
 
-local function refresh(character, restoreAmmo)
+-- Returns the ID of an ammo resource that is not populated yet; callers that cannot wait use refresh.
+local function tryRefresh(character, restoreAmmo)
     if refreshing[character] then return end
     refreshing[character] = true
     -- Release the re-entrancy guard even on error, or every later refresh for this character is silently skipped.
-    local ok, err = pcall(refreshNow, character, restoreAmmo)
+    local ok, result = pcall(refreshNow, character, restoreAmmo)
     refreshing[character] = nil
-    if not ok then error(err, 0) end
+    if not ok then error(result, 0) end
+    return result
+end
+
+local function refresh(character, restoreAmmo)
+    local missing = tryRefresh(character, restoreAmmo)
+    if missing then error("Equipped firearm ammunition resource is missing: " .. missing) end
 end
 
 local function misfireItem(character, item, broken)
     local data = database()
-    local kind = item and templates[(Osi.GetTemplate(item) or ""):sub(-36):lower()]
+    local kind = firearmKind(item)
     assert(kind, "Misfire could not be correlated to a physical firearm")
     Rules.Misfire(itemState(data, item, kind), broken)
     save(data)
@@ -521,11 +575,10 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     end
     if not spell:find("GSL_", 1, true) then return end
     refresh(character, false)
-    local hand, mode = Rules.ParseTinkerer(spell)
     local shotHand = spell:match("^Shout_GSL_%a+Repair_(%a+)") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")
-    local item = equipped(character, hand or shotHand)
-    casts[character] = {spell = spell, item = item, action = action, mode = mode, hand = hand, itemHand = hand or shotHand}
+    local item = equipped(character, shotHand)
+    casts[character] = {spell = spell, item = item, action = action, itemHand = shotHand}
     -- Applied before the attack roll so Double Load's critical-miss passive is active for this shot.
     if spell == "Projectile_GSL_DoubleLoad" then Osi.ApplyStatus(character, "GSL_DOUBLE_LOAD", -1, 1, character) end
     casts[character].violent = tonumber(spell:match("^Projectile_GSL_ViolentShot_(%d)$"))
@@ -552,19 +605,6 @@ end
 Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell, _, _, action)
     local cast = casts[character]
     if cast and cast.spell == spell and cast.action == action then
-        if cast.mode then
-            assert(cast.item, "Tinkerer resolved without an equipped firearm")
-            local data = database()
-            local state = assert(data.weapons[cast.item])
-            if cast.mode == "Remove" then
-                Rules.RemoveModifications(state)
-            else
-                local limit = Osi.HasPassive(character, "GSL_MasterTinkerer") == 1 and 2 or 1
-                Rules.Modify(state, cast.mode, limit)
-            end
-            save(data)
-            refresh(character, true)
-        end
         if spell == "Projectile_GSL_DoubleOrNothing" then
             local target = pendingAttackTargets[character]
             pendingAttackTargets[character] = nil
@@ -629,22 +669,47 @@ local function lastWordShot(character, attacker)
     end
 end
 
+-- Tinkerer spells are container sub-spells, whose cast events cannot be correlated by name,
+-- so each one marks the chosen gun and the server applies the change to that gun's record.
+local function tinker(item, marker, causee)
+    local hand, mode = Rules.ParseTinkererStatus(marker)
+    Osi.RemoveStatus(item, marker)
+    item = itemId(item)
+    local kind = firearmKind(item)
+    assert(kind, "Tinkerer marked an object that is not a firearm: " .. tostring(Osi.GetTemplate(item)))
+    local wielder = causee
+    if not wielder or equipped(wielder, hand) ~= item then wielder = Osi.GetInventoryOwner(item) end
+    assert(wielder and equipped(wielder, hand) == item, "Tinkerer marked a firearm its wielder does not hold in that hand")
+    local data = database()
+    local state = itemState(data, item, kind)
+    if mode == "Remove" then
+        Rules.RemoveModifications(state)
+    else
+        Rules.Modify(state, mode, Osi.HasPassive(wielder, "GSL_MasterTinkerer") == 1 and 2 or 1)
+    end
+    save(data)
+    refresh(wielder, true)
+end
+
 -- Gives the crafter the firearm's upgrade notes the first time they craft that firearm.
 local function giveCraftNote(character, marker)
     local note = Rules.CraftNotes[marker]
     if not note then return end
     local data = database()
     data.craftNotes = data.craftNotes or {}
-    local received = data.craftNotes[character] or {}
+    local id = itemId(character)
+    local received = data.craftNotes[id] or {}
     if received[marker] then return end
     received[marker] = true
-    data.craftNotes[character] = received
+    data.craftNotes[id] = received
     save(data)
     Osi.TemplateAddTo(note, character, 1, 1)
 end
 
-Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, _, action)
-    if Rules.CraftTemplates[applied] then
+Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, causee, action)
+    if Rules.ParseTinkererStatus(applied) then
+        tinker(character, applied, causee)
+    elseif Rules.CraftTemplates[applied] then
         Osi.RemoveStatus(character, applied)
         Osi.TemplateAddTo(Rules.CraftTemplates[applied], character, 1, 1)
         giveCraftNote(character, applied)
@@ -697,6 +762,7 @@ Ext.Osiris.RegisterListener("Equipped", 2, "after", function(_, character)
     end
 end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(item, character)
+    item = itemId(item)
     snapshot(character)
     for hand in pairs(slots) do
         if equipped(character, hand) == item then
@@ -756,12 +822,24 @@ Ext.Events.Tick:Subscribe(function()
             end
         end
     end
+    local due = {}
     for character, ticks in pairs(pendingRefresh) do
         if ticks > 0 then
             pendingRefresh[character] = ticks - 1
         else
-            pendingRefresh[character] = nil
-            refresh(character, false)
+            due[#due + 1] = character
+        end
+    end
+    for _, character in ipairs(due) do
+        pendingRefresh[character] = nil
+        local missing = tryRefresh(character, false)
+        local retries = missing and (refreshRetries[character] or 0) + 1 or nil
+        refreshRetries[character] = retries
+        if retries and retries > resourceWaitTicks then
+            refreshRetries[character] = nil
+            error("Equipped firearm ammunition resource never appeared: " .. missing)
+        elseif retries then
+            pendingRefresh[character] = 0
         end
     end
     reloadPollTicks = reloadPollTicks + 1
@@ -783,7 +861,7 @@ local function arcaneReload(character)
         local state = item and data.weapons[item]
         if state and not state.broken and Osi.HasActiveStatus(item, "GSL_ARCANE_RELOAD") == 1 then
             local entry, entity = resource(character, hand, state)
-            if entry.Amount < entry.MaxAmount then
+            if entry and entry.Amount < entry.MaxAmount then
                 entry.Amount = entry.Amount + 1
                 entity:Replicate("ActionResources")
                 state.ammo = math.min(entry.Amount, Rules.Capacity(state))

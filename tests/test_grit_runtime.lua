@@ -7,6 +7,7 @@ local doubleOrNothingAttacks = 0
 local players = {{"charlie"}}
 local interrupts = {}
 local printed = {}
+local crafted = {}
 local protectedPassives = {}
 local netListeners = {}
 local allInBoosts = {}
@@ -79,6 +80,10 @@ for _, name in ipairs({"Projectile_GSL_DisarmingShot", "Projectile_GSL_RapidShot
     "Projectile_GSL_HotStreak_1", "Projectile_GSL_FanningFire_1", "Projectile_GSL_ViolentShot_1"}) do
     spellStats[name] = {RequirementConditions = "OriginalGritRequirement", SpellProperties = "", SpellRoll = ""}
 end
+-- Like Osiris, resolve "<name>_<uuid>" object strings by their UUID.
+local function obj(id)
+    return id and (id:match("%x%x%x%x%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%x%x%x%x%x%x%x%x$") or id)
+end
 local function fire(name, phase, ...)
     local listener = listeners[name .. ":" .. phase]
     if listener then listener(...) end
@@ -94,7 +99,7 @@ Ext = {
         end,
         GetModVariables = function() return variables end
     },
-    Entity = {Get = function(id) return entities[id] end},
+    Entity = {Get = function(id) return entities[obj(id)] end},
     Math = {Random = function(low, high)
         local roll = assert(table.remove(rolls, 1), "Unexpected random roll")
         assert(roll >= low and roll <= high)
@@ -138,9 +143,13 @@ Osi = {
     DB_Players = {Get = function() return players end},
     GetEquippedItem = function(char, slot) return inventory[char] and inventory[char][slot] end,
     GetEquippedWeapon = function() return "melee" end,
-    GetTemplate = function(item) return entities[item].template end,
-    HasActiveStatus = function(id, status) return statuses[id] and statuses[id][status] and 1 or 0 end,
+    GetTemplate = function(item) return entities[obj(item)].template end,
+    HasActiveStatus = function(id, status)
+        id = obj(id)
+        return statuses[id] and statuses[id][status] and 1 or 0
+    end,
     ApplyStatus = function(id, status, duration, force, source)
+        id = obj(id)
         durations[status] = duration
         statuses[id] = statuses[id] or {}
         statuses[id][status] = true
@@ -151,6 +160,7 @@ Osi = {
         end
     end,
     RemoveStatus = function(id, status)
+        id = obj(id)
         if statuses[id] then statuses[id][status] = nil end
         if status == "GSL_HOT_STREAK_COUNTER" then hotStreakStacks[id] = nil end
     end,
@@ -169,6 +179,13 @@ Osi = {
         local resource, amount = boost:match("ActionResource%(([^,]+),(%d+),0%)")
         assert(resource and amount, "Unexpected action-resource boost: " .. boost)
     end,
+    GetInventoryOwner = function(item)
+        for char, slots in pairs(inventory) do
+            for _, equippedItem in pairs(slots) do
+                if obj(equippedItem) == obj(item) then return char end
+            end
+        end
+    end,
     IsDead = function() return 0 end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
     AddPassive = function(char, passive)
@@ -185,6 +202,9 @@ Osi = {
         if interrupts[char] and passiveInterrupts[passive] then
             interrupts[char][passiveInterrupts[passive]] = nil
         end
+    end,
+    TemplateAddTo = function(template, holder, count, notify)
+        crafted[#crafted + 1] = {template = template, holder = holder, count = count, notify = notify}
     end,
     UseSpell = function(char, spell, target)
         assert(char == "alice" and target == "bob")
@@ -323,8 +343,21 @@ assert(not arrow.SpellProperties:find("UseActionResource", 1, true) and
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
+local function markTinkerer(char, hand, mode, causee, action)
+    local item = inventory[char][hand == "Off" and "Ranged Offhand Weapon" or "Ranged Main Weapon"]
+    local marker = "GSL_TINKER_" .. hand:upper() .. "_" .. mode:upper()
+    Osi.ApplyStatus(item, marker, 1, 1, causee)
+    fire("StatusApplied", "after", item, marker, causee, action)
+    assert(Osi.HasActiveStatus(item, marker) == 0, "Tinkerer markers must not linger on the gun")
+end
 local function castAs(char, spell, action)
     fire("UsingSpell", "before", char, spell, "", "", action)
+    local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%u%l+)(%u%l+)$")
+    if hand then
+        -- The engine applies the sub-spell's equipment marker, and cast events may name the container instead.
+        markTinkerer(char, hand, mode, char, action)
+        spell = "Shout_GSL_Tinkerer"
+    end
     fire("CastedSpell", "after", char, spell, "", "", action)
 end
 local function cast(spell, action)
@@ -344,9 +377,16 @@ assert(ammo("alice", "Main").MaxAmount == 3)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0, "A replaced mod must leave the gun")
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 1)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_RANGE_FLINTLOCK") == 0)
-assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 1, "Main range must extend main-hand shots")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0,
+    "Main range comes only from the Weapon component, so targeting does not count it twice")
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE") == 0)
-assert(entities.first.Weapon.WeaponRange == 13.5, "Range must not edit the Weapon component")
+Osi.ApplyStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK", -1, 1, "alice")
+fire("TurnStarted", "after", "alice")
+assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0,
+    "Retired main-hand range statuses must be cleared from older saves")
+assert(entities.first.Weapon.WeaponRange == 19.5 and variables.Firearms.weapons.first.baseRange == 13.5,
+    "Range must extend the Weapon component so long shots are not out of range")
+assert(entities.second.Weapon.WeaponRange == 13.5, "Range must not extend the other gun")
 cast("Shout_GSL_Tinkerer_OffDamage", 3)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
@@ -376,11 +416,9 @@ assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_AMMO") == 1)
 cast("Shout_GSL_Tinkerer_MainRange", 38)
 cast("Shout_GSL_Tinkerer_MainRange", 39)
-assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
-    "Repeating main-hand Range must activate its doubled range boost")
+assert(entities.first.Weapon.WeaponRange == 25.5, "Repeating main-hand Range must double its range bonus")
 cast("Shout_GSL_Tinkerer_MainDamage", 40)
-assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 1,
-    "A remaining single Range upgrade must use the ordinary range boost")
+assert(entities.first.Weapon.WeaponRange == 19.5, "A remaining single Range upgrade must use the ordinary bonus")
 cast("Shout_GSL_Tinkerer_OffDamage", 41)
 cast("Shout_GSL_Tinkerer_OffDamage", 42)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_DAMAGE_FLINTLOCK") == 1,
@@ -389,8 +427,7 @@ cast("Shout_GSL_Tinkerer_MainRange", 43)
 cast("Shout_GSL_Tinkerer_MainRange", 44)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1,
     "Master Tinkerer range must be applied to the modified firearm")
-assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
-    "Master Tinkerer range must affect attacks with the modified firearm")
+assert(entities.first.Weapon.WeaponRange == 25.5, "Master Tinkerer range must extend the modified firearm")
 fire("UsingSpell", "before", "alice", "GSL_OffHand_Flintlock_attack", "", "", 4)
 ammo("alice", "Off").Amount = 2
 fire("StatusApplied", "after", "alice", "GSL_MISFIRE_OFF", "alice", 4)
@@ -548,8 +585,8 @@ fire("Unequipped", "before", "replacement", "alice")
 inventory.alice["Ranged Main Weapon"] = nil
 fire("Unequipped", "after", "replacement", "alice")
 ticks()
-assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
-    "Master range must follow the physical gun")
+assert(entities.first.Weapon.WeaponRange == 25.5 and
+    Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 0, "Master range must follow the physical gun")
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0)
 statuses.first.GSL_TINKERER_MASTER_RANGE_FLINTLOCK = nil
 variables.Firearms.weapons.second.baseRange = 13.5
@@ -564,8 +601,9 @@ Osi.DB_Players = boundPlayers
 ticks()
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1,
     "Saved master modification must be reapplied")
-assert(entities.second.Weapon.WeaponRange == 13.5 and not variables.Firearms.weapons.second.baseRange,
-    "Legacy Weapon component range edits must be undone")
+assert(entities.second.Weapon.WeaponRange == 13.5 + rules.RangeBonus(variables.Firearms.weapons.second) and
+    variables.Firearms.weapons.second.baseRange == 13.5,
+    "Loading must restore the Weapon component range from the gun's record")
 fire("LongRestFinished", "after")
 assert(not variables.Firearms.weapons.first.broken and not variables.Firearms.weapons.second.broken)
 assert(Osi.HasActiveStatus("alice", "GSL_FIREARM_OFF_DISABLED") == 0)
@@ -580,8 +618,7 @@ assert(Osi.HasActiveStatus("second", "GSL_TINKERER_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 0)
 assert(Osi.HasActiveStatus("first", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 1)
-assert(Osi.HasActiveStatus("bob", "GSL_TINKERER_MAIN_RANGE_MASTER_FLINTLOCK") == 1,
-    "Long rests must preserve the wielder's master range bonus")
+assert(entities.first.Weapon.WeaponRange == 25.5, "Long rests must preserve the master range bonus")
 assert(ammo("bob", "Main").Amount == 3 and ammo("alice", "Off").Amount == 3)
 fire("Unequipped", "before", "first", "bob")
 inventory.bob["Ranged Main Weapon"] = nil
@@ -622,6 +659,28 @@ assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 1)
 cast("Shout_GSL_Tinkerer_OffRemove", 80)
 assert(Osi.HasActiveStatus("second", "GSL_TINKERER_MASTER_RANGE_FLINTLOCK") == 0)
 assert(Osi.HasActiveStatus("alice", "GSL_TINKERER_OFF_RANGE_MASTER") == 0)
+-- The marker alone drives Tinkerer, even without any matching cast events or a reported causee.
+passives.alice.GSL_MasterTinkerer = nil
+markTinkerer("alice", "Main", "Capacity", nil, 81)
+assert(ammo("alice", "Main").MaxAmount == 6 and Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 1,
+    "A Tinkerer marker must apply without cast-event correlation")
+markTinkerer("alice", "Main", "Damage", "alice", 82)
+assert(ammo("alice", "Main").MaxAmount == 3 and Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1,
+    "A new Tinkerer marker must replace the previous modification")
+markTinkerer("alice", "Main", "Remove", "alice", 83)
+assert(#variables.Firearms.weapons.first.mods == 0 and Osi.HasActiveStatus("first", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 0)
+-- Statuses stacked by the old engine-side application are reconciled away by the next refresh.
+statuses.first.GSL_TINKERER_CAPACITY = true
+statuses.first.GSL_TINKERER_RANGE_FLINTLOCK = true
+fire("TurnStarted", "after", "alice")
+assert(Osi.HasActiveStatus("first", "GSL_TINKERER_CAPACITY") == 0 and
+    Osi.HasActiveStatus("first", "GSL_TINKERER_RANGE_FLINTLOCK") == 0,
+    "Stale Tinkerer statuses must be removed when the gun's record has no modifications")
+assert(not pcall(fire, "StatusApplied", "after", "first", "GSL_TINKER_OFF_CAPACITY", "alice", 84),
+    "A marker for the wrong hand must be rejected")
+assert(#variables.Firearms.weapons.first.mods == 0)
+passives.alice.GSL_MasterTinkerer = true
 events.SessionLoaded()
 ticks()
 fire("LongRestFinished", "after")
@@ -772,6 +831,30 @@ assert(Osi.HasActiveStatus("carol", "GSL_DOUBLE_LOAD") == 0)
 local musketAmmo = entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource]
 entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = nil
 assert(not pcall(fire, "TurnStarted", "after", "carol"), "A missing ammo resource must still raise")
+entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = musketAmmo
+-- The OnEquip ammo boost can take several ticks to populate; equipping waits for it instead of raising.
+variables.Firearms.weapons.longarm.ammo = 0
+inventory.carol["Ranged Main Weapon"] = nil
+fire("Unequipped", "before", "longarm", "carol")
+fire("Unequipped", "after", "longarm", "carol")
+ticks()
+entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = {}
+inventory.carol["Ranged Main Weapon"] = "longarm"
+fire("Equipped", "after", "longarm", "carol")
+for _ = 1, 10 do events.Tick() end
+musketAmmo[1].Amount = 1
+entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = musketAmmo
+ticks()
+assert(musketAmmo[1].Amount == 0, "A late ammo resource still receives the gun's saved ammo")
+entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = {}
+inventory.carol["Ranged Main Weapon"] = nil
+fire("Unequipped", "after", "longarm", "carol")
+ticks()
+inventory.carol["Ranged Main Weapon"] = "longarm"
+fire("Equipped", "after", "longarm", "carol")
+local raised = false
+for _ = 1, 40 do raised = raised or not pcall(events.Tick) end
+assert(raised, "An ammo resource that never appears must still raise")
 entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = musketAmmo
 passives.carol.GSL_Feat_LongarmSpecialist_Range = nil
 fire("TurnStarted", "after", "carol")
@@ -1065,6 +1148,60 @@ assert(ammo("bob", "Main").MaxAmount == 3 and
     Osi.HasActiveStatus("combined", "GSL_TINKERER_DAMAGE_FLINTLOCK") == 1 and
     Osi.HasActiveStatus("combined", "GSL_TINKERER_RANGE_FLINTLOCK") == 1,
     "Evicting the oldest magical-weapon capacity upgrade must restore base capacity")
+-- A combination transforms the gun in place, so Osiris can name the same UUID by its old and new templates.
+local renamedId = "0e1f2a3b-4c5d-4e6f-8a9b-0c1d2e3f4a5b"
+local oldName = "WPN_GSL_Flintlock_" .. renamedId
+local newName = "WPN_GSL_Flintlock_ArtificialLeech_" .. renamedId
+gun(renamedId)
+entities[renamedId].template = "a710ad68-179b-4b0e-8ef2-3b37609a3f12"
+inventory.charlie["Ranged Main Weapon"] = oldName
+fire("Equipped", "after", oldName, "charlie")
+ticks()
+local function markRenamed(mode, action)
+    local marker = "GSL_TINKER_MAIN_" .. mode:upper()
+    Osi.ApplyStatus(newName, marker, 1, 1, "charlie")
+    fire("StatusApplied", "after", newName, marker, "charlie", action)
+end
+markRenamed("Capacity", 910)
+assert(ammo("charlie", "Main").MaxAmount == 6 and Osi.HasActiveStatus(renamedId, "GSL_TINKERER_CAPACITY") == 1,
+    "Tinkerer must modify a combined gun that Osiris names differently in different calls")
+markRenamed("Range", 911)
+local renamedState = variables.Firearms.weapons[renamedId]
+assert(#renamedState.mods == 1 and renamedState.mods[1] == "Range" and ammo("charlie", "Main").MaxAmount == 3 and
+    Osi.HasActiveStatus(renamedId, "GSL_TINKERER_CAPACITY") == 0 and
+    entities[renamedId].Weapon.WeaponRange == 19.5,
+    "A new Tinkerer upgrade must replace the old one on a combined gun")
+markRenamed("Remove", 912)
+assert(#renamedState.mods == 0 and Osi.HasActiveStatus("charlie", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0 and
+    Osi.HasActiveStatus(renamedId, "GSL_TINKERER_RANGE_FLINTLOCK") == 0 and entities[renamedId].Weapon.WeaponRange == 13.5,
+    "Remove Modification must clear a combined gun")
+for id in pairs(variables.Firearms.weapons) do assert(id ~= oldName and id ~= newName, "Guns must be keyed by UUID: " .. id) end
+-- Saves from before UUID keys are migrated, keeping the record that carries the upgrades.
+variables.Firearms.weapons[oldName] = {kind = "Flintlock", ammo = 3, mods = {"Capacity"}}
+variables.Firearms.owners.charlie.Main = oldName
+variables.Firearms.uuidKeys = nil
+fire("TurnStarted", "after", "charlie")
+assert(variables.Firearms.weapons[renamedId].mods[1] == "Capacity" and not variables.Firearms.weapons[oldName] and
+    variables.Firearms.owners.charlie.Main == renamedId and ammo("charlie", "Main").MaxAmount == 6,
+    "Legacy name-keyed gun records must be migrated to UUID keys")
+-- An assembled gun can carry a template the stats never named; its stats ID still identifies the firearm.
+character("dana")
+gun("assembled")
+entities.assembled.template = "f0f0f0f0-1111-4222-8333-444455556666"
+entities.assembled.Data = {StatsId = "WPN_GSL_Flintlock_HuntingShortbow"}
+inventory.dana["Ranged Main Weapon"] = "assembled"
+fire("Equipped", "after", "assembled", "dana")
+ticks()
+castAs("dana", "Shout_GSL_Tinkerer_MainCapacity", 920)
+assert(variables.Firearms.weapons.assembled.kind == "Flintlock" and ammo("dana", "Main").MaxAmount == 6 and
+    Osi.HasActiveStatus("assembled", "GSL_TINKERER_CAPACITY") == 1,
+    "Tinkerer must recognise an assembled gun by its stats ID")
+castAs("dana", "Shout_GSL_Tinkerer_MainRange", 921)
+assert(ammo("dana", "Main").MaxAmount == 3 and
+    entities.assembled.Weapon.WeaponRange == 19.5)
+castAs("dana", "Shout_GSL_Tinkerer_MainRemove", 922)
+assert(#variables.Firearms.weapons.assembled.mods == 0 and entities.assembled.Weapon.WeaponRange == 13.5 and
+    Osi.HasActiveStatus("dana", "GSL_TINKERER_MAIN_RANGE_FLINTLOCK") == 0)
 local dataRoot = "GunslingerClass\\Public\\GunslingerClass\\Stats\\Generated\\Data\\"
 local function readStats(name)
     local file = assert(io.open(dataRoot .. name, "r"))
@@ -1129,7 +1266,23 @@ for pairIndex, pair in ipairs(pairsToTest) do
         end
     end
 end
+for marker, template in pairs(rules.CraftTemplates) do
+    crafted = {}
+    Osi.ApplyStatus("alice", marker, 1, 1, "alice")
+    fire("StatusApplied", "after", "alice", marker, "alice", 950)
+    local note = rules.CraftNotes[marker]
+    assert(#crafted == (note and 2 or 1) and crafted[1].template == template and crafted[1].holder == "alice" and
+        crafted[1].count == 1, marker .. " must create one ordinary item in the crafter's inventory")
+    assert(not note or crafted[2].template == note and crafted[2].holder == "alice",
+        marker .. " must give its upgrade notes on the first craft")
+    if note then
+        crafted = {}
+        fire("StatusApplied", "after", "alice", marker, "alice", 951)
+        assert(#crafted == 1, marker .. " must give its upgrade notes only once")
+    end
+    assert(Osi.HasActiveStatus("alice", marker) == 0, "Craft markers must not linger on the crafter")
+end
 print("Dual-wield misfire correlation passed: 48 magical/non-magical, hand, shot and callback-order combinations")
 print("Fortune preview ownership passed: eligibility, ownership before confirmation, cancellation, confirmation, load cleanup, existing ownership, lost client and renewal")
 print("Removed All In cleanup passed: saved passive, native variant, dynamic container, ready marker and idempotence")
-print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec, persistent Luck diagnostics and magical weapon Tinkerer replacement")
+print("Grit runtime mocks passed: stats, ammo, dual wield, repair, breakage, transfer, reload state, rest, cancellation, counter, violent shot, double or nothing, roll the bones, cheat death's odds, reload costs, grit recovery, arcane reload, longarm range, double load break, refresh recovery, conditional Fortune upgrade, delayed progression, save-load recovery, respec, persistent Luck diagnostics, magical weapon Tinkerer replacement and unsummoned crafting with upgrade notes")

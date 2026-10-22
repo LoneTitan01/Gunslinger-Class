@@ -250,6 +250,9 @@ class SpellDataTests(unittest.TestCase):
             attribute.get('value')
             for attribute in ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx').findall('.//attribute[@id="MapKey"]')
         }
+        rules = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua' /
+                 'GritRules.lua').read_text(encoding='utf-8')
+        craft_templates = dict(re.findall(r'(GSL_CRAFT_\w+) = "([0-9a-f-]{36})"', rules))
         options = self.spell('Shout_GSL_Craft')['ContainerSpells'].split(';')
         self.assertEqual(len(options), 5)
         for name in options:
@@ -259,10 +262,14 @@ class SpellDataTests(unittest.TestCase):
                 self.assertEqual(fields['CastTextEvent'], 'Cast')
                 self.assertTrue(fields['SpellAnimation'])
                 self.assertEqual(fields['ContainerSpells'], '')
-                template = re.search(r'SummonInInventory\(([0-9a-f-]{36}),Permanent,', fields['SpellProperties'])
-                self.assertIsNotNone(template)
-                if template is not None:
-                    self.assertIn(template[1], templates)
+                # Summoned items vanish when the crafter dies or respecs, so the server creates ordinary ones.
+                self.assertNotIn('SummonInInventory', fields['SpellProperties'])
+                marker = re.fullmatch(r'ApplyStatus\(SELF,(GSL_CRAFT_\w+),100,1\)', fields['SpellProperties'])
+                self.assertIsNotNone(marker)
+                if marker is not None:
+                    self.assertIn(marker[1], self.entries)
+                    self.assertIn(craft_templates.get(marker[1]), templates)
+        self.assertEqual(len(craft_templates), 5)
 
     def test_reload_effect_in_wrong_field_is_detected(self) -> None:
         entry = self.entries['Shout_GSL_Reload_Musket']
@@ -286,7 +293,7 @@ class SpellDataTests(unittest.TestCase):
             self.assertEqual(fields['Icon'], icon)
             self.assertNotIn('Boosts', fields)
         self.assertIn('RemoveOnLongRest', self.entries['GSL_FIREARM_ITEM_MISFIRED'].fields['StatusPropertyFlags'])
-        # Like Tinkerer, the engine marks the gun itself; the script only reconciles repair/break/long rest.
+        # The engine marks the gun itself; the script only reconciles repair/break/long rest.
         functors = self.entries['GSL_Firearm_Misfire_Passive'].fields['StatsFunctors']
         self.assertTrue(functors.startswith('ApplyStatus(SELF,GSL_MISFIRE,100,-1);'))
         for slot, hand in (('RangedMainHand', 'not IsOffHandAttack()'), ('RangedOffHand', 'IsOffHandAttack()')):
