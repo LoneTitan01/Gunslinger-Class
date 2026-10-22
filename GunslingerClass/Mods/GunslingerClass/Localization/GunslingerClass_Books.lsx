@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="328"/>
+    <region id="TranslatedStringKeys">
+        <node id="TranslatedStringKeys">
+            <children>
+                <node id="TranslatedStringKey">
+                    <attribute id="Content" type="TranslatedString" handle="hf8a20b3dg2c3ag4f4bgb912g4a14dc07dae5" version="1"/>
+                    <attribute id="UUID" type="FixedString" value="GSL_UpgradeNotes_Flintlock"/>
+                    <attribute id="Speaker" type="FixedString" value=""/>
+                    <attribute id="ExtraData" type="LSString" value=""/>
+                    <attribute id="Stub" type="bool" value="True"/>
+                </node>
+                <node id="TranslatedStringKey">
+                    <attribute id="Content" type="TranslatedString" handle="hf59ff4dag7530g4d5dga3ffg2930bcbe1e1a" version="1"/>
+                    <attribute id="UUID" type="FixedString" value="GSL_UpgradeNotes_Musket"/>
+                    <attribute id="Speaker" type="FixedString" value=""/>
+                    <attribute id="ExtraData" type="LSString" value=""/>
+                    <attribute id="Stub" type="bool" value="True"/>
+                </node>
+                <node id="TranslatedStringKey">
+                    <attribute id="Content" type="TranslatedString" handle="hc2859f6fg7c03g4f9agaa9fg675a4a7f5182" version="1"/>
+                    <attribute id="UUID" type="FixedString" value="GSL_UpgradeNotes_Blunderbuss"/>
+                    <attribute id="Speaker" type="FixedString" value=""/>
+                    <attribute id="ExtraData" type="LSString" value=""/>
+                    <attribute id="Stub" type="bool" value="True"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

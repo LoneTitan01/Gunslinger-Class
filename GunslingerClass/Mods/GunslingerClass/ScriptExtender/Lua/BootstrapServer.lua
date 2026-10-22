@@ -407,6 +407,37 @@ local function requireWorkingFirearm(stat, field, hand, character)
     end
 end
 
+-- Returns whether a non-thrown spell fires the main-hand and/or off-hand ranged weapon. Besides the
+-- attack roll, this catches shots whose attack sits in SpellSuccess (Hail of Thorns) or that deal ranged
+-- weapon damage without one (Conjure Barrage).
+local function rangedShotHands(spell)
+    if spell.SpellType == "Throw" then return false, false end
+    local roll, effects = spell.SpellRoll, (spell.SpellSuccess or "") .. ";" .. spell.SpellProperties
+    local main = roll:find("AttackType.RangedWeaponAttack", 1, true) or
+        effects:find("AttackType.RangedWeaponAttack", 1, true) or
+        (roll == "" or roll:find("SavingThrow", 1, true)) and effects:find("MainRangedWeapon", 1, true)
+    local off = roll:find("AttackType.RangedOffHandWeaponAttack", 1, true) or
+        effects:find("AttackType.RangedOffHandWeaponAttack", 1, true)
+    return main ~= nil and main ~= false, off ~= nil and off ~= false
+end
+
+-- Returns the requirement condition and ammo cost functors for a shot from the given hand.
+local function firearmShotCosts(hand)
+    local ready, equippedGun, costs = {}, {}, {}
+    for kind in pairs(Rules.Firearms) do
+        if hand == "Main" or kind == "Flintlock" then
+            local passive = "HasPassive('GSL_" .. kind .. (hand == "Off" and "_OffHand" or "_MainHand") .. "',context.Source)"
+            local ammo = hand == "Off" and "GunslingerOffhandFlintlockAmmo" or "Gunslinger" .. kind .. "Ammo"
+            equippedGun[#equippedGun + 1] = passive
+            ready[#ready + 1] = "(" .. passive .. " and HasActionResource('" .. ammo .. "',1,0))"
+            costs[#costs + 1] = "IF(" .. passive .. "):UseActionResource(SELF," .. ammo .. ",1,0)"
+        end
+    end
+    local condition = "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
+        workingFirearmCondition(hand, "context.Source") .. " and (" .. table.concat(ready, " or ") .. ")))"
+    return condition, table.concat(costs, ";")
+end
+
 Ext.Events.StatsLoaded:Subscribe(function()
     -- Every magical firearm has its own root template; map them all from their weapon stats.
     for _, name in ipairs(Ext.Stats.GetStats("Weapon")) do
@@ -448,26 +479,27 @@ Ext.Events.StatsLoaded:Subscribe(function()
             end
             Ext.Stats.Sync(name)
         end
-        if not name:find("GSL_", 1, true) and
-            (spell.SpellRoll:find("AttackType.RangedWeaponAttack", 1, true) or
-                spell.SpellRoll:find("AttackType.RangedOffHandWeaponAttack", 1, true)) and
+        local mainShot, offShot = rangedShotHands(spell)
+        -- Special arrows (Projectile_ArrowOf*, Barbed Arrow, Arrow of Many Targets' ricochets) are the
+        -- ammunition fired, so they only need a working gun, not a loaded bullet.
+        if not name:find("GSL_", 1, true) and (mainShot or offShot) and name:find("Arrow", 1, true) then
+            requireWorkingFirearm(spell, "RequirementConditions", mainShot and "Main" or "Off", "context.Source")
+            Ext.Stats.Sync(name)
+        elseif not name:find("GSL_", 1, true) and (mainShot or offShot) and
             not spell.SpellProperties:find("UseActionResource(SELF,Gunslinger", 1, true) then
-            local offhand = spell.SpellRoll:find("AttackType.RangedOffHandWeaponAttack", 1, true)
-            local ready, equippedGun, costs = {}, {}, {}
-            for kind in pairs(Rules.Firearms) do
-                if not offhand or kind == "Flintlock" then
-                    local passive = "HasPassive('GSL_" .. kind .. (offhand and "_OffHand" or "_MainHand") .. "',context.Source)"
-                    local ammo = offhand and "GunslingerOffhandFlintlockAmmo" or "Gunslinger" .. kind .. "Ammo"
-                    equippedGun[#equippedGun + 1] = passive
-                    ready[#ready + 1] = "(" .. passive .. " and HasActionResource('" .. ammo .. "',1,0))"
-                    costs[#costs + 1] = "IF(" .. passive .. "):UseActionResource(SELF," .. ammo .. ",1,0)"
-                end
-            end
-            local condition = "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
-                workingFirearmCondition(offhand and "Off" or "Main", "context.Source") ..
-                " and (" .. table.concat(ready, " or ") .. ")))"
+            -- Spells rolling both hands (e.g. Projectile_MainHandAttack) are main-hand shots whose
+            -- CastOffhand[...] section only runs when cast from the off hand.
+            local hand = mainShot and "Main" or "Off"
+            local condition, costs = firearmShotCosts(hand)
             spell.RequirementConditions = (spell.RequirementConditions ~= "" and "(" .. spell.RequirementConditions .. ") and " or "") .. condition
-            spell.SpellProperties = (spell.SpellProperties ~= "" and spell.SpellProperties .. ";" or "") .. table.concat(costs, ";")
+            local properties = spell.SpellProperties
+            if mainShot and offShot then
+                local _, offCosts = firearmShotCosts("Off")
+                properties = properties:gsub("CastOffhand%[", function() return "CastOffhand[" .. offCosts .. ";" end, 1)
+            end
+            -- Prepended so the cost lands in the default group, not after an inherited CastOffhand[...] section
+            -- (e.g. Projectile_SneakAttack inherits Projectile_MainHandAttack's properties).
+            spell.SpellProperties = costs .. (properties ~= "" and ";" .. properties or "")
             Ext.Stats.Sync(name)
         end
     end
@@ -597,8 +629,26 @@ local function lastWordShot(character, attacker)
     end
 end
 
+-- Gives the crafter the firearm's upgrade notes the first time they craft that firearm.
+local function giveCraftNote(character, marker)
+    local note = Rules.CraftNotes[marker]
+    if not note then return end
+    local data = database()
+    data.craftNotes = data.craftNotes or {}
+    local received = data.craftNotes[character] or {}
+    if received[marker] then return end
+    received[marker] = true
+    data.craftNotes[character] = received
+    save(data)
+    Osi.TemplateAddTo(note, character, 1, 1)
+end
+
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, applied, _, action)
-    if applied == hotStreakStatus then
+    if Rules.CraftTemplates[applied] then
+        Osi.RemoveStatus(character, applied)
+        Osi.TemplateAddTo(Rules.CraftTemplates[applied], character, 1, 1)
+        giveCraftNote(character, applied)
+    elseif applied == hotStreakStatus then
         clearHotStreak(character)
     elseif applied == "GSL_LASTWORD_PENDING" then
         if recentAttackers[character] then

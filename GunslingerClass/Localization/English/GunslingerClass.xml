@@ -244,6 +244,15 @@
         <content contentuid="hb7ef5aa0g366ag49adga7c8g4755665e926d" version="1">Assembly Kit</content>
         <content contentuid="h99797fe3gfab4g4c6fga911gf944c039177f" version="1">A gunsmith's kit of fittings and tools used to fuse a magical weapon to a firearm.</content>
         <content contentuid="h01d4548cgf39eg44a2gb244gf5b5ca6a4928" version="1">Disassembly Kit</content>
+        <content contentuid="h0c266cf2g8b54g46f1gb989gf2e69222efc1" version="1">Gunsmith's Notes: Flintlock</content>
+        <content contentuid="hc83bb250gf143g4ebfg98f1g3efe08617819" version="1">Cramped, powder-stained notes on improving a flintlock pistol.</content>
+        <content contentuid="hf8a20b3dg2c3ag4f4bgb912g4a14dc07dae5" version="1">A pistol is a promise kept at arm's length. With an Assembly Kit and the right material, it can be made to keep bigger ones. Each refinement is built upon the last.&lt;br&gt;&lt;br&gt;Smokepowder Satchel. Pack the pan with a finer grind. The lock snaps quicker, the nerve runs hotter, and reloading becomes a flick of the wrist.&lt;br&gt;&lt;br&gt;Gold Bar. Gild the frame and rebalance the grip. The pistol learns to fire on the run; a sprint and a shot become one motion.&lt;br&gt;&lt;br&gt;Diamond. Set a cut stone behind the frizzen. Its spark finds the gap in any hide, and the hand that holds it always seems to have time for one more thing.&lt;br&gt;&lt;br&gt;Then choose. A Black Diamond drinks the light around it: the pistol strikes truest from the shadows, and its killing shots come easier. An Infernal Diamond burns with the fire of the Hells, and every ball leaves the barrel aflame. The frame will bear one stone, not both.&lt;br&gt;&lt;br&gt;Enchanted steel can also be married to the lock. Daggers, short blades and light bows lend their gifts best to a pistol. What one kit joins, a Disassembly Kit can part.</content>
+        <content contentuid="h3a49c35ag54a7g41ecga7a2gc2d82abebf7b" version="1">Gunsmith's Notes: Musket</content>
+        <content contentuid="h43cfd700g7f85g480dga204ge808b552a55f" version="1">Careful, measured notes on improving a long-barrelled musket.</content>
+        <content contentuid="hf59ff4dag7530g4d5dga3ffg2930bcbe1e1a" version="1">A long gun rewards patience, and so does its improvement. Bring an Assembly Kit to each step; every refinement is built upon the last.&lt;br&gt;&lt;br&gt;Silver Bar. Line the bore with silver. The ball flies straighter and finds its mark more often.&lt;br&gt;&lt;br&gt;Adamantine Slag and Rune Powder. Neither is any use alone. Join them with an Assembly Kit to make advanced components, then fit those to the silvered barrel. The shot will bite deeper.&lt;br&gt;&lt;br&gt;Karabasan's Gift. A strange device, and a dangerous one. Fit its workings to the lock, and a well-placed shot can leave a target rigid where they stand.&lt;br&gt;&lt;br&gt;Mithral Bar. The last and lightest refinement. A mithral barrel hits harder still and punches through hides that would turn ordinary lead.&lt;br&gt;&lt;br&gt;Enchanted staves, longswords, longbows and war hammers can also be bound to the stock. What one kit joins, a Disassembly Kit can part.</content>
+        <content contentuid="h0d50d14egcd71g4c62ga24dg0e260b5505fb" version="1">Gunsmith's Notes: Blunderbuss</content>
+        <content contentuid="ha0763de6g2664g4246gb844gd6672bfb09ed" version="1">Scorched notes on improving a blunderbuss. The edges smell of sulphur.</content>
+        <content contentuid="hc2859f6fg7c03g4f9agaa9fg675a4a7f5182" version="1">A blunderbuss is not subtle, and neither are its improvements. Every material below comes from the Hells. Wear gloves, keep an Assembly Kit close, and build each step upon the last.&lt;br&gt;&lt;br&gt;Infernal Iron. Reinforce the bell with iron from Avernus. The scatter comes out warm.&lt;br&gt;&lt;br&gt;Infernal Alloy. Refine that iron into alloy. Now the shot truly burns, and the wielder stops flinching at the heat.&lt;br&gt;&lt;br&gt;Soul Coin. Seal a soul coin into the breech, and do not listen to it. The fire grows fiercer, and killing blows come easier.&lt;br&gt;&lt;br&gt;Enriched Infernal Iron. The final reforging. Everything burns: the target, the shot, and the ground where the scatter lands.&lt;br&gt;&lt;br&gt;Enchanted greatswords, greataxes, mauls, maces, flails and heavy crossbows can be welded to the bell instead. What one kit joins, a Disassembly Kit can part.</content>
         <content contentuid="h238c2696gc297g4f35g8d5ag064cb9ef95d1" version="1">A gunsmith's kit of tools used to separate a fused firearm and magical weapon.</content>
         <content contentuid="hdeba89e0g2bbcg58b5gbb2egc2b68c62f29c" version="1">Misfired</content>
         <content contentuid="h4c6a6437gc436g5429g8a56gc54551460a5e" version="1">This firearm has misfired. Its ranged attack rolls take a -2 penalty until it is repaired, it breaks, or you take a long rest. Its Repair weapon action can now be used; Rapid Repair requires learning the Rapid Repair ability. Another critical miss with it breaks it until your next long rest.</content>
@@ -887,6 +896,8 @@
         <content contentuid="h7f1c7d1fg214bg5f3ag97c6gbe4cedbf7f17" version="1">Grants Hold Person as a firearm action.</content>
         <content contentuid="h1ce27a8fga120g567ag8210g64c72bae15c0" version="1">The Dancing Breeze Flintlock</content>
         <content contentuid="hbfd9ac7bgbc1eg5e2eg8b7fg66aaf95d43e8" version="1">Replaces Whirlwind Attack with a firearm-compatible 20-foot Whirlwind Shot.</content>
+        <content contentuid="hfcb70ba1g7328g5299gae21g486da0c04712" version="1">Thorn Blade Flintlock</content>
+        <content contentuid="ha92da356gcb71g5f33gb2a5g7a475d482a16" version="1">While you are concentrating, shots deal an additional 1d4 Poison damage. Once per long rest, Ensnaring Shot can Ensnare its target.</content>
         <content contentuid="hc75e2fa0g240fg5fe4g9b98gba4e205c0344" version="1">Thermodynamo Axe Musket</content>
         <content contentuid="h896a242fg2863g590agb54bge3c3b6451cbf" version="1">Generates Heat when firearm damage is dealt.</content>
         <content contentuid="h232863ceg6e9ag5c9dgaa5bg951c3aa72eeb" version="1">Vicious Shortbow Flintlock</content>
@@ -897,7 +908,77 @@
         <content contentuid="h28de1802ga918g596bga729g064c2c9b81f8" version="1">Preserves the multi-eyed-target effect and firearm-safe special action.</content>
         <content contentuid="h3ffb0b0eg8404g5433g890dg98a5c83c9141" version="1">Whirlwind Shot</content>
         <content contentuid="h957107adg27b9g5cbcgbb28g0221af3f0633" version="1">Fire a 20-foot cone shot. Each creature in the area makes a Dexterity saving throw, taking half firearm damage on a failed save and none on a success. Once per short rest.</content>
+        <content contentuid="hefc6770ag7068g55ffg9a51ga01d829a7546" version="1">Ensnaring Shot</content>
+        <content contentuid="h00fc74aag52f0g5512gaa2bg4b1f39c8c8b8" version="1">Fire a shot that makes thorny vines sprout around the target. On a hit, the target makes a Strength saving throw or is Ensnared for as long as you concentrate. Once per long rest.</content>
         <!-- END GENERATED PREREQUISITE BASE CONVERSIONS -->
+        <!-- BEGIN GENERATED MOD WEAPON CONVERSIONS -->
+        <content contentuid="ha6e95f57g8973g527egadbagb542079dbc7b" version="1">Trickster Dagger Flintlock</content>
+        <content contentuid="h09ab531cg12c4g502cg92f3g7caab2dd0627" version="1">Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns.</content>
+        <content contentuid="h356fe32fg3c04g57bcg8cf4g39354a3b9d77" version="1">Scimitar of Flowing Waters Flintlock</content>
+        <content contentuid="h8b1a582bg34efg5bbag950dge9048963b30a" version="1">Grants +1 to Dexterity saving throws and Initiative, and a firearm Razor Gale.</content>
+        <content contentuid="ha90a20fcg6bd4g55a5g825bgc5a78f7b2021" version="1">Gnomish Tinkerer Crossbow Musket</content>
+        <content contentuid="h74a40495g4623g5283g8f30g13beb8813bb0" version="1">Once per short rest, Ricochet Shot bounces off its target like an Arrow of Ricochet.</content>
+        <content contentuid="h5d02a7cfg8b05g5999g8366g089c696371ec" version="1">Dexterous Flail Blunderbuss</content>
+        <content contentuid="hb3072593g5169g5247g8736gcb7458258683" version="1">Your Dexterity score becomes at least 18.</content>
+        <content contentuid="h240e7318g11b7g533bgaa34gb54d8cf15c96" version="1">Silver Sword of the Comet Blunderbuss</content>
+        <content contentuid="h80a3e53egbcdcg5704ga0f6g152287816cc7" version="1">Shots deal +1d4 Psychic damage. Once per short rest, a critical hit restores a level 2 spell slot. Once per short rest, Mindcrush Shot adds Psychic damage equal to your Proficiency Bonus and can Stun.</content>
+        <content contentuid="h8ed7184cgb3eag58c9ga49cg7c848e923e4f" version="1">Kara-Turan Katana Musket</content>
+        <content contentuid="h3a35ff15g5af8g56e5g82bdgc1119e1424d3" version="1">Shots ignore Piercing resistance. Hits made with Advantage inflict Bleeding for 2 turns.</content>
+        <content contentuid="hcb66ce63g3171g5ed7g94bfg4150cf79b29f" version="1">Lance Pike Blunderbuss</content>
+        <content contentuid="h65bb281fgd93eg50e2gbe88g7abf4f209b48" version="1">Grants Zephyr Flash and Zephyr Break.</content>
+        <content contentuid="h25069cb7gc1b6g5aa1gb103gd7d9082b6958" version="1">Ironvine Shortbow Flintlock</content>
+        <content contentuid="hb00eb196g6affg5be3g96a8ge1b91a1d9cc5" version="1">Reduces the critical-hit threshold by 1, and damaging hits can Poison (DC 15 Dexterity). Once per short rest, Hail of Thorns Shot deals an extra 1d10 Piercing damage on a failed Dexterity save.</content>
+        <content contentuid="hdbd9c476g68a2g503dg9096g7ba7585556af" version="1">The Breacher Musket</content>
+        <content contentuid="hdd08c5d7g8dd5g5b5fgb170geba71e2f38f7" version="1">Grants Heroic Throw once per short rest.</content>
+        <content contentuid="h20685e3eg5c53g50b1gbd3cgfd415a4a27c6" version="1">Axe of Storms Flintlock</content>
+        <content contentuid="h2aa46496g8ef1g5e24g9f96g66abdf9c49bc" version="1">Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked.</content>
+        <content contentuid="h902a9cd9g7ad7g5052ga42cg41425e32dcf7" version="1">Firbolg Greataxe Blunderbuss</content>
+        <content contentuid="h4e9e9a9cg1b35g5e5dg8af6g82dc1b4407a3" version="1">Once per combat, a damaging shot can outline the target in Faerie Fire (DC 13 Dexterity). Grants Missile Snaring.</content>
+        <content contentuid="h9b1c47f0gc288g5caeg88fege26b451766ff" version="1">Phasmid Longbow Musket</content>
+        <content contentuid="h03ed7b56g2411g505fg95e0g99517eebe88e" version="1">Damaging shots can inflict Phantasmal Force (DC 14 Wisdom). Once per short rest, Menacing Shot deals an extra 1d8 damage and can Frighten.</content>
+        <content contentuid="hd8f7ccebge46fg5779g9e2cg1981b4e60467" version="1">Bow of the Thunder Lord Musket</content>
+        <content contentuid="hba30f9e7ge051g53bbgbe64g4c783df492a3" version="1">Grants Gushing Air once per short rest.</content>
+        <content contentuid="h87f2cebag4030g5443g85eeg649c31741924" version="1">Death Knight's Longsword Musket</content>
+        <content contentuid="h3342cb87g0e0eg599fga1fdg4d15c708a578" version="1">Killing an enemy with a shot grants Life Essence.</content>
+        <content contentuid="h5d146797g82c2g5da2g8cf6gf25da743445f" version="1">Enfeebling Rapier Flintlock</content>
+        <content contentuid="h1a3b4ca7g26c2g501fgada3g89c2595a2f22" version="1">Damaging shots can inflict Ray of Enfeeblement for 2 turns (DC 12 Constitution).</content>
+        <content contentuid="h1b4ef19dgce5cg51dag993bg2e1ef5451713" version="1">Gish Shortsword Flintlock</content>
+        <content contentuid="hac21b688g5f04g5156gb9f1g67137f2afd4c" version="1">Shots deal +1d4 Psychic damage. Once per short rest, when an enemy misses you with a melee attack, Assassin's Riposte fires a reaction shot.</content>
+        <content contentuid="he6dcffc2gb158g59c8gbd2dg93c05ef34159" version="1">Hoarfrost Blade Flintlock</content>
+        <content contentuid="hd8460bdbg5a98g54b3ga5fdg348b7408c5bf" version="1">Critical hits deal 10 Cold damage and grant Advantage on your next attack. Ice cannot knock you Prone.</content>
+        <content contentuid="h0adfc0c4gd409g5b65gb58eg2a865c8346ce" version="1">Firefly Keeper Staff Musket</content>
+        <content contentuid="hb3c6f2f7g43d5g5b37ga4c4gbcec98f6fd4c" version="1">Grants +1 to ranged spell attack rolls, Protective Lights, and Faerie Fire.</content>
+        <content contentuid="h94d64753ga419g5761g8331g22dd22634982" version="1">Still Wind Staff Musket</content>
+        <content contentuid="h5997b072g33c2g5bdbg994aga7aa81b8aa63" version="1">Grants Cold resistance, +1 to ranged spell attack rolls, +2 spell save DC, Explosive Icicle, and Ray of Frost.</content>
+        <content contentuid="ha8100651g4e9bg56b2g8983g54eaeb202ac5" version="1">Sun Crystal Staff Musket</content>
+        <content contentuid="h486b2f70gc17bg514dg9162g339c683e2254" version="1">Grants Sunbeam.</content>
+        <content contentuid="hb5f77acag7e8eg5bb4g8b19g50d80fa0e959" version="1">Trident of Healing Waters Musket</content>
+        <content contentuid="h3d4effedg91bag5adega428g1799bc6faeeb" version="1">Grants Mass Healing Word and Create Water.</content>
+        <content contentuid="h58090d01gc1b6g5c25gbb09g0e1e3d3e2a43" version="1">Gnomish War Pick Blunderbuss</content>
+        <content contentuid="hdfeb5dbbgea9cg50a4g86adg3ddcee9632b4" version="1">Critical hits and killing blows against enemies create a shockwave that can knock nearby enemies Prone (DC 14 Dexterity).</content>
+        <content contentuid="hed8d2f78g38deg5916g8d63gaebf5dc4d5ff" version="1">Ancient Warhammer Musket</content>
+        <content contentuid="h1115a0a7gafbag5064ga1a4ga41d60fbefa5" version="1">Smites can Daze (DC 13 Constitution). Once per short rest, Scorching Shot deals an extra 1d10 Fire damage and can set the target Burning (DC 13 Constitution).</content>
+        <content contentuid="hed20fa4fg89b5g59b9g94efgb028860e20b2" version="1">Sickle of Slicing Flintlock</content>
+        <content contentuid="hc5a7d2bcg4a6eg5d03g953dga096ee68297e" version="1">Shots deal an additional 1d4 Piercing damage to Bleeding targets.</content>
+        <content contentuid="hcce90320ga22dg5de3gb2acg8fd1b3af03c5" version="1">Shadar-Kai Spear Musket</content>
+        <content contentuid="hfe2a242dg10efg5ea5g99b4g81ab9b454ddd" version="1">Grants +1 to Stealth checks. Entering stealth makes your weapon attacks deal +1d12 Necrotic damage.</content>
+        <content contentuid="h4aa5afb4g61b7g5161g8284gb97992324238" version="1">Ricochet Shot</content>
+        <content contentuid="h96e1bda4g8e50g568bg97c8g767457bbff7b" version="1">Fire a shot that ricochets off the target to strike nearby creatures, as an Arrow of Ricochet does. Once per short rest.</content>
+        <content contentuid="he9d9c68dgf0d7g5e47g9a63gb68078fc9db4" version="1">Mindcrush Shot</content>
+        <content contentuid="hcbadf56fgf980g5b95g87bagfc8810945f16" version="1">Fire a shot that deals additional Psychic damage equal to your Proficiency Bonus. The target makes a Constitution saving throw or is Stunned for 2 turns. Once per short rest.</content>
+        <content contentuid="h227978degea35g5498g9319ga882bf280e78" version="1">Hail of Thorns Shot</content>
+        <content contentuid="h824563bfgd3f5g543aga1d3g53f877f1693a" version="1">Fire a thorn-wrapped shot. On a hit, the target makes a Dexterity saving throw or takes an additional 1d10 Piercing damage. Once per short rest.</content>
+        <content contentuid="haf671402g4e12g55c7gbad7gd4093316bd2a" version="1">Menacing Shot</content>
+        <content contentuid="h36233226ge68ag5fadg9985g774b42414937" version="1">Fire a shot that deals an additional 1d8 damage. The target makes a Wisdom saving throw or is Frightened for 2 turns. Once per short rest.</content>
+        <content contentuid="h0754a2d7gb960g55e8ga2ceg445927b14390" version="1">Scorching Shot</content>
+        <content contentuid="h7b6b1d8cgc194g5740g84b4gbe8215deb96c" version="1">Fire a searing shot that deals an additional 1d10 Fire damage. The target makes a DC 13 Constitution saving throw or is set Burning for 2 turns. Once per short rest.</content>
+        <content contentuid="haa12bd94g3580g5798g97efg34380d9cd02a" version="1">Nightwalker's Claw Flintlock</content>
+        <content contentuid="h713e51b3gf556g56e0gade4g8bbeed61e0ef" version="1">Hits can drain life, reducing the target's maximum hit points by 2d8 (DC 10 Constitution).</content>
+        <content contentuid="h9616189eg3ef6g5247g8f05g84aed5550578" version="1">Ebonbone Scepter Musket</content>
+        <content contentuid="ha4ff8ec3gf13ag5b59gb799g92004bcd6de0" version="1">Grants Cone of Cold once per long rest, and Elemental Affinity for Cold spells.</content>
+        <content contentuid="hc83658dega742g53begb613g50f58bce7c4e" version="1">Woe (Skull Lord variant) Musket</content>
+        <content contentuid="h00eff6acg50e1g5c55gbadfg1317e1e863b6" version="1">Shots deal +1d10 Necrotic damage and inflict Decompose for 4 turns.</content>
+        <!-- END GENERATED MOD WEAPON CONVERSIONS -->
         <!-- BEGIN GENERATED JWL DESCRIPTIONS -->
         <content contentuid="h4f6172a8gf64dg5302g9c37gae064ba48614" version="1">A magical musket that grants True Strike against a target after you miss it with an attack.</content>
         <content contentuid="h5c9890bag6c2fg5056g8c55g0db2966d85df" version="1">A magical musket that grants True Strike against a target after you miss it with an attack.</content>

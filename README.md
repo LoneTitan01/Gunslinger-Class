@@ -51,7 +51,7 @@ Starting at level 2, the Gunslinger has three **Craft** charges per day. Spend o
 - An Assembly Kit, used to fuse a magical weapon to a firearm
 - A Disassembly Kit, used to defuse a fused firearm and magical weapon
 
-Use a kit's item-combination action to open the crafting interface. The supported recipes fuse an Assembly Kit, a magical weapon, and a base firearm; the kit and magical weapon are consumed and the firearm is transformed. Disassembly returns the base firearm and its original magical weapon, and consumes the Disassembly Kit. Implemented recipes include fifty-seven Flintlock combinations, fifty-four Musket combinations, and 56 Blunderbuss combinations. Every implemented recipe has a matching disassembly recipe. Blunderbuss adaptations include Revitalizing Shot, Corrosive Shot, Poison Mist Scattershot, Sorrowful Lash, Gargantuan Scattershot, Thunderous Scattershot, and firearm-compatible Undead Bane, Blooded, Unseen Menace, Punch-Drunk, Defender Flail, Psionic Weapon, Woundseeker, Fortune's Favor, Commander's Strike, and Undead Slayer effects. Other source abilities are retained where their effects support firearm attacks.
+Use a kit's item-combination action to open the crafting interface. The supported recipes fuse an Assembly Kit, a magical weapon, and a base firearm; the kit and magical weapon are consumed and the firearm is transformed. Disassembly returns the base firearm and its original magical weapon, and consumes the Disassembly Kit. Implemented recipes include fifty-eight Flintlock combinations, fifty-four Musket combinations, and 56 Blunderbuss combinations. Every implemented recipe has a matching disassembly recipe. Blunderbuss adaptations include Revitalizing Shot, Corrosive Shot, Poison Mist Scattershot, Sorrowful Lash, Gargantuan Scattershot, Thunderous Scattershot, and firearm-compatible Undead Bane, Blooded, Unseen Menace, Punch-Drunk, Defender Flail, Psionic Weapon, Woundseeker, Fortune's Favor, Commander's Strike, and Undead Slayer effects. Other source abilities are retained where their effects support firearm attacks.
 
 The main module also includes base firearm recipes for the prerequisite JWL
 items Adamantine Scimitar, Belm, Blightbringer, Blood-Bound Blade, Cruel Sting,
@@ -60,9 +60,10 @@ King, Kurwin's Cauterizer, Least Expected, Loviatar's Scourge, Pelorsun Blade,
 Render of Mind and Body, Returning Pike, Stillmaker, The Dancing Breeze,
 Thermodynamo Axe, Vicious Shortbow, Vicious Shortsword, and Vision of the
 Absolute. Their JWL upgrade tiers are supported by the optional compatibility
-add-on described in [JWL-Compat.md](JWL-Compat.md).
+add-on described in [JWL-Compat.md](JWL-Compat.md). It also includes Thorn Blade,
+a base-game weapon that Encounters Overhaul copies.
 
-The following compatibility mapping includes weapons from the BG3 Wiki's [uncommon](https://bg3.wiki/wiki/List_of_uncommon_weapons), [rare](https://bg3.wiki/wiki/List_of_rare_weapons), and [very rare](https://bg3.wiki/wiki/List_of_very_rare_weapons) lists. Weapons whose only feature is a +1, +2, or +3 Enchantment are omitted. Flintlocks are matched to Light or Finesse weapons, shortbows, and hand crossbows; Muskets to Versatile or Thrown weapons, longbows, and light crossbows; and Blunderbusses to all remaining weapons, including two-handed weapons and heavy crossbows. When properties overlap, the priority is Flintlock > Musket > Blunderbuss, and each weapon appears only once. Weapon names link to their individual wiki pages. The Special ability column records the source property; Firearm Ability is the proposed adaptation. The first fifty-seven Flintlock and fifty-four Musket conversions listed below are implemented, along with 56 Blunderbuss conversions whose source item stats and templates were verified in the extracted reference. Damage of a weapon's bludgeoning, piercing, or slashing type is converted to the firearm's base damage type where applicable; resistance ignoring is adapted to the firearm's damage type. Recast melee weapon actions as firearm shots; close-area effects become Blunderbuss Scattershot abilities with the noted extended area or added effect. Some firearm ability proposals remain unimplemented.
+The following compatibility mapping includes weapons from the BG3 Wiki's [uncommon](https://bg3.wiki/wiki/List_of_uncommon_weapons), [rare](https://bg3.wiki/wiki/List_of_rare_weapons), and [very rare](https://bg3.wiki/wiki/List_of_very_rare_weapons) lists. Weapons whose only feature is a +1, +2, or +3 Enchantment are omitted. Flintlocks are matched to Light or Finesse weapons, shortbows, and hand crossbows; Muskets to Versatile or Thrown weapons, longbows, and light crossbows; and Blunderbusses to all remaining weapons, including two-handed weapons and heavy crossbows. When properties overlap, the priority is Flintlock > Musket > Blunderbuss, and each weapon appears only once. Weapon names link to their individual wiki pages. The Special ability column records the source property; Firearm Ability is the proposed adaptation. The first fifty-eight Flintlock and fifty-four Musket conversions listed below are implemented, along with 56 Blunderbuss conversions whose source item stats and templates were verified in the extracted reference. Damage of a weapon's bludgeoning, piercing, or slashing type is converted to the firearm's base damage type where applicable; resistance ignoring is adapted to the firearm's damage type. Recast melee weapon actions as firearm shots; close-area effects become Blunderbuss Scattershot abilities with the noted extended area or added effect. Some firearm ability proposals remain unimplemented.
 
 ### Firearm upgrade paths
 
@@ -72,25 +73,78 @@ Blunderbusses progress through Infernal Iron (+1, +1 Fire damage), Infernal Allo
 
 ### Optional modded weapon-copy compatibility
 
-Crafting matches internal item stats, not the name displayed in inventory. A mod's copy of a supported vanilla weapon can therefore show **Invalid Combination**, even if its name and abilities look identical. The optional weapon-copy add-ons accept explicitly verified copies of existing supported weapons. The JWL add-on also transfers audited upgrade-tier effects; none of these add-ons creates a conversion for a weapon without an existing base firearm adaptation.
+Crafting matches internal item stats, not the name displayed in inventory. A mod's copy of a supported vanilla weapon can therefore show **Invalid Combination**, even if its name and abilities look identical. The optional weapon-copy add-ons accept explicitly verified copies of existing supported weapons. The JWL add-on also transfers audited upgrade-tier effects. The Act Two Expansion and Encounters Overhaul add-ons also include new firearm conversions for those mods' own magical weapons; see [Mod-original weapon conversions](#mod-original-weapon-conversions).
 
 An October 2026 audit of 76 installed PAKs (74 inputs after excluding the two Gunslinger packages) found 953 weapon declarations across 12 packages, including 11 verified copies suitable for existing recipes:
 
 | Optional PAK | Required source mod | Supported copies |
 | --- | --- | --- |
-| `GunslingerClass_EO_WeaponCopiesCompat.pak` | Encounters Overhaul | Sickle of BOOOAL, Titanstring Bow, Charge-Bound Warhammer, Clutching Umbra, Hoppy, Slicing Shortsword, Hellbeard Halberd, Harmonic Dueller, Ambusher |
+| `GunslingerClass_ATE_WeaponCopiesCompat.pak` | Act Two Expansion | No copies; 25 mod-original conversions |
+| `GunslingerClass_EO_WeaponCopiesCompat.pak` | Encounters Overhaul | Sickle of BOOOAL, Titanstring Bow, Charge-Bound Warhammer, Clutching Umbra, Hoppy, Slicing Shortsword, Hellbeard Halberd, Harmonic Dueller, Ambusher, Blightbringer, Render of Mind and Body, Thermodynamo Axe, Thorn Blade; plus 3 mod-original conversions |
 | `GunslingerClass_CL_WeaponCopiesCompat.pak` | Community Library | Unbound Hill Giant club (`CL_WPN_MAG_HillGiant_Club`) |
 | `GunslingerClass_JWL_WeaponCopiesCompat.pak` | JWL Soul Smithing 1.0.0.7 | All 221 upgrade tiers across 113 firearm conversions; requires JWL Soul Smithing and must stay enabled while its compatibility firearms remain in a save; see [JWL-Compat.md](JWL-Compat.md) for scope and source limitations |
 
-The Encounters Overhaul add-on also supports the same copied IDs with its optional 5e Spells patch installed; load the Gunslinger copy add-on after that patch as well. Many More Monsters adds no verified equivalent requiring a recipe. Act Two Expansion, Artificer, Invocations Expanded, JWL Coffers - Inaccessibles, Sussur Weapons, UnlockLevelCurve, and Utut's Core Library contain new or altered weapons, not equivalent supported copies. Bound Community Library variants, Encounters Overhaul's altered Woe/crossbow, and runtime Transmog copies are deliberately excluded. Sussur Weapons also changes existing vanilla templates; this patch does not certify or override those changes. These findings describe the audited installed versions, not all future versions of those mods.
+The Encounters Overhaul add-on also supports the same copied IDs with its optional 5e Spells patch installed; load the Gunslinger copy add-on after that patch as well. Many More Monsters adds no verified equivalent requiring a recipe. Artificer, Invocations Expanded, JWL Coffers - Inaccessibles, Sussur Weapons, UnlockLevelCurve, and Utut's Core Library contain new or altered weapons, not equivalent supported copies. Bound Community Library variants, Encounters Overhaul's altered crossbow, and runtime Transmog copies are deliberately excluded. Sussur Weapons also changes existing vanilla templates; this patch does not certify or override those changes. These findings describe the audited installed versions, not all future versions of those mods.
 
-Build the mod and compatibility add-ons with `python stage_packages.py --divine <path to Divine.exe>`. Their separate PAKs and ZIPs are written to `Packages/`; compatibility add-ons (Community Library, Encounters Overhaul, and JWL Soul Smithing) build as well by default (use `--no-weapon-compat` to omit them). Enable each weapon-copy add-on only with its required source mod, and place it **after GunslingerClass and that source mod** in the load order. No load-order or installed-mod files are changed by the build.
+Build the mod and compatibility add-ons with `python stage_packages.py --divine <path to Divine.exe>`. Their separate PAKs and ZIPs are written to `Packages/`; compatibility add-ons (Act Two Expansion, Community Library, Encounters Overhaul, and JWL Soul Smithing) build as well by default (use `--no-weapon-compat` to omit them). Enable each weapon-copy add-on only with its required source mod, and place it **after GunslingerClass and that source mod** in the load order. No load-order or installed-mod files are changed by the build.
 
 Assembly still needs an Assembly Kit, the copied magical weapon, and the matching base firearm. The resulting firearm inherits the existing conversion's abilities and appearance. Its separate internal identity preserves the ingredient's origin: disassembly returns the **source mod's weapon**, not the vanilla equivalent. Keep the source mod and compatibility add-on enabled while using these fused firearms. Vanilla recipes and results are unchanged.
 
 For Soul Smithing, upgrade the original weapon first, then assemble that exact tier with a base firearm. Disassembly returns the same upgraded JWL weapon. The JWL add-on preserves tier rarity/enchantment and audited changes such as initiative, spellcasting bonuses, stronger damage, higher save DCs, and upgraded item actions. It requires the updated Gunslinger base package (1.0.0.1 or later), which supplies its firearm-aware effects and localized tooltips. Existing Faithbreaker UP1 items retain their original stat and template IDs.
 
 JWL 1.0.0.7 contains conflicting duplicate IDs for Ketheric's Warhammer and Xyanyde; the compatibility firearms use the final Legendary definitions and do not invent separate Very Rare IDs. Cold Snap's tiers retain the inherited Rare rarity because JWL omits it. The add-on provides a missing-template alias for Wavemother's Sickle UP1 so disassembly can return it, but does not fix JWL's malformed smithing recipes. These source limitations still need in-game confirmation.
+
+#### Mod-original weapon conversions
+
+These weapons have no base-game equivalent, so each add-on builds a new firearm on the base Flintlock, Musket, or Blunderbuss. Firearm kind follows the rules above, and each keeps its source's rarity and enchantment. Effects that already work with firearm attacks are kept. Melee-only weapon actions are dropped or recast as once-per-short-rest firearm shots, and melee-only passive conditions are rewritten for ranged weapon attacks. Their names and descriptions are in the main GunslingerClass package.
+
+<details>
+<summary>Act Two Expansion (25)</summary>
+
+| Weapon | Firearm | Firearm ability |
+| --- | --- | --- |
+| Trickster Dagger (`CHI_MAG_WPN_HUM_Dagger_Return`) | Flintlock | Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns. |
+| Scimitar of Flowing Waters (`CHI_MAG_WPN_Scimitar_Water_Myrmidon_B`) | Flintlock | Grants +1 to Dexterity saving throws and Initiative, and a firearm Razor Gale. |
+| Gnomish Tinkerer Crossbow (`CHI_WPN_Crossbow_Gnomish`) | Musket | Once per short rest, Ricochet Shot bounces off its target like an Arrow of Ricochet. |
+| Dexterous Flail (`CHI_WPN_Flail_Agility`) | Blunderbuss | Your Dexterity score becomes at least 18. |
+| Silver Sword of the Comet (`CHI_WPN_Greatsword_Spellcaster`) | Blunderbuss | Shots deal +1d4 Psychic damage. Once per short rest, a critical hit restores a level 2 spell slot. Once per short rest, Mindcrush Shot adds Psychic damage equal to your Proficiency Bonus and can Stun. |
+| Kara-Turan Katana (`CHI_WPN_HUM_Katana_B`) | Musket | Shots ignore Piercing resistance. Hits made with Advantage inflict Bleeding for 2 turns. |
+| Lance Pike (`CHI_WPN_HUM_Lancespear_A`) | Blunderbuss | Grants Zephyr Flash and Zephyr Break. |
+| Ironvine Shortbow (`CHI_WPN_HUM_Shortbow_Druid_A`) | Flintlock | Reduces the critical-hit threshold by 1, and damaging hits can Poison (DC 15 Dexterity). Once per short rest, Hail of Thorns Shot deals an extra 1d10 Piercing damage on a failed Dexterity save. |
+| The Breacher (`CHI_WPN_Javelin`) | Musket | Grants Heroic Throw once per short rest. |
+| Axe of Storms (`CHI_WPN_MAG_Axe_Lightning`) | Flintlock | Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked. |
+| Firbolg Greataxe (`CHI_WPN_MAG_Battleaxe_Firbolg`) | Blunderbuss | Once per combat, a damaging shot can outline the target in Faerie Fire (DC 13 Dexterity). Grants Missile Snaring. |
+| Phasmid Longbow (`CHI_WPN_MAG_Longbow_PhantasmalKiller`) | Musket | Damaging shots can inflict Phantasmal Force (DC 14 Wisdom). Once per short rest, Menacing Shot deals an extra 1d8 damage and can Frighten. |
+| Bow of the Thunder Lord (`CHI_WPN_MAG_Longbow_Thunder`) | Musket | Grants Gushing Air once per short rest. |
+| Death Knight's Longsword (`CHI_WPN_MAG_Longsword_Necromancy`) | Musket | Killing an enemy with a shot grants Life Essence. |
+| Enfeebling Rapier (`CHI_WPN_MAG_Rapier_Enfeeble`) | Flintlock | Damaging shots can inflict Ray of Enfeeblement for 2 turns (DC 12 Constitution). |
+| Gish Shortsword (`CHI_WPN_MAG_Shortsword_GithAssassin`) | Flintlock | Shots deal +1d4 Psychic damage. Once per short rest, when an enemy misses you with a melee attack, Assassin's Riposte fires a reaction shot. |
+| Hoarfrost Blade (`CHI_WPN_MAG_Shortsword_Ice`) | Flintlock | Critical hits deal 10 Cold damage and grant Advantage on your next attack. Ice cannot knock you Prone. |
+| Firefly Keeper Staff (`CHI_WPN_MAG_Staff_Fireflies`) | Musket | Grants +1 to ranged spell attack rolls, Protective Lights, and Faerie Fire. |
+| Still Wind Staff (`CHI_WPN_MAG_Staff_Icicle`) | Musket | Grants Cold resistance, +1 to ranged spell attack rolls, +2 spell save DC, Explosive Icicle, and Ray of Frost. |
+| Sun Crystal Staff (`CHI_WPN_MAG_Staff_Sun`) | Musket | Grants Sunbeam. |
+| Trident of Healing Waters (`CHI_WPN_MAG_Trident_Water`) | Musket | Grants Mass Healing Word and Create Water. |
+| Gnomish War Pick (`CHI_WPN_MAG_WarPick`) | Blunderbuss | Critical hits and killing blows against enemies create a shockwave that can knock nearby enemies Prone (DC 14 Dexterity). |
+| Ancient Warhammer (`CHI_WPN_MAG_Warhammer_Smite`) | Musket | Smites can Daze (DC 13 Constitution). Once per short rest, Scorching Shot deals an extra 1d10 Fire damage and can set the target Burning (DC 13 Constitution). |
+| Sickle of Slicing (`CHI_WPN_SickleOfSlicing`) | Flintlock | Shots deal an additional 1d4 Piercing damage to Bleeding targets. |
+| Shadar-Kai Spear (`CHI_WPN_Spear_Shadow`) | Musket | Grants +1 to Stealth checks. Entering stealth makes your weapon attacks deal +1d12 Necrotic damage. |
+
+</details>
+
+<details>
+<summary>Encounters Overhaul (3)</summary>
+
+| Weapon | Firearm | Firearm ability |
+| --- | --- | --- |
+| Nightwalker's Claw (`EO_Sickle_NightwalkersClaw`) | Flintlock | Hits can drain life, reducing the target's maximum hit points by 2d8 (DC 10 Constitution). |
+| Ebonbone Scepter (`EO_Staff_Ebonbone`) | Musket | Grants Cone of Cold once per long rest, and Elemental Affinity for Cold spells. |
+| Woe (Skull Lord variant) (`EO_MAG_SkullLords_Quarterstaff`) | Musket | Shots deal +1d10 Necrotic damage and inflict Decompose for 4 turns. |
+
+</details>
+
+Legendary weapons are out of scope, so Act Two Expansion's Dawnblade and JWL Coffers - Inaccessibles' The Clover have no conversion. Also excluded: weapons whose only feature is a +N enchantment, Encounters Overhaul's unreferenced `AE_*` legacy duplicates, and non-magical NPC weapons. The generator lists each exclusion with its reason. Ricochet, Mindcrush, Hail of Thorns, Menacing, Scorching, and Assassin's Riposte shots, the Death Knight's and Sickle of Slicing passives, and the Zephyr and Heroic Throw unlocks still need in-game confirmation.
+
+To regenerate these resources, run `python generate_mod_weapon_compat.py`; `python generate_mod_weapon_compat.py --check` verifies that they are current. Generation requires the bundled Act Two Expansion, Encounters Overhaul, and BG3 examples. It fails if a source weapon file changes, or if any source weapon is not mapped, copied, or excluded.
 
 To regenerate the checked-in JWL resources, run `python generate_jwl_compat.py`; `python generate_jwl_compat.py --check` verifies that they are current. Generation requires the bundled JWL and BG3 examples and fails on unaudited JWL weapon-stat changes. Normal packaging uses the checked-in resources and does not require generation.
 
@@ -145,6 +199,7 @@ To regenerate the checked-in JWL resources, run `python generate_jwl_compat.py`;
 | [Sussur Sickle](https://bg3.wiki/wiki/Sussur_Sickle) | +1 | Hits can Silence targets that fail a DC 12 Constitution save. | Hits can Silence targets that fail a DC 12 Constitution save. |
 | [Sword of Clutching Umbra](https://bg3.wiki/wiki/Sword_of_Clutching_Umbra) | +1 | Shadowsoaked Blow adds proficiency bonus and 1d6 Psychic damage without breaking concealment. | Shadowsoaked Shot adds your proficiency bonus and 1d6 Psychic damage without breaking concealment. |
 | [The Baneful](https://bg3.wiki/wiki/The_Baneful) | +1 | Favoured Weapon adds +1 to attack and damage; hits can inflict Bane. | Favoured Firearm grants +1 to attack and damage rolls; hits can inflict Bane. |
+| [Thorn Blade](https://bg3.wiki/wiki/Thorn_Blade) | +1 | Deals +1d4 Poison damage while the wielder is concentrating; can cast Ensnaring Strike once per long rest. | While you concentrate, shots deal +1d4 Poison damage; once per long rest, Ensnaring Shot can Ensnare a target on a failed Strength save. |
 | [Wavemother's Sickle](https://bg3.wiki/wiki/Wavemother's_Sickle) | +2 | Deals +1d4 Cold damage and has Advantage against Wet creatures. | Shots deal +1d4 Cold damage and have Advantage against Wet targets. |
 | [Larethian's Wrath](https://bg3.wiki/wiki/Larethian's_Wrath) | +1 | Razor Gale weapon action damages all enemies in range. | Razor Gale: fire a ranged shot that damages all creatures in a 20-foot line. |
 | [Phalar Aluve](https://bg3.wiki/wiki/Phalar_Aluve) | +1 | +1 Performance; Phalar Aluve: Melody lets the wielder Sing or Shriek once per short rest. | Once per short rest, Sing to grant nearby allies +1d4 to attack rolls, or Shriek to deal 1d4 Thunder damage to nearby enemies and weaken them. |

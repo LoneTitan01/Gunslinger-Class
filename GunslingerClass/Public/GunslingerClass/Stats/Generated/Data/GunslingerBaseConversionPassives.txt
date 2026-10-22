@@ -22,6 +22,12 @@ data "Icon" "GSL_ShootFlintlock"
 data "Boosts" "IF(IsRangedWeaponAttack() and HasAdvantage() and not HasDisadvantage()):DamageBonus(1d4,Psychic,false)"
 
 
+new entry "GSL_Base_ThornBlade"
+type "PassiveData"
+data "Icon" "GSL_ShootFlintlock"
+data "Boosts" "IF(IsRangedWeaponAttack() and IsConcentrating(context.Source)):DamageBonus(1d4,Poison,false)"
+
+
 new entry "GSL_Base_ViciousCritical"
 type "PassiveData"
 data "Icon" "GSL_ShootFlintlock"

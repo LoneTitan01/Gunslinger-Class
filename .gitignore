@@ -7,6 +7,10 @@ Main_Staging/
 Weapon_Compat_Staging/
 Packages/
 *.pak
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # ComfyUI generated icon candidates (not packaged mod assets)
 artwork/comfyui/generated/

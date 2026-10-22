@@ -137,6 +137,7 @@ class StagingResourceTests(unittest.TestCase):
                 stage_packages.tags_dir / 'd4237481-5fe3-4120-9c9c-2c89b72b774d.lsx',
                 stage_packages.gui_metadata,
                 stage_packages.multi_effect_infos_dir / '1926d069-4ddf-4f80-ae75-897cf666fb16.lsx',
+                stage_packages.books_dir / 'GunslingerClass_Books.lsx',
             )
             effect = stage_packages.effects_dir / 'Effects_Banks' / 'GSL_Firearm_Shot_SoundFX.lsx'
             for resource in (*resources, effect):
@@ -189,9 +190,10 @@ class StagingResourceTests(unittest.TestCase):
                         stage_packages.stage_content_banks(Path('Divine.exe'))
             self.assertTrue(source.exists())
 
-    def test_stage_weapon_compat_discovers_jwl_eo_and_cl(self) -> None:
+    def test_stage_weapon_compat_discovers_every_compat_module(self) -> None:
         packages, unconverted = stage_packages.stage_weapon_compat(None)
         expected_names = {
+            'GunslingerClass_ATE_WeaponCopiesCompat.pak',
             'GunslingerClass_CL_WeaponCopiesCompat.pak',
             'GunslingerClass_EO_WeaponCopiesCompat.pak',
             'GunslingerClass_JWL_WeaponCopiesCompat.pak',

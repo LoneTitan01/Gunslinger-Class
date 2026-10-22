@@ -1,4 +1,4 @@
-"""Generate prerequisite main-module firearm conversions from JWL source IDs."""
+"""Generate main-module firearm conversions for JWL prerequisites and audited base-game gaps."""
 
 from __future__ import annotations
 
@@ -136,6 +136,13 @@ CONVERSIONS = (
         action='Zone_GSL_WhirlwindShot_Flintlock',
     ),
     Conversion(
+        'Thorn Blade', 'MAG_HAV_ThornBlade_Scimitar', 'Flintlock', 'Rare', 1,
+        'While you are concentrating, shots deal an additional 1d4 Poison damage. '
+        'Once per long rest, Ensnaring Shot can Ensnare its target.',
+        passives='GSL_Base_ThornBlade',
+        action='Projectile_GSL_EnsnaringShot_Flintlock',
+    ),
+    Conversion(
         'Thermodynamo Axe', 'MAG_Fire_HeatOnWeaponDamage_Battleaxe',
         'Musket', 'VeryRare', 2,
         'Generates Heat when firearm damage is dealt.',
@@ -180,6 +187,9 @@ CUSTOM_PASSIVES = {
             'IF(IsRangedWeaponAttack() and HasAdvantage() and not HasDisadvantage()):'
             'DamageBonus(1d4,Psychic,false)'
         ),
+    },
+    'GSL_Base_ThornBlade': {
+        'Boosts': 'IF(IsRangedWeaponAttack() and IsConcentrating(context.Source)):DamageBonus(1d4,Poison,false)',
     },
     'GSL_Base_ViciousCritical': {
         'Boosts': 'IF(IsRangedWeaponAttack() and IsCritical()):DamageBonus(7,Piercing,false)',
@@ -227,13 +237,52 @@ def remove_xml_marked(content: str) -> str:
     return pattern.sub('\n', content)
 
 
+def conversion_fields(
+    conversion: Conversion,
+    root: str,
+    parent_actions: str,
+    display_handle: str,
+    description_handle: str,
+) -> list[tuple[str, str]]:
+    boosts = [f'WeaponEnchantment({conversion.enchantment})', 'WeaponProperty(Magical)']
+    if conversion.boosts:
+        boosts.append(conversion.boosts)
+    fields = [
+        ('RootTemplate', root),
+        ('Rarity', conversion.rarity),
+        ('DefaultBoosts', ';'.join(boosts)),
+        ('DisplayName', f'{display_handle};1'),
+        ('Description', f'{description_handle};1'),
+    ]
+    if conversion.passives:
+        fields.insert(3, (
+            'PassivesOnEquip',
+            ';'.join(('GSL_Firearm_Misfire_Passive', conversion.passives)),
+        ))
+    if conversion.spell_boosts:
+        fields.insert(3, ('Boosts', conversion.spell_boosts))
+    if conversion.weapon_functors:
+        fields.insert(3, ('WeaponFunctors', conversion.weapon_functors))
+    if conversion.action:
+        fields.insert(3, (
+            'BoostsOnEquipMainHand',
+            parent_actions.replace('UnlockSpell(Shout_GSL_Repair_Main)', '')
+            .rstrip(';') + f';UnlockSpell({conversion.action});UnlockSpell(Shout_GSL_Repair_Main)',
+        ))
+    return fields
+
+
 def template_for(
     source_text: str,
     parent: str,
     conversion: Conversion,
     display_handle: str,
     description_handle: str,
+    stat_name: str = '',
+    root: str = '',
 ) -> str:
+    stat_name = stat_name or conversion.name
+    root = root or conversion.root
     tree = ET.fromstring(source_text)
     parent_node = next((
         node for node in tree.findall(".//node[@id='GameObjects']")
@@ -246,10 +295,10 @@ def template_for(
     match = re.search(r'<attribute id="MapKey" type="FixedString" value="([^"]+)"', copied)
     if match is None:
         raise ValueError(f'{parent}: base template has no MapKey')
-    copied = copied.replace(match[1], conversion.root, 1)
+    copied = copied.replace(match[1], root, 1)
     copied = re.sub(
         r'(<attribute id="(?:Name|Stats)"[^>]+value=")' + re.escape(parent) + '"',
-        rf'\g<1>{conversion.name}"',
+        rf'\g<1>{stat_name}"',
         copied,
     )
     copied = re.sub(
@@ -315,32 +364,13 @@ def render() -> dict[Path, str]:
         display_name = conversion.label
         if conversion.source == 'MAG_MeleeDebuff_AttackDebuff1_OnDamage_Scimitar':
             display_name = 'Adamantine Scimitar (Magical variant)'
-        boosts = [f'WeaponEnchantment({conversion.enchantment})', 'WeaponProperty(Magical)']
-        if conversion.boosts:
-            boosts.append(conversion.boosts)
-        fields = [
-            ('RootTemplate', conversion.root),
-            ('Rarity', conversion.rarity),
-            ('DefaultBoosts', ';'.join(boosts)),
-            ('DisplayName', f'{display_handle};1'),
-            ('Description', f'{description_handle};1'),
-        ]
-        if conversion.passives:
-            fields.insert(3, (
-                'PassivesOnEquip',
-                ';'.join(('GSL_Firearm_Misfire_Passive', conversion.passives)),
-            ))
-        if conversion.spell_boosts:
-            fields.insert(3, ('Boosts', conversion.spell_boosts))
-        if conversion.weapon_functors:
-            fields.insert(3, ('WeaponFunctors', conversion.weapon_functors))
-        if conversion.action:
-            base_actions = current_stats[parent].fields['BoostsOnEquipMainHand']
-            fields.insert(3, (
-                'BoostsOnEquipMainHand',
-                base_actions.replace('UnlockSpell(Shout_GSL_Repair_Main)', '')
-                .rstrip(';') + f';UnlockSpell({conversion.action});UnlockSpell(Shout_GSL_Repair_Main)',
-            ))
+        fields = conversion_fields(
+            conversion,
+            conversion.root,
+            current_stats[parent].fields['BoostsOnEquipMainHand'],
+            display_handle,
+            description_handle,
+        )
         weapons.append(
             f'new entry "{conversion.name}"\ntype "Weapon"\nusing "{parent}"\n'
             + ''.join(f'data "{key}" "{value}"\n' for key, value in fields)
@@ -407,6 +437,34 @@ def render() -> dict[Path, str]:
     localized.extend((
         f'        <content contentuid="{spell_display}" version="1">Whirlwind Shot</content>',
         f'        <content contentuid="{spell_description}" version="1">Fire a 20-foot cone shot. Each creature in the area makes a Dexterity saving throw, taking half firearm damage on a failed save and none on a success. Once per short rest.</content>',
+    ))
+    ensnaring_name = 'Projectile_GSL_EnsnaringShot_Flintlock'
+    ensnaring_display = localized_handle(ensnaring_name, 'name')
+    ensnaring_description = localized_handle(ensnaring_name, 'description')
+    ensnaring_save = (
+        'SavingThrow(Ability.Strength,8 + context.Source.ProficiencyBonus + GetModifier(context.Source.Dexterity),'
+        'AdvantageOnRestrained(),DisadvantageOnRestrained())'
+    )
+    spell_content += (
+        f'\nnew entry "{ensnaring_name}"\ntype "SpellData"\nusing "GSL_MainHand_Flintlock_attack"\n'
+        f'data "DisplayName" "{ensnaring_display};1"\n'
+        f'data "Description" "{ensnaring_description};1"\n'
+        'data "Icon" "Spell_Conjuration_EnsnaringStrikeRanged"\n'
+        'data "Cooldown" "OncePerRestPerItem"\n'
+        'data "UseCosts" "ActionPoint:1;GunslingerFlintlockAmmo:1"\n'
+        'data "TooltipUseCosts" "ActionPoint:1;GunslingerFlintlockAmmo:1"\n'
+        'data "RequirementConditions" "HasPassive(\'GSL_Flintlock_MainHand\',context.Source) and not HasStatus(\'GSL_FIREARM_MAIN_DISABLED\',context.Source)"\n'
+        'data "TargetConditions" "Character() and not Self()"\n'
+        'data "SpellSuccess" "DealDamage(max(1,MainRangedWeapon),MainRangedWeaponDamageType);ExecuteWeaponFunctors(MainHand);'
+        f'IF(not {ensnaring_save}):ApplyStatus(ENSNARING_STRIKE,100,10)"\n'
+        'data "TooltipDamageList" "DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)"\n'
+        'data "TooltipAttackSave" "Strength"\n'
+        'data "TooltipStatusApply" "ApplyStatus(ENSNARING_STRIKE,100,10)"\n'
+        'data "SpellFlags" "IsAttack;IsSpell;IsConcentration;HasHighGroundRangeExtension;RangeIgnoreVerticalThreshold;IsHarmful"\n'
+    )
+    localized.extend((
+        f'        <content contentuid="{ensnaring_display}" version="1">Ensnaring Shot</content>',
+        f'        <content contentuid="{ensnaring_description}" version="1">Fire a shot that makes thorny vines sprout around the target. On a hit, the target makes a Strength saving throw or is Ensnared for as long as you concentrate. Once per long rest.</content>',
     ))
 
     loc_begin = '        <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->'

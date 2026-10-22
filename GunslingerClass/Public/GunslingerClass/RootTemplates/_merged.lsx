@@ -2955,6 +2955,84 @@
                     </children>
                 </node>
                 <node id="GameObjects">
+                    <attribute id="Description" type="TranslatedString" handle="hc83bb250gf143g4ebfg98f1g3efe08617819" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h0c266cf2g8b54g46f1gb989gf2e69222efc1" version="1"/>
+                    <attribute id="Icon" type="FixedString" value="Item_UNI_FOR_MasterworkPlans"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="9af6bb3b-0a2a-43ee-8513-f02e2a2b6132"/>
+                    <attribute id="Name" type="LSString" value="BOOK_GSL_UpgradeNotes_Flintlock"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="3f88f731-258c-4ab7-bf66-c135edd2c1cc"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <children>
+                        <node id="OnUsePeaceActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="11"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="BookId" type="FixedString" value="GSL_UpgradeNotes_Flintlock"/>
+                                            <attribute id="Conditions" type="LSString" value=""/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="Description" type="TranslatedString" handle="h43cfd700g7f85g480dga204ge808b552a55f" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h3a49c35ag54a7g41ecga7a2gc2d82abebf7b" version="1"/>
+                    <attribute id="Icon" type="FixedString" value="Item_UNI_FOR_MasterworkPlans"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="17f36477-9a3b-450b-b6ee-81d52322ddff"/>
+                    <attribute id="Name" type="LSString" value="BOOK_GSL_UpgradeNotes_Musket"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="3f88f731-258c-4ab7-bf66-c135edd2c1cc"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <children>
+                        <node id="OnUsePeaceActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="11"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="BookId" type="FixedString" value="GSL_UpgradeNotes_Musket"/>
+                                            <attribute id="Conditions" type="LSString" value=""/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="Description" type="TranslatedString" handle="ha0763de6g2664g4246gb844gd6672bfb09ed" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h0d50d14egcd71g4c62ga24dg0e260b5505fb" version="1"/>
+                    <attribute id="Icon" type="FixedString" value="Item_UNI_FOR_MasterworkPlans"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="f0c60a0e-b975-4bed-bc4e-8cec8a8fc36e"/>
+                    <attribute id="Name" type="LSString" value="BOOK_GSL_UpgradeNotes_Blunderbuss"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="3f88f731-258c-4ab7-bf66-c135edd2c1cc"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <children>
+                        <node id="OnUsePeaceActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="11"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="BookId" type="FixedString" value="GSL_UpgradeNotes_Blunderbuss"/>
+                                            <attribute id="Conditions" type="LSString" value=""/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="GameObjects">
                     <attribute id="Acceleration" type="float" value="40"/>
                     <attribute id="CameraOffset" type="fvec3" value="0 0 0"/>
                     <attribute id="CastBone" type="FixedString" value="Dummy_FX"/>
@@ -4276,6 +4354,30 @@
                                     <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
                                     <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
                                     <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_TheDancingBreeze" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="ha92da356gcb71g5f33gb2a5g7a475d482a16" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hfcb70ba1g7328g5299gae21g486da0c04712" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="bef3c696-3f04-5b83-a8c5-14dfc5a354ae" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_ThornBlade" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_ThornBlade" />
                                     <attribute id="Type" type="FixedString" value="item" />
                                     <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
                                     <children>

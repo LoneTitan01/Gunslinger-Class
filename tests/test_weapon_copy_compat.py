@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 
 from validate_stats import read_stats
 from generate_jwl_compat import load_tiers
+from generate_mod_weapon_compat import MODS
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'GunslingerClass'
@@ -36,6 +37,10 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                 'EO_Infernal_Hellbeard_Halberd': 'WPN_GSL_Blunderbuss_Hellbeard',
                 'EO_Harpers_Harmonizing_Rapier': 'WPN_GSL_Flintlock_HarmonicDueller',
                 'EO_Ambusher_Shortsword': 'WPN_GSL_Flintlock_Ambusher',
+                'EO_BlightBringer_Shortbow': 'WPN_GSL_Flintlock_Blightbringer',
+                'EO_Blindside_Shortsword': 'WPN_GSL_Flintlock_RenderOfMindAndBody',
+                'EO_Fire_HeatOnWeaponDamage_Battleaxe': 'WPN_GSL_Musket_ThermodynamoAxe',
+                'EO_ThornBlade_Scimitar': 'WPN_GSL_Flintlock_ThornBlade',
             },
             'GunslingerClass_CL_WeaponCopiesCompat': {
                 'CL_WPN_MAG_HillGiant_Club': 'WPN_GSL_Flintlock_HillGiantStrength',
@@ -44,6 +49,10 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                 tier.source: tier.parent for tier in load_tiers()
             },
         }
+        for mod in MODS:
+            expected.setdefault(mod.folder, {}).update({
+                item.conversion.source: f'WPN_GSL_{item.conversion.kind}' for item in mod.weapons
+            })
         actual = {}
         for module in sorted((SOURCE / 'Mods').glob('*_WeaponCopiesCompat')):
             public = SOURCE / 'Public' / module.name
@@ -61,11 +70,13 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
         self.assertTrue(modules, 'Expected optional weapon-copy compatibility modules')
         original = combinations(MAIN / 'Stats' / 'Generated' / 'ItemCombos.txt')
         main_stats = read_stats([MAIN / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'])
-        original_templates = {
-            node.find("attribute[@id='MapKey']").get('value')
-            for node in ET.parse(MAIN / 'RootTemplates' / '_merged.lsx').findall(
-                ".//node[@id='GameObjects']"
-            )
+        main_nodes = ET.parse(MAIN / 'RootTemplates' / '_merged.lsx').findall(".//node[@id='GameObjects']")
+        original_templates = {node.find("attribute[@id='MapKey']").get('value') for node in main_nodes}
+        main_template_parents = {
+            node.find("attribute[@id='Name']").get('value'): node.find("attribute[@id='ParentTemplateId']").get('value')
+            for node in main_nodes
+            if node.find("attribute[@id='Name']") is not None
+            and node.find("attribute[@id='ParentTemplateId']") is not None
         }
         all_ids = set(main_stats)
         all_templates = set(original_templates)
@@ -99,7 +110,12 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                         base = f'WPN_GSL_{kind[1]}'
                         self.assertIn(weapon.parent, main_stats)
                         self.assertEqual(weapon.kind, 'Weapon')
-                        if module.name != 'GunslingerClass_JWL_WeaponCopiesCompat':
+                        # Mod-original firearms are built on the base firearm, like main conversions.
+                        built = weapon.parent == base
+                        if built:
+                            self.assertTrue({'Rarity', 'DefaultBoosts', 'DisplayName', 'Description'} <= set(weapon.fields))
+                            self.assertNotEqual(weapon.fields['Rarity'], 'Legendary')
+                        elif module.name != 'GunslingerClass_JWL_WeaponCopiesCompat':
                             self.assertEqual(set(weapon.fields), {'RootTemplate'})
                         else:
                             self.assertIn('Rarity', weapon.fields)
@@ -112,7 +128,8 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                         self.assertEqual(by_stat[name]['Name'], name)
                         self.assertEqual(by_stat[name]['Type'], 'item')
                         self.assertEqual(
-                            by_stat[name]['ParentTemplateId'], main_stats[weapon.parent].fields['RootTemplate']
+                            by_stat[name]['ParentTemplateId'],
+                            main_template_parents[base] if built else main_stats[weapon.parent].fields['RootTemplate'],
                         )
                         assembly_results = [
                             (key, value) for key, value in recipes.items()
@@ -132,13 +149,14 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
                         )
                         self.assertEqual(result['ResultAmount 1'], '1')
                         self.assertEqual(result['PreviewStatsID'], name)
-                        original_result = next(
-                            key for key, value in original.items()
-                            if value.get('Result 1') == weapon.parent
-                        )
-                        original_assembly = original[original_result.removesuffix('_1')]
-                        self.assertEqual(original_assembly['Object 3'], base)
-                        self.assertNotEqual(assembly['Object 2'], original_assembly['Object 2'])
+                        if not built:
+                            original_result = next(
+                                key for key, value in original.items()
+                                if value.get('Result 1') == weapon.parent
+                            )
+                            original_assembly = original[original_result.removesuffix('_1')]
+                            self.assertEqual(original_assembly['Object 3'], base)
+                            self.assertNotEqual(assembly['Object 2'], original_assembly['Object 2'])
                         disassemblies = [
                             (key, value) for key, value in recipes.items()
                             if value.get('Object 1') == name
@@ -183,7 +201,7 @@ class WeaponCopyCompatibilityTests(unittest.TestCase):
 
         expected = schema(SOURCE / 'Mods' / 'GunslingerClass_5eSpellsCompat' / 'meta.lsx')
         metas = sorted((SOURCE / 'Mods').glob('*_WeaponCopiesCompat/meta.lsx'))
-        self.assertEqual(len(metas), 3)
+        self.assertEqual(len(metas), 4)
         for meta in metas:
             with self.subTest(meta=meta.parent.name):
                 self.assertEqual(schema(meta), expected)

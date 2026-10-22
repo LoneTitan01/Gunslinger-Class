@@ -34,6 +34,23 @@ local spellStats = {
         SpellRoll = "Attack(AttackType.RangedWeaponAttack)"},
     Projectile_OffhandAttack = {RequirementConditions = "", SpellProperties = "",
         SpellRoll = "Attack(AttackType.RangedOffHandWeaponAttack)"},
+    Projectile_MainHandAttack = {RequirementConditions = "",
+        SpellProperties = "GROUND:DealDamage(MainRangedWeapon);;CastOffhand[GROUND:DealDamage(OffhandRangedWeapon)]",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack);CastOffhand[Attack(AttackType.RangedOffHandWeaponAttack)]"},
+    Projectile_SneakAttack = {RequirementConditions = "", SpellType = "Projectile",
+        SpellProperties = "GROUND:DealDamage(MainRangedWeapon);;CastOffhand[GROUND:DealDamage(OffhandRangedWeapon)]",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack)"},
+    Projectile_HailOfThorns = {RequirementConditions = "", SpellProperties = "",
+        SpellRoll = "not SavingThrow(Ability.Dexterity, SourceSpellDC())",
+        SpellSuccess = "TARGET:IF(Attack(AttackType.RangedWeaponAttack)):DealDamage(MainRangedWeapon, MainRangedWeaponDamageType)"},
+    Zone_ConjureBarrage_Ranged = {RequirementConditions = "", SpellProperties = "", SpellType = "Zone",
+        SpellRoll = "not SavingThrow(Ability.Dexterity, SourceSpellDC())",
+        SpellSuccess = "DealDamage(2d8+MainRangedWeapon, MainRangedWeaponDamageType)"},
+    Projectile_ArrowOfFire = {RequirementConditions = "", SpellType = "Projectile",
+        SpellProperties = "GROUND:DealDamage(MainRangedWeapon);;CastOffhand[GROUND:DealDamage(OffhandRangedWeapon)]",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack);CastOffhand[Attack(AttackType.RangedOffHandWeaponAttack)]"},
+    Throw_ThrowRangedWeapon = {RequirementConditions = "", SpellProperties = "", SpellType = "Throw", SpellRoll = "",
+        SpellSuccess = "DealDamage(MainRangedWeapon, MainRangedWeaponDamageType)"},
     Zone_GSL_Scattershot = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Zone_GSL_Scattershot_PoisonMist = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Projectile_GSL_TwoGunTango_OffHand = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
@@ -253,11 +270,13 @@ local function brokenGuard(hand, character)
         (hand == "Off" and "RangedOffHand" or "RangedMainHand") .. "," .. character .. "))"
 end
 for name, spell in pairs(spellStats) do
-    local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack"
-    local condition = brokenGuard(offhand and "Off" or "Main", "context.Source")
-    assert(spell.RequirementConditions:find(condition, 1, true), name .. " must check the gun's Broken status")
-    local _, guards = spell.RequirementConditions:gsub(condition:gsub("(%W)", "%%%1"), "")
-    assert(guards == 1, "Stats reload must not duplicate Broken checks for " .. name)
+    if spell.SpellType ~= "Throw" then
+        local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack"
+        local condition = brokenGuard(offhand and "Off" or "Main", "context.Source")
+        assert(spell.RequirementConditions:find(condition, 1, true), name .. " must check the gun's Broken status")
+        local _, guards = spell.RequirementConditions:gsub(condition:gsub("(%W)", "%%%1"), "")
+        assert(guards == 1, "Stats reload must not duplicate Broken checks for " .. name)
+    end
 end
 for name, interrupt in pairs(interruptStats) do
     assert(interrupt.Conditions:find(brokenGuard("Main", "context.Observer"), 1, true),
@@ -280,6 +299,27 @@ assert(special.RequirementConditions:find("(not (", 1, true), "Ordinary bows mus
 assert(special.SpellProperties:find("OriginalPiercingEffect", 1, true))
 local _, specialCosts = special.SpellProperties:gsub("UseActionResource", "")
 assert(specialCosts == 3, "Native actions must not double-charge on stats reload")
+local sneak = spellStats.Projectile_SneakAttack.SpellProperties
+assert(sneak:find("^IF%(HasPassive%('GSL_%a+_MainHand'"),
+    "Inherited CastOffhand sections must not swallow a main-hand shot's ammo cost")
+local basic = spellStats.Projectile_MainHandAttack
+assert(basic.RequirementConditions:find("_MainHand'", 1, true) and not basic.RequirementConditions:find("_OffHand'", 1, true),
+    "Shots rolling both hands are gated on the main-hand gun")
+local defaultGroup, offGroup = basic.SpellProperties:match("^(.-)CastOffhand%[(.*)%]$")
+assert(defaultGroup:find("GunslingerMusketAmmo", 1, true) and not defaultGroup:find("GunslingerOffhandFlintlockAmmo", 1, true),
+    "Main-hand casts spend main-hand ammo")
+assert(offGroup:find("^IF%(HasPassive%('GSL_Flintlock_OffHand'.-GunslingerOffhandFlintlockAmmo"),
+    "Off-hand casts spend off-hand ammo inside their own section")
+local _, basicCosts = basic.SpellProperties:gsub("UseActionResource", "")
+assert(basicCosts == 4, "Mixed-hand shots must not be charged twice on stats reload")
+for _, name in ipairs({"Projectile_HailOfThorns", "Zone_ConjureBarrage_Ranged"}) do
+    assert(spellStats[name].SpellProperties:find("GunslingerMusketAmmo", 1, true), name .. " must spend a bullet")
+end
+assert(spellStats.Throw_ThrowRangedWeapon.SpellProperties == "", "Throwing a gun does not spend a bullet")
+local arrow = spellStats.Projectile_ArrowOfFire
+assert(not arrow.SpellProperties:find("UseActionResource", 1, true) and
+    not arrow.RequirementConditions:find("HasActionResource", 1, true),
+    "Special arrows are the ammunition fired and must not need or spend a bullet")
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")

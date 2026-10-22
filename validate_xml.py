@@ -16,10 +16,14 @@ if missing_paths:
     missing = ', '.join(str(path.relative_to(xml_files_root)) for path in missing_paths)
     raise SystemExit(f'Missing required mod files or directories: {missing}')
 
-if (main_module_root / 'Localization').exists():
+# Mods/GunslingerClass/Localization holds only book text keys (*.lsx); language strings live elsewhere.
+books_root = main_module_root / 'Localization'
+if books_root.exists() and any(
+    path.is_dir() or path.suffix != '.lsx' for path in books_root.iterdir()
+):
     raise SystemExit(
         'Localization must be under GunslingerClass/Localization/<Language>/, '
-        'not inside Mods/GunslingerClass/.'
+        'not inside Mods/GunslingerClass/ (which only holds book text .lsx files).'
     )
 
 xml_files = sorted(source_root.rglob('*.lsx')) + sorted(source_root.rglob('*.xml'))
@@ -91,7 +95,7 @@ if len(localized_handles) != len(set(localized_handles)):
 referenced_handles = {
     attribute.get('handle')
     for path, root in parsed_files.items()
-    if public_root in path.parents
+    if public_root in path.parents or books_root in path.parents
     for attribute in root.findall('.//attribute[@type="TranslatedString"]')
     if attribute.get('handle')
 }

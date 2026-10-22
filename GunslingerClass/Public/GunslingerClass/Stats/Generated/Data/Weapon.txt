@@ -1928,6 +1928,17 @@ data "BoostsOnEquipMainHand" "UnlockSpell(Shout_GSL_Reload_Flintlock);UnlockSpel
 data "DisplayName" "h1ce27a8fga120g567ag8210g64c72bae15c0;1"
 data "Description" "hbfd9ac7bgbc1eg5e2eg8b7fg66aaf95d43e8;1"
 
+new entry "WPN_GSL_Flintlock_ThornBlade"
+type "Weapon"
+using "WPN_GSL_Flintlock"
+data "RootTemplate" "bef3c696-3f04-5b83-a8c5-14dfc5a354ae"
+data "Rarity" "Rare"
+data "DefaultBoosts" "WeaponEnchantment(1);WeaponProperty(Magical)"
+data "BoostsOnEquipMainHand" "UnlockSpell(Shout_GSL_Reload_Flintlock);UnlockSpell(Projectile_GSL_EnsnaringShot_Flintlock);UnlockSpell(Shout_GSL_Repair_Main)"
+data "PassivesOnEquip" "GSL_Firearm_Misfire_Passive;GSL_Base_ThornBlade"
+data "DisplayName" "hfcb70ba1g7328g5299gae21g486da0c04712;1"
+data "Description" "ha92da356gcb71g5f33gb2a5g7a475d482a16;1"
+
 new entry "WPN_GSL_Musket_ThermodynamoAxe"
 type "Weapon"
 using "WPN_GSL_Musket"

@@ -45,9 +45,9 @@ class PrerequisiteBaseConversionTests(unittest.TestCase):
                 self.assertEqual(path.read_text(encoding='utf-8-sig'), content)
 
     def test_all_prerequisite_conversions_have_unique_ids_and_firearm_parents(self) -> None:
-        self.assertEqual(len(CONVERSIONS), 20)
-        self.assertEqual(len({conversion.source for conversion in CONVERSIONS}), 20)
-        self.assertEqual(len({conversion.name for conversion in CONVERSIONS}), 20)
+        self.assertEqual(len(CONVERSIONS), 21)
+        self.assertEqual(len({conversion.source for conversion in CONVERSIONS}), 21)
+        self.assertEqual(len({conversion.name for conversion in CONVERSIONS}), 21)
         for conversion in CONVERSIONS:
             with self.subTest(conversion=conversion.label):
                 stat = self.weapons[conversion.name]
@@ -112,6 +112,7 @@ class PrerequisiteBaseConversionTests(unittest.TestCase):
             'WPN_GSL_Blunderbuss_ReturningPike': 'GSL_Firearm_Misfire_Passive',
             'WPN_GSL_Flintlock_Stillmaker': 'Target_MAG_Bhaalist_Hold_Person',
             'WPN_GSL_Flintlock_TheDancingBreeze': 'Zone_GSL_WhirlwindShot_Flintlock',
+            'WPN_GSL_Flintlock_ThornBlade': 'Projectile_GSL_EnsnaringShot_Flintlock',
             'WPN_GSL_Musket_ThermodynamoAxe': 'MAG_Fire_HeatOnWeaponDamage_Passive',
             'WPN_GSL_Flintlock_ViciousShortbow': 'GSL_Base_ViciousCritical',
             'WPN_GSL_Flintlock_ViciousShortsword': 'GSL_Base_ViciousCritical',

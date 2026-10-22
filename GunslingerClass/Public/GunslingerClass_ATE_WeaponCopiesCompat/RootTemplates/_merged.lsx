@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="0" revision="9" build="331"/>
+    <region id="Templates">
+        <node id="Templates">
+            <children>
+                <!-- BEGIN GENERATED MOD WEAPON CONVERSIONS -->
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h09ab531cg12c4g502cg92f3g7caab2dd0627" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="ha6e95f57g8973g527egadbagb542079dbc7b" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="b7c1ed0b-9a4c-574f-a58b-afc02e65f4ff" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_TricksterDagger_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_TricksterDagger_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h8b1a582bg34efg5bbag950dge9048963b30a" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h356fe32fg3c04g57bcg8cf4g39354a3b9d77" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="17020a49-d3f9-57dd-a827-18f6f1fdd69f" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_ScimitarOfFlowingWaters_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_ScimitarOfFlowingWaters_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h74a40495g4623g5283g8f30g13beb8813bb0" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="ha90a20fcg6bd4g55a5g825bgc5a78f7b2021" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="375b5d07-7aec-59a3-a18e-67fa9236cd13" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_GnomishTinkererCrossbow_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_GnomishTinkererCrossbow_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hb3072593g5169g5247g8736gcb7458258683" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h5d02a7cfg8b05g5999g8366g089c696371ec" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="6abbe875-088b-53c5-b76d-aaf81aec3194" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_DexterousFlail_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_DexterousFlail_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h80a3e53egbcdcg5704ga0f6g152287816cc7" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h240e7318g11b7g533bgaa34gb54d8cf15c96" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="2bdc3c62-ea3f-5c59-90d5-f1808086a73c" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_SilverSwordOfTheComet_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_SilverSwordOfTheComet_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h3a35ff15g5af8g56e5g82bdgc1119e1424d3" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h8ed7184cgb3eag58c9ga49cg7c848e923e4f" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="f4edf4d2-6729-5b3a-ac23-80a1329c140f" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_KaraTuranKatana_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_KaraTuranKatana_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h65bb281fgd93eg50e2gbe88g7abf4f209b48" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hcb66ce63g3171g5ed7g94bfg4150cf79b29f" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="6181d585-86c6-5f51-b988-f27a3d008a05" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_LancePike_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_LancePike_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hb00eb196g6affg5be3g96a8ge1b91a1d9cc5" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h25069cb7gc1b6g5aa1gb103gd7d9082b6958" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="6e78b37c-90f0-5ca7-bb35-5efc101f3bdf" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_IronvineShortbow_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_IronvineShortbow_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hdd08c5d7g8dd5g5b5fgb170geba71e2f38f7" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hdbd9c476g68a2g503dg9096g7ba7585556af" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="7fa48fbb-3fd4-5dad-be22-d62f9fb665ac" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_TheBreacher_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_TheBreacher_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h2aa46496g8ef1g5e24g9f96g66abdf9c49bc" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h20685e3eg5c53g50b1gbd3cgfd415a4a27c6" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="57eae479-3651-510e-b185-71c535b4c758" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_AxeOfStorms_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_AxeOfStorms_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h4e9e9a9cg1b35g5e5dg8af6g82dc1b4407a3" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h902a9cd9g7ad7g5052ga42cg41425e32dcf7" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="5d1644bf-89bf-5332-bcaa-771d7ac17c06" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_FirbolgGreataxe_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_FirbolgGreataxe_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h03ed7b56g2411g505fg95e0g99517eebe88e" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h9b1c47f0gc288g5caeg88fege26b451766ff" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="18115e4b-b1bd-5222-b598-fc5599c2984c" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_PhasmidLongbow_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_PhasmidLongbow_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hba30f9e7ge051g53bbgbe64g4c783df492a3" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hd8f7ccebge46fg5779g9e2cg1981b4e60467" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="9b5c62bf-8ae4-5ef5-8c78-b86f30eaf40d" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_BowOfTheThunderLord_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_BowOfTheThunderLord_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h3342cb87g0e0eg599fga1fdg4d15c708a578" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h87f2cebag4030g5443g85eeg649c31741924" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="c1d087c8-9431-59a9-b6a8-26ed223defef" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_DeathKnightsLongsword_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_DeathKnightsLongsword_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h1a3b4ca7g26c2g501fgada3g89c2595a2f22" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h5d146797g82c2g5da2g8cf6gf25da743445f" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="a483c626-f646-5209-993c-9edd152357e2" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_EnfeeblingRapier_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_EnfeeblingRapier_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hac21b688g5f04g5156gb9f1g67137f2afd4c" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h1b4ef19dgce5cg51dag993bg2e1ef5451713" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="ede69885-5627-59e4-a7f8-9f96b813fc3d" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_GishShortsword_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_GishShortsword_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hd8460bdbg5a98g54b3ga5fdg348b7408c5bf" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="he6dcffc2gb158g59c8gbd2dg93c05ef34159" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="729cfff6-24c8-5ebc-9a60-e52b79e6c469" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_HoarfrostBlade_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_HoarfrostBlade_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hb3c6f2f7g43d5g5b37ga4c4gbcec98f6fd4c" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h0adfc0c4gd409g5b65gb58eg2a865c8346ce" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="bdf3359d-c4d7-5170-a717-0f0f512ead9d" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_FireflyKeeperStaff_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_FireflyKeeperStaff_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h5997b072g33c2g5bdbg994aga7aa81b8aa63" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h94d64753ga419g5761g8331g22dd22634982" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="2673df16-1499-5ada-8b8c-92ba0ee05d72" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_StillWindStaff_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_StillWindStaff_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h486b2f70gc17bg514dg9162g339c683e2254" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="ha8100651g4e9bg56b2g8983g54eaeb202ac5" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="eace574e-165a-5b0a-890c-3c10f430ce54" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_SunCrystalStaff_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_SunCrystalStaff_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h3d4effedg91bag5adega428g1799bc6faeeb" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hb5f77acag7e8eg5bb4g8b19g50d80fa0e959" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="068ca34d-107f-54b2-9c11-bc95a287de25" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_TridentOfHealingWaters_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_TridentOfHealingWaters_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hdfeb5dbbgea9cg50a4g86adg3ddcee9632b4" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="h58090d01gc1b6g5c25gbb09g0e1e3d3e2a43" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="ff98ed12-f276-5bcf-8bbd-ef90ead5b934" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_GnomishWarPick_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_GnomishWarPick_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="h1115a0a7gafbag5064ga1a4ga41d60fbefa5" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hed8d2f78g38deg5916g8d63gaebf5dc4d5ff" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="16fbebae-f925-5de6-82dc-5d0816060d1f" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_AncientWarhammer_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_AncientWarhammer_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hc5a7d2bcg4a6eg5d03g953dga096ee68297e" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hed20fa4fg89b5g59b9g94efgb028860e20b2" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="55db4f99-7595-5f31-95c8-6cf01bc9dd02" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SickleOfSlicing_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SickleOfSlicing_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <node id="GameObjects">
+                                    <attribute id="Description" type="TranslatedString" handle="hfe2a242dg10efg5ea5g99b4g81ab9b454ddd" version="1" />
+                                    <attribute id="DisplayName" type="TranslatedString" handle="hcce90320ga22dg5de3gb2acg8fd1b3af03c5" version="1" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="Icon" type="FixedString" value="GSL_Musket" />
+                                    <attribute id="LevelName" type="FixedString" value="" />
+                                    <attribute id="MapKey" type="FixedString" value="d65eed53-49b5-5eaf-a37e-450c0641ac04" />
+                                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_ShadarKaiSpear_ATE" />
+                                    <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e" />
+                                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263" />
+                                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_ShadarKaiSpear_ATE" />
+                                    <attribute id="Type" type="FixedString" value="item" />
+                                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696" />
+                                    <children>
+                                        <node id="Tags">
+                                            <children>
+                                                <node id="Tag">
+                                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e" />
+                                                </node>
+                                            </children>
+                                        </node>
+                                    </children>
+                                </node>
+                                
+                <!-- END GENERATED MOD WEAPON CONVERSIONS -->
+            </children>
+        </node>
+    </region>
+</save>

@@ -25,7 +25,7 @@
                 <node id="ModuleInfo">
                     <attribute id="Author" type="LSString" value="Gunslinger Class Mod"/>
                     <attribute id="CharacterCreationLevelName" type="FixedString" value=""/>
-                    <attribute id="Description" type="LSString" value="Optional copied-weapon recipes for Encounters Overhaul. Requires GunslingerClass and EncountersOverhaul. Load after both and the optional EncountersOverhaul5eSpells add-on."/>
+                    <attribute id="Description" type="LSString" value="Optional copied-weapon recipes and mod-original firearm conversions for Encounters Overhaul. Requires GunslingerClass and EncountersOverhaul. Load after both and the optional EncountersOverhaul5eSpells add-on."/>
                     <attribute id="Folder" type="LSString" value="GunslingerClass_EO_WeaponCopiesCompat"/>
                     <attribute id="LobbyLevelName" type="FixedString" value=""/>
                     <attribute id="MD5" type="LSString" value=""/>

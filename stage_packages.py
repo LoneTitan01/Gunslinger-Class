@@ -2,21 +2,23 @@
 
 Main_Staging                                                  -> Packages/GunslingerClass.pak
 5e_Compat_Staging                                             -> Packages/GunslingerClass_5eSpellsCompat.pak
+Weapon_Compat_Staging/GunslingerClass_ATE_WeaponCopiesCompat  -> Packages/GunslingerClass_ATE_WeaponCopiesCompat.pak
 Weapon_Compat_Staging/GunslingerClass_CL_WeaponCopiesCompat   -> Packages/GunslingerClass_CL_WeaponCopiesCompat.pak
 Weapon_Compat_Staging/GunslingerClass_EO_WeaponCopiesCompat   -> Packages/GunslingerClass_EO_WeaponCopiesCompat.pak
 Weapon_Compat_Staging/GunslingerClass_JWL_WeaponCopiesCompat  -> Packages/GunslingerClass_JWL_WeaponCopiesCompat.pak
 
 Usage:
-    python stage_packages.py [--divine PATH_TO_Divine.exe] [--no-pack] [--skip-validation] [--no-weapon-compat]
+    python stage_packages.py [--divine PATH_TO_Divine.exe | --no-divine] [--no-pack] [--skip-validation] [--no-weapon-compat]
 
-Compatibility add-ons for Community Library, Encounters Overhaul, and JWL Soul
-Smithing are staged and built as well by default. Use --no-weapon-compat to omit them.
+Compatibility add-ons for Act Two Expansion, Community Library, Encounters
+Overhaul, and JWL Soul Smithing are staged and built as well by default. Use --no-weapon-compat to omit them.
 
-With --divine, localization is converted to .loca, Content banks, root
-templates, tags and MultiEffectInfos to .lsf, effect sources to .lsfx, and all staging folders are packed into Packages/*.pak
+By default the bundled examples/LSLib Divine Tool/Tools/Divine.exe is used
+(override with --divine): localization is converted to .loca, Content banks, root
+templates, tags, MultiEffectInfos and book text to .lsf, effect sources to .lsfx, and all staging folders are packed into Packages/*.pak
 and compressed into matching Packages/*.zip archives (unless --no-pack).
 Each ZIP contains only its PAK at the archive root; the original PAK is retained.
-Without --divine, the localization .xml and resource .lsx files are
+With --no-divine, the localization .xml and resource .lsx files are
 staged as-is and must be converted (.loca / .lsf / .lsfx) and packed with LSLib's
 ConverterApp.
 """
@@ -33,6 +35,7 @@ main_staging = repo_root / 'Main_Staging'
 compat_staging = repo_root / '5e_Compat_Staging'
 weapon_compat_staging = repo_root / 'Weapon_Compat_Staging'
 packages_dir = repo_root / 'Packages'
+default_divine = repo_root / 'examples' / 'LSLib Divine Tool' / 'Tools' / 'Divine.exe'
 packages = (
     (main_staging, 'GunslingerClass.pak'),
     (compat_staging, 'GunslingerClass_5eSpellsCompat.pak'),
@@ -55,6 +58,7 @@ tags_dir = Path('Public/GunslingerClass/Tags')
 multi_effect_infos_dir = Path('Public/GunslingerClass/MultiEffectInfos')
 effects_dir = Path('Public/GunslingerClass/Assets/Effects')
 gui_metadata = Path('Mods/GunslingerClass/GUI/metadata.lsx')
+books_dir = Path('Mods/GunslingerClass/Localization')
 
 
 def fail(message):
@@ -106,10 +110,10 @@ def converted_path(lsx):
 
 def stage_content_banks(divine):
     """Compile visual/effect banks, MultiEffectInfos, effect sources, GUI texture metadata,
-    item root templates and tags to LSF/LSFX."""
+    item root templates, tags and book text to LSF/LSFX."""
     banks = sorted(
         path
-        for directory in (content_dir, root_templates_dir, tags_dir, multi_effect_infos_dir, effects_dir)
+        for directory in (content_dir, root_templates_dir, tags_dir, multi_effect_infos_dir, effects_dir, books_dir)
         for path in (main_staging / directory).rglob('*.lsx')
     )
     gui_metadata_path = main_staging / gui_metadata
@@ -190,8 +194,21 @@ def pack(divine, extra_packages=()):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--divine', type=Path, help='Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip')
-    parser.add_argument('--no-pack', action='store_true', help='With --divine, convert and stage but do not create .pak or .zip files')
+    divine_group = parser.add_mutually_exclusive_group()
+    divine_group.add_argument(
+        '--divine',
+        type=Path,
+        default=default_divine,
+        help=f'Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip (default: {default_divine.relative_to(repo_root)})',
+    )
+    divine_group.add_argument(
+        '--no-divine',
+        dest='divine',
+        action='store_const',
+        const=None,
+        help='Do not use Divine.exe; stage unconverted files for manual conversion and packing',
+    )
+    parser.add_argument('--no-pack', action='store_true', help='Convert and stage with Divine.exe but do not create .pak or .zip files')
     parser.add_argument('--skip-validation', action='store_true', help='Do not run validate_xml.py first')
     parser.add_argument(
         '--weapon-compat',

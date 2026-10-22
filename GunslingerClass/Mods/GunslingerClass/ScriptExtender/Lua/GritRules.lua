@@ -11,6 +11,27 @@ Rules.Firearms = {
 }
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
 
+-- Craft spells apply these markers; the server creates ordinary items, since summoned ones vanish
+-- when their summoner dies or respecs.
+Rules.CraftTemplates = {
+    GSL_CRAFT_FLINTLOCK = "3d8b177d-89db-4826-8068-9f2d777faf04",
+    GSL_CRAFT_BLUNDERBUSS = "4a7854fd-718a-4a4e-b9db-3875b5788065",
+    GSL_CRAFT_MUSKET = "1da91e88-3f0e-4ccc-ac25-0bdf00426880",
+    GSL_CRAFT_ASSEMBLY_KIT = "4f9578e8-e638-447a-835b-cd7aa282d921",
+    GSL_CRAFT_DISASSEMBLY_KIT = "69a4dba2-7023-4f78-8509-dff4201821ad"
+}
+
+-- Gunsmith's notes describing each firearm's upgrade path, given the first time a character crafts that firearm.
+Rules.CraftNotes = {
+    GSL_CRAFT_FLINTLOCK = "9af6bb3b-0a2a-43ee-8513-f02e2a2b6132",
+    GSL_CRAFT_BLUNDERBUSS = "f0c60a0e-b975-4bed-bc4e-8cec8a8fc36e",
+    GSL_CRAFT_MUSKET = "17f36477-9a3b-450b-b6ee-81d52322ddff"
+}
+
+local tinkerHands = {MAIN = "Main", OFF = "Off"}
+local tinkerModes = {CAPACITY = "Capacity", DAMAGE = "Damage", RANGE = "Range", REMOVE = "Remove"}
+
+-- Tinkerer shout names encode the hand and modification applied by the server.
 function Rules.ParseTinkerer(spell)
     local hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Capacity)$")
     if not hand then hand, mode = spell:match("^Shout_GSL_Tinkerer_(%a+)(Damage)$") end
