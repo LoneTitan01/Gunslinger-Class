@@ -10,6 +10,7 @@ import re
 from uuid import UUID, uuid5
 
 from generate_base_conversions import Conversion, conversion_fields, replace_marked, template_for
+from gun_values import apply_values
 from validate_stats import read_stats
 
 ROOT = Path(__file__).resolve().parent
@@ -515,6 +516,7 @@ def render() -> dict[Path, str]:
         read = lambda path, default='': path.read_text(encoding='utf-8-sig') if path.exists() else default
         outputs[weapon_path] = marked(read(weapon_path), '\n'.join(weapons)) + '\n'
         outputs[combo_path] = marked(read(combo_path), '\n'.join(recipes)) + '\n'
+        outputs[weapon_path] = apply_values(outputs[weapon_path], outputs[combo_path])
 
         templates = read(root_path, EMPTY_TEMPLATES).replace('\r\n', '\n')
         templates = re.sub(

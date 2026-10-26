@@ -128,6 +128,18 @@ class PrerequisiteBaseConversionTests(unittest.TestCase):
                     behavior in inherited or behavior in passives or behavior in stat.fields.get('DefaultBoosts', ''),
                     f'{stat_name} is missing expected behavior {behavior}',
                 )
+        render = self.weapons['WPN_GSL_Flintlock_RenderOfMindAndBody'].fields
+        self.assertEqual(render['Rarity'], 'Uncommon')
+        self.assertIn('IF(HasAdvantage() and not HasDisadvantage()):WeaponDamage(1d8,Psychic)', render['DefaultBoosts'])
+        render_passive = read_stats([
+            PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerBaseConversionPassives.txt',
+        ])['GSL_Base_RenderMindAndBody']
+        # Inherits the base passive's tooltip text; its own trigger is cleared so
+        # only the weapon's DefaultBoosts deal the Psychic damage.
+        self.assertEqual(render_passive.parent, 'MAG_Blindside_Shortsword_Passive')
+        self.assertEqual(render_passive.fields['StatsFunctors'], '')
+        self.assertEqual(render_passive.fields['Conditions'], '')
+        self.assertNotIn('Boosts', render_passive.fields)
         returning_pike = self.weapons['WPN_GSL_Blunderbuss_ReturningPike']
         self.assertNotIn('MAG_HomingWeapon_Passive', returning_pike.fields.get('PassivesOnEquip', ''))
 

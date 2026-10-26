@@ -8,6 +8,7 @@ import re
 from uuid import UUID, uuid5
 import xml.etree.ElementTree as ET
 
+from gun_values import apply_values
 from validate_stats import StatEntry, read_stats
 
 ROOT = Path(__file__).resolve().parent
@@ -410,7 +411,7 @@ def render(root: Path = ROOT) -> dict[Path, str]:
     )
     return {
         localization_path: localization,
-        public / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt': '\n'.join(weapons),
+        public / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt': apply_values('\n'.join(weapons), '\n'.join(recipes)),
         public / 'Stats' / 'Generated' / 'ItemCombos.txt': '\n'.join(recipes),
         public / 'RootTemplates' / '_merged.lsx': (
             '<?xml version="1.0" encoding="UTF-8"?>\n'

@@ -2514,21 +2514,21 @@
                 <node id="GameObjects">
                     <attribute id="Description" type="TranslatedString" handle="h2000006fg0000g4000g8000g000000000002" version="1"/>
                     <attribute id="DisplayName" type="TranslatedString" handle="h2000006fg0000g4000g8000g000000000001" version="1"/>
-                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31"/>
-                    <attribute id="Icon" type="FixedString" value="GSL_Musket"/>
+                    <attribute id="EquipmentTypeID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235"/>
+                    <attribute id="Icon" type="FixedString" value="GSL_Flintlock"/>
                     <attribute id="LevelName" type="FixedString" value=""/>
                     <attribute id="MapKey" type="FixedString" value="1effd002-9afb-4dd5-add2-fbc78865795a"/>
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_SparkyPoints"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SparkyPoints"/>
                     <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e"/>
-                    <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263"/>
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_SparkyPoints"/>
+                    <attribute id="PhysicsTemplate" type="FixedString" value="0f5b541a-5aa4-56e3-b4b9-9426f6b6989b"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SparkyPoints"/>
                     <attribute id="Type" type="FixedString" value="item"/>
-                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="2b9c2780-1b92-5d5f-b458-642e05fdf72e"/>
                     <children>
                         <node id="Tags">
                             <children>
                                 <node id="Tag">
-                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e"/>
+                                    <attribute id="Object" type="guid" value="d4237481-5fe3-4120-9c9c-2c89b72b774d"/>
                                 </node>
                             </children>
                         </node>
@@ -2537,21 +2537,21 @@
                 <node id="GameObjects">
                     <attribute id="Description" type="TranslatedString" handle="h20000070g0000g4000g8000g000000000002" version="1"/>
                     <attribute id="DisplayName" type="TranslatedString" handle="h20000070g0000g4000g8000g000000000001" version="1"/>
-                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31"/>
-                    <attribute id="Icon" type="FixedString" value="GSL_Musket"/>
+                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac"/>
+                    <attribute id="Icon" type="FixedString" value="GSL_Blunderbuss"/>
                     <attribute id="LevelName" type="FixedString" value=""/>
                     <attribute id="MapKey" type="FixedString" value="7f7154ba-ef3e-45e5-81c8-006c67c28ca3"/>
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_Spellsparkler"/>
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_Spellsparkler"/>
                     <attribute id="ParentTemplateId" type="FixedString" value="f44c9c6f-bc71-42ad-9cad-2dae306e750e"/>
                     <attribute id="PhysicsTemplate" type="FixedString" value="792ace2b-cadf-6248-0a85-9953e3595263"/>
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_Spellsparkler"/>
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_Spellsparkler"/>
                     <attribute id="Type" type="FixedString" value="item"/>
-                    <attribute id="VisualTemplate" type="FixedString" value="5446e436-e03c-5a18-b2d4-5310bd08a696"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="e7ab00fd-e74b-5bef-8fcc-6ea066f0dd69"/>
                     <children>
                         <node id="Tags">
                             <children>
                                 <node id="Tag">
-                                    <attribute id="Object" type="guid" value="1690bd62-d0ff-4718-86f7-1f8dafabdd2e"/>
+                                    <attribute id="Object" type="guid" value="1c80c284-6155-4323-a98e-c08e901b1681"/>
                                 </node>
                             </children>
                         </node>

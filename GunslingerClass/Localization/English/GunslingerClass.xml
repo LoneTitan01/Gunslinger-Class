@@ -488,10 +488,10 @@
         <content contentuid="h2000006dg0000g4000g8000g000000000002" version="1">A +1 magical musket that deals an extra 1d4 Psychic damage.</content>
         <content contentuid="h2000006eg0000g4000g8000g000000000001" version="1">Pale Oak Musket</content>
         <content contentuid="h2000006eg0000g4000g8000g000000000002" version="1">A magical musket that cannot be Entangled by Faithwarden's Vines and lets you cast Faithwarden's Vines once per long rest.</content>
-        <content contentuid="h2000006fg0000g4000g8000g000000000001" version="1">The Sparky Points Musket</content>
-        <content contentuid="h2000006fg0000g4000g8000g000000000002" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
-        <content contentuid="h20000070g0000g4000g8000g000000000001" version="1">The Spellsparkler Musket</content>
-        <content contentuid="h20000070g0000g4000g8000g000000000002" version="1">A magical musket that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
+        <content contentuid="h2000006fg0000g4000g8000g000000000001" version="1">The Sparky Points Flintlock</content>
+        <content contentuid="h2000006fg0000g4000g8000g000000000002" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h20000070g0000g4000g8000g000000000001" version="1">The Spellsparkler Blunderbuss</content>
+        <content contentuid="h20000070g0000g4000g8000g000000000002" version="1">A magical blunderbuss that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
         <content contentuid="h20000071g0000g4000g8000g000000000001" version="1">Staff of Interruption Musket</content>
         <content contentuid="h20000071g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets you Counterspell (level 5) once per long rest.</content>
         <content contentuid="h20000072g0000g4000g8000g000000000001" version="1">Staff of the Emperor Musket</content>
@@ -501,7 +501,7 @@
         <content contentuid="h2000007eg0000g4000g8000g000000000001" version="1">Vicious Battleaxe Musket</content>
         <content contentuid="h2000007eg0000g4000g8000g000000000002" version="1">A +2 magical musket that deals 7 extra damage on a critical hit.</content>
         <content contentuid="h2000007fg0000g4000g8000g000000000001" version="1">The Joltshooter Musket</content>
-        <content contentuid="h2000007fg0000g4000g8000g000000000002" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h2000007fg0000g4000g8000g000000000002" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
         <content contentuid="h20000081g0000g4000g8000g000000000001" version="1">Dwarven Thrower Musket</content>
         <content contentuid="h20000081g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures.</content>
         <content contentuid="h20000082g0000g4000g8000g000000000001" version="1">Incandescent Staff Musket</content>
@@ -889,7 +889,7 @@
         <content contentuid="hbb7c583fg1495g5592gaf64g52c18760fa6a" version="1">Pelorsun Blade Flintlock</content>
         <content contentuid="h52395e54g9dbbg5e38gb955g33fd98d4a496" version="1">Shots deal +1d4 Radiant damage and gain Advantage against Undead.</content>
         <content contentuid="h9f63d23fgc9b4g5b16gbfa1gdc49ed3ba905" version="1">Render of Mind and Body Flintlock</content>
-        <content contentuid="h2235c4fcg59d8g5d32g9b69gd4107e43dac6" version="1">When attacking with Advantage, shots deal an additional 1d4 Psychic damage.</content>
+        <content contentuid="h2235c4fcg59d8g5d32g9b69gd4107e43dac6" version="1">When attacking with Advantage, shots deal an additional 1d8 Psychic damage.</content>
         <content contentuid="ha7cff8fdgfd7eg56c4gaf8bgf4f49a812094" version="1">Returning Pike Blunderbuss</content>
         <content contentuid="ha546a3f4g2dc0g5185ga75cg4c0b8b7084ce" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics.</content>
         <content contentuid="h8701f074g9914g525ag9184ge4f36da20b51" version="1">Stillmaker Flintlock</content>
@@ -1028,21 +1028,21 @@
         <content contentuid="h97c13ca7g17e9g56a7g85a3g6486f33bc807" version="1">A musket that grants +2 to spell attack rolls and spell save DC and lets you cast Melf's Acid Arrow at level 2 once per long rest.</content>
         <content contentuid="h04f40459gdf66g5bcag902dgd6baa6b07407" version="1">A musket that grants +3 to spell attack rolls and spell save DC and lets you cast Melf's Acid Arrow at level 2 once per long rest.</content>
         <content contentuid="hda3c8ac0g5137g5f79gb2c0g120c94c353ff" version="1">Grants Hold Person as a firearm action.</content>
-        <content contentuid="h0738946dg3785g5b1bga856g049764cfc6b5" version="1">When attacking with Advantage, shots deal an additional 1d4 Psychic damage.</content>
-        <content contentuid="h62298baeg373ag5333ga4eeg49540339d5e0" version="1">When attacking with Advantage, shots deal an additional 1d4 Psychic damage.</content>
-        <content contentuid="h8c65f62ege809g5db3ga233g3b78be61262a" version="1">When attacking with Advantage, shots deal an additional 1d4 Psychic damage.</content>
+        <content contentuid="h0738946dg3785g5b1bga856g049764cfc6b5" version="1">When attacking with Advantage, shots deal an additional 1d8 Psychic damage.</content>
+        <content contentuid="h62298baeg373ag5333ga4eeg49540339d5e0" version="1">When attacking with Advantage, shots deal an additional 1d8 Psychic damage.</content>
+        <content contentuid="h8c65f62ege809g5db3ga233g3b78be61262a" version="1">When attacking with Advantage, shots deal an additional 1d8 Psychic damage.</content>
         <content contentuid="hc80b9938gd831g58a1gae94g49c25ec5ce25" version="1">A +2 Flintlock that applies Bane on hits while it is bound or Pact-bound. While bound, it also gains +1 to attack and damage rolls.</content>
         <content contentuid="h27c89bd5g415fg54b0g9aaegb1224657ae10" version="1">A +3 Flintlock that applies Bane on hits while it is bound or Pact-bound. While bound, it also gains +1 to attack and damage rolls. Deals an extra 1d6 Lightning damage.</content>
         <content contentuid="h6292777dgbbfeg5234ga660gc5961960ecdb" version="1">Preserves the bonded weapon and proficiency-to-damage effects on firearm attacks.</content>
         <content contentuid="h07cdae5age15dg5ed3g91c7gd8934d7f1b9f" version="1">Preserves the bonded weapon and proficiency-to-damage effects on firearm attacks.</content>
         <content contentuid="h926a4753g4546g54e2g8a53g2abc98415481" version="1">A +2 magical musket that gains +1 to attack rolls and deals an extra 1d6 Lightning damage while bound or Pact-bound.</content>
         <content contentuid="hea33c358g1929g5c5fga8bag3064679914e8" version="1">A +3 magical musket that gains +1 to attack rolls and deals an extra 1d6 Lightning damage while bound or Pact-bound.</content>
-        <content contentuid="h9f9a35bbgc08eg57f6g86bcgdc77782f2894" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
-        <content contentuid="h9d22c6b2g4724g5039ga406ge9f670bac87c" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
-        <content contentuid="h5bd36a0fg773fg5d8fg863fg81574fc1c656" version="1">A magical musket that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
-        <content contentuid="h8e8171a2ge192g5c2dgaa69g12cb81af5857" version="1">A magical musket that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
-        <content contentuid="h7789a12ag3d1cg555bg9834gc80e0559a0d7" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
-        <content contentuid="h8d356014g0adcg5a6fga0a2g7dc671d57435" version="1">A magical musket whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h9f9a35bbgc08eg57f6g86bcgdc77782f2894" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h9d22c6b2g4724g5039ga406ge9f670bac87c" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="h88ab54ceg533dg5494g806eg6474d39568fa" version="1">A magical blunderbuss that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
+        <content contentuid="h65b7c1ffgdc42g55d6g807fgdf99a77e2339" version="1">A magical blunderbuss that grants 2 Lightning Charges when you deal damage with a spell or cantrip.</content>
+        <content contentuid="h5f2e09c1g8f5ag5633g8320g302afa5ba7c3" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
+        <content contentuid="hc15e6825gcad1g5fe1ga54cg2a8021f03ab2" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
         <content contentuid="h919fdacbgc03cg5ea8g861fg485174c0c55c" version="1">A +3 magical musket that deals an extra 1d4 Cold damage, adds 1 to Cold damage, and lets you cast Ray of Frost. Cold spell damage can Chill targets.</content>
         <content contentuid="h56acbab3gb2e0g5f43g917dg67c556e9c539" version="1">A +2 Blunderbuss that unlocks an extended-cone Scattershot.</content>
         <content contentuid="hce7bc1a8g9bafg586cga7a5g193674cc2078" version="1">A +3 Blunderbuss that unlocks an extended-cone Scattershot.</content>

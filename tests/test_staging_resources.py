@@ -207,7 +207,7 @@ class StagingResourceTests(unittest.TestCase):
                 patch.object(stage_packages, 'stage_content_banks', return_value=[]), \
                 patch.object(stage_packages, 'stage_weapon_compat', return_value=((), [])) as mock_compat, \
                 patch.object(stage_packages, 'print_tree'):
-            stage_packages.main(['--skip-validation', '--no-pack'])
+            stage_packages.main(['--no-divine', '--skip-validation', '--no-pack'])
             mock_compat.assert_called_once_with(None)
 
     def test_main_omits_weapon_compat_with_flag(self) -> None:

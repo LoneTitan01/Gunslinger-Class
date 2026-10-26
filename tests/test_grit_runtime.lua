@@ -80,6 +80,36 @@ for _, name in ipairs({"Projectile_GSL_DisarmingShot", "Projectile_GSL_RapidShot
     "Projectile_GSL_HotStreak_1", "Projectile_GSL_FanningFire_1", "Projectile_GSL_ViolentShot_1"}) do
     spellStats[name] = {RequirementConditions = "OriginalGritRequirement", SpellProperties = "", SpellRoll = ""}
 end
+-- Like the Script Extender, read SpellRoll back as {Default = ..., CastOffhand = ...} and functor fields as
+-- parsed functor groups (proxies that throw on unknown properties), never as stats text.
+local function proxy(fields)
+    return setmetatable(fields, {__index = function(_, key) error("Unknown property " .. tostring(key)) end})
+end
+local function functorGroups(text)
+    local functors = {}
+    for args in text:gmatch("DealDamage(%b())") do
+        local weapon, damageType = args:sub(2, -2):match("^%s*([^,]*),?%s*([^,]*)")
+        functors[#functors + 1] = proxy({TypeId = "DealDamage",
+            WeaponType = weapon:match("^%a+$") and weapon or "None",
+            WeaponDamageType = damageType ~= "" and damageType or "None"})
+    end
+    for name in text:gmatch("(%a+)%(") do
+        if name ~= "DealDamage" and name ~= "IF" and name ~= "Attack" then
+            functors[#functors + 1] = proxy({TypeId = name})
+        end
+    end
+    return {proxy({TextKey = "Default", Functors = functors})}
+end
+function asExtenderSpell(spell)
+    if type(spell.SpellRoll) == "string" then
+        local default, offhand = spell.SpellRoll:match("^(.-);?CastOffhand%[(.*)%]$")
+        spell.SpellRoll = spell.SpellRoll ~= "" and {Default = default or spell.SpellRoll, CastOffhand = offhand} or nil
+    end
+    for _, key in ipairs({"SpellProperties", "SpellSuccess"}) do
+        if type(spell[key]) == "string" then spell[key] = functorGroups(spell[key]) end
+    end
+    spell.SpellSuccess = spell.SpellSuccess or functorGroups("")
+end
 -- Like Osiris, resolve "<name>_<uuid>" object strings by their UUID.
 local function obj(id)
     return id and (id:match("%x%x%x%x%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%x%x%x%x%x%x%x%x$") or id)
@@ -114,7 +144,10 @@ Ext = {
             for name in pairs(kind == "Weapon" and weaponStats or spellStats) do names[#names + 1] = name end
             return names
         end,
-        Get = function(name) return spellStats[name] or interruptStats[name] or weaponStats[name] end,
+        Get = function(name)
+            if spellStats[name] then asExtenderSpell(spellStats[name]) end
+            return spellStats[name] or interruptStats[name] or weaponStats[name]
+        end,
         Sync = function() end
     },
     Osiris = {RegisterListener = function(name, arity, phase, callback)
@@ -241,7 +274,7 @@ end
 local function gun(id)
     entities[id] = {
         template = "3d8b177d-89db-4826-8068-9f2d777faf04",
-        Weapon = {WeaponRange = 13.5}, Value = {Rarity = 0},
+        Weapon = {WeaponRange = 13.5, WeaponProperties = 0x13}, Value = {Rarity = 0},
         Replicate = function(_, component) assert(component == "Weapon") end
     }
 end
@@ -309,37 +342,33 @@ events.StatsLoaded()
 assert(spellStats.Shout_GSL_BiteTheBullet.RequirementConditions == "" and
     spellStats.Target_GSL_FlashPowder.RequirementConditions == "",
     "Broken guns must not disable non-firearm grit abilities")
-assert(spellStats.Projectile_GSL_Bloodletting_Flintlock.SpellProperties == "", "Bloodletting must not be charged twice")
-local _, costs = spellStats.Zone_GSL_LineEmUp.SpellProperties:gsub("UseActionResource", "")
-assert(costs == 3, "A stats reload must not duplicate ammo costs")
-assert(spellStats.Zone_GSL_LineEmUp.SpellProperties:find("OriginalEffect", 1, true))
+for name, spell in pairs(spellStats) do
+    assert(type(spell.SpellProperties) ~= "string" and type(spell.SpellSuccess) ~= "string",
+        name .. ": SpellProperties/SpellSuccess cannot be read back as text, so they must not be rewritten")
+end
+local function readyChecks(name)
+    local _, count = spellStats[name].RequirementConditions:gsub("HasActionResource%('Gunslinger", "")
+    return count
+end
+assert(readyChecks("Projectile_GSL_Bloodletting_Flintlock") == 0, "Bloodletting pays its bullet through UseCosts")
+assert(readyChecks("Zone_GSL_LineEmUp") == 3, "A stats reload must not duplicate ammo requirements")
+assert(spellStats.Zone_GSL_LineEmUp.RequirementConditions:find("Character()", 1, true))
 local special = spellStats.Projectile_PiercingShot
 assert(special.RequirementConditions:find("OriginalRequirement", 1, true))
 assert(special.RequirementConditions:find("(not (", 1, true), "Ordinary bows must retain their normal requirements")
-assert(special.SpellProperties:find("OriginalPiercingEffect", 1, true))
-local _, specialCosts = special.SpellProperties:gsub("UseActionResource", "")
-assert(specialCosts == 3, "Native actions must not double-charge on stats reload")
-local sneak = spellStats.Projectile_SneakAttack.SpellProperties
-assert(sneak:find("^IF%(HasPassive%('GSL_%a+_MainHand'"),
-    "Inherited CastOffhand sections must not swallow a main-hand shot's ammo cost")
+assert(readyChecks("Projectile_PiercingShot") == 3, "Native actions must not duplicate ammo requirements on stats reload")
+assert(readyChecks("Projectile_SneakAttack") == 3, "The Sneak Attack action needs a loaded main-hand gun")
 local basic = spellStats.Projectile_MainHandAttack
 assert(basic.RequirementConditions:find("_MainHand'", 1, true) and not basic.RequirementConditions:find("_OffHand'", 1, true),
     "Shots rolling both hands are gated on the main-hand gun")
-local defaultGroup, offGroup = basic.SpellProperties:match("^(.-)CastOffhand%[(.*)%]$")
-assert(defaultGroup:find("GunslingerMusketAmmo", 1, true) and not defaultGroup:find("GunslingerOffhandFlintlockAmmo", 1, true),
-    "Main-hand casts spend main-hand ammo")
-assert(offGroup:find("^IF%(HasPassive%('GSL_Flintlock_OffHand'.-GunslingerOffhandFlintlockAmmo"),
-    "Off-hand casts spend off-hand ammo inside their own section")
-local _, basicCosts = basic.SpellProperties:gsub("UseActionResource", "")
-assert(basicCosts == 4, "Mixed-hand shots must not be charged twice on stats reload")
+assert(spellStats.Projectile_OffhandAttack.RequirementConditions:find("GunslingerOffhandFlintlockAmmo", 1, true),
+    "Off-hand shots need a loaded off-hand gun")
 for _, name in ipairs({"Projectile_HailOfThorns", "Zone_ConjureBarrage_Ranged"}) do
-    assert(spellStats[name].SpellProperties:find("GunslingerMusketAmmo", 1, true), name .. " must spend a bullet")
+    assert(readyChecks(name) == 3, name .. " fires the gun without an attack roll and needs a bullet")
 end
-assert(spellStats.Throw_ThrowRangedWeapon.SpellProperties == "", "Throwing a gun does not spend a bullet")
-local arrow = spellStats.Projectile_ArrowOfFire
-assert(not arrow.SpellProperties:find("UseActionResource", 1, true) and
-    not arrow.RequirementConditions:find("HasActionResource", 1, true),
-    "Special arrows are the ammunition fired and must not need or spend a bullet")
+assert(readyChecks("Throw_ThrowRangedWeapon") == 0, "Throwing a gun does not need a bullet")
+assert(not spellStats.Projectile_ArrowOfFire.RequirementConditions:find("HasActionResource", 1, true),
+    "Special arrows are the ammunition fired and must not need a bullet")
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
@@ -363,6 +392,35 @@ end
 local function cast(spell, action)
     castAs("alice", spell, action)
 end
+-- Native ranged actions spend one bullet from the gun that fires them, once per cast.
+local function bullets() return ammo("alice", "Main").Amount, ammo("alice", "Off").Amount end
+local function spent(spell, action)
+    local main, off = bullets()
+    cast(spell, action)
+    local newMain, newOff = bullets()
+    return main - newMain, off - newOff
+end
+ammo("alice", "Main").Amount, ammo("alice", "Off").Amount = 3, 3
+for _, name in ipairs({"Projectile_SneakAttack", "Projectile_PiercingShot", "Projectile_MainHandAttack",
+    "Projectile_HailOfThorns", "Zone_ConjureBarrage_Ranged", "Zone_GSL_LineEmUp", "Shout_GSL_HailOfLead"}) do
+    local main, off = spent(name, 900)
+    assert(main == 1 and off == 0, name .. " must spend one main-hand bullet")
+    ammo("alice", "Main").Amount = 3
+end
+local main, off = spent("Projectile_OffhandAttack", 901)
+assert(main == 0 and off == 1, "Off-hand native shots spend the off-hand gun's bullet")
+for _, name in ipairs({"Projectile_ArrowOfFire", "Throw_ThrowRangedWeapon", "Projectile_FireBolt",
+    "Projectile_GSL_Bloodletting_Flintlock"}) do
+    main, off = spent(name, 902)
+    assert(main == 0 and off == 0, name .. " must not spend an extra bullet")
+end
+assert(variables.Firearms.weapons.second.ammo == 2, "A native shot's spent bullet is saved to the physical gun")
+ammo("alice", "Main").Amount, ammo("alice", "Off").Amount = 0, 3
+main = spent("Projectile_SneakAttack", 903)
+assert(main == 0 and ammo("alice", "Main").Amount == 0, "An empty gun never goes below zero")
+ammo("alice", "Main").Amount, ammo("alice", "Off").Amount = 3, 3
+fire("CastedSpell", "after", "alice", "Shout_GSL_Reload_Flintlock", "", "", 904)
+assert(variables.Firearms.weapons.first.ammo == 3 and variables.Firearms.weapons.second.ammo == 3)
 cast("Shout_GSL_Tinkerer_MainCapacity", 1)
 assert(ammo("alice", "Main").MaxAmount == 6 and ammo("alice", "Main").Amount == 3)
 assert(ammo("alice", "Off").MaxAmount == 3, "Primary capacity must not modify the other gun")
@@ -716,8 +774,8 @@ assert(lastWordShots == 2, "Stale attackers from earlier ticks are ignored")
 Osi.RemoveStatus("alice", "GSL_LASTWORD_PENDING")
 Osi.UseSpell = useSpell
 for _, name in ipairs({"Zone_GSL_PiercingRound", "Shout_GSL_HailOfLead"}) do
-    local _, count = spellStats[name].SpellProperties:gsub("UseActionResource", "")
-    assert(count == 3, name .. " must spend main-hand ammunition")
+    local _, count = spellStats[name].RequirementConditions:gsub("HasActionResource%('Gunslinger", "")
+    assert(count == 3, name .. " must need main-hand ammunition")
     assert(spellStats[name].RequirementConditions:find(brokenGuard("Main", "context.Source"), 1, true))
 end
 local function shot(spell, action, ...)
@@ -806,17 +864,25 @@ entities.longarm.template = "1da91e88-3f0e-4ccc-ac25-0bdf00426880"
 inventory.carol["Ranged Main Weapon"] = "longarm"
 fire("Equipped", "after", "longarm", "carol")
 ticks()
-assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 0, "Longarm range needs the feat")
+local musketRange = variables.Firearms.weapons.longarm.baseRange
+assert(entities.longarm.Weapon.WeaponRange == musketRange, "Longarm range needs the feat")
+Osi.ApplyStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE", -1, 1, "carol")
 passives.carol = {GSL_Feat_LongarmSpecialist_Range = true}
 fire("TurnStarted", "after", "carol")
-assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 1, "Longarm Specialist extends musket range")
+assert(entities.longarm.Weapon.WeaponRange == musketRange + rules.LongarmRange,
+    "Longarm Specialist must extend the Weapon component so its extra range is not out of range")
+assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 0,
+    "The retired targeting status must be cleared so range is not counted twice")
+local aliceRanges = {first = entities.first.Weapon.WeaponRange, second = entities.second.Weapon.WeaponRange}
 passives.alice.GSL_Feat_LongarmSpecialist_Range = true
 fire("TurnStarted", "after", "alice")
-assert(Osi.HasActiveStatus("alice", "GSL_LONGARM_SPECIALIST_RANGE") == 0, "Longarm range is musket-only")
+assert(entities.first.Weapon.WeaponRange == aliceRanges.first and
+    entities.second.Weapon.WeaponRange == aliceRanges.second, "Longarm range is musket-only")
 inventory.carol["Ranged Main Weapon"] = nil
+fire("Unequipped", "before", "longarm", "carol")
 fire("Unequipped", "after", "longarm", "carol")
 ticks()
-assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 0, "Longarm range leaves with the musket")
+assert(entities.longarm.Weapon.WeaponRange == musketRange, "Longarm range leaves with the musket")
 inventory.carol["Ranged Main Weapon"] = "longarm"
 fire("Equipped", "after", "longarm", "carol")
 ticks()
@@ -858,7 +924,7 @@ assert(raised, "An ammo resource that never appears must still raise")
 entities.carol.ActionResources.Resources[rules.Firearms.Musket.resource] = musketAmmo
 passives.carol.GSL_Feat_LongarmSpecialist_Range = nil
 fire("TurnStarted", "after", "carol")
-assert(Osi.HasActiveStatus("carol", "GSL_LONGARM_SPECIALIST_RANGE") == 0,
+assert(entities.longarm.Weapon.WeaponRange == musketRange,
     "A failed refresh must not lock out every later refresh for that character")
 local luck = "GSL_Desperado_DesperadosLuckUnlock"
 local fortune = "GSL_Desperado_DesperadosFortuneUnlock"
@@ -1282,6 +1348,39 @@ for marker, template in pairs(rules.CraftTemplates) do
     end
     assert(Osi.HasActiveStatus("alice", marker) == 0, "Craft markers must not linger on the crafter")
 end
+-- Loading a save rebuilds the Lua state without always reloading stats, so StatsLoaded does not run again;
+-- native shots must still spend their bullet.
+dofile(root .. "BootstrapServer.lua")
+events.SessionLoaded()
+ticks()
+gun("reloaded")
+inventory.alice["Ranged Main Weapon"] = "reloaded"
+fire("Equipped", "after", "reloaded", "alice")
+ticks()
+ammo("alice", "Main").Amount = 3
+cast("Projectile_SneakAttack", 960)
+assert(ammo("alice", "Main").Amount == 2, "Sneak Attack must spend a bullet after a save load without StatsLoaded")
+cast("Projectile_ArrowOfFire", 961)
+assert(ammo("alice", "Main").Amount == 2, "Special arrows still spend no bullet after a save load")
+-- An empty gun loses the Ammunition weapon property, so vanilla WeaponTypes "Ammunition" actions are disabled.
+local function hasAmmunition(item) return entities[item].Weapon.WeaponProperties & 2 ~= 0 end
+ammo("alice", "Main").Amount = 1
+cast("Projectile_SneakAttack", 970)
+assert(ammo("alice", "Main").Amount == 0 and not hasAmmunition("reloaded"),
+    "An empty gun must not count as a weapon that fires ammunition")
+assert(entities.reloaded.Weapon.WeaponProperties == 0x11, "Only the Ammunition property is removed")
+fire("UsingSpell", "before", "alice", "Shout_GSL_Reload_Flintlock", "", "", 971)
+ammo("alice", "Main").Amount = 3
+fire("CastedSpell", "after", "alice", "Shout_GSL_Reload_Flintlock", "", "", 971)
+assert(hasAmmunition("reloaded"), "Reloading restores the Ammunition property")
+ammo("alice", "Main").Amount = 0
+fire("TurnStarted", "after", "alice")
+assert(not hasAmmunition("reloaded"))
+fire("Unequipped", "before", "reloaded", "alice")
+inventory.alice["Ranged Main Weapon"] = nil
+fire("Unequipped", "after", "reloaded", "alice")
+ticks()
+assert(hasAmmunition("reloaded"), "An unequipped gun gets its Ammunition property back")
 print("Dual-wield misfire correlation passed: 48 magical/non-magical, hand, shot and callback-order combinations")
 print("Fortune preview ownership passed: eligibility, ownership before confirmation, cancellation, confirmation, load cleanup, existing ownership, lost client and renewal")
 print("Removed All In cleanup passed: saved passive, native variant, dynamic container, ready marker and idempotence")

@@ -288,7 +288,8 @@ local function updateReloadCosts(character)
     status(character, "GSL_QUICK_FULL_RELOAD", bonus and Osi.HasPassive(character, "GSL_Feat_QuickReload_Marker") == 1)
 end
 
-local function applyItem(item, state)
+-- wielderRange is range the wielder adds to this gun (Longarm Specialist); callers without a wielder pass nothing.
+local function applyItem(item, state, wielderRange)
     status(item, "GSL_FIREARM_ITEM_MISFIRED", state.misfire and not state.broken)
     status(item, "GSL_FIREARM_ITEM_DESTROYED", state.broken)
     for slot in pairs(slots) do
@@ -314,9 +315,29 @@ local function applyItem(item, state)
     pcall(function()
         local weapon = entity.Weapon
         state.baseRange = state.baseRange or weapon.WeaponRange
-        local range = state.baseRange + Rules.RangeBonus(state)
+        local range = state.baseRange + Rules.RangeBonus(state) + (wielderRange or 0)
         if weapon.WeaponRange ~= range then
             weapon.WeaponRange = range
+            entity:Replicate("Weapon")
+        end
+    end)
+end
+
+-- WeaponFlags.Ammunition in the Weapon component's WeaponProperties bitmask.
+local AmmunitionFlag = 2
+
+-- Vanilla ranged actions (the basic ranged attack, Sneak Attack, Battle Master maneuvers, ...) have
+-- WeaponTypes "Ammunition", so the engine only offers them while the held weapon has that property.
+-- An empty gun drops it, so the game treats it as having no ranged weapon to fire until it is reloaded.
+-- Firearm shots and reloads have no WeaponTypes and are unaffected.
+local function setLoaded(item, loaded)
+    local entity = Ext.Entity.Get(item)
+    pcall(function()
+        local weapon = entity.Weapon
+        local flags = weapon.WeaponProperties
+        local has = flags & AmmunitionFlag ~= 0
+        if has ~= loaded then
+            weapon.WeaponProperties = loaded and (flags | AmmunitionFlag) or (flags & ~AmmunitionFlag)
             entity:Replicate("Weapon")
         end
     end)
@@ -370,11 +391,9 @@ local function refreshNow(character, restoreAmmo)
             status(character, "GSL_TINKERER_OFF_RANGE", rangeCount == 1)
             status(character, "GSL_TINKERER_OFF_RANGE_MASTER", rangeCount >= 2)
         else
-            -- Longarm Specialist's range is a spell-variant boost, so it is applied only while a musket is held.
-            status(character, "GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket" and
-                Osi.HasPassive(character, "GSL_Feat_LongarmSpecialist_Range") == 1)
             -- Main-hand targeting reads the Weapon component, which applyItem extends, so the old
             -- targeting statuses would count the bonus twice; clear them from older saves.
+            status(character, "GSL_LONGARM_SPECIALIST_RANGE", false)
             for gun in pairs(Rules.Firearms) do
                 status(character, "GSL_TINKERER_MAIN_RANGE_" .. gun:upper(), false)
                 status(character, "GSL_TINKERER_MAIN_RANGE_MASTER_" .. gun:upper(), false)
@@ -382,7 +401,10 @@ local function refreshNow(character, restoreAmmo)
         end
         local entry, entity
         if state then
-            applyItem(item, state)
+            -- Longarm Specialist extends the musket's Weapon component too, so its extra range is not "out of range".
+            local longarm = hand == "Main" and state.kind == "Musket" and
+                Osi.HasPassive(character, "GSL_Feat_LongarmSpecialist_Range") == 1
+            applyItem(item, state, longarm and Rules.LongarmRange or 0)
             entry, entity = resource(character, hand, state)
         end
         if state and not entry then
@@ -408,6 +430,7 @@ local function refreshNow(character, restoreAmmo)
                 state.ammo = amount
             end
         end
+        if entry then setLoaded(item, entry.Amount > 0) end
         local repairable = state and state.misfire and not state.broken
         local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
         status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
@@ -461,35 +484,95 @@ local function requireWorkingFirearm(stat, field, hand, character)
     end
 end
 
--- Returns whether a non-thrown spell fires the main-hand and/or off-hand ranged weapon. Besides the
--- attack roll, this catches shots whose attack sits in SpellSuccess (Hail of Thorns) or that deal ranged
--- weapon damage without one (Conjure Barrage).
-local function rangedShotHands(spell)
-    if spell.SpellType == "Throw" then return false, false end
-    local roll, effects = spell.SpellRoll, (spell.SpellSuccess or "") .. ";" .. spell.SpellProperties
-    local main = roll:find("AttackType.RangedWeaponAttack", 1, true) or
-        effects:find("AttackType.RangedWeaponAttack", 1, true) or
-        (roll == "" or roll:find("SavingThrow", 1, true)) and effects:find("MainRangedWeapon", 1, true)
-    local off = roll:find("AttackType.RangedOffHandWeaponAttack", 1, true) or
-        effects:find("AttackType.RangedOffHandWeaponAttack", 1, true)
-    return main ~= nil and main ~= false, off ~= nil and off ~= false
+-- The Script Extender returns SpellRoll as a table of groups ({Default = "...", CastOffhand = "..."}) and
+-- SpellProperties/SpellSuccess as parsed functors, never as their stats text. Writing a string still works.
+local function rollText(roll)
+    if type(roll) == "string" then return roll end
+    local parts = {}
+    for _, text in pairs(roll or {}) do parts[#parts + 1] = text end
+    return table.concat(parts, ";")
 end
 
--- Returns the requirement condition and ammo cost functors for a shot from the given hand.
-local function firearmShotCosts(hand)
-    local ready, equippedGun, costs = {}, {}, {}
+local function field(object, key)
+    local ok, value = pcall(function() return object[key] end)
+    return ok and value or nil
+end
+
+-- Returns whether any DealDamage in the functors uses the given weapon's damage (e.g. "MainRangedWeapon").
+local function dealsWeaponDamage(functors, weapon)
+    if type(functors) == "string" then return functors:find(weapon, 1, true) ~= nil end
+    local ok, found = pcall(function()
+        for _, group in pairs(functors or {}) do
+            for _, functor in pairs(field(group, "Functors") or {group}) do
+                if field(functor, "TypeId") == "DealDamage" and (field(functor, "WeaponType") == weapon or
+                    field(functor, "WeaponDamageType") == weapon .. "DamageType") then
+                    return true
+                end
+            end
+        end
+        return false
+    end)
+    return ok and found
+end
+
+-- Returns whether a non-thrown spell fires the main-hand and/or off-hand ranged weapon. Besides the
+-- attack roll, this catches saving-throw shots that deal ranged weapon damage (Hail of Thorns, Conjure Barrage).
+local function rangedShotHands(spell)
+    if spell.SpellType == "Throw" then return false, false end
+    local roll = rollText(spell.SpellRoll)
+    local main = roll:find("AttackType.RangedWeaponAttack", 1, true) ~= nil
+    local off = roll:find("AttackType.RangedOffHandWeaponAttack", 1, true) ~= nil
+    if not main and (roll == "" or roll:find("SavingThrow", 1, true)) then
+        main = dealsWeaponDamage(spell.SpellSuccess, "MainRangedWeapon") or
+            dealsWeaponDamage(spell.SpellProperties, "MainRangedWeapon")
+    end
+    return main, off
+end
+
+-- Returns the requirement condition for a shot from the given hand: a held gun must work and be loaded.
+local function firearmShotCondition(hand)
+    local ready, equippedGun = {}, {}
     for kind in pairs(Rules.Firearms) do
         if hand == "Main" or kind == "Flintlock" then
             local passive = "HasPassive('GSL_" .. kind .. (hand == "Off" and "_OffHand" or "_MainHand") .. "',context.Source)"
             local ammo = hand == "Off" and "GunslingerOffhandFlintlockAmmo" or "Gunslinger" .. kind .. "Ammo"
             equippedGun[#equippedGun + 1] = passive
             ready[#ready + 1] = "(" .. passive .. " and HasActionResource('" .. ammo .. "',1,0))"
-            costs[#costs + 1] = "IF(" .. passive .. "):UseActionResource(SELF," .. ammo .. ",1,0)"
         end
     end
-    local condition = "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
+    return "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
         workingFirearmCondition(hand, "context.Source") .. " and (" .. table.concat(ready, " or ") .. ")))"
-    return condition, table.concat(costs, ";")
+end
+
+local function addRequirement(spell, condition)
+    local previous = spell.RequirementConditions or ""
+    if previous:find(condition, 1, true) then return end
+    spell.RequirementConditions = (previous ~= "" and "(" .. previous .. ") and " or "") .. condition
+end
+
+-- Returns the hand whose gun a spell fires and whether the shot spends a bullet, or nil if it fires no gun.
+local function shotKind(name, spell)
+    if ammoSpells[name] then return "Main", true end
+    if name:find("GSL_", 1, true) then return nil end
+    local mainShot, offShot = rangedShotHands(spell)
+    if not (mainShot or offShot) then return nil end
+    -- Spells rolling both hands (e.g. Projectile_MainHandAttack) are main-hand shots; their CastOffhand[...]
+    -- section is the bundled dual-wield shot, which firearms disable. Special arrows (Projectile_ArrowOf*,
+    -- Barbed Arrow, Arrow of Many Targets' ricochets) are the ammunition fired, so they spend no bullet.
+    return mainShot and "Main" or "Off", not name:find("Arrow", 1, true)
+end
+
+-- Per-spell cache of the hand that pays a bullet (false: none). It is filled on first cast, not at
+-- StatsLoaded: Lua state is rebuilt on every save load, but the stats (and StatsLoaded) are not always reloaded.
+local shotSpells = {}
+local function bulletHand(name)
+    if shotSpells[name] == nil then
+        local spell = Ext.Stats.Get(name)
+        local hand, spends
+        if spell then hand, spends = shotKind(name, spell) end
+        shotSpells[name] = spends and hand or false
+    end
+    return shotSpells[name] or nil
 end
 
 Ext.Events.StatsLoaded:Subscribe(function()
@@ -520,41 +603,23 @@ Ext.Events.StatsLoaded:Subscribe(function()
             requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
             if ammoSpells[name] then
                 local ready = {}
-                local costs = {}
                 for kind in pairs(Rules.Firearms) do
                     local passive = "HasPassive('GSL_" .. kind .. "_MainHand',context.Source)"
                     ready[#ready + 1] = "(" .. passive .. " and HasActionResource('Gunslinger" .. kind .. "Ammo',1,0))"
-                    costs[#costs + 1] = "IF(" .. passive .. "):UseActionResource(SELF,Gunslinger" .. kind .. "Ammo,1,0)"
                 end
-                if not spell.SpellProperties:find("UseActionResource(SELF,Gunslinger", 1, true) then
-                    spell.RequirementConditions = "(" .. spell.RequirementConditions .. ") and (" .. table.concat(ready, " or ") .. ")"
-                    spell.SpellProperties = (spell.SpellProperties ~= "" and spell.SpellProperties .. ";" or "") .. table.concat(costs, ";")
-                end
+                addRequirement(spell, "(" .. table.concat(ready, " or ") .. ")")
             end
             Ext.Stats.Sync(name)
-        end
-        local mainShot, offShot = rangedShotHands(spell)
-        -- Special arrows (Projectile_ArrowOf*, Barbed Arrow, Arrow of Many Targets' ricochets) are the
-        -- ammunition fired, so they only need a working gun, not a loaded bullet.
-        if not name:find("GSL_", 1, true) and (mainShot or offShot) and name:find("Arrow", 1, true) then
-            requireWorkingFirearm(spell, "RequirementConditions", mainShot and "Main" or "Off", "context.Source")
-            Ext.Stats.Sync(name)
-        elseif not name:find("GSL_", 1, true) and (mainShot or offShot) and
-            not spell.SpellProperties:find("UseActionResource(SELF,Gunslinger", 1, true) then
-            -- Spells rolling both hands (e.g. Projectile_MainHandAttack) are main-hand shots whose
-            -- CastOffhand[...] section only runs when cast from the off hand.
-            local hand = mainShot and "Main" or "Off"
-            local condition, costs = firearmShotCosts(hand)
-            spell.RequirementConditions = (spell.RequirementConditions ~= "" and "(" .. spell.RequirementConditions .. ") and " or "") .. condition
-            local properties = spell.SpellProperties
-            if mainShot and offShot then
-                local _, offCosts = firearmShotCosts("Off")
-                properties = properties:gsub("CastOffhand%[", function() return "CastOffhand[" .. offCosts .. ";" end, 1)
+        elseif not name:find("GSL_", 1, true) then
+            local hand, spends = shotKind(name, spell)
+            if hand then
+                if spends then
+                    addRequirement(spell, firearmShotCondition(hand))
+                else
+                    requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
+                end
+                Ext.Stats.Sync(name)
             end
-            -- Prepended so the cost lands in the default group, not after an inherited CastOffhand[...] section
-            -- (e.g. Projectile_SneakAttack inherits Projectile_MainHandAttack's properties).
-            spell.SpellProperties = costs .. (properties ~= "" and ";" .. properties or "")
-            Ext.Stats.Sync(name)
         end
     end
     for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
@@ -602,6 +667,21 @@ local function cheatDeathsOdds(character, spell)
     end
 end
 
+-- Native ranged actions (Sneak Attack, Battle Master maneuvers, ...) and the area shots in ammoSpells spend
+-- one bullet per cast. Their stats cannot carry the cost because SpellProperties can't be read back as text
+-- to extend it; their RequirementConditions still keep them unavailable at 0 ammo or with a broken gun.
+local function spendShot(character, spell)
+    local hand = bulletHand(spell)
+    local item = hand and equipped(character, hand)
+    local state = item and database().weapons[item]
+    if not state or state.broken then return end
+    local entry, entity = resource(character, hand, state)
+    if entry and entry.Amount > 0 then
+        entry.Amount = entry.Amount - 1
+        entity:Replicate("ActionResources")
+    end
+end
+
 Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell, _, _, action)
     local cast = casts[character]
     if cast and cast.spell == spell and cast.action == action then
@@ -637,6 +717,7 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
         cheatDeathsOdds(character, spell)
         casts[character] = nil
     end
+    spendShot(character, spell)
     if database().owners[character] then
         snapshot(character)
         refresh(character, false)
@@ -771,7 +852,11 @@ Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(item, character)
         end
     end
     local state = database().weapons[item]
-    if state then applyItem(item, state) end
+    -- A gun that leaves the hand gets its Ammunition property back, so it is never stuck "empty" elsewhere.
+    if state then
+        applyItem(item, state)
+        setLoaded(item, true)
+    end
 end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
     if database().owners[character] then pendingRefresh[character] = 2 end
@@ -883,7 +968,10 @@ Ext.Osiris.RegisterListener("LongRestFinished", 0, "after", function()
     local data = database()
     for item, state in pairs(data.weapons) do
         Rules.LongRest(state)
-        if Ext.Entity.Get(item) then applyItem(item, state) end
+        if Ext.Entity.Get(item) then
+            applyItem(item, state)
+            setLoaded(item, true)
+        end
     end
     save(data)
     for character in pairs(data.owners) do
