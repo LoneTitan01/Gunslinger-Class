@@ -642,6 +642,45 @@ class CraftingRecipeTests(unittest.TestCase):
             'RegainHitPoints(1d6)',
         )
 
+    def test_spark_weapons_use_their_assigned_firearms(self) -> None:
+        combinations = PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt'
+        weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
+        templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx').findall(
+            ".//node[@id='GameObjects']"
+        )
+        recipes = (
+            ('SparkyPoints', 'MAG_ChargedLightning_Trident', 'Flintlock'),
+            ('Joltshooter', 'MAG_ChargedLightning_Longbow', 'Musket'),
+            ('Spellsparkler', 'MAG_ChargedLightning_Quarterstaff', 'Blunderbuss'),
+        )
+        for name, source_weapon, kind in recipes:
+            with self.subTest(name=name):
+                base = f'WPN_GSL_{kind}'
+                crafted = f'{base}_{name}'
+                assembly = read_entry(combinations, 'ItemCombination', f'GSL_Assembly_{kind}_{name}')
+                self.assertEqual(
+                    [assembly[f'Object {slot}'] for slot in range(1, 4)],
+                    ['OBJ_GSL_AssemblyKit', source_weapon, base],
+                )
+                result = read_entry(combinations, 'ItemCombinationResult', f'GSL_Assembly_{kind}_{name}_1')
+                self.assertEqual(result['Result 1'], crafted)
+                disassembly = read_entry(
+                    combinations, 'ItemCombinationResult', f'GSL_Disassembly_{kind}_{name}_1'
+                )
+                self.assertEqual([disassembly['Result 1'], disassembly['Result 2']], [base, source_weapon])
+
+                fused = read_entry(weapon_stats, 'entry', crafted)
+                self.assertEqual(fused['using'], base)
+                template = next(
+                    node for node in templates
+                    if node.find("attribute[@id='Name']").get('value') == crafted
+                )
+                self.assertEqual(fused['RootTemplate'], template.find("attribute[@id='MapKey']").get('value'))
+                self.assertEqual(template.find("attribute[@id='Icon']").get('value'), f'GSL_{kind}')
+            for other in ('Flintlock', 'Musket', 'Blunderbuss'):
+                if other != kind:
+                    self.assertNotIn(f'GSL_Assembly_{other}_{name}"', combinations.read_text(encoding='utf-8-sig'))
+
     def test_musket_action_recipes_are_reversible(self) -> None:
         combinations = PUBLIC / 'Stats' / 'Generated' / 'ItemCombos.txt'
         recipes = (
@@ -681,8 +720,6 @@ class CraftingRecipeTests(unittest.TestCase):
             ('HollowsStaff', 'MAG_HigherNecromancy_Staff', 'WPN_GSL_Musket_HollowsStaff'),
             ('KethericsWarhammer', 'MAG_Ketheric_Warhammer', 'WPN_GSL_Musket_KethericsWarhammer'),
             ('PaleOak', 'DEN_FaithwardenStaff', 'WPN_GSL_Musket_PaleOak'),
-            ('SparkyPoints', 'MAG_ChargedLightning_Trident', 'WPN_GSL_Musket_SparkyPoints'),
-            ('Spellsparkler', 'MAG_ChargedLightning_Quarterstaff', 'WPN_GSL_Musket_Spellsparkler'),
             ('StaffOfInterruption', 'MAG_LC_Counterspell_Quarterstaff', 'WPN_GSL_Musket_StaffOfInterruption'),
             ('StaffOfTheEmperor', 'END_Emperor_Staff', 'WPN_GSL_Musket_StaffOfTheEmperor'),
             ('SwordOfTheEmperor', 'LOW_Elfsong_EmperorSword_LongSword', 'WPN_GSL_Musket_SwordOfTheEmperor'),
@@ -910,7 +947,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         weapon_stats = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
 
-        sparky = read_entry(weapon_stats, 'entry', 'WPN_GSL_Musket_SparkyPoints')
+        sparky = read_entry(weapon_stats, 'entry', 'WPN_GSL_Flintlock_SparkyPoints')
         sparky_source = read_entry(source / 'Weapon.txt', 'entry', 'MAG_ChargedLightning_Trident')
         weapon_charge = read_entry(
             source / 'Passive.txt',
@@ -924,7 +961,7 @@ class CraftingRecipeTests(unittest.TestCase):
         self.assertIn('AttackedWithPassiveSourceWeapon()', weapon_charge['Conditions'])
         self.assertIn("ApplyStatus(SELF, MAG_CHARGED_LIGHTNING,100, 2)", weapon_charge['StatsFunctors'])
 
-        sparkler = read_entry(weapon_stats, 'entry', 'WPN_GSL_Musket_Spellsparkler')
+        sparkler = read_entry(weapon_stats, 'entry', 'WPN_GSL_Blunderbuss_Spellsparkler')
         sparkler_source = read_entry(
             source / 'Weapon.txt',
             'entry',

@@ -9,6 +9,7 @@ import re
 from uuid import UUID, uuid5
 import xml.etree.ElementTree as ET
 
+from gun_values import apply_values
 from validate_stats import read_stats
 
 ROOT = Path(__file__).resolve().parent
@@ -117,8 +118,9 @@ CONVERSIONS = (
         passives='MAG_LC_RadiantLight_Rapier_Passive;GSL_Base_Pelorsun',
     ),
     Conversion(
-        'Render of Mind and Body', 'MAG_Blindside_Shortsword', 'Flintlock', 'Rare', 1,
-        'When attacking with Advantage, shots deal an additional 1d4 Psychic damage.',
+        'Render of Mind and Body', 'MAG_Blindside_Shortsword', 'Flintlock', 'Uncommon', 1,
+        'When attacking with Advantage, shots deal an additional 1d8 Psychic damage.',
+        boosts='IF(HasAdvantage() and not HasDisadvantage()):WeaponDamage(1d8,Psychic)',
         passives='GSL_Base_RenderMindAndBody',
     ),
     Conversion(
@@ -182,11 +184,14 @@ CUSTOM_PASSIVES = {
     'GSL_Base_Pelorsun': {
         'Boosts': "IF(IsRangedWeaponAttack() and Tagged('UNDEAD')):Advantage(AttackRoll)",
     },
+    # Tooltip only: inherits the base shortsword passive's name and text with its
+    # trigger cleared. The damage comes from the weapon's DefaultBoosts, as in the
+    # base game's Honour data for this weapon.
     'GSL_Base_RenderMindAndBody': {
-        'Boosts': (
-            'IF(IsRangedWeaponAttack() and HasAdvantage() and not HasDisadvantage()):'
-            'DamageBonus(1d4,Psychic,false)'
-        ),
+        'using': 'MAG_Blindside_Shortsword_Passive',
+        'StatsFunctorContext': '',
+        'Conditions': '',
+        'StatsFunctors': '',
     },
     'GSL_Base_ThornBlade': {
         'Boosts': 'IF(IsRangedWeaponAttack() and IsConcentrating(context.Source)):DamageBonus(1d4,Poison,false)',
@@ -416,8 +421,9 @@ def render() -> dict[Path, str]:
 
     passive_path = PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerBaseConversionPassives.txt'
     passive_content = '\n\n'.join(
-        f'new entry "{name}"\ntype "PassiveData"\ndata "Icon" "GSL_ShootFlintlock"\n'
-        + ''.join(f'data "{key}" "{value}"\n' for key, value in fields.items())
+        f'new entry "{name}"\ntype "PassiveData"\n'
+        + (f'using "{fields["using"]}"\n' if 'using' in fields else 'data "Icon" "GSL_ShootFlintlock"\n')
+        + ''.join(f'data "{key}" "{value}"\n' for key, value in fields.items() if key != 'using')
         for name, fields in CUSTOM_PASSIVES.items()
     )
     passive_content = passive_content.rstrip() + '\n'
@@ -481,7 +487,7 @@ def render() -> dict[Path, str]:
     else:
         localization = replace_marked(localization, loc_begin, loc_end, '\n'.join(localized))
     return {
-        weapon_path: weapon_content,
+        weapon_path: apply_values(weapon_content, combo_content),
         combo_path: combo_content,
         root_path: root_content,
         localization_path: localization,

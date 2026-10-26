@@ -938,9 +938,13 @@ class GritDataTests(unittest.TestCase):
         self.assertEqual(fields['DescriptionParams'], 'Distance(6)')
         status = self.entries['GSL_LONGARM_SPECIALIST_RANGE']
         self.assertEqual(status.fields['StackId'], 'GSL_LONGARM_SPECIALIST_RANGE')
-        self.assertIn('ModifyTargetRadius(AdditiveFinal,6)', status.fields['Boosts'])
-        lua = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua' / 'BootstrapServer.lua').read_text()
-        self.assertIn('"GSL_LONGARM_SPECIALIST_RANGE", state and state.kind == "Musket"', lua)
+        # Targeting-only range leaves the extra distance "out of range", so the script extends the musket itself.
+        self.assertEqual(status.fields['Boosts'], '')
+        lua_dir = ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua'
+        self.assertIn('Rules.LongarmRange = 6', (lua_dir / 'GritRules.lua').read_text())
+        lua = (lua_dir / 'BootstrapServer.lua').read_text()
+        self.assertIn('status(character, "GSL_LONGARM_SPECIALIST_RANGE", false)', lua)
+        self.assertIn('longarm and Rules.LongarmRange or 0', lua)
 
     def test_feat_and_late_subclass_levels(self) -> None:
         rows = []
@@ -992,6 +996,7 @@ class GritDataTests(unittest.TestCase):
         spell = self.fields('Target_GSL_LockOn')
         self.assertEqual(spell['UseCosts'], 'BonusActionPoint:1')
         self.assertEqual(spell['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(spell['TargetRadius'], '36')  # 120 ft
         self.assertIn('IsConcentration', spell['SpellFlags'].split(';'))
         self.assertEqual(spell['ConcentrationSpellID'], 'Target_GSL_LockOn_Reapply')
         self.assertIn('ApplyStatus(GSL_LOCK_ON,100,-1)', spell['SpellProperties'])

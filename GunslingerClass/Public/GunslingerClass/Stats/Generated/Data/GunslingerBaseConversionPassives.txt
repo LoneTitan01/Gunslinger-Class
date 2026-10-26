@@ -18,8 +18,10 @@ data "Boosts" "IF(IsRangedWeaponAttack() and Tagged('UNDEAD')):Advantage(AttackR
 
 new entry "GSL_Base_RenderMindAndBody"
 type "PassiveData"
-data "Icon" "GSL_ShootFlintlock"
-data "Boosts" "IF(IsRangedWeaponAttack() and HasAdvantage() and not HasDisadvantage()):DamageBonus(1d4,Psychic,false)"
+using "MAG_Blindside_Shortsword_Passive"
+data "StatsFunctorContext" ""
+data "Conditions" ""
+data "StatsFunctors" ""
 
 
 new entry "GSL_Base_ThornBlade"

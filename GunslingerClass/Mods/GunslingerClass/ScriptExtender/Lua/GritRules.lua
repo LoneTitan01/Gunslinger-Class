@@ -72,6 +72,9 @@ function Rules.DamageDice(state)
     error("Unknown firearm kind: " .. tostring(state.kind))
 end
 
+-- Meters Longarm Specialist adds to a held musket.
+Rules.LongarmRange = 6
+
 function Rules.RangeBonus(state)
     local firearm = assert(Rules.Firearms[state.kind], "Unknown firearm kind")
     return firearm.rangeBonus * Rules.ModCount(state, "Range")

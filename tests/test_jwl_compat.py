@@ -158,6 +158,7 @@ class JwlCompatibilityTests(unittest.TestCase):
             render = fields('MAG_Blindside_Shortsword', number)
             self.assertIn('GSL_Base_RenderMindAndBody', render['PassivesOnEquip'])
             self.assertNotIn('WeaponDamage(1d4', render['DefaultBoosts'])
+            self.assertIn('IF(HasAdvantage() and not HasDisadvantage()):WeaponDamage(1d8,Psychic)', render['DefaultBoosts'])
         self.assertIn('MAG_AdvantageOnReactionAttack_Passive', fields('MAG_Infernal_Hellbeard_Halberd', 2)['PassivesOnEquip'])
         for base in ('FOR_IncompleteMasterwork_SussurDagger', 'FOR_IncompleteMasterwork_SussurGreatsword', 'FOR_IncompleteMasterwork_SussurSickle'):
             self.assertIn('15', fields(base, 2)['WeaponFunctors'])

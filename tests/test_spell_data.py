@@ -295,7 +295,8 @@ class SpellDataTests(unittest.TestCase):
         self.assertIn('RemoveOnLongRest', self.entries['GSL_FIREARM_ITEM_MISFIRED'].fields['StatusPropertyFlags'])
         # The engine marks the gun itself; the script only reconciles repair/break/long rest.
         functors = self.entries['GSL_Firearm_Misfire_Passive'].fields['StatsFunctors']
-        self.assertTrue(functors.startswith('ApplyStatus(SELF,GSL_MISFIRE,100,-1);'))
+        self.assertTrue(functors.startswith('IF(not IsOffHandAttack()):ApplyStatus(SELF,GSL_MISFIRE,100,-1);'
+                                            'IF(IsOffHandAttack()):ApplyStatus(SELF,GSL_MISFIRE_OFF,100,-1);'))
         for slot, hand in (('RangedMainHand', 'not IsOffHandAttack()'), ('RangedOffHand', 'IsOffHandAttack()')):
             item = f'GetItemInEquipmentSlot(EquipmentSlot.{slot},context.Source)'
             self.assertIn(f"IF({hand} and not HasStatus('GSL_FIREARM_ITEM_MISFIRED',{item}) and "

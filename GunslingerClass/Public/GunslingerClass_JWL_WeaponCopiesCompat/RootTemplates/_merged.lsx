@@ -419,31 +419,31 @@
                     <attribute id="Type" type="FixedString" value="item" />
                 </node>
                 <node id="GameObjects">
-                    <attribute id="MapKey" type="FixedString" value="199976b2-ef81-50b3-8ee3-3b6f1605605b" />
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_Spellsparkler_JWL_UP1" />
+                    <attribute id="MapKey" type="FixedString" value="dcf313de-2b6c-52ee-9677-b4320abd3bd3" />
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_Spellsparkler_JWL_UP1" />
                     <attribute id="ParentTemplateId" type="FixedString" value="7f7154ba-ef3e-45e5-81c8-006c67c28ca3" />
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_Spellsparkler_JWL_UP1" />
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_Spellsparkler_JWL_UP1" />
                     <attribute id="Type" type="FixedString" value="item" />
                 </node>
                 <node id="GameObjects">
-                    <attribute id="MapKey" type="FixedString" value="47e7eb98-5bd3-5eb2-810d-10556c368ce4" />
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_Spellsparkler_JWL_UP2" />
+                    <attribute id="MapKey" type="FixedString" value="90776ecb-86fe-5e4d-a4b3-1bf31197d5c8" />
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Blunderbuss_Spellsparkler_JWL_UP2" />
                     <attribute id="ParentTemplateId" type="FixedString" value="7f7154ba-ef3e-45e5-81c8-006c67c28ca3" />
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_Spellsparkler_JWL_UP2" />
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Blunderbuss_Spellsparkler_JWL_UP2" />
                     <attribute id="Type" type="FixedString" value="item" />
                 </node>
                 <node id="GameObjects">
-                    <attribute id="MapKey" type="FixedString" value="cdd0047f-51b4-5b3d-8f18-ec7f14aac438" />
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_SparkyPoints_JWL_UP1" />
+                    <attribute id="MapKey" type="FixedString" value="85746ac9-385f-5ef3-9eec-cf9bbd24caa9" />
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SparkyPoints_JWL_UP1" />
                     <attribute id="ParentTemplateId" type="FixedString" value="1effd002-9afb-4dd5-add2-fbc78865795a" />
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_SparkyPoints_JWL_UP1" />
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SparkyPoints_JWL_UP1" />
                     <attribute id="Type" type="FixedString" value="item" />
                 </node>
                 <node id="GameObjects">
-                    <attribute id="MapKey" type="FixedString" value="423331a7-60fa-5097-abf8-019ceaceede7" />
-                    <attribute id="Name" type="LSString" value="WPN_GSL_Musket_SparkyPoints_JWL_UP2" />
+                    <attribute id="MapKey" type="FixedString" value="10ac0717-691d-524c-a5fb-a71e43947e75" />
+                    <attribute id="Name" type="LSString" value="WPN_GSL_Flintlock_SparkyPoints_JWL_UP2" />
                     <attribute id="ParentTemplateId" type="FixedString" value="1effd002-9afb-4dd5-add2-fbc78865795a" />
-                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Musket_SparkyPoints_JWL_UP2" />
+                    <attribute id="Stats" type="FixedString" value="WPN_GSL_Flintlock_SparkyPoints_JWL_UP2" />
                     <attribute id="Type" type="FixedString" value="item" />
                 </node>
                 <node id="GameObjects">
