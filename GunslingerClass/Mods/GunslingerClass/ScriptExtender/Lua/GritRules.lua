@@ -3,12 +3,24 @@ local Rules = {}
 Rules.ModuleUUID = "27bc37d3-66c2-436d-8d69-f7407a1e676e"
 Rules.Firearms = {
     Flintlock = {capacity = 3, dice = "2d4", rangeBonus = 6,
-        resource = "c4aa9fee-c3c7-4730-bb2b-6f5b4617967e"},
+        resource = "c4aa9fee-c3c7-4730-bb2b-6f5b4617967e", shotSound = "Projectiles_Grn_Impact_Bomb"},
     Blunderbuss = {capacity = 2, dice = "1d12", rangeBonus = 3,
-        resource = "7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391"},
+        resource = "7ca831c6-8a2b-4d1e-a9dd-f46fabb4f391", shotSound = "Gale_Explosion_Boom"},
     Musket = {capacity = 1, dice = "1d10", rangeBonus = 12,
-        resource = "6c4658a0-74d6-4bec-851f-d91ee914484d"}
+        resource = "6c4658a0-74d6-4bec-851f-d91ee914484d", shotSound = "Projectiles_Grn_Impact_Bomb"}
 }
+
+-- A firing spell's CastSound is the gunshot of the gun it fires; shared grit shots need the equipped gun's.
+function Rules.ShotSound(current, kind)
+    local firearm = kind and Rules.Firearms[kind]
+    if not firearm then return nil end
+    for _, gun in pairs(Rules.Firearms) do
+        if gun.shotSound == current then
+            return firearm.shotSound ~= current and firearm.shotSound or nil
+        end
+    end
+    return nil
+end
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
 -- Craft spells apply these markers; the server creates ordinary items, since summoned ones vanish
 -- when their summoner dies or respecs.

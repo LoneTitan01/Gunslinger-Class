@@ -360,18 +360,6 @@ data "StackId" "GSL_INFUSED_ROUNDS_UNSTABLE"
 data "Passives" "GSL_InfusedRounds_UnstableBackfire"
 data "StatusPropertyFlags" "DisableOverhead"
 
-new entry "GSL_FIREARM_SHOT_SOUND"
-type "StatusData"
-data "StatusType" "EFFECT"
-using "_PASSIVES"
-data "StatusEffect" "1926d069-4ddf-4f80-ae75-897cf666fb16"
-
-new entry "GSL_BLUNDERBUSS_SHOT_SOUND"
-type "StatusData"
-data "StatusType" "EFFECT"
-using "_PASSIVES"
-data "StatusEffect" "973af9e5-7ef9-468f-899d-402a5e5ece34"
-
 new entry "GSL_RELOAD_NO_BONUS_ACTION"
 type "StatusData"
 data "StatusType" "BOOST"

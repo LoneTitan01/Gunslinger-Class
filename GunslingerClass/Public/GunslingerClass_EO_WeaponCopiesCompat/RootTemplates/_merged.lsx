@@ -123,7 +123,7 @@
                 <node id="GameObjects">
                                     <attribute id="Description" type="TranslatedString" handle="ha4ff8ec3gf13ag5b59gb799g92004bcd6de0" version="1" />
                                     <attribute id="DisplayName" type="TranslatedString" handle="h9616189eg3ef6g5247g8f05g84aed5550578" version="1" />
-                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
                                     <attribute id="Icon" type="FixedString" value="GSL_Musket" />
                                     <attribute id="LevelName" type="FixedString" value="" />
                                     <attribute id="MapKey" type="FixedString" value="95009bf0-0c33-5b16-838c-783d7fa55a7a" />
@@ -147,7 +147,7 @@
                 <node id="GameObjects">
                                     <attribute id="Description" type="TranslatedString" handle="h00eff6acg50e1g5c55gbadfg1317e1e863b6" version="1" />
                                     <attribute id="DisplayName" type="TranslatedString" handle="hc83658dega742g53begb613g50f58bce7c4e" version="1" />
-                                    <attribute id="EquipmentTypeID" type="guid" value="edda8fbb-6456-4514-b3cc-36a2bc674c31" />
+                                    <attribute id="EquipmentTypeID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac" />
                                     <attribute id="Icon" type="FixedString" value="GSL_Musket" />
                                     <attribute id="LevelName" type="FixedString" value="" />
                                     <attribute id="MapKey" type="FixedString" value="303aa1b7-a16d-5bc8-b8ea-2015cf4a764d" />

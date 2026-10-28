@@ -3785,7 +3785,7 @@ class CraftingRecipeTests(unittest.TestCase):
             ".//node[@id='GameObjects']"
         )
         upgrades = (
-            ('Flintlock', 'Quickshot', 'WPN_GSL_Flintlock', 'LOOT_Misc_SmokepowderSatchel'),
+            ('Flintlock', 'Quickshot', 'WPN_GSL_Flintlock', 'OBJ_Bag_BlackPowder'),
             ('Flintlock', 'RunAndGun', 'WPN_GSL_Flintlock_Quickshot', 'OBJ_Metalbar_Gold'),
             ('Flintlock', 'Diamond', 'WPN_GSL_Flintlock_RunAndGun', 'OBJ_Diamond'),
             ('Flintlock', 'BlackDiamond', 'WPN_GSL_Flintlock_Diamond', 'OBJ_DiamondDark'),
@@ -3862,7 +3862,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         self.assertEqual(
             [component_recipe[f'Object {slot}'] for slot in range(1, 4)],
-            ['OBJ_GSL_AssemblyKit', 'LOOT_Misc_AdamantineSlag', 'LOOT_Misc_RunePowder'],
+            ['OBJ_GSL_AssemblyKit', 'LOOT_GEN_AdamantineScrap_A', 'UND_OBJ_Runepowder_Vial'],
         )
         component_result = read_entry(
             combinations,

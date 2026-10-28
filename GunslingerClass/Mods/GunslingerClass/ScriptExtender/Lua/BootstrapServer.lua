@@ -630,6 +630,19 @@ Ext.Events.StatsLoaded:Subscribe(function()
     end
 end)
 
+-- CastSound is one value per spell, but grit shots fire whichever gun is in the main hand, so switch it
+-- to that gun's shot before the cast. The engine plays it from the caster at the Cast text event.
+local function matchShotSound(character, spell)
+    if spell:find("OffHand", 1, true) then return end
+    local stat = Ext.Stats.Get(spell)
+    local _, kind = equipped(character, "Main")
+    local sound = stat and Rules.ShotSound(stat.CastSound, kind)
+    if sound then
+        stat.CastSound = sound
+        Ext.Stats.Sync(spell, false)
+    end
+end
+
 Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell, _, _, action)
     -- Grit Recovery triggers once per attack; a new attack re-arms it.
     if Osi.HasActiveStatus(character, "GSL_GRIT_RECOVERY_SPENT") == 1 then
@@ -639,6 +652,7 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
         Osi.RemoveStatus(character, "GSL_HOT_STREAK_ADVANCED")
     end
     if not spell:find("GSL_", 1, true) then return end
+    matchShotSound(character, spell)
     refresh(character, false)
     local shotHand = spell:match("^Shout_GSL_%a+Repair_(%a+)") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")

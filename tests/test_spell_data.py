@@ -14,6 +14,7 @@ VANILLA = (
     ROOT / 'examples' / 'BG3 Reference' / 'Public' / 'Shared'
     / 'Stats' / 'Generated' / 'Data' / 'Spell_Projectile.txt'
 )
+SHOT_SOUNDS = {'Flintlock': 'Projectiles_Grn_Impact_Bomb', 'Blunderbuss': 'Gale_Explosion_Boom'}
 STRAIGHT_BOLT = '9c0f6a51-3b7e-4d2a-8f61-2e4b7c9d1a05'
 STRAIGHT_BOLT_OFFHAND = 'd4e2b8a7-6c13-4f9e-a5b0-7e1f3c2d8b96'
 AMMO = {
@@ -134,7 +135,8 @@ class SpellDataTests(unittest.TestCase):
                     if name == 'Projectile_GSL_DoubleOrNothing' and key in ('PrepareEffect', 'CastEffect'):
                         self.assertFalse(fields.get(key, ''), key)
                         continue
-                    if key == 'CastSound' and name.startswith('Projectile_GSL_'):
+                    if key == 'CastSound' and (name.startswith('Projectile_GSL_') or
+                                               fields.get(key) in SHOT_SOUNDS.values()):
                         continue
                     self.assertEqual(fields.get(key, ''), expected.get(key, ''), key)
 
@@ -151,12 +153,12 @@ class SpellDataTests(unittest.TestCase):
         for name in projectiles:
             with self.subTest(spell=name):
                 fields = self.spell(name)
-                self.assertEqual(fields.get('CastSound', ''), '')
+                self.assertIn(fields.get('CastSound', ''), SHOT_SOUNDS.values())
                 self.assertEqual(fields.get('TargetSound', ''), '')
                 if self.external:
                     self.assertEqual(fields.get('SpellSoundMagnitude'), 'None')
 
-    def test_firearm_shots_play_immersive_firearms_sounds(self) -> None:
+    def test_firearm_shots_play_immersive_firearms_sounds_as_cast_sounds(self) -> None:
         def descends(name: str, base: str) -> bool:
             while name in self.entries:
                 if name == base:
@@ -167,65 +169,42 @@ class SpellDataTests(unittest.TestCase):
         shot_fields = ('SpellProperties', 'SpellSuccess', 'SpellFail', 'TooltipDamageList')
         main_hand, off_hand = set(), set()
         for name, entry in self.entries.items():
-            if entry.kind != 'SpellData' or name == 'Projectile_GSL_FirearmAttack':
+            if entry.kind != 'SpellData':
                 continue
             if descends(name, 'GSL_OffHand_Flintlock_attack'):
                 off_hand.add(name)
             elif 'MainRangedWeapon' in ' '.join(self.spell(name).get(field, '') for field in shot_fields):
                 main_hand.add(name)
-        self.assertIn('Zone_GSL_Scattershot', main_hand)
-        self.assertIn('Projectile_GSL_RapidShot', main_hand)
-        self.assertIn('Projectile_GSL_DoubleOrNothingAttack', main_hand)
+        for name in ('Zone_GSL_Scattershot', 'Projectile_GSL_RapidShot', 'Projectile_GSL_DoubleOrNothingAttack',
+                     'Zone_GSL_LineEmUp', 'Shout_GSL_HailOfLead', 'Projectile_GSL_DashAndGun_Flintlock'):
+            self.assertIn(name, main_hand)
         self.assertIn('GSL_OffHand_Flintlock_attack_RangeMaster', off_hand)
         self.assertEqual(len(off_hand), 4)
 
-        upgrade_shots = {
-            'Projectile_GSL_DashAndGun_Flintlock',
-            'Projectile_GSL_ParalyzingShot_Musket',
-        }
-        sound_passives = {
-            'GSL_Firearm_ShotSound_MainHand': (main_hand - upgrade_shots, 'GSL_FIREARM_SHOT_SOUND'),
-            'GSL_Firearm_BlunderbussSound_MainHand': (main_hand - upgrade_shots, 'GSL_BLUNDERBUSS_SHOT_SOUND'),
-            'GSL_Firearm_ShotSound_OffHand': (off_hand, 'GSL_FIREARM_SHOT_SOUND'),
-            'GSL_Firearm_UpgradeShotSound': (upgrade_shots, 'GSL_FIREARM_SHOT_SOUND'),
-        }
-        bank = ET.parse(PUBLIC / 'Content' / '[PAK]_GSL_Firearm_Sounds' / '_merged.lsx')
-        bank_sources = {
-            resource.find('attribute[@id="ID"]').get('value'):
-                resource.find('attribute[@id="SourceFile"]').get('value')
-            for resource in bank.iter('node') if resource.get('id') == 'Resource'
-        }
-        for passive, (spells, status) in sound_passives.items():
-            with self.subTest(passive=passive):
-                fields = self.entries[passive].fields
-                self.assertIn('IsHidden', fields['Properties'])
-                self.assertEqual(fields['StatsFunctorContext'], 'OnCast')
-                self.assertEqual(set(re.findall(r"SpellId\('([^']+)'\)", fields['Conditions'])), spells)
-                self.assertEqual(fields['StatsFunctors'], f'ApplyStatus(SELF,{status},100,0)')
+        # The engine plays CastSound from the caster at the Cast text event, like vanilla weapon actions.
+        # Spells tied to one gun use its shot; shared grit shots default to the Flintlock/Musket shot and
+        # BootstrapServer.lua switches them to the equipped gun's shot before each cast.
+        blunderbuss = {'GSL_MainHand_Blunderbuss_attack', 'Zone_GSL_Scattershot'}
+        for name in main_hand | off_hand:
+            with self.subTest(spell=name):
+                kind = 'Blunderbuss' if name in blunderbuss or name.endswith('_Blunderbuss') else 'Flintlock'
+                self.assertEqual(self.spell(name).get('CastSound'), SHOT_SOUNDS[kind])
 
-                status_fields = self.entries[status].fields
-                self.assertEqual(status_fields['StatusType'], 'EFFECT')
-                mei = ET.parse(PUBLIC / 'MultiEffectInfos' / f"{status_fields['StatusEffect']}.lsx")
-                effect = next(
-                    attribute.get('value') for attribute in mei.iter('attribute')
-                    if attribute.get('id') == 'EffectResourceGuid'
-                )
-                source = bank_sources[effect]
-                self.assertTrue(source.endswith('.lsfx'))
-                self.assertTrue((ROOT / 'GunslingerClass' / Path(source).with_suffix('.lsx')).is_file())
+        lua = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua')
+        rules = (lua / 'GritRules.lua').read_text(encoding='utf-8')
+        for kind, sound in SHOT_SOUNDS.items():
+            self.assertRegex(rules, rf'{kind} = \{{[^}}]*shotSound = "{sound}"')
+        using = (lua / 'BootstrapServer.lua').read_text(encoding='utf-8').split(
+            'Ext.Osiris.RegisterListener("UsingSpell"', 1)[1]
+        self.assertLess(using.index('matchShotSound(character, spell)'), using.index('refresh(character, false)'))
 
-        for weapon, hand, passive in (
-            ('WPN_GSL_Flintlock', 'PassivesMainHand', 'GSL_Firearm_ShotSound_MainHand'),
-            ('WPN_GSL_Flintlock', 'PassivesOffHand', 'GSL_Firearm_ShotSound_OffHand'),
-            ('WPN_GSL_Blunderbuss', 'PassivesMainHand', 'GSL_Firearm_BlunderbussSound_MainHand'),
-            ('WPN_GSL_Musket', 'PassivesMainHand', 'GSL_Firearm_ShotSound_MainHand'),
-        ):
-            with self.subTest(weapon=weapon, hand=hand):
-                self.assertIn(passive, self.entries[weapon].fields[hand].split(';'))
-        for entry in self.entries.values():
-            if 'PassivesOffHand' in entry.fields and 'GSL_Flintlock_OffHand' in entry.fields['PassivesOffHand']:
-                with self.subTest(override=entry.name):
-                    self.assertIn('GSL_Firearm_ShotSound_OffHand', entry.fields['PassivesOffHand'].split(';'))
+        # The old status-effect sound path played a localized effect on top of the crossbow sound.
+        for name, entry in self.entries.items():
+            with self.subTest(entry=name):
+                self.assertNotRegex(name, r'(ShotSound|BlunderbussSound|SHOT_SOUND)')
+                for key in ('PassivesOnEquip', 'PassivesMainHand', 'PassivesOffHand'):
+                    self.assertNotRegex(entry.fields.get(key, ''), r'(ShotSound|BlunderbussSound)')
+        self.assertFalse((PUBLIC / 'Content' / '[PAK]_GSL_Firearm_Sounds').exists())
 
     def test_projectile_without_inheritance_is_detected(self) -> None:
         self.entries['Projectile_GSL_RapidShot'].parent = ''
@@ -657,7 +636,11 @@ class SpellDataTests(unittest.TestCase):
                     attribute = node.find('attribute[@id="EquipmentTypeID"]')
                     self.assertIsNotNone(attribute)
                     if attribute is not None and attribute.get('value') in types:
-                        self.assertEqual(types[attribute.get('value')]['WeaponType_TwoHanded'], hands)
+                        equipment_type = types[attribute.get('value')]
+                        self.assertEqual(equipment_type['WeaponType_TwoHanded'], hands)
+                        # No crossbow sound set: the shot sound comes only from the firearm sound passives.
+                        self.assertEqual(equipment_type['SoundAttackType'], '')
+                        self.assertEqual(equipment_type['SoundEquipmentType'], '')
 
     def test_long_guns_use_vanilla_twohanded_property(self) -> None:
         reference = ROOT / 'examples' / 'BG3 Reference' / 'Public' / 'Shared' / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'
