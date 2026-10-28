@@ -13,7 +13,7 @@ Usage:
 Compatibility add-ons for Act Two Expansion, Community Library, Encounters
 Overhaul, and JWL Soul Smithing are staged and built as well by default. Use --no-weapon-compat to omit them.
 
-By default the bundled examples/LSLib Divine Tool/Tools/Divine.exe is used
+By default Divine.exe is found through the divine setting in stage_packages.yaml
 (override with --divine): localization is converted to .loca, Content banks, root
 templates, tags, MultiEffectInfos and book text to .lsf, effect sources to .lsfx, and all staging folders are packed into Packages/*.pak
 and compressed into matching Packages/*.zip archives (unless --no-pack).
@@ -35,7 +35,7 @@ main_staging = repo_root / 'Main_Staging'
 compat_staging = repo_root / '5e_Compat_Staging'
 weapon_compat_staging = repo_root / 'Weapon_Compat_Staging'
 packages_dir = repo_root / 'Packages'
-default_divine = repo_root / 'examples' / 'LSLib Divine Tool' / 'Tools' / 'Divine.exe'
+settings_file = repo_root / 'stage_packages.yaml'
 packages = (
     (main_staging, 'GunslingerClass.pak'),
     (compat_staging, 'GunslingerClass_5eSpellsCompat.pak'),
@@ -63,6 +63,41 @@ books_dir = Path('Mods/GunslingerClass/Localization')
 
 def fail(message):
     raise SystemExit(f'ERROR: {message}')
+
+
+def read_settings(path):
+    """Read the YAML settings file. Uses PyYAML when installed; otherwise reads
+    simple top-level `key: value` lines, which is all this file needs."""
+    text = path.read_text(encoding='utf-8')
+    try:
+        import yaml
+    except ImportError:
+        settings = {}
+        for line in text.splitlines():
+            line = line.strip()
+            if not line or line.startswith('#') or ':' not in line:
+                continue
+            key, value = line.split(':', 1)
+            value = value.strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in '\'"':
+                value = value[1:-1]
+            settings[key.strip()] = value
+        return settings
+    settings = yaml.safe_load(text) or {}
+    if not isinstance(settings, dict):
+        fail(f'{path.name} must contain key: value settings')
+    return settings
+
+
+def configured_divine():
+    """Divine.exe location from stage_packages.yaml."""
+    if not settings_file.is_file():
+        fail(f'Missing settings file: {settings_file.name} (it must set divine: <path to Divine.exe>)')
+    value = read_settings(settings_file).get('divine')
+    if not value:
+        fail(f'{settings_file.name} does not set divine: <path to Divine.exe>')
+    path = Path(str(value)).expanduser()
+    return path if path.is_absolute() else repo_root / path
 
 
 def reset(folder):
@@ -198,14 +233,15 @@ def main(argv=None):
     divine_group.add_argument(
         '--divine',
         type=Path,
-        default=default_divine,
-        help=f'Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip (default: {default_divine.relative_to(repo_root)})',
+        default=argparse.SUPPRESS,
+        help=f'Path to LSLib Divine.exe; converts files and creates Packages/*.pak and *.zip (default: the divine setting in {settings_file.name})',
     )
     divine_group.add_argument(
         '--no-divine',
         dest='divine',
         action='store_const',
         const=None,
+        default=argparse.SUPPRESS,
         help='Do not use Divine.exe; stage unconverted files for manual conversion and packing',
     )
     parser.add_argument('--no-pack', action='store_true', help='Convert and stage with Divine.exe but do not create .pak or .zip files')
@@ -217,6 +253,8 @@ def main(argv=None):
         help='Build weapon-copy compatibility PAKs (enabled by default; use --no-weapon-compat to skip)',
     )
     args = parser.parse_args(argv)
+    if not hasattr(args, 'divine'):
+        args.divine = configured_divine()
 
     if args.divine is not None and not args.divine.is_file():
         fail(f'Divine.exe not found: {args.divine}')

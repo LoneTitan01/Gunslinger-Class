@@ -1,0 +1,4 @@
+# Settings for stage_packages.py.
+# divine: path to LSLib's Divine.exe. Relative paths are resolved from the repo root.
+# The --divine command-line option overrides this value.
+divine: 'Z:\Personal\LSLib Divine Tool\Tools\Divine.exe'
