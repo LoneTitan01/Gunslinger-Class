@@ -97,11 +97,3 @@ data "SpellSuccess" "DealDamage(max(1,MainRangedWeapon),MainRangedWeaponDamageTy
 data "TooltipDamageList" "DealDamage(MainRangedWeapon,MainRangedWeaponDamageType);DealDamage(1d10,Fire)"
 data "TooltipAttackSave" "Constitution"
 data "TooltipStatusApply" "ApplyStatus(BURNING,100,2)"
-
-new entry "GSL_ATE_ShotSound"
-type "PassiveData"
-data "Icon" "GSL_ShootFlintlock"
-data "Properties" "IsHidden"
-data "StatsFunctorContext" "OnCast"
-data "Conditions" "SpellId('Projectile_GSL_ATE_RicochetShot_Musket') or SpellId('Projectile_GSL_ATE_MindcrushShot_Blunderbuss') or SpellId('Projectile_GSL_ATE_HailOfThornsShot_Flintlock') or SpellId('Projectile_GSL_ATE_MenacingShot_Musket') or SpellId('Projectile_GSL_ATE_ScorchingShot_Musket')"
-data "StatsFunctors" "IF(SpellId('Projectile_GSL_ATE_RicochetShot_Musket') or SpellId('Projectile_GSL_ATE_HailOfThornsShot_Flintlock') or SpellId('Projectile_GSL_ATE_MenacingShot_Musket') or SpellId('Projectile_GSL_ATE_ScorchingShot_Musket')):ApplyStatus(SELF,GSL_FIREARM_SHOT_SOUND,100,0);IF(SpellId('Projectile_GSL_ATE_MindcrushShot_Blunderbuss')):ApplyStatus(SELF,GSL_BLUNDERBUSS_SHOT_SOUND,100,0)"

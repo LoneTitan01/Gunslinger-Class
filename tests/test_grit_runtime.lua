@@ -747,6 +747,16 @@ assert(#variables.Firearms.weapons.first.mods == 0 and #variables.Firearms.weapo
 fire("UsingSpell", "before", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 fire("CastSpellFailed", "after", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 assert(variables.Firearms.weapons.first.ammo == ammo("alice", "Main").Amount)
+assert(rules.ShotSound("Gale_Explosion_Boom", "Musket") == "Projectiles_Grn_Impact_Bomb")
+assert(rules.ShotSound("Projectiles_Grn_Impact_Bomb", "Blunderbuss") == "Gale_Explosion_Boom")
+assert(rules.ShotSound("Projectiles_Grn_Impact_Bomb", "Flintlock") == nil, "A matching shot sound is left alone")
+assert(rules.ShotSound("Action_Cast_PiercingShot", "Blunderbuss") == nil, "Non-gunshot cast sounds are never replaced")
+assert(rules.ShotSound("Gale_Explosion_Boom", nil) == nil, "No gun in the main hand leaves the sound alone")
+local sharedShot = spellStats.GSL_MainHand_Flintlock_attack
+sharedShot.CastSound = "Gale_Explosion_Boom"
+fire("UsingSpell", "before", "alice", "GSL_MainHand_Flintlock_attack", "", "", 975)
+fire("CastSpellFailed", "after", "alice", "GSL_MainHand_Flintlock_attack", "", "", 975)
+assert(sharedShot.CastSound == rules.Firearms.Flintlock.shotSound, "A shot plays the main-hand gun's gunshot")
 local lastWordShots = 0
 local useSpell = Osi.UseSpell
 Osi.UseSpell = function(...) lastWordShots = lastWordShots + 1; return useSpell(...) end

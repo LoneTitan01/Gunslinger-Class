@@ -11,7 +11,7 @@
                     <attribute id="BoneOffHandUnsheathed" type="FixedString" value="Dummy_L_Hand"/>
                     <attribute id="Name" type="FixedString" value="GSL_Firearm_1H"/>
                     <attribute id="SoundAttackType" type="FixedString" value=""/>
-                    <attribute id="SoundEquipmentType" type="FixedString" value="Crossbow"/>
+                    <attribute id="SoundEquipmentType" type="FixedString" value=""/>
                     <attribute id="SourceBoneSheathed" type="FixedString" value="Dummy_Sheath"/>
                     <attribute id="SourceBoneVersatileSheathed" type="FixedString" value="Dummy_Sheath"/>
                     <attribute id="UUID" type="guid" value="bdb0f0e3-3c8c-5c66-a0a8-23134411a235"/>
@@ -23,7 +23,7 @@
                     <attribute id="BoneMainUnsheathed" type="FixedString" value="Dummy_L_Hand"/>
                     <attribute id="Name" type="FixedString" value="GSL_Firearm_2H"/>
                     <attribute id="SoundAttackType" type="FixedString" value=""/>
-                    <attribute id="SoundEquipmentType" type="FixedString" value="Crossbow"/>
+                    <attribute id="SoundEquipmentType" type="FixedString" value=""/>
                     <attribute id="SourceBoneSheathed" type="FixedString" value="Dummy_Sheath"/>
                     <attribute id="SourceBoneVersatileSheathed" type="FixedString" value="Dummy_Sheath"/>
                     <attribute id="UUID" type="guid" value="913632c7-037f-5846-bbe4-f087edfa7aac"/>

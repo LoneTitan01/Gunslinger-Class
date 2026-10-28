@@ -85,7 +85,7 @@
         <content contentuid="h47e712e3g6093g5244g9b7egbd961ca6a71a" version="1">Merciless Shot</content>
         <content contentuid="hbd9f7ccdg6efag577agb117g7e3939ef1f8d" version="1">Your next firearm attack deals extra damage.</content>
         <content contentuid="hdfef9eeag71eeg5d1eg8d24gcedc2c925e8c" version="1">Merciless Shot</content>
-        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and make a firearm attack as an action. Each grit point adds half the weapon attack's damage. Consumes one bullet.</content>
+        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and make a firearm attack as an action. Each grit point adds half the weapon's damage. Consumes one bullet.</content>
         <content contentuid="hde7e2926g15bfg5332g8e16ga25ae7cef4c6" version="1">Line 'em Up</content>
         <content contentuid="hbce4e343g1a96g51acg800fga65933f05925" version="1">Unlocks the Line 'em Up grit ability.</content>
         <content contentuid="h754e9698ga877g5ad9gbae6g65979d3ce3a3" version="1">Line 'em Up</content>
@@ -155,7 +155,7 @@
         <content contentuid="h3b5cddd1g217eg53baga9fdg40216cf13fa3" version="1">Broken</content>
         <content contentuid="h49e57206gfd40g54edgbfd8ga997830c330d" version="1">This firearm is broken and cannot fire until your next long rest. It cannot be repaired by any other means.</content>
         <content contentuid="h40f837d1g07eeg5799g9499gf09ad6bff804" version="1">Double Load</content>
-        <content contentuid="h25cce658g804dg561dgb58cg48280491a5a1" version="1">Spend an action, 1 grit point, and two bullets to make a firearm attack that deals an extra 1d4 damage with a Flintlock, or 1d6 with a Blunderbuss or Musket. A natural 1 destroys this physical gun until a long rest. Rapid Repair cannot restore it.</content>
+        <content contentuid="h25cce658g804dg561dgb58cg48280491a5a1" version="1">Spend an action, 1 grit point, and two bullets to make a firearm attack that deals double damage. A natural 1 destroys this physical gun until a long rest. Rapid Repair cannot restore it.</content>
         <content contentuid="hc0ecaab8g4357g5f07g8475g5c5ea510dede" version="1">Double Load</content>
         <content contentuid="hca40d7e3g5210g5ffcg97e8g7e414213dcfa" version="1">Unlocks the Double Load grit ability.</content>
         <content contentuid="hb1c3fc87gbe52g5aabg8358g288168bb88af" version="1">Close Call</content>
@@ -273,9 +273,9 @@
         <content contentuid="h10000002g0000g4000g8000g000000000001" version="1">Merciless Shot: 1 Grit</content>
         <content contentuid="h10000002g0000g4000g8000g000000000002" version="1">Merciless Shot: 2 Grit</content>
         <content contentuid="h10000002g0000g4000g8000g000000000003" version="1">Merciless Shot: 3 Grit</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra 1d4 damage with a Flintlock, or 1d6 with a Blunderbuss or Musket.</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra 2d4 damage with a Flintlock, or 2d6 with a Blunderbuss or Musket.</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra 3d4 damage with a Flintlock, or 3d6 with a Blunderbuss or Musket.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra half of its weapon damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra full weapon damage (double damage).</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra one and a half times its weapon damage.</content>
         <content contentuid="h10000003g0000g4000g8000g000000000001" version="1">Fanning Fire: 1 Grit</content>
         <content contentuid="h10000003g0000g4000g8000g000000000002" version="1">Fanning Fire: 2 Grit</content>
         <content contentuid="h10000003g0000g4000g8000g000000000003" version="1">Fanning Fire: 3 Grit</content>

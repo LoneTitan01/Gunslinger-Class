@@ -4,7 +4,7 @@ import re
 import unittest
 
 from generate_mod_weapon_compat import (
-    ATE, EFFECTS_FILE, EO, MODS, audit, firearm_kind, parse_weapons, render, sound_passive, stat_name,
+    ATE, EFFECTS_FILE, EO, MODS, audit, firearm_kind, parse_weapons, render, stat_name,
     VANILLA_WEAPONS,
 )
 from validate_stats import read_stats
@@ -106,8 +106,7 @@ class ModWeaponCompatibilityTests(unittest.TestCase):
                 continue
             path = mod.public / 'Stats' / 'Generated' / 'Data' / EFFECTS_FILE
             effects = read_stats([path])
-            sound = effects[sound_passive(mod)].fields
-            self.assertEqual(set(re.findall(r"SpellId\('([^']+)'\)", sound['Conditions'])), set(shots))
+            self.assertFalse([name for name in effects if 'ShotSound' in name])
             stats = read_stats([mod.public / 'Stats' / 'Generated' / 'Data' / 'Weapon.txt'])
             for item in mod.weapons:
                 if item.conversion.action not in shots:
@@ -120,7 +119,9 @@ class ModWeaponCompatibilityTests(unittest.TestCase):
                     self.assertIn(f"HasPassive('GSL_{shot.kind}_MainHand'", spell.fields['RequirementConditions'])
                     self.assertTrue(spell.fields['SpellSuccess'].startswith('DealDamage('))
                     weapon = stats[stat_name(mod, item.conversion)]
-                    self.assertIn(sound_passive(mod), weapon.fields['PassivesOnEquip'].split(';'))
+                    # The shot inherits its parent attack's CastSound gunshot.
+                    self.assertNotIn('CastSound', spell.fields)
+                    self.assertNotIn('ShotSound', weapon.fields.get('PassivesOnEquip', ''))
                     self.assertIn(f'UnlockSpell({shot.name})', weapon.fields['BoostsOnEquipMainHand'])
 
     def test_melee_only_conditions_are_replaced_with_firearm_conditions(self) -> None:

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 import hashlib
 from pathlib import Path
 import re
@@ -303,9 +303,6 @@ def localized_handle(name: str, purpose: str) -> str:
     return 'h' + str(uuid5(NAMESPACE, name + ':' + purpose)).replace('-', 'g')
 
 
-def sound_passive(mod: SourceMod) -> str:
-    return f'GSL_{mod.tag}_ShotSound'
-
 
 def parse_weapons(paths: tuple[Path, ...]) -> dict[str, tuple[str, dict[str, str]]]:
     entries: dict[str, tuple[str, dict[str, str]]] = {}
@@ -424,22 +421,6 @@ def shot_fields(shot: Shot) -> tuple[tuple[str, str], ...]:
     return tuple(fields)
 
 
-def sound_fields(mod: SourceMod) -> tuple[tuple[str, str], ...]:
-    functors = []
-    for status, kinds in (('GSL_FIREARM_SHOT_SOUND', {'Flintlock', 'Musket'}),
-                          ('GSL_BLUNDERBUSS_SHOT_SOUND', {'Blunderbuss'})):
-        spells = [shot.name for shot in mod.shots if shot.kind in kinds]
-        if spells:
-            condition = ' or '.join(f"SpellId('{spell}')" for spell in spells)
-            functors.append(f'IF({condition}):ApplyStatus(SELF,{status},100,0)')
-    return (
-        ('Icon', 'GSL_ShootFlintlock'),
-        ('Properties', 'IsHidden'),
-        ('StatsFunctorContext', 'OnCast'),
-        ('Conditions', ' or '.join(f"SpellId('{shot.name}')" for shot in mod.shots)),
-        ('StatsFunctors', ';'.join(functors)),
-    )
-
 
 def recipe_text(name: str, source: str, parent: str) -> str:
     suffix = name.removeprefix('WPN_GSL_')
@@ -477,12 +458,8 @@ def render() -> dict[Path, str]:
         for item in mod.weapons:
             conversion = item.conversion
             parent = f'WPN_GSL_{conversion.kind}'
-            if conversion.action in shots:
-                if shots[conversion.action].kind != conversion.kind:
-                    raise ValueError(f'{conversion.source}: {conversion.action} does not match {conversion.kind}')
-                conversion = replace(conversion, passives=';'.join(
-                    part for part in (conversion.passives, sound_passive(mod)) if part
-                ))
+            if conversion.action in shots and shots[conversion.action].kind != conversion.kind:
+                raise ValueError(f'{conversion.source}: {conversion.action} does not match {conversion.kind}')
             name = stat_name(mod, conversion)
             root = stat_root(name)
             display = localized_handle(name, 'name')
@@ -532,8 +509,6 @@ def render() -> dict[Path, str]:
         effects = [effect_text(*entry) for entry in mod.effects]
         effects.extend(effect_text('SpellData', shot.name, f'GSL_MainHand_{shot.kind}_attack', shot_fields(shot))
                        for shot in mod.shots)
-        if mod.shots:
-            effects.append(effect_text('PassiveData', sound_passive(mod), '', sound_fields(mod)))
         if effects:
             outputs[data / EFFECTS_FILE] = '\n'.join(effects)
 

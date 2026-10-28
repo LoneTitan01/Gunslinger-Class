@@ -12,12 +12,6 @@ AMMO = {'Flintlock': 'GunslingerFlintlockAmmo', 'Blunderbuss': 'GunslingerBlunde
         'Musket': 'GunslingerMusketAmmo'}
 
 
-def firearm_dice_damage(dice: int) -> str:
-    flintlock = "HasPassive('GSL_Flintlock_MainHand',context.Source)"
-    return (f'IF({flintlock}):DealDamage(MainRangedWeapon+{dice}d4,MainRangedWeaponDamageType);'
-            f'IF(not {flintlock}):DealDamage(MainRangedWeapon+{dice}d6,MainRangedWeaponDamageType)')
-
-
 class GritDataTests(unittest.TestCase):
     def setUp(self) -> None:
         self.entries = read_stats(sorted((PUBLIC / 'Stats' / 'Generated' / 'Data').glob('*.txt')))
@@ -276,9 +270,7 @@ class GritDataTests(unittest.TestCase):
                     self.assertIn(f"HasPassive('GSL_{weapon}_MainHand',context.Source)", shot['RequirementConditions'])
                     self.assertIn(f"HasActionResource('{resource}',1,0)", shot['RequirementConditions'])
                     self.assertEqual(shot['SpellProperties'].count(f'UseActionResource(SELF,{resource},1,0)'), 1)
-                for sound in ('GSL_Firearm_ShotSound_MainHand', 'GSL_Firearm_BlunderbussSound_MainHand'):
-                    self.assertIn(f"SpellId('Projectile_GSL_HotStreak_{tier}')",
-                                  self.entries[sound].fields['Conditions'])
+                self.assertEqual(shot['CastSound'], 'Projectiles_Grn_Impact_Bomb')
         extra_attack = self.entries['GSL_SecondAttack'].fields
         self.assertIn('ExtraAttackSpellCheck()', extra_attack['Conditions'])
         self.assertIn("HasUseCosts('ActionPoint', true)", extra_attack['Conditions'])
@@ -336,7 +328,11 @@ class GritDataTests(unittest.TestCase):
             self.assertEqual(fields['SpellContainerID'], 'Shout_GSL_MercilessShot')
             self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:{grit}')
             self.assertEqual(fields['DisplayName'], f'h10000002g0000g4000g8000g00000000000{grit};1')
-            self.assertEqual(fields['SpellSuccess'], firearm_dice_damage(grit) + ';ExecuteWeaponFunctors(MainHand)')
+            full = 'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)'
+            half = 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)'
+            damage = ';'.join([full] * (1 + grit // 2) + [half] * (grit % 2))
+            self.assertEqual(fields['SpellSuccess'], damage + ';ExecuteWeaponFunctors(MainHand)')
+            self.assertEqual(fields['TooltipDamageList'], damage)
             self.assertNotIn('MainRangedWeapon*', fields['TooltipDamageList'])
             self.assertNotIn('ApplyStatus', fields['SpellProperties'])
             self.assertIn('GSL_FIREARM_MAIN_DISABLED', fields['RequirementConditions'])
@@ -432,10 +428,7 @@ class GritDataTests(unittest.TestCase):
         followup = self.fields('Projectile_GSL_DoubleOrNothingAttack')
         self.assertEqual(self.entries['Projectile_GSL_DoubleOrNothingAttack'].parent, 'Projectile_GSL_ReactionShot')
         self.assertIn("HasActionResource('GunslingerFlintlockAmmo',1,0)", followup['RequirementConditions'])
-        sound = self.fields('GSL_Firearm_ShotSound_MainHand')['Conditions']
-        self.assertIn("SpellId('Projectile_GSL_DoubleOrNothingAttack')", sound)
-        self.assertIn("SpellId('Projectile_GSL_DoubleOrNothingAttack')",
-                      self.fields('GSL_Firearm_BlunderbussSound_MainHand')['Conditions'])
+        self.assertEqual(followup['CastSound'], 'Projectiles_Grn_Impact_Bomb')
 
     def test_smart_shooting_adds_intelligence_to_firearm_attack_and_damage(self) -> None:
         boosts = self.fields('GSL_ArcaneGunsman_SmartShooting')['Boosts'].split(';')
@@ -488,9 +481,16 @@ class GritDataTests(unittest.TestCase):
                           self.fields('GSL_FanningFireUnlock')['Boosts'].split(';'))
         self.assertNotIn('GSL_FANNING_FIRE_1', self.entries)
 
-    def test_double_load_two_bullets_and_bonus_dice(self) -> None:
+    def test_double_load_two_bullets_and_double_damage(self) -> None:
         fields = self.fields('Projectile_GSL_DoubleLoad')
-        self.assertIn(firearm_dice_damage(1), fields['SpellSuccess'])
+        hit = 'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)'
+        self.assertEqual(fields['SpellSuccess'].count(hit), 2)
+        self.assertEqual(fields['TooltipDamageList'].count(hit), 2)
+        self.assertNotIn('d4', fields['SpellSuccess'])
+        self.assertNotIn('d6', fields['SpellSuccess'])
+        self.assertEqual(fields['UseCosts'], 'ActionPoint:1;GunslingerGrit:1')
+        for ammo in ('Flintlock', 'Blunderbuss', 'Musket'):
+            self.assertIn(f'UseActionResource(SELF,Gunslinger{ammo}Ammo,2,0)', fields['SpellProperties'])
         self.assertNotIn('MainRangedWeapon*', fields['SpellSuccess'])
         self.assertIn('ApplyStatus(SELF,GSL_DOUBLE_LOAD,100,1)', fields['SpellProperties'])
 
