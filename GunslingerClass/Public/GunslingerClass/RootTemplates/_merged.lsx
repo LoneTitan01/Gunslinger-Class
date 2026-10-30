@@ -3982,6 +3982,104 @@
                     <attribute id="Type" type="FixedString" value="item"/>
                 </node>
                 
+                <!-- Vanilla Adamantine Slag and Mithral Bar with unique stats IDs so crafting recipes can match them. -->
+                <node id="GameObjects">
+                    <attribute id="CanBeMoved" type="bool" value="True"/>
+                    <attribute id="CanBePickedUp" type="bool" value="True"/>
+                    <attribute id="CanClimbOn" type="bool" value="False"/>
+                    <attribute id="CanJoinCombat" type="bool" value="False"/>
+                    <attribute id="CoverAmount" type="uint8" value="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="h243b5fefg45ccg4941gb979g0659b5894566" version="1"/>
+                    <attribute id="DevComment" type="LSString" value="Slag with few bits of Adamantine, not Adamantine Scraps"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h5cf9448fg8ac4g4de2g8e99g77cc37a62a5e" version="1"/>
+                    <attribute id="Icon" type="FixedString" value="Item_LOOT_GEN_AdamantineScrap_A"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="8705b906-316d-4457-bc15-15a8ff568f67"/>
+                    <attribute id="Name" type="LSString" value="LOOT_GEN_AdamantineScrap_A"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="deb1c368-16c8-4dc4-8bb0-aaa1bd80cda2"/>
+                    <attribute id="PhysicsTemplate" type="FixedString" value="e5499126-eabf-0a40-920e-6e24cab902a5"/>
+                    <attribute id="Stats" type="FixedString" value="LOOT_GEN_AdamantineScrap_A"/>
+                    <attribute id="TreasureOnDestroy" type="bool" value="False"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="45916e04-d140-4109-0ae3-7a076d035166"/>
+                    <attribute id="WalkOn" type="bool" value="False"/>
+                    <attribute id="WalkThrough" type="bool" value="True"/>
+                    <attribute id="_OriginalFileVersion_" type="int64" value="144115200960757762"/>
+                    <children>
+                        <node id="Bounds">
+                            <children>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="IsIgnoringScale" type="bool" value="False"/>
+                                    <attribute id="Max" type="fvec3" value="0.1513102 0.11125955 0.14940831"/>
+                                    <attribute id="Min" type="fvec3" value="-0.16505176 -0.005032532 -0.18494573"/>
+                                    <attribute id="Radius" type="float" value="0.2165065"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="0"/>
+                                </node>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="IsIgnoringScale" type="bool" value="False"/>
+                                    <attribute id="Max" type="fvec3" value="0.1513102 0.11125955 0.14940831"/>
+                                    <attribute id="Min" type="fvec3" value="-0.16505176 -0.005032532 -0.18494573"/>
+                                    <attribute id="Radius" type="float" value="0.433013"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="1"/>
+                                </node>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="IsIgnoringScale" type="bool" value="False"/>
+                                    <attribute id="Max" type="fvec3" value="0.1513102 0.11125955 0.14940831"/>
+                                    <attribute id="Min" type="fvec3" value="-0.16505176 -0.005032532 -0.18494573"/>
+                                    <attribute id="Radius" type="float" value="0.433013"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="2"/>
+                                </node>
+                            </children>
+                        </node>
+                        <node id="OnDestroyActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="26"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="ActivateSoundEvent" type="FixedString" value="3ea82655-5140-4287-9ab8-794559f182d3"/>
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="PlayOnHUD" type="bool" value="False"/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="CanClickThrough" type="bool" value="False"/>
+                    <attribute id="CanClimbOn" type="bool" value="False"/>
+                    <attribute id="CanShootThrough" type="bool" value="True"/>
+                    <attribute id="CoverAmount" type="uint8" value="0"/>
+                    <attribute id="Description" type="TranslatedString" handle="h736916dbg0dfag419dg90dfg2388c032ff08" version="1"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h346f3127geb65g4b0eg8bd4g4089c3760439" version="1"/>
+                    <attribute id="Icon" type="FixedString" value="Item_LOOT_GEN_Metalbar_Mithral_A"/>
+                    <attribute id="IsPointerBlocker" type="bool" value="False"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="LoopSound" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="d746d7c3-ed35-4cd4-becc-6ebb3e0a7b46"/>
+                    <attribute id="Name" type="LSString" value="LOOT_GEN_Metalbar_Mithral_A"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="deb1c368-16c8-4dc4-8bb0-aaa1bd80cda2"/>
+                    <attribute id="PhysicsTemplate" type="FixedString" value="23c8075c-55bc-d52b-4d0e-9239f50cebb2"/>
+                    <attribute id="SoundAttenuation" type="int16" value="-1"/>
+                    <attribute id="SoundInitEvent" type="FixedString" value=""/>
+                    <attribute id="Stats" type="FixedString" value="LOOT_GEN_Metalbar_Mithral_A"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="e2b55eaf-9488-c2c6-25df-f46f9788a7ea"/>
+                    <attribute id="Wadable" type="bool" value="False"/>
+                    <attribute id="WalkOn" type="bool" value="False"/>
+                    <attribute id="WalkThrough" type="bool" value="True"/>
+                    <attribute id="_OriginalFileVersion_" type="int64" value="144115198813274312"/>
+                    <attribute id="maxStackAmount" type="int32" value="20"/>
+                </node>
+                
                 <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->
                 <node id="GameObjects">
                                     <attribute id="Description" type="TranslatedString" handle="habd3d189gdffcg524bg81e3ge3b18210255d" version="1" />

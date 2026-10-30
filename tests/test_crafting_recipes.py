@@ -3902,9 +3902,39 @@ class CraftingRecipeTests(unittest.TestCase):
         quick_reload = read_entry(spells, 'entry', 'Shout_GSL_QuickReload_Flintlock')
         self.assertEqual(quick_reload['UseCosts'], 'GunslingerGrit:1')
         self.assertIn('RestoreResource(GunslingerFlintlockAmmo,100%,0)', quick_reload['SpellProperties'])
+        self.assertIn('UnlockSpell(Shout_GSL_Repair_Off)', quickshot['BoostsOnEquipOffHand'])
+        offhand_quick_reload = read_entry(spells, 'entry', 'Shout_GSL_QuickReload_OffhandFlintlock')
+        localization = (ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').read_text(encoding='utf-8')
+        for spell, label in ((quick_reload, 'Quick Reload: Main Hand'), (offhand_quick_reload, 'Quick Reload: Off Hand')):
+            handle = spell['DisplayName'].split(';')[0]
+            self.assertIn(f'contentuid="{handle}" version="1">{label}<', localization)
 
         run_and_gun = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_RunAndGun')
         self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_Flintlock)', run_and_gun['BoostsOnEquipMainHand'])
+        self.assertIn('UnlockSpell(Shout_GSL_Repair_Main)', run_and_gun['BoostsOnEquipMainHand'])
+        self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_OffhandFlintlock)', run_and_gun['BoostsOnEquipOffHand'])
+        self.assertIn('UnlockSpell(Shout_GSL_Repair_Off)', run_and_gun['BoostsOnEquipOffHand'])
+        self.assertIn(f'contentuid="{run_and_gun["DisplayName"].split(";")[0]}" version="1">Gilded Flintlock<', localization)
+        for name, label in (('Projectile_GSL_DashAndGun_Flintlock', 'Dash and Gun: Main Hand'),
+                            ('Projectile_GSL_DashAndGun_OffhandFlintlock', 'Dash and Gun: Off Hand')):
+            handle = read_entry(spells, 'entry', name)['DisplayName'].split(';')[0]
+            self.assertIn(f'contentuid="{handle}" version="1">{label}<', localization)
+        upgrades = ('Quickshot', 'RunAndGun', 'Diamond', 'BlackDiamond', 'InfernalDiamond')
+        for index, upgrade in enumerate(upgrades):
+            with self.subTest(upgrade=upgrade):
+                weapon = read_entry(weapons, 'entry', f'WPN_GSL_Flintlock_{upgrade}')
+                main, off = weapon['BoostsOnEquipMainHand'], weapon['BoostsOnEquipOffHand']
+                for spell in ('Shout_GSL_QuickReload_Flintlock', 'Shout_GSL_Repair_Main'):
+                    self.assertIn(f'UnlockSpell({spell})', main)
+                for spell in ('Shout_GSL_QuickReload_OffhandFlintlock', 'Shout_GSL_Repair_Off'):
+                    self.assertIn(f'UnlockSpell({spell})', off)
+                if index >= 1:
+                    self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_Flintlock)', main)
+                    self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_OffhandFlintlock)', off)
+        offhand_dash = read_entry(spells, 'entry', 'Projectile_GSL_DashAndGun_OffhandFlintlock')
+        self.assertEqual(offhand_dash['UseCosts'], 'GunslingerOffhandFlintlockAmmo:1')
+        consume = read_entry(passives, 'entry', 'GSL_Flintlock_DashAndGun_Consume')
+        self.assertIn("SpellId('Projectile_GSL_DashAndGun_OffhandFlintlock')", consume['Conditions'])
         dash_passive = read_entry(passives, 'entry', 'GSL_Flintlock_DashAndGun_Passive')
         self.assertIn("SpellId('Shout_Dash')", dash_passive['Conditions'])
         dash_attack = read_entry(spells, 'entry', 'Projectile_GSL_DashAndGun_Flintlock')
@@ -3912,8 +3942,19 @@ class CraftingRecipeTests(unittest.TestCase):
 
         diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_Diamond')
         self.assertIn('WeaponEnchantment(2)', diamond['DefaultBoosts'])
-        self.assertIn('ActionResource(BonusActionPoint,1,0)', diamond['Boosts'])
-        self.assertIn('IgnoreResistance(Piercing,Resistant)', diamond['Boosts'])
+        self.assertNotIn('Boosts', diamond)
+        piercing = read_entry(passives, 'entry', 'GSL_Flintlock_IgnorePiercingResistance_Passive')
+        self.assertIn('IgnoreResistance(Piercing,Resistant)', piercing['Boosts'])
+        self.assertNotIn('IsHidden', piercing.get('Properties', ''))
+        self.assertIn(f'contentuid="{piercing["DisplayName"].split(";")[0]}" version="1">Ignores Piercing Resistance<',
+                      localization)
+        for upgrade in ('Diamond', 'BlackDiamond', 'InfernalDiamond'):
+            weapon = read_entry(weapons, 'entry', f'WPN_GSL_Flintlock_{upgrade}')
+            self.assertIn('GSL_Flintlock_IgnorePiercingResistance_Passive', weapon['PassivesOnEquip'])
+            self.assertIn('ActionResource(ActionPoint,1,0)', weapon['BoostsOnEquipMainHand'])
+            self.assertNotIn('BonusActionPoint', weapon['BoostsOnEquipMainHand'])
+            self.assertIn('ActionResource(BonusActionPoint,1,0)', weapon['BoostsOnEquipOffHand'])
+            self.assertNotIn('ActionResource(ActionPoint', weapon['BoostsOnEquipOffHand'])
         black_diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_BlackDiamond')
         self.assertIn('CriticalHit(1)', black_diamond['DefaultBoosts'])
         darkness = read_entry(passives, 'entry', 'GSL_Flintlock_BlackDiamond_Passive')
