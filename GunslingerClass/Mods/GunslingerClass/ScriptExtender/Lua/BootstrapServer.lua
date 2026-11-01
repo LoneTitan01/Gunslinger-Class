@@ -599,7 +599,8 @@ Ext.Events.StatsLoaded:Subscribe(function()
         local spell = Ext.Stats.Get(name)
         if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or
             name:match("^Zone_GSL_Scattershot") or ammoSpells[name] then
-            local hand = name:find("OffHand", 1, true) and "Off" or "Main"
+            -- Names spell it both "OffHand" and "Offhand" (Dash and Gun), so match either.
+            local hand = name:lower():find("offhand", 1, true) and "Off" or "Main"
             requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
             if ammoSpells[name] then
                 local ready = {}

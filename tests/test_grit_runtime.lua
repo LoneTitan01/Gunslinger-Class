@@ -54,7 +54,8 @@ local spellStats = {
         SpellSuccess = "DealDamage(MainRangedWeapon, MainRangedWeaponDamageType)"},
     Zone_GSL_Scattershot = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Zone_GSL_Scattershot_PoisonMist = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
-    Projectile_GSL_TwoGunTango_OffHand = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
+    Projectile_GSL_TestShot_OffHand = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
+    Projectile_GSL_DashAndGun_OffhandFlintlock = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Projectile_GSL_ReactionShot = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""}
 }
 local interruptStats = {}
@@ -324,9 +325,14 @@ local function brokenGuard(hand, character)
 end
 for name, spell in pairs(spellStats) do
     if spell.SpellType ~= "Throw" then
-        local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack"
+        local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack" or
+            name == "Projectile_GSL_DashAndGun_OffhandFlintlock"
         local condition = brokenGuard(offhand and "Off" or "Main", "context.Source")
         assert(spell.RequirementConditions:find(condition, 1, true), name .. " must check the gun's Broken status")
+        if offhand then
+            assert(not spell.RequirementConditions:find(brokenGuard("Main", "context.Source"), 1, true),
+                name .. " must not be blocked by a broken main-hand gun")
+        end
         local _, guards = spell.RequirementConditions:gsub(condition:gsub("(%W)", "%%%1"), "")
         assert(guards == 1, "Stats reload must not duplicate Broken checks for " .. name)
     end
@@ -591,7 +597,7 @@ assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 0)
 Osi.RemoveStatus("alice", "GSL_FIREARM_OFF_DISABLED")
 assert(not firearmUsable("GSL_OffHand_Flintlock_attack", "alice"),
     "Broken must block the basic shot even without a character disable marker")
-assert(not firearmUsable("Projectile_GSL_TwoGunTango_OffHand", "alice"),
+assert(not firearmUsable("Projectile_GSL_TestShot_OffHand", "alice"),
     "Broken must block an offhand grit shot")
 assert(firearmUsable("GSL_MainHand_Flintlock_attack", "alice"),
     "A broken offhand must not block the working main-hand firearm")
@@ -1302,7 +1308,7 @@ local pairsToTest = {
 local shotPairs = {
     {Main = "GSL_MainHand_Flintlock_attack", Off = "GSL_OffHand_Flintlock_attack"},
     {Main = "Projectile_MainHandAttack", Off = "Projectile_OffhandAttack"},
-    {Main = "Projectile_GSL_DisarmingShot", Off = "Projectile_GSL_TwoGunTango_OffHand"}
+    {Main = "Projectile_GSL_DisarmingShot", Off = "Projectile_GSL_TestShot_OffHand"}
 }
 for pairIndex, pair in ipairs(pairsToTest) do
     for _, hand in ipairs({"Main", "Off"}) do

@@ -55,7 +55,6 @@ action retains its separate ammunition pool.
 | Final Judgement | 17 | 4 grit attack; below 25% HP after the hit, repeat weapon damage plus Con save or die. | - |
 | Ante Up | D3 | Bonus action, 1 grit; Advantage on the next firearm attack; on a miss, attackers gain Advantage. | - |
 | Lucky Draw | D3 | 1 grit; reroll 1s and 2s on firearm damage dice this turn. | - |
-| Two-Gun Tango | D3 | Bonus action, 1 grit, off-hand bullet; off-hand shot adds Dex to damage. | Spends off-hand ammunition. |
 | Roll the Bones | D7 | Bonus action, 1 grit; server d6 picks Bust/Hit/Jackpot status for 12 s. | Bust is -1d4 to hit, not lost grit. Jackpot restores 1 grit. |
 | Duck and Weave | D7 | Reaction + 1 grit when a ranged attack would damage you: physical resistance, Disengage, +3 m. | Physical `SetDamageResistance` has no vanilla precedent. |
 | Cheat Death's Odds | D7 | Passive. Below half HP, grit abilities costing 2+ refund 1 grit. | Refund rather than discount. Lua handles casts; costly interrupts refund via their own functors. |
@@ -89,7 +88,7 @@ ability defect:
 - Grit Adept gives +2 maximum grit and a level-3-pool choice.
 - There are no optional grit-ability replacement choices on level-up.
 - Shared pools add new abilities at 3/9/13/17. Desperado-only pools add Luck
-  plus three new abilities at 3; Double Load, Close Call plus four more at 7;
+  plus two new abilities at 3; Double Load, Close Call plus four more at 7;
   Last Word plus two at 11; Dead Man's Hand at 15 (Fortune upgrades Luck
   automatically if known); and High Noon at 18. These remain
   selectable unlock choices.
