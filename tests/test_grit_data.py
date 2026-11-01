@@ -821,7 +821,7 @@ class GritDataTests(unittest.TestCase):
         }
         desperado = {
             'GSL_Desperado_DesperadosLuckUnlock': 3, 'GSL_Desperado_AnteUpUnlock': 3,
-            'GSL_Desperado_LuckyDrawUnlock': 3, 'GSL_Desperado_TwoGunTangoUnlock': 3,
+            'GSL_Desperado_LuckyDrawUnlock': 3,
             'GSL_Desperado_DoubleLoadUnlock': 7, 'GSL_Desperado_RollTheBonesUnlock': 7,
             'GSL_Desperado_DuckAndWeaveUnlock': 7, 'GSL_Desperado_CloseCallUnlock': 7,
             'GSL_Desperado_CheatDeathsOdds': 7, 'GSL_Desperado_HotHandUnlock': 7,

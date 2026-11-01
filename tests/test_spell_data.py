@@ -179,6 +179,7 @@ class SpellDataTests(unittest.TestCase):
                      'Zone_GSL_LineEmUp', 'Shout_GSL_HailOfLead', 'Projectile_GSL_DashAndGun_Flintlock'):
             self.assertIn(name, main_hand)
         self.assertIn('GSL_OffHand_Flintlock_attack_RangeMaster', off_hand)
+        self.assertIn('Projectile_GSL_DashAndGun_OffhandFlintlock', off_hand)
         self.assertEqual(len(off_hand), 4)
 
         # The engine plays CastSound from the caster at the Cast text event, like vanilla weapon actions.

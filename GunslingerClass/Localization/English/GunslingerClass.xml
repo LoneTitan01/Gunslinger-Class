@@ -361,8 +361,6 @@
         <content contentuid="h0000001cg0000g4000g8000g000000000001" version="1">Lucky Draw</content>
         <content contentuid="h0000001cg0000g4000g8000g000000000002" version="1">Spend 1 grit to reroll 1s and 2s on your firearm damage dice until the end of your turn. Once per turn.</content>
         <content contentuid="h0000001cg0000g4000g8000g000000000003" version="1">Reroll 1s and 2s on firearm damage dice.</content>
-        <content contentuid="h0000001dg0000g4000g8000g000000000001" version="1">Two-Gun Tango</content>
-        <content contentuid="h0000001dg0000g4000g8000g000000000002" version="1">Spend 1 grit to fire your off-hand flintlock. Doesn't use an action or bonus action. Once per turn.</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000001" version="1">Roll the Bones</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000002" version="1">Spend a bonus action and 1 grit to roll a d6. 1: -1d4 to your firearm attack rolls. 2-5: +1d6 damage on your next firearm hit. 6: +2d6 damage on your next firearm hit and regain 1 grit.</content>
         <content contentuid="h0000001eg0000g4000g8000g000000000003" version="1">Bust</content>
@@ -828,10 +826,10 @@
         <content contentuid="h6c13fa32g88aeg5c1bg9533gb456d7c045e8" version="1">While an infusion is active, infused rounds deal 5d4 damage of their element and each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
         <content contentuid="h6497dcf3gb9e0g4bacg801fgb6bc57ff8af9" version="1">Quickshot Flintlock</content>
         <content contentuid="hb4092454g69b4g4558gb150g2e49b62c4d68" version="1">A +1 Flintlock that grants 1 additional Grit. It also grants Quick Reload, which reloads for 1 Grit instead of a bonus action.</content>
-        <content contentuid="hd4cb74c1g6343g4bf5g96d7gedebe42eea8f" version="1">Run-and-Gun Flintlock</content>
-        <content contentuid="hf5feeccfgaddbg411bgb03egce307a7305d1" version="1">A +1 Flintlock that retains Quick Reload and grants Dash and Gun: after you Dash, you can make one free firearm attack.</content>
+        <content contentuid="hd4cb74c1g6343g4bf5g96d7gedebe42eea8f" version="1">Gilded Flintlock</content>
+        <content contentuid="hf5feeccfgaddbg411bgb03egce307a7305d1" version="1">A +1 Flintlock that retains Quick Reload and grants Dash and Gun: after you Dash, you can make one free attack with this Flintlock, in either hand.</content>
         <content contentuid="h6bf7a5c8g9052g48f4g821agb25a5ecbd3d9" version="1">Diamond Flintlock</content>
-        <content contentuid="h0a50e3e5gdcd3g45a4gb6c1gcf44039d94c8" version="1">A +2 Flintlock that retains Quick Reload and Dash and Gun, ignores resistance to piercing damage, and grants one additional bonus action.</content>
+        <content contentuid="h0a50e3e5gdcd3g45a4gb6c1gcf44039d94c8" version="1">A +2 Flintlock that retains Quick Reload and Dash and Gun, ignores resistance to piercing damage, and grants one additional action in the main hand or one additional bonus action in the off hand.</content>
         <content contentuid="h54ebbc4cg2183g4f99gb03cg067c22d99871" version="1">Umbral Flintlock</content>
         <content contentuid="h1404fc53g68c6g41c9gb2d7g67085e4d6b48" version="1">A +3 Flintlock that retains the Diamond Flintlock's abilities, reduces the critical hit threshold by 1, and grants advantage on attacks while in dim light or darkness.</content>
         <content contentuid="h04c548f4gdc9bg4c21g8a38gabf9049af7ca" version="1">Hellfire Flintlock</content>
@@ -856,8 +854,18 @@
         <content contentuid="hae96983fgf1acg4809g9515g880b6deb9f9a" version="1">Adamantine slag and rune powder refined into advanced components for a musket.</content>
         <content contentuid="h83c28b0bgb783g4514g9e21gfa8bbfdc4ed2" version="1">Quick Reload</content>
         <content contentuid="haedbea5cg390bg4236g9dd0g74f75c125ff5" version="1">Reload your Flintlock by spending 1 Grit instead of a bonus action.</content>
+        <content contentuid="h10000040g0000g4000g8000g000000000001" version="1">Quick Reload: Main Hand</content>
+        <content contentuid="h10000040g0000g4000g8000g000000000002" version="1">Quick Reload: Off Hand</content>
+        <content contentuid="h10000040g0000g4000g8000g000000000003" version="1">Reload your main hand Flintlock by spending 1 Grit instead of a bonus action.</content>
+        <content contentuid="h10000040g0000g4000g8000g000000000004" version="1">Reload your off hand Flintlock by spending 1 Grit instead of a bonus action.</content>
         <content contentuid="h2ab76147g40cbg4c14gb9f3gb1a2dc02ab08" version="1">Dash and Gun</content>
         <content contentuid="hd8ffc0e7g2ab0g43f8g949dge24a511b171d" version="1">After you Dash, make one free firearm attack. This attack still expends ammunition.</content>
+        <content contentuid="h10000042g0000g4000g8000g000000000001" version="1">Ignores Piercing Resistance</content>
+        <content contentuid="h10000042g0000g4000g8000g000000000002" version="1">Piercing damage you deal ignores Resistance.</content>
+        <content contentuid="h10000041g0000g4000g8000g000000000001" version="1">Dash and Gun: Main Hand</content>
+        <content contentuid="h10000041g0000g4000g8000g000000000002" version="1">Dash and Gun: Off Hand</content>
+        <content contentuid="h10000041g0000g4000g8000g000000000003" version="1">After you Dash, make one free attack with your main hand Flintlock. This attack still expends ammunition.</content>
+        <content contentuid="h10000041g0000g4000g8000g000000000004" version="1">After you Dash, make one free attack with your off hand Flintlock. This attack still expends ammunition.</content>
         <content contentuid="h79098cedg2ba3g4b63gbb78g1525e5c9465a" version="1">Paralyzing Shot</content>
         <content contentuid="h8f05648ag511eg4921ga658g70694848780e" version="1">Fire a musket shot that deals weapon damage. On a failed Constitution saving throw, the target is Paralyzed for 1 turn. Usable once per short rest.</content>
         <content contentuid="h651bbcedg66fag4427g8082g76311936d851" version="1">Attacks with this firearm deal an extra 1d4 Bludgeoning damage while you are at or below 70% of your hit points.</content>

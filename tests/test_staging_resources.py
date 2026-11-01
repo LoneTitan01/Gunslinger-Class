@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 from zipfile import ZIP_DEFLATED, ZipFile
 
-import stage_packages
+import build
 
 
 class StagingResourceTests(unittest.TestCase):
@@ -26,10 +26,10 @@ class StagingResourceTests(unittest.TestCase):
                 return subprocess.CompletedProcess(command, 0, '', '')
 
             staging = root / 'Weapon_Compat_Staging'
-            with patch.object(stage_packages, 'source_root', source), \
-                    patch.object(stage_packages, 'weapon_compat_staging', staging), \
-                    patch.object(stage_packages.subprocess, 'run', side_effect=convert):
-                packages, unconverted = stage_packages.stage_weapon_compat(Path('Divine.exe'))
+            with patch.object(build, 'source_root', source), \
+                    patch.object(build, 'weapon_compat_staging', staging), \
+                    patch.object(build.subprocess, 'run', side_effect=convert):
+                packages, unconverted = build.stage_weapon_compat(Path('Divine.exe'))
             self.assertEqual(packages, ((staging / name, f'{name}.pak'),))
             self.assertEqual(unconverted, [])
             self.assertTrue((staging / name / meta.relative_to(source)).is_file())
@@ -42,9 +42,9 @@ class StagingResourceTests(unittest.TestCase):
 
     def test_optional_weapon_modules_require_source_modules(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            with patch.object(stage_packages, 'source_root', Path(directory)):
+            with patch.object(build, 'source_root', Path(directory)):
                 with self.assertRaisesRegex(SystemExit, 'No weapon-copy compatibility modules'):
-                    stage_packages.stage_weapon_compat(None)
+                    build.stage_weapon_compat(None)
 
     def test_pack_includes_explicit_optional_packages(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -59,10 +59,10 @@ class StagingResourceTests(unittest.TestCase):
                     return 0, ''
                 return 0, 'resource.lsf\tmetadata'
 
-            with patch.object(stage_packages, 'packages', ()), \
-                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
-                    patch.object(stage_packages, 'run_divine', side_effect=divine):
-                built = stage_packages.pack(Path('Divine.exe'), ((staging, 'Optional.pak'),))
+            with patch.object(build, 'packages', ()), \
+                    patch.object(build, 'packages_dir', root / 'Packages'), \
+                    patch.object(build, 'run_divine', side_effect=divine):
+                built = build.pack(Path('Divine.exe'), ((staging, 'Optional.pak'),))
             self.assertEqual(built, [(root / 'Packages' / 'Optional.pak', 1)])
             self.assertTrue((root / 'Packages' / 'Optional.zip').is_file())
 
@@ -71,7 +71,7 @@ class StagingResourceTests(unittest.TestCase):
             root = Path(directory)
             output_dir = root / 'Packages'
             output_dir.mkdir()
-            packages = tuple((root / staging.name, name) for staging, name in stage_packages.packages)
+            packages = tuple((root / staging.name, name) for staging, name in build.packages)
             payload = b'package contents' * 100
             for staging, name in packages:
                 staging.mkdir()
@@ -84,10 +84,10 @@ class StagingResourceTests(unittest.TestCase):
                     return 0, ''
                 return 0, 'resource.lsf\tmetadata'
 
-            with patch.object(stage_packages, 'packages', packages), \
-                    patch.object(stage_packages, 'packages_dir', output_dir), \
-                    patch.object(stage_packages, 'run_divine', side_effect=divine):
-                built = stage_packages.pack(Path('Divine.exe'))
+            with patch.object(build, 'packages', packages), \
+                    patch.object(build, 'packages_dir', output_dir), \
+                    patch.object(build, 'run_divine', side_effect=divine):
+                built = build.pack(Path('Divine.exe'))
 
             self.assertEqual(built, [(output_dir / name, 1) for _, name in packages])
             for pak, _ in built:
@@ -102,11 +102,11 @@ class StagingResourceTests(unittest.TestCase):
     def test_failed_package_creation_does_not_create_archive(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            with patch.object(stage_packages, 'packages', ((root / 'staging', 'GunslingerClass.pak'),)), \
-                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
-                    patch.object(stage_packages, 'run_divine', return_value=(1, 'packing failed')):
+            with patch.object(build, 'packages', ((root / 'staging', 'GunslingerClass.pak'),)), \
+                    patch.object(build, 'packages_dir', root / 'Packages'), \
+                    patch.object(build, 'run_divine', return_value=(1, 'packing failed')):
                 with self.assertRaisesRegex(SystemExit, 'packing failed'):
-                    stage_packages.pack(Path('Divine.exe'))
+                    build.pack(Path('Divine.exe'))
             self.assertFalse((root / 'Packages' / 'GunslingerClass.zip').exists())
 
     def test_unverified_package_does_not_create_archive(self) -> None:
@@ -121,25 +121,25 @@ class StagingResourceTests(unittest.TestCase):
                     Path(args[args.index('-d') + 1]).write_bytes(b'package')
                 return 0, ''
 
-            with patch.object(stage_packages, 'packages', ((staging, 'GunslingerClass.pak'),)), \
-                    patch.object(stage_packages, 'packages_dir', root / 'Packages'), \
-                    patch.object(stage_packages, 'run_divine', side_effect=divine):
+            with patch.object(build, 'packages', ((staging, 'GunslingerClass.pak'),)), \
+                    patch.object(build, 'packages_dir', root / 'Packages'), \
+                    patch.object(build, 'run_divine', side_effect=divine):
                 with self.assertRaisesRegex(SystemExit, 'missing staged files'):
-                    stage_packages.pack(Path('Divine.exe'))
+                    build.pack(Path('Divine.exe'))
             self.assertFalse((root / 'Packages' / 'GunslingerClass.zip').exists())
 
     def test_converts_root_templates_and_content_banks(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             staging = Path(directory)
             resources = (
-                stage_packages.content_dir / 'Assets' / 'Firearms' / '_merged.lsx',
+                build.content_dir / 'Assets' / 'Firearms' / '_merged.lsx',
                 Path('Public/GunslingerClass/RootTemplates/_merged.lsx'),
-                stage_packages.tags_dir / 'd4237481-5fe3-4120-9c9c-2c89b72b774d.lsx',
-                stage_packages.gui_metadata,
-                stage_packages.multi_effect_infos_dir / '1926d069-4ddf-4f80-ae75-897cf666fb16.lsx',
-                stage_packages.books_dir / 'GunslingerClass_Books.lsx',
+                build.tags_dir / 'd4237481-5fe3-4120-9c9c-2c89b72b774d.lsx',
+                build.gui_metadata,
+                build.multi_effect_infos_dir / '1926d069-4ddf-4f80-ae75-897cf666fb16.lsx',
+                build.books_dir / 'GunslingerClass_Books.lsx',
             )
-            effect = stage_packages.effects_dir / 'Effects_Banks' / 'GSL_Firearm_Shot_SoundFX.lsx'
+            effect = build.effects_dir / 'Effects_Banks' / 'GSL_Firearm_Shot_SoundFX.lsx'
             for resource in (*resources, effect):
                 source = staging / resource
                 source.parent.mkdir(parents=True, exist_ok=True)
@@ -149,9 +149,9 @@ class StagingResourceTests(unittest.TestCase):
                 Path(command[command.index('-d') + 1]).write_bytes(b'compiled')
                 return subprocess.CompletedProcess(command, 0, '', '')
 
-            with patch.object(stage_packages, 'main_staging', staging):
-                with patch.object(stage_packages.subprocess, 'run', side_effect=convert):
-                    self.assertEqual(stage_packages.stage_content_banks(Path('Divine.exe')), [])
+            with patch.object(build, 'main_staging', staging):
+                with patch.object(build.subprocess, 'run', side_effect=convert):
+                    self.assertEqual(build.stage_content_banks(Path('Divine.exe')), [])
             for resource in resources:
                 self.assertFalse((staging / resource).exists())
                 self.assertEqual((staging / resource.with_suffix('.lsf')).read_bytes(), b'compiled')
@@ -162,14 +162,14 @@ class StagingResourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             staging = Path(directory)
             root_template = staging / 'Public/GunslingerClass/RootTemplates/_merged.lsx'
-            gui_metadata = staging / stage_packages.gui_metadata
+            gui_metadata = staging / build.gui_metadata
             root_template.parent.mkdir(parents=True)
             root_template.write_text('<save/>', encoding='utf-8')
             gui_metadata.parent.mkdir(parents=True)
             gui_metadata.write_text('<save/>', encoding='utf-8')
-            with patch.object(stage_packages, 'main_staging', staging):
+            with patch.object(build, 'main_staging', staging):
                 self.assertEqual(
-                    stage_packages.stage_content_banks(None),
+                    build.stage_content_banks(None),
                     sorted([root_template, gui_metadata]),
                 )
             self.assertTrue(root_template.exists())
@@ -178,20 +178,20 @@ class StagingResourceTests(unittest.TestCase):
     def test_failed_conversion_preserves_source_and_stops(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             staging = Path(directory)
-            source = staging / stage_packages.content_dir / '_merged.lsx'
+            source = staging / build.content_dir / '_merged.lsx'
             source.parent.mkdir(parents=True)
             source.write_text('<save/>', encoding='utf-8')
-            with patch.object(stage_packages, 'main_staging', staging):
+            with patch.object(build, 'main_staging', staging):
                 with patch.object(
-                    stage_packages.subprocess, 'run',
+                    build.subprocess, 'run',
                     return_value=subprocess.CompletedProcess([], 1, '', 'conversion failed'),
                 ):
                     with self.assertRaisesRegex(SystemExit, 'conversion failed'):
-                        stage_packages.stage_content_banks(Path('Divine.exe'))
+                        build.stage_content_banks(Path('Divine.exe'))
             self.assertTrue(source.exists())
 
     def test_stage_weapon_compat_discovers_every_compat_module(self) -> None:
-        packages, unconverted = stage_packages.stage_weapon_compat(None)
+        packages, unconverted = build.stage_weapon_compat(None)
         expected_names = {
             'GunslingerClass_ATE_WeaponCopiesCompat.pak',
             'GunslingerClass_CL_WeaponCopiesCompat.pak',
@@ -202,21 +202,21 @@ class StagingResourceTests(unittest.TestCase):
         self.assertTrue(unconverted)
 
     def test_main_stages_weapon_compat_by_default(self) -> None:
-        with patch.object(stage_packages, 'copy_dirs'), \
-                patch.object(stage_packages, 'stage_localization', return_value=True), \
-                patch.object(stage_packages, 'stage_content_banks', return_value=[]), \
-                patch.object(stage_packages, 'stage_weapon_compat', return_value=((), [])) as mock_compat, \
-                patch.object(stage_packages, 'print_tree'):
-            stage_packages.main(['--no-divine', '--skip-validation', '--no-pack'])
+        with patch.object(build, 'copy_dirs'), \
+                patch.object(build, 'stage_localization', return_value=True), \
+                patch.object(build, 'stage_content_banks', return_value=[]), \
+                patch.object(build, 'stage_weapon_compat', return_value=((), [])) as mock_compat, \
+                patch.object(build, 'print_tree'):
+            build.main(['--no-divine', '--skip-validation', '--no-pack'])
             mock_compat.assert_called_once_with(None)
 
     def test_main_omits_weapon_compat_with_flag(self) -> None:
-        with patch.object(stage_packages, 'copy_dirs'), \
-                patch.object(stage_packages, 'stage_localization', return_value=True), \
-                patch.object(stage_packages, 'stage_content_banks', return_value=[]), \
-                patch.object(stage_packages, 'stage_weapon_compat') as mock_compat, \
-                patch.object(stage_packages, 'print_tree'):
-            stage_packages.main(['--skip-validation', '--no-pack', '--no-weapon-compat'])
+        with patch.object(build, 'copy_dirs'), \
+                patch.object(build, 'stage_localization', return_value=True), \
+                patch.object(build, 'stage_content_banks', return_value=[]), \
+                patch.object(build, 'stage_weapon_compat') as mock_compat, \
+                patch.object(build, 'print_tree'):
+            build.main(['--skip-validation', '--no-pack', '--no-weapon-compat'])
             mock_compat.assert_not_called()
 
 

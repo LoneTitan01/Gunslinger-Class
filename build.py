@@ -35,7 +35,7 @@ main_staging = repo_root / 'Main_Staging'
 compat_staging = repo_root / '5e_Compat_Staging'
 weapon_compat_staging = repo_root / 'Weapon_Compat_Staging'
 packages_dir = repo_root / 'Packages'
-settings_file = repo_root / 'stage_packages.yaml'
+settings_file = repo_root / 'build.yaml'
 packages = (
     (main_staging, 'GunslingerClass.pak'),
     (compat_staging, 'GunslingerClass_5eSpellsCompat.pak'),
