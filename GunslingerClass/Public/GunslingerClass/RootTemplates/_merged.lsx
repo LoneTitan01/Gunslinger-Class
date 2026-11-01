@@ -3982,7 +3982,7 @@
                     <attribute id="Type" type="FixedString" value="item"/>
                 </node>
                 
-                <!-- Vanilla Adamantine Slag and Mithral Bar with unique stats IDs so crafting recipes can match them. -->
+                <!-- Vanilla Adamantine Slag (both templates) and Mithral Bar with unique stats IDs so crafting recipes can match them. -->
                 <node id="GameObjects">
                     <attribute id="CanBeMoved" type="bool" value="True"/>
                     <attribute id="CanBePickedUp" type="bool" value="True"/>
@@ -4078,6 +4078,72 @@
                     <attribute id="WalkThrough" type="bool" value="True"/>
                     <attribute id="_OriginalFileVersion_" type="int64" value="144115198813274312"/>
                     <attribute id="maxStackAmount" type="int32" value="20"/>
+                </node>
+                <node id="GameObjects">
+                    <attribute id="CanBeMoved" type="bool" value="True"/>
+                    <attribute id="CanBePickedUp" type="bool" value="True"/>
+                    <attribute id="CanClimbOn" type="bool" value="False"/>
+                    <attribute id="CanJoinCombat" type="bool" value="False"/>
+                    <attribute id="CoverAmount" type="uint8" value="1"/>
+                    <attribute id="Description" type="TranslatedString" handle="hb7944874gc894g40d6gab0bg544ac58033a7" version="3"/>
+                    <attribute id="DisplayName" type="TranslatedString" handle="h87bcb063g4208g4db9ga201g603b93ef3651" version="3"/>
+                    <attribute id="Icon" type="FixedString" value="Item_LOOT_GEN_AdamantineScrap_A_Piece"/>
+                    <attribute id="LevelName" type="FixedString" value=""/>
+                    <attribute id="MapKey" type="FixedString" value="3d6e790a-6454-4926-a2b0-21286c8f67a2"/>
+                    <attribute id="Name" type="LSString" value="LOOT_GEN_AdamantineScrap_A_Piece"/>
+                    <attribute id="ParentTemplateId" type="FixedString" value="deb1c368-16c8-4dc4-8bb0-aaa1bd80cda2"/>
+                    <attribute id="PhysicsTemplate" type="FixedString" value="e5fdad4c-b9a6-092c-8cf1-459cd04d2764"/>
+                    <attribute id="Stats" type="FixedString" value="LOOT_GEN_AdamantineScrap_A"/>
+                    <attribute id="TreasureOnDestroy" type="bool" value="False"/>
+                    <attribute id="Type" type="FixedString" value="item"/>
+                    <attribute id="VisualTemplate" type="FixedString" value="07260b63-e413-4424-113d-b6ca87454282"/>
+                    <attribute id="WalkOn" type="bool" value="True"/>
+                    <attribute id="WalkThrough" type="bool" value="False"/>
+                    <attribute id="_OriginalFileVersion_" type="int64" value="144115200960757763"/>
+                    <children>
+                        <node id="Bounds">
+                            <children>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="Max" type="fvec3" value="0.0804919 0.07776615 0.04137925"/>
+                                    <attribute id="Min" type="fvec3" value="-0.078712106 -0.0032043979 -0.048980944"/>
+                                    <attribute id="Radius" type="float" value="0.2165065"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="0"/>
+                                </node>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="Max" type="fvec3" value="0.0804919 0.07776615 0.04137925"/>
+                                    <attribute id="Min" type="fvec3" value="-0.078712106 -0.0032043979 -0.048980944"/>
+                                    <attribute id="Radius" type="float" value="0.433013"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="1"/>
+                                </node>
+                                <node id="Bound">
+                                    <attribute id="Height" type="float" value="1"/>
+                                    <attribute id="Max" type="fvec3" value="0.0804919 0.07776615 0.04137925"/>
+                                    <attribute id="Min" type="fvec3" value="-0.078712106 -0.0032043979 -0.048980944"/>
+                                    <attribute id="Radius" type="float" value="0.433013"/>
+                                    <attribute id="Shape" type="uint8" value="1"/>
+                                    <attribute id="Type" type="uint8" value="2"/>
+                                </node>
+                            </children>
+                        </node>
+                        <node id="OnDestroyActions">
+                            <children>
+                                <node id="Action">
+                                    <attribute id="ActionType" type="int32" value="26"/>
+                                    <children>
+                                        <node id="Attributes">
+                                            <attribute id="ActivateSoundEvent" type="FixedString" value="3ea82655-5140-4287-9ab8-794559f182d3"/>
+                                            <attribute id="Animation" type="FixedString" value=""/>
+                                            <attribute id="PlayOnHUD" type="bool" value="False"/>
+                                        </node>
+                                    </children>
+                                </node>
+                            </children>
+                        </node>
+                    </children>
                 </node>
                 
                 <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->
