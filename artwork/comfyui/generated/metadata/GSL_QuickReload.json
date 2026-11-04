@@ -1,8 +1,8 @@
 {
   "icon": "GSL_QuickReload",
-  "seed": 6726482520971641405,
-  "text": "A single fantasy RPG ability icon: a brass musket ball and short ramrod surrounded by one swift circular arrow. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
-  "prompt_id": "62e5acb8-f115-4e3a-988b-d36797ab98a9",
+  "seed": 8802173110227355118,
+  "text": "A single fantasy RPG ability icon: a thick weathered cracked brass ring forming one clockwise reload arrow with a single large arrowhead at the upper right and a small crimson gem set at the bottom of the ring, one brass musket ball trailing short swift golden speed streaks in the center. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+  "prompt_id": "909569df-132d-491e-a7dc-650d9d7fc4c8",
   "state": "completed",
   "api_prompt": {
     "1": {
@@ -30,7 +30,7 @@
     "4": {
       "class_type": "CLIPTextEncode",
       "inputs": {
-        "text": "A single fantasy RPG ability icon: a brass musket ball and short ramrod surrounded by one swift circular arrow. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+        "text": "A single fantasy RPG ability icon: a thick weathered cracked brass ring forming one clockwise reload arrow with a single large arrowhead at the upper right and a small crimson gem set at the bottom of the ring, one brass musket ball trailing short swift golden speed streaks in the center. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
         "clip": [
           "2",
           0
@@ -67,7 +67,7 @@
     "8": {
       "class_type": "KSampler",
       "inputs": {
-        "seed": 6726482520971641405,
+        "seed": 8802173110227355118,
         "steps": 24,
         "cfg": 1,
         "sampler_name": "euler",
