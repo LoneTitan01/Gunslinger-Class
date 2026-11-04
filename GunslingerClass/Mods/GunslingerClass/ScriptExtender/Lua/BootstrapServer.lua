@@ -631,18 +631,80 @@ Ext.Events.StatsLoaded:Subscribe(function()
     end
 end)
 
--- CastSound is one value per spell, but grit shots fire whichever gun is in the main hand, so switch it
--- to that gun's shot before the cast. The engine plays it from the caster at the Cast text event.
-local function matchShotSound(character, spell)
-    if spell:find("OffHand", 1, true) then return end
-    local stat = Ext.Stats.Get(spell)
-    local _, kind = equipped(character, "Main")
-    local sound = stat and Rules.ShotSound(stat.CastSound, kind)
-    if sound then
-        stat.CastSound = sound
-        Ext.Stats.Sync(spell, false)
+-- Gunshots play on the animation's cast text key (the frame the bullet leaves the gun), not through
+-- CastSound, which the engine plays when the cast animation starts. Gunshot spells leave CastSound empty.
+-- Per-spell cache of the hand a spell fires (false: not a gunshot), like bulletHand.
+local gunshotHands = {}
+local function gunshotHand(name)
+    if gunshotHands[name] == nil then
+        local spell = name:find("GSL_", 1, true) and Ext.Stats.Get(name)
+        local hand = false
+        if spell then
+            for _, weapon in ipairs({"MainRangedWeapon", "OffhandRangedWeapon"}) do
+                for _, key in ipairs({"SpellSuccess", "SpellProperties", "SpellFail"}) do
+                    if dealsWeaponDamage(field(spell, key), weapon) then
+                        -- Names spell it both "OffHand" and "Offhand" (Dash and Gun).
+                        hand = name:lower():find("offhand", 1, true) and "Off" or "Main"
+                    end
+                end
+            end
+        end
+        gunshotHands[name] = hand
     end
+    return gunshotHands[name] or nil
 end
+
+-- Returns whether a text key fires the spell: its CastTextEvent, or an AlternativeCastTextEvents entry
+-- (multi-shot animations fire once per key, so each bullet gets its own bang).
+local function firesOnTextKey(spell, textKey)
+    local castEvent = field(spell, "CastTextEvent")
+    if textKey == ((castEvent and castEvent ~= "") and castEvent or "Cast") then return true end
+    local alternatives = field(spell, "AlternativeCastTextEvents") or ""
+    if type(alternatives) == "string" then
+        for key in alternatives:gmatch("[^;]+") do
+            if key == textKey then return true end
+        end
+        return false
+    end
+    for _, key in pairs(alternatives) do
+        if key == textKey then return true end
+    end
+    return false
+end
+
+local function playGunshot(character, name, textKey)
+    local hand = gunshotHand(name)
+    if not hand then return end
+    if textKey and not firesOnTextKey(Ext.Stats.Get(name), textKey) then return end
+    local _, kind = equipped(character, hand)
+    if kind then Osi.PlaySound(character, Rules.Firearms[kind].shotSound) end
+end
+
+-- Cast text keys arrive inside the ECS update, where Osiris can't be called, so they are queued and
+-- played on the next tick. If this Script Extender can't watch them, shots play when the cast starts.
+local pendingGunshots = {}
+local textKeyGunshots = pcall(Ext.Entity.OnCreate, "SpellCastTextKeyEvent", function(entity)
+    local ok, err = pcall(function()
+        local event = entity.SpellCastTextKeyEvent
+        local cast = event and (event.CastEntity or entity)
+        local state = cast and cast.SpellCastState
+        local caster = state and state.Caster and state.Caster.Uuid
+        if not (caster and gunshotHand(state.SpellId.Prototype)) then return end
+        pendingGunshots[#pendingGunshots + 1] = {character = caster.EntityUuid,
+            spell = state.SpellId.Prototype, textKey = event.TextKey}
+    end)
+    if not ok then Ext.Utils.Print("[Gunslinger] WARNING: Could not read a cast text key: " .. tostring(err)) end
+end)
+if not textKeyGunshots then
+    Ext.Utils.Print("[Gunslinger] WARNING: Cast text keys are unavailable; gunshots play when the cast starts.")
+end
+
+Ext.Events.Tick:Subscribe(function()
+    if #pendingGunshots == 0 then return end
+    local shots = pendingGunshots
+    pendingGunshots = {}
+    for _, shot in ipairs(shots) do playGunshot(shot.character, shot.spell, shot.textKey) end
+end)
 
 Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell, _, _, action)
     -- Grit Recovery triggers once per attack; a new attack re-arms it.
@@ -653,7 +715,7 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
         Osi.RemoveStatus(character, "GSL_HOT_STREAK_ADVANCED")
     end
     if not spell:find("GSL_", 1, true) then return end
-    matchShotSound(character, spell)
+    if not textKeyGunshots then playGunshot(character, spell) end
     refresh(character, false)
     local shotHand = spell:match("^Shout_GSL_%a+Repair_(%a+)") or
         (spell:find("OffHand", 1, true) and "Off" or "Main")
@@ -995,6 +1057,7 @@ Ext.Osiris.RegisterListener("LongRestFinished", 0, "after", function()
 end)
 Ext.Events.SessionLoaded:Subscribe(function()
     casts = {}
+    pendingGunshots = {}
     pendingRefresh = {}
     pendingLastWord = {}
     recentAttackers = {}

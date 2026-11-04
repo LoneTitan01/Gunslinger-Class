@@ -10,17 +10,6 @@ Rules.Firearms = {
         resource = "6c4658a0-74d6-4bec-851f-d91ee914484d", shotSound = "Projectiles_Grn_Impact_Bomb"}
 }
 
--- A firing spell's CastSound is the gunshot of the gun it fires; shared grit shots need the equipped gun's.
-function Rules.ShotSound(current, kind)
-    local firearm = kind and Rules.Firearms[kind]
-    if not firearm then return nil end
-    for _, gun in pairs(Rules.Firearms) do
-        if gun.shotSound == current then
-            return firearm.shotSound ~= current and firearm.shotSound or nil
-        end
-    end
-    return nil
-end
 Rules.OffhandResource = "6ba4dcd7-6927-4e6d-a79f-7f997840c51c"
 -- Craft spells apply these markers; the server creates ordinary items, since summoned ones vanish
 -- when their summoner dies or respecs.

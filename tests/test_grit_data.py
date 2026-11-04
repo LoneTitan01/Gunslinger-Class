@@ -270,7 +270,7 @@ class GritDataTests(unittest.TestCase):
                     self.assertIn(f"HasPassive('GSL_{weapon}_MainHand',context.Source)", shot['RequirementConditions'])
                     self.assertIn(f"HasActionResource('{resource}',1,0)", shot['RequirementConditions'])
                     self.assertEqual(shot['SpellProperties'].count(f'UseActionResource(SELF,{resource},1,0)'), 1)
-                self.assertEqual(shot['CastSound'], 'Projectiles_Grn_Impact_Bomb')
+                self.assertEqual(shot['CastSound'], '')
         extra_attack = self.entries['GSL_SecondAttack'].fields
         self.assertIn('ExtraAttackSpellCheck()', extra_attack['Conditions'])
         self.assertIn("HasUseCosts('ActionPoint', true)", extra_attack['Conditions'])
@@ -428,7 +428,7 @@ class GritDataTests(unittest.TestCase):
         followup = self.fields('Projectile_GSL_DoubleOrNothingAttack')
         self.assertEqual(self.entries['Projectile_GSL_DoubleOrNothingAttack'].parent, 'Projectile_GSL_ReactionShot')
         self.assertIn("HasActionResource('GunslingerFlintlockAmmo',1,0)", followup['RequirementConditions'])
-        self.assertEqual(followup['CastSound'], 'Projectiles_Grn_Impact_Bomb')
+        self.assertEqual(followup['CastSound'], '')
 
     def test_smart_shooting_adds_intelligence_to_firearm_attack_and_damage(self) -> None:
         boosts = self.fields('GSL_ArcaneGunsman_SmartShooting')['Boosts'].split(';')
@@ -690,7 +690,6 @@ class GritDataTests(unittest.TestCase):
             self.assertEqual(self.entries[interrupt].kind, 'InterruptData')
         luck = self.entries['Interrupt_GSL_DesperadosLuck'].fields
         self.assertEqual(luck['Cost'], 'GunslingerGrit:1')
-        self.assertIn('AdjustRoll(1d4)', luck['Properties'])
         self.assertIn('GSL_DESPERADOS_LUCK_USED', luck['Conditions'])
         close = self.entries['Interrupt_GSL_CloseCall'].fields
         self.assertEqual(close['Cost'], 'ReactionActionPoint:1;GunslingerGrit:2')
@@ -730,6 +729,27 @@ class GritDataTests(unittest.TestCase):
                         'ApplyStatus(GSL_LASTWORD_PENDING,100,1)'):
             self.assertIn(functor, downed['OnApplyFunctors'])
 
+    def test_desperados_luck_and_fortune_graze_missed_firearm_attacks(self) -> None:
+        # Modelled on vanilla Interrupt_Overwhelm (Greatclub Tenacity): the attacker reacts to their own miss.
+        for name, scale in (('Interrupt_GSL_DesperadosLuck', '/2'), ('Interrupt_GSL_DesperadosFortune', '')):
+            with self.subTest(interrupt=name):
+                fields = self.entries[name].fields
+                self.assertEqual(fields['InterruptContext'], 'OnCastHit')
+                self.assertEqual(fields['InterruptContextScope'], 'Self')
+                self.assertEqual(fields['Cost'], 'GunslingerGrit:1')
+                self.assertEqual(fields['InterruptDefaultValue'], 'Ask;Enabled')
+                conditions = fields['Conditions']
+                self.assertIn('Self(context.Source,context.Observer) and IsMiss()', conditions)
+                self.assertNotIn('IsCriticalMiss', conditions)
+                self.assertNotIn('HasInterruptedSavingThrow', conditions)
+                self.assertIn("not HasStatus('GSL_DESPERADOS_LUCK_USED',context.Observer)", conditions)
+                properties = fields['Properties']
+                self.assertNotIn('AdjustRoll', properties)
+                self.assertIn(f'IF(not IsOffHandAttack()):DealDamage(MainRangedWeapon{scale},MainRangedWeaponDamageType)', properties)
+                self.assertIn(f'IF(IsOffHandAttack()):DealDamage(OffhandRangedWeapon{scale},OffhandRangedWeaponDamageType)', properties)
+                self.assertIn('ApplyStatus(OBSERVER_OBSERVER,GSL_DESPERADOS_LUCK_USED,100,1)', properties)
+        self.assertFalse({'GSL_DesperadosGraze', 'GSL_DESPERADOS_GRAZE', 'GSL_DESPERADOS_GRAZE_FULL'} & self.entries.keys())
+
     def test_new_grit_reactions_are_native_interrupts(self) -> None:
         for passive, interrupt, cost in (
             ('GSL_HairTriggerUnlock', 'Interrupt_GSL_HairTrigger', 'ReactionActionPoint:1;GunslingerGrit:1'),
@@ -755,10 +775,6 @@ class GritDataTests(unittest.TestCase):
             self.assertIn(refund, draw)
         self.assertLess(draw.index('Counterspell()'), draw.index('Projectile_GSL_ReactionShot'))
         self.assertIn('RestoreResource(SELF,ActionPoint,1,0)', self.entries['GSL_QUICK_ON_THE_DRAW_REFUND'].fields['OnApplyFunctors'])
-        self.assertIn('AdjustRoll(1d8)', self.entries['Interrupt_GSL_DesperadosFortune'].fields['Properties'])
-        fortune_conditions = self.entries['Interrupt_GSL_DesperadosFortune'].fields['Conditions']
-        self.assertIn('IsFlatValueInterruptInteresting(8,context.Source)', fortune_conditions)
-        self.assertIn('IsFlatValueInterruptInteresting(8,context.Target)', fortune_conditions)
         self.assertNotIn('Interrupt_GSL_HighNoonLuck', self.entries)
         self.assertEqual(self.entries['GSL_Desperado_HighNoonUnlock'].fields['Boosts'], 'UnlockSpell(Target_GSL_HighNoon)')
         noon = self.entries['GSL_HIGH_NOON'].fields['Boosts']

@@ -149,7 +149,7 @@
         <content contentuid="h3178086bg4305g5971g85e1g0a37f8a4c60d" version="1">Fanning Fire</content>
         <content contentuid="haa822b5cged83g566egb8e6gef6bbe8dd09b" version="1">Spend 1-3 grit points and an action to fire 2-4 shots. Each shot has an attack-roll penalty equal to 1 + the grit spent (-2, -3 or -4) and consumes one bullet. You must have ammunition for the entire volley.</content>
         <content contentuid="hfdbc6d02gcb7ag56abgaa91g2ea5a90e644d" version="1">Desperado's Luck</content>
-        <content contentuid="h94a64143g6490g531cg90d2g35e4bd2f635b" version="1">Once per turn, when a firearm attack would miss, spend 1 grit point to add 1d4 to the roll. This interrupt does not spend a Reaction point.</content>
+        <content contentuid="h94a64143g6490g531cg90d2g35e4bd2f635b" version="1">Once per turn, when a firearm attack misses, spend 1 grit point to graze the target anyway, dealing half the attack's normal weapon damage. This interrupt does not spend a Reaction point.</content>
         <content contentuid="h9ff329b1gf028g5572g8be4gf801282dd29e" version="1">Second Attack</content>
         <content contentuid="h40c7e0efg541ag5499gafe0g0477e6b5cec7" version="1">You can attack twice, instead of once, whenever you take the Attack action.</content>
         <content contentuid="h3b5cddd1g217eg53baga9fdg40216cf13fa3" version="1">Broken</content>
@@ -388,8 +388,8 @@
         <content contentuid="h00000024g0000g4000g8000g000000000003" version="1">Your next firearm hit is a Critical Hit.</content>
         <content contentuid="h00000027g0000g4000g8000g000000000001" version="1">Desperado's Fortune</content>
         <content contentuid="h31000002g0000g4000g8000g000000000001" version="1">Desperado's Luck: Evolution</content>
-        <content contentuid="h31000002g0000g4000g8000g000000000002" version="1">If you know Desperado's Luck, it evolves into Desperado's Fortune when you complete this level, without spending a grit ability choice. Fortune replaces Luck's 1d4 reaction with 1d8 after a missed firearm attack or failed saving throw. If you do not know Luck, Fortune is available as a normal grit ability choice instead.</content>
-        <content contentuid="h00000027g0000g4000g8000g000000000002" version="1">Replaces Desperado's Luck. When a firearm attack misses or you fail a saving throw, spend 1 grit to add 1d8 to the roll. Once per turn.</content>
+        <content contentuid="h31000002g0000g4000g8000g000000000002" version="1">If you know Desperado's Luck, it evolves into Desperado's Fortune when you complete this level, without spending a grit ability choice. Fortune's graze deals full weapon damage on a missed firearm attack instead of half. If you do not know Luck, Fortune is available as a normal grit ability choice instead.</content>
+        <content contentuid="h00000027g0000g4000g8000g000000000002" version="1">Replaces Desperado's Luck. Once per turn, when a firearm attack misses, spend 1 grit point to graze the target anyway, dealing the attack's full normal weapon damage. This interrupt does not spend a Reaction point.</content>
         <content contentuid="h00000028g0000g4000g8000g000000000001" version="1">High Noon</content>
         <content contentuid="h00000028g0000g4000g8000g000000000002" version="1">Spend a bonus action and 5 grit to call out an enemy for 3 turns. Your firearm attacks against it gain +20 to hit and score a Critical Hit on a 17-20. Your firearm attacks also deal an extra 1d8 damage. Once per long rest.</content>
         <content contentuid="h00000030g0000g4000g8000g000000000001" version="1">Last Man Standing</content>
