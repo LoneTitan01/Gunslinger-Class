@@ -1,8 +1,8 @@
 {
   "icon": "GSL_FullReload",
-  "seed": 8660904163464874047,
-  "text": "A single fantasy RPG ability icon: two short crossed flintlock pistols surrounded by one broad circular brass reload arrow. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
-  "prompt_id": "1526a5ac-d038-428f-ba5f-c539d7ea325a",
+  "seed": 8660904163465873378,
+  "text": "A single fantasy RPG ability icon: a thick weathered cracked brass ring forming one clockwise reload arrow with a single large arrowhead at the upper right and a small crimson gem set at the bottom of the ring, two small identical antique flintlock pistols crossed in an X fitting inside the empty center of the ring. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+  "prompt_id": "f2389706-9d54-44fa-9355-c870b81fe0d6",
   "state": "completed",
   "api_prompt": {
     "1": {
@@ -30,7 +30,7 @@
     "4": {
       "class_type": "CLIPTextEncode",
       "inputs": {
-        "text": "A single fantasy RPG ability icon: two short crossed flintlock pistols surrounded by one broad circular brass reload arrow. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+        "text": "A single fantasy RPG ability icon: a thick weathered cracked brass ring forming one clockwise reload arrow with a single large arrowhead at the upper right and a small crimson gem set at the bottom of the ring, two small identical antique flintlock pistols crossed in an X fitting inside the empty center of the ring. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
         "clip": [
           "2",
           0
@@ -67,7 +67,7 @@
     "8": {
       "class_type": "KSampler",
       "inputs": {
-        "seed": 8660904163464874047,
+        "seed": 8660904163465873378,
         "steps": 24,
         "cfg": 1,
         "sampler_name": "euler",

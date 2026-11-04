@@ -1,8 +1,8 @@
 {
   "icon": "GSL_InfusedRounds_3",
   "seed": 7921746388751975306,
-  "text": "A single fantasy RPG ability icon: one brass musket ball wrapped in a steel casing with purple arcane energy between the ball and the casing. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
-  "prompt_id": "5dfedba4-e3de-4175-a4d8-b7c001272282",
+  "text": "A single fantasy RPG ability icon: one brass musket ball inside a cracked dark steel cage of three bands, bright violet arcane energy glowing through the gaps. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+  "prompt_id": "5dd573ac-5823-4b5c-87e1-05af02eb500a",
   "state": "completed",
   "api_prompt": {
     "1": {
@@ -30,7 +30,7 @@
     "4": {
       "class_type": "CLIPTextEncode",
       "inputs": {
-        "text": "A single fantasy RPG ability icon: one brass musket ball wrapped in a steel casing with purple arcane energy between the ball and the casing. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
+        "text": "A single fantasy RPG ability icon: one brass musket ball inside a cracked dark steel cage of three bands, bright violet arcane energy glowing through the gaps. Original hand-painted game UI art, bold compact silhouette, engraved brass and dark steel, warm ivory highlights, restrained crimson accent, clean crisp edges. One centered emblem occupying 75 percent of the square canvas, generous empty margin, isolated on a flat solid charcoal background, no ground shadow. Symbolic icon, not a scene. No text, letters, numbers, watermark, border, frame, gradients in the background, modern firearms, or extra objects. Readable when reduced to 64 pixels.",
         "clip": [
           "2",
           0
