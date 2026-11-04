@@ -135,8 +135,9 @@ class SpellDataTests(unittest.TestCase):
                     if name == 'Projectile_GSL_DoubleOrNothing' and key in ('PrepareEffect', 'CastEffect'):
                         self.assertFalse(fields.get(key, ''), key)
                         continue
+                    # Gunshots play from BootstrapServer.lua on the cast text key, not through CastSound.
                     if key == 'CastSound' and (name.startswith('Projectile_GSL_') or
-                                               fields.get(key) in SHOT_SOUNDS.values()):
+                                               'MainRangedWeapon' in fields.get('SpellSuccess', '')):
                         continue
                     self.assertEqual(fields.get(key, ''), expected.get(key, ''), key)
 
@@ -153,12 +154,12 @@ class SpellDataTests(unittest.TestCase):
         for name in projectiles:
             with self.subTest(spell=name):
                 fields = self.spell(name)
-                self.assertIn(fields.get('CastSound', ''), SHOT_SOUNDS.values())
+                self.assertEqual(fields.get('CastSound', ''), '')
                 self.assertEqual(fields.get('TargetSound', ''), '')
                 if self.external:
                     self.assertEqual(fields.get('SpellSoundMagnitude'), 'None')
 
-    def test_firearm_shots_play_immersive_firearms_sounds_as_cast_sounds(self) -> None:
+    def test_firearm_shots_play_immersive_firearms_sounds_on_the_cast_text_key(self) -> None:
         def descends(name: str, base: str) -> bool:
             while name in self.entries:
                 if name == base:
@@ -182,22 +183,20 @@ class SpellDataTests(unittest.TestCase):
         self.assertIn('Projectile_GSL_DashAndGun_OffhandFlintlock', off_hand)
         self.assertEqual(len(off_hand), 4)
 
-        # The engine plays CastSound from the caster at the Cast text event, like vanilla weapon actions.
-        # Spells tied to one gun use its shot; shared grit shots default to the Flintlock/Musket shot and
-        # BootstrapServer.lua switches them to the equipped gun's shot before each cast.
-        blunderbuss = {'GSL_MainHand_Blunderbuss_attack', 'Zone_GSL_Scattershot'}
+        # The engine plays CastSound when the cast animation starts, before the gun fires, so gunshot spells
+        # leave it empty and BootstrapServer.lua plays the firing gun's shot on the cast text key instead.
         for name in main_hand | off_hand:
             with self.subTest(spell=name):
-                kind = 'Blunderbuss' if name in blunderbuss or name.endswith('_Blunderbuss') else 'Flintlock'
-                self.assertEqual(self.spell(name).get('CastSound'), SHOT_SOUNDS[kind])
+                self.assertEqual(self.spell(name).get('CastSound', ''), '')
 
         lua = (ROOT / 'GunslingerClass' / 'Mods' / 'GunslingerClass' / 'ScriptExtender' / 'Lua')
         rules = (lua / 'GritRules.lua').read_text(encoding='utf-8')
         for kind, sound in SHOT_SOUNDS.items():
             self.assertRegex(rules, rf'{kind} = \{{[^}}]*shotSound = "{sound}"')
-        using = (lua / 'BootstrapServer.lua').read_text(encoding='utf-8').split(
-            'Ext.Osiris.RegisterListener("UsingSpell"', 1)[1]
-        self.assertLess(using.index('matchShotSound(character, spell)'), using.index('refresh(character, false)'))
+        server = (lua / 'BootstrapServer.lua').read_text(encoding='utf-8')
+        self.assertIn('Ext.Entity.OnCreate, "SpellCastTextKeyEvent"', server)
+        self.assertIn('Osi.PlaySound(character, Rules.Firearms[kind].shotSound)', server)
+        self.assertNotIn('CastSound =', server)
 
         # The old status-effect sound path played a localized effect on top of the crossbow sound.
         for name, entry in self.entries.items():

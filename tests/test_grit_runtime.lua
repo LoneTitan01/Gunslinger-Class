@@ -17,6 +17,8 @@ local passiveInterrupts = {
     GSL_Desperado_DesperadosFortuneUnlock = "Interrupt_GSL_DesperadosFortune"
 }
 local osirisRestricted = false
+local textKeyListener
+local sounds = {}
 local spellStats = {
     GSL_MainHand_Flintlock_attack = {RequirementConditions = "Character()", SpellProperties = "", SpellRoll = ""},
     GSL_OffHand_Flintlock_attack = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
@@ -130,7 +132,13 @@ Ext = {
         end,
         GetModVariables = function() return variables end
     },
-    Entity = {Get = function(id) return entities[obj(id)] end},
+    Entity = {
+        Get = function(id) return entities[obj(id)] end,
+        OnCreate = function(component, callback)
+            assert(component == "SpellCastTextKeyEvent")
+            textKeyListener = callback
+        end
+    },
     Math = {Random = function(low, high)
         local roll = assert(table.remove(rolls, 1), "Unexpected random roll")
         assert(roll >= low and roll <= high)
@@ -160,14 +168,17 @@ Ext = {
     DumpExport = function() error("Unexpected runtime debug serialization") end
 }
 for _, name in ipairs({"StatsLoaded", "SessionLoaded", "Tick"}) do
-    Ext.Events[name] = {Subscribe = function(_, callback)
-        events[name] = function(...)
+    -- Like the Script Extender, an event runs every subscriber in order.
+    local callbacks = {}
+    events[name] = function(...)
+        for _, callback in ipairs(callbacks) do
             osirisRestricted = name == "SessionLoaded" or name == "StatsLoaded"
             local ok, err = pcall(callback, ...)
             osirisRestricted = false
             assert(ok, err)
         end
-    end}
+    end
+    Ext.Events[name] = {Subscribe = function(_, callback) callbacks[#callbacks + 1] = callback end}
 end
 local function ammo(char, hand)
     local id = hand == "Off" and rules.OffhandResource or rules.Firearms.Flintlock.resource
@@ -221,6 +232,7 @@ Osi = {
         end
     end,
     IsDead = function() return 0 end,
+    PlaySound = function(object, sound) sounds[#sounds + 1] = {object = obj(object), sound = sound} end,
     HasPassive = function(char, passive) return passives[char] and passives[char][passive] and 1 or 0 end,
     AddPassive = function(char, passive)
         passives[char] = passives[char] or {}
@@ -753,16 +765,34 @@ assert(#variables.Firearms.weapons.first.mods == 0 and #variables.Firearms.weapo
 fire("UsingSpell", "before", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 fire("CastSpellFailed", "after", "alice", "Projectile_GSL_FanningFire_2", "", "", 7)
 assert(variables.Firearms.weapons.first.ammo == ammo("alice", "Main").Amount)
-assert(rules.ShotSound("Gale_Explosion_Boom", "Musket") == "Projectiles_Grn_Impact_Bomb")
-assert(rules.ShotSound("Projectiles_Grn_Impact_Bomb", "Blunderbuss") == "Gale_Explosion_Boom")
-assert(rules.ShotSound("Projectiles_Grn_Impact_Bomb", "Flintlock") == nil, "A matching shot sound is left alone")
-assert(rules.ShotSound("Action_Cast_PiercingShot", "Blunderbuss") == nil, "Non-gunshot cast sounds are never replaced")
-assert(rules.ShotSound("Gale_Explosion_Boom", nil) == nil, "No gun in the main hand leaves the sound alone")
-local sharedShot = spellStats.GSL_MainHand_Flintlock_attack
-sharedShot.CastSound = "Gale_Explosion_Boom"
+-- Gunshots play on the cast text key, after the ECS update, from the gun in the firing hand.
+local function textKey(caster, spell, key)
+    local cast = {SpellCastState = {Caster = {Uuid = {EntityUuid = caster}}, SpellId = {Prototype = spell}}}
+    textKeyListener({SpellCastTextKeyEvent = {CastEntity = cast, TextKey = key}})
+end
+spellStats.GSL_MainHand_Flintlock_attack.SpellSuccess = "DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)"
+spellStats.GSL_MainHand_Flintlock_attack.CastTextEvent = "Cast"
+spellStats.Zone_GSL_LineEmUp.SpellSuccess = "DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)"
+spellStats.Zone_GSL_LineEmUp.CastTextEvent = "Cast"
+spellStats.Zone_GSL_LineEmUp.AlternativeCastTextEvents = "Cast2;Cast3"
 fire("UsingSpell", "before", "alice", "GSL_MainHand_Flintlock_attack", "", "", 975)
+assert(#sounds == 0, "The gunshot waits for the cast text key, not the start of the cast")
+textKey("alice", "GSL_MainHand_Flintlock_attack", "Cast")
+assert(#sounds == 0, "Osiris can't be called inside the ECS update")
+ticks()
+assert(#sounds == 1 and sounds[1].object == "alice" and sounds[1].sound == rules.Firearms.Flintlock.shotSound,
+    "A shot plays the main-hand gun's gunshot on its cast text key")
 fire("CastSpellFailed", "after", "alice", "GSL_MainHand_Flintlock_attack", "", "", 975)
-assert(sharedShot.CastSound == rules.Firearms.Flintlock.shotSound, "A shot plays the main-hand gun's gunshot")
+textKey("alice", "GSL_MainHand_Flintlock_attack", "VFX_Somatic_01")
+textKey("alice", "Shout_GSL_Reload_Flintlock", "Cast")
+textKey("alice", "Projectile_MainHandAttack", "Cast")
+ticks()
+assert(#sounds == 1, "Other text keys, non-shots and non-gunslinger spells play no gunshot")
+textKey("alice", "Zone_GSL_LineEmUp", "Cast")
+textKey("alice", "Zone_GSL_LineEmUp", "Cast2")
+ticks()
+assert(#sounds == 3, "Each alternative cast text key fires its own shot")
+sounds = {}
 local lastWordShots = 0
 local useSpell = Osi.UseSpell
 Osi.UseSpell = function(...) lastWordShots = lastWordShots + 1; return useSpell(...) end
