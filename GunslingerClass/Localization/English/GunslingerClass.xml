@@ -273,9 +273,9 @@
         <content contentuid="h10000002g0000g4000g8000g000000000001" version="1">Merciless Shot: 1 Grit</content>
         <content contentuid="h10000002g0000g4000g8000g000000000002" version="1">Merciless Shot: 2 Grit</content>
         <content contentuid="h10000002g0000g4000g8000g000000000003" version="1">Merciless Shot: 3 Grit</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra half of its weapon damage.</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra full weapon damage (double damage).</content>
-        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra one and a half times its weapon damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000004" version="1">Spend an action, 1 grit point and one bullet. Make a firearm attack that deals an extra 1d6 damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000005" version="1">Spend an action, 2 grit points and one bullet. Make a firearm attack that deals an extra 2d6 damage.</content>
+        <content contentuid="h10000002g0000g4000g8000g000000000006" version="1">Spend an action, 3 grit points and one bullet. Make a firearm attack that deals an extra 3d6 damage.</content>
         <content contentuid="h10000003g0000g4000g8000g000000000001" version="1">Fanning Fire: 1 Grit</content>
         <content contentuid="h10000003g0000g4000g8000g000000000002" version="1">Fanning Fire: 2 Grit</content>
         <content contentuid="h10000003g0000g4000g8000g000000000003" version="1">Fanning Fire: 3 Grit</content>
