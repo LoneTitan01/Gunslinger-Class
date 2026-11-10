@@ -61,9 +61,9 @@ CONVERSIONS = (
         action='Target_MAG_PHB_ScimitarOfSpeed_BonusAttack',
     ),
     Conversion(
-        'Blightbringer', 'MAG_BG_BlightBringer_Shortbow', 'Flintlock', 'Rare', 1,
-        'Against Gnomes and Dwarves, shots gain +1d4 to attack and damage; critical hits can Slow.',
-        passives='MAG_BG_BlightBringer_Passive;MAG_BG_SlowedOnCrit_Passive',
+        'Blightbringer', 'MAG_BG_BlightBringer_Shortbow', 'Flintlock', 'VeryRare', 1,
+        'Against Gnomes, Dwarves and Duergar, shots gain +1d4 to attack and damage; critical hits can Slow.',
+        passives='GSL_Base_Blightbringer;MAG_BG_SlowedOnCrit_Passive',
     ),
     Conversion(
         'Blood-Bound Blade', 'MAG_Bonded_Lethal_Longsword', 'Musket', 'Rare', 1,
@@ -72,9 +72,10 @@ CONVERSIONS = (
     ),
     Conversion(
         'Cruel Sting', 'MAG_Drowelf_SpiderSnare_Longsword', 'Musket', 'Rare', 1,
-        'Preserves the Ensnaring Strike and poison-against-ensnared effects for firearm attacks.',
-        passives='MAG_Drowelf_PoisonAgainstEnsnared_Passive',
-        spell_boosts="IF(Tagged('PLAYABLE',context.Source)):UnlockSpell(Target_MAG_Drow_EnsnaringStrike)",
+        'Shots deal an additional 1d4 Poison damage to Restrained targets. '
+        'Once per short rest, Ensnaring Shot can cover its target in webs.',
+        passives='GSL_Base_CruelSting',
+        action='Projectile_GSL_EnsnaringShot_Musket',
     ),
     Conversion(
         "Duke Ravengard's Longsword", 'MAG_WYRM_Commander_Longsword', 'Musket', 'Rare', 1,
@@ -95,18 +96,18 @@ CONVERSIONS = (
         passives='MAG_TheClover_Rearrangement_Passive;ShadowBlade_Passive;GSL_Base_KnifeUndermountain',
     ),
     Conversion(
-        "Kurwin's Cauterizer", 'MAG_LC_BurnOnDamage_Scimitar', 'Flintlock', 'Rare', 1,
+        "Kurwin's Cauterizer", 'MAG_LC_BurnOnDamage_Scimitar', 'Flintlock', 'Uncommon', 1,
         'Preserves its Burning-on-hit behavior on firearm damage.',
         passives='MAG_LC_BurnOnDamage_Scimitar_Passive',
     ),
     Conversion(
-        'Least Expected', 'MAG_Shadow_Blinding_Bow', 'Flintlock', 'VeryRare', 2,
+        'Least Expected', 'MAG_Shadow_Blinding_Bow', 'Flintlock', 'Rare', 2,
         'While Obscured, gains +1d4 to firearm attack rolls and grants Blinding Shot.',
         passives='MAG_Shadow_Blinding_Bow_Passive',
         action='Projectile_MAG_WeaponAction_BlindingShot',
     ),
     Conversion(
-        "Loviatar's Scourge", 'GOB_PainPriest_Scourge', 'Blunderbuss', 'Rare', 1,
+        "Loviatar's Scourge", 'GOB_PainPriest_Scourge', 'Blunderbuss', 'Uncommon', 1,
         'Grants Necrotic resistance, deals 1d6 Necrotic splash damage, and deals 1d6 Necrotic damage to its wielder on a hit.',
         boosts='WeaponDamage(1d6,Necrotic);Resistance(Necrotic,Resistant)',
         passives='GOB_PainPriest_Scourge_Passive;GSL_Base_LoviatarScourge',
@@ -124,8 +125,9 @@ CONVERSIONS = (
         passives='GSL_Base_RenderMindAndBody',
     ),
     Conversion(
-        'Returning Pike', 'MAG_Throwable_Pike', 'Blunderbuss', 'Rare', 1,
-        'Replaces throwing behavior with firearm ammunition and reload mechanics.',
+        'Returning Pike', 'MAG_Throwable_Pike', 'Blunderbuss', 'Uncommon', 1,
+        'Replaces throwing behavior with firearm ammunition and reload mechanics, and holds one extra round.',
+        passives='GSL_Firearm_ReturningRound_Passive',
     ),
     Conversion(
         'Stillmaker', 'MAG_Bhaalist_Paralyzing_Dagger', 'Flintlock', 'VeryRare', 2,
@@ -146,29 +148,48 @@ CONVERSIONS = (
     ),
     Conversion(
         'Thermodynamo Axe', 'MAG_Fire_HeatOnWeaponDamage_Battleaxe',
-        'Musket', 'VeryRare', 2,
+        'Musket', 'Rare', 2,
         'Generates Heat when firearm damage is dealt.',
         passives='MAG_Fire_HeatOnWeaponDamage_Passive',
     ),
     Conversion(
-        'Vicious Shortbow', 'MAG_Vicious_Shortbow', 'Flintlock', 'VeryRare', 2,
+        'Vicious Shortbow', 'MAG_Vicious_Shortbow', 'Flintlock', 'Rare', 2,
         'Critical hits deal 7 additional firearm damage.',
         passives='MAG_Vicious_Weapon_Passive;GSL_Base_ViciousCritical',
     ),
     Conversion(
-        'Vicious Shortsword', 'MAG_Vicious_Shortsword', 'Flintlock', 'VeryRare', 2,
+        'Vicious Shortsword', 'MAG_Vicious_Shortsword', 'Flintlock', 'Rare', 2,
         'Critical hits deal 7 additional firearm damage.',
         passives='MAG_Vicious_Weapon_Passive;GSL_Base_ViciousCritical',
     ),
     Conversion(
-        'Vision of the Absolute', 'FOR_TrueSoul_Spear', 'Musket', 'Rare', 1,
+        'Vision of the Absolute', 'FOR_TrueSoul_Spear', 'Musket', 'Uncommon', 1,
         'Preserves the multi-eyed-target effect and firearm-safe special action.',
         passives='FOR_TrueSoul_SpearPassive',
         weapon_functors='IF(not SavingThrow(Ability.Dexterity, 11)):ApplyStatus(BLINDED, 100, 2)',
     ),
 )
 
+BLIGHTBRINGER_TARGET = (
+    "(Tagged('DWARF', context.Target) or Tagged('DUERGAR', context.Target) "
+    "or Tagged('GNOME', context.Target))"
+)
+
 CUSTOM_PASSIVES = {
+    # The base passive only adds the attack bonus; its damage half lives in an
+    # unused status. Keep its name and text, and add both bonuses here.
+    'GSL_Base_Blightbringer': {
+        'using': 'MAG_BG_BlightBringer_Passive',
+        'Boosts': (
+            f'IF(IsRangedWeaponAttack() and {BLIGHTBRINGER_TARGET}):RollBonus(RangedWeaponAttack,1d4);'
+            f'IF(IsRangedWeaponAttack() and {BLIGHTBRINGER_TARGET}):DamageBonus(1d4,Piercing,false)'
+        ),
+    },
+    # The base passive only adds its Poison damage to melee attacks.
+    'GSL_Base_CruelSting': {
+        'using': 'MAG_Drowelf_PoisonAgainstEnsnared_Passive',
+        'Boosts': "IF(IsRangedWeaponAttack() and HasStatus('SG_Restrained', context.Target)):DamageBonus(1d4,Poison,false)",
+    },
     'GSL_Base_KnifeUndermountain': {
         'Boosts': (
             'ReduceCriticalAttackThreshold(1);'
@@ -471,6 +492,30 @@ def render() -> dict[Path, str]:
     localized.extend((
         f'        <content contentuid="{ensnaring_display}" version="1">Ensnaring Shot</content>',
         f'        <content contentuid="{ensnaring_description}" version="1">Fire a shot that makes thorny vines sprout around the target. On a hit, the target makes a Strength saving throw or is Ensnared for as long as you concentrate. Once per long rest.</content>',
+    ))
+
+    web_name = 'Projectile_GSL_EnsnaringShot_Musket'
+    web_display = localized_handle(web_name, 'name')
+    web_description = localized_handle(web_name, 'description')
+    spell_content += (
+        f'\nnew entry "{web_name}"\ntype "SpellData"\nusing "GSL_MainHand_Musket_attack"\n'
+        f'data "DisplayName" "{web_display};1"\n'
+        f'data "Description" "{web_description};1"\n'
+        'data "Icon" "Spell_Conjuration_EnsnaringStrikeRanged"\n'
+        'data "Cooldown" "OncePerShortRestPerItem"\n'
+        'data "UseCosts" "ActionPoint:1;GunslingerMusketAmmo:1"\n'
+        'data "TooltipUseCosts" "ActionPoint:1;GunslingerMusketAmmo:1"\n'
+        'data "RequirementConditions" "HasPassive(\'GSL_Musket_MainHand\',context.Source) and not HasStatus(\'GSL_FIREARM_MAIN_DISABLED\',context.Source)"\n'
+        'data "TargetConditions" "Character() and not Self()"\n'
+        'data "SpellSuccess" "DealDamage(max(1,MainRangedWeapon),MainRangedWeaponDamageType);ExecuteWeaponFunctors(MainHand);'
+        f'IF(not {ensnaring_save}):ApplyStatus(WEB,100,10)"\n'
+        'data "TooltipDamageList" "DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)"\n'
+        'data "TooltipAttackSave" "Strength"\n'
+        'data "TooltipStatusApply" "ApplyStatus(WEB,100,10)"\n'
+    )
+    localized.extend((
+        f'        <content contentuid="{web_display}" version="1">Ensnaring Shot</content>',
+        f'        <content contentuid="{web_description}" version="1">Fire a shot wrapped in sticky webbing. On a hit, the target makes a Strength saving throw or is Webbed for up to 10 turns. Once per short rest.</content>',
     ))
 
     loc_begin = '        <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->'

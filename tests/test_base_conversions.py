@@ -98,9 +98,9 @@ class PrerequisiteBaseConversionTests(unittest.TestCase):
         expected = {
             'WPN_GSL_Flintlock_AdamantineScimitarMagical': 'GSL_Flintlock_AdamantineScimitar_Passive',
             'WPN_GSL_Flintlock_Belm': 'Target_MAG_PHB_ScimitarOfSpeed_BonusAttack',
-            'WPN_GSL_Flintlock_Blightbringer': 'MAG_BG_SlowedOnCrit_Passive',
+            'WPN_GSL_Flintlock_Blightbringer': 'GSL_Base_Blightbringer',
             'WPN_GSL_Musket_BloodBoundBlade': 'MAG_BoundToBeBonded_Passive',
-            'WPN_GSL_Musket_CruelSting': 'MAG_Drowelf_PoisonAgainstEnsnared_Passive',
+            'WPN_GSL_Musket_CruelSting': 'Projectile_GSL_EnsnaringShot_Musket',
             "WPN_GSL_Musket_DukeRavengardsLongsword": 'MAG_WYRM_Commander_Longsword_Passive',
             'WPN_GSL_Flintlock_HellfireHandCrossbow': 'MAG_Orthon_Hellfire_Crossbow_Passive',
             'WPN_GSL_Flintlock_KnifeOfTheUndermountainKing': 'GSL_Base_KnifeUndermountain',

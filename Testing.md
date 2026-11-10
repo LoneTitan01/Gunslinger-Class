@@ -33,6 +33,16 @@ Mark each item `[x]` when it works, or add a note under it describing what went 
 - [ ] **Poison rider:** shots deal +1d4 Poison only while you are concentrating, and not otherwise.
 - [ ] **Ensnaring Shot:** spends one bullet and is unavailable at 0 ammo. On a hit with a failed Strength save it Ensnares the target and starts concentration, and the Ensnare ends when concentration breaks. Once used, it stays unavailable until a long rest. It plays a gunshot sound.
 
+## Restored firearm effects (main mod)
+
+- [ ] **Blightbringer Flintlock:** shots gain +1d4 to attack and damage against Gnomes, Dwarves and Duergar, and not against other targets. It shows as Very Rare.
+- [ ] **Cruel Sting Musket:** shots deal +1d4 Poison to Restrained targets. Ensnaring Shot spends one bullet, Webs the target on a failed Strength save, and recharges on a short rest.
+- [ ] **New Blunderbuss actions:** Soulbreaker Shot (Soulbreaker Greatsword), Moonlight Butterflies (Moonlight Glaive), Dawnburst Scattershot (The Sacred Star), Blood Money (Twist of Fortune) and Profane Scourge (The Undead Bane) each spend one bullet, are unavailable at 0 ammo, recharge on a short rest, and apply their save effect only on a failed save.
+- [ ] **Sacred Munitions (Gandrel's Aspiration):** after using it, Blunderbuss shots that damage Undead Turn them, until the end of the turn.
+- [ ] **Sethan Blunderbuss:** can summon the spiritual greataxe and cast Reduce while held.
+- [ ] **Returning Rounds:** a Returning Pike Blunderbuss holds 3 bullets, a Dwarven Thrower Musket 2, and the Act Two Expansion's Trickster Dagger and Axe of Storms Flintlocks 4. One Tinkerer capacity modification doubles that (Flintlock 8) and Tinker Master Ammo triples it (Flintlock 12). Existing saves pick up the extra round when the gun is next equipped; a normal gun's capacity is unchanged.
+- [ ] **Rarity:** Kurwin's Cauterizer, Loviatar's Scourge, Returning Pike and Vision of the Absolute show as Uncommon; Least Expected, Thermodynamo Axe and both Vicious firearms show as Rare.
+
 ## Weapon Compatibility Add-ons
 
 Load each add-on after GunslingerClass and its source mod. For every item below, also check that the firearm shows the expected name, description, rarity and enchantment.

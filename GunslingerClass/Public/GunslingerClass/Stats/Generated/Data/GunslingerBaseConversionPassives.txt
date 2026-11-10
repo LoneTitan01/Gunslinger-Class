@@ -1,3 +1,15 @@
+new entry "GSL_Base_Blightbringer"
+type "PassiveData"
+using "MAG_BG_BlightBringer_Passive"
+data "Boosts" "IF(IsRangedWeaponAttack() and (Tagged('DWARF', context.Target) or Tagged('DUERGAR', context.Target) or Tagged('GNOME', context.Target))):RollBonus(RangedWeaponAttack,1d4);IF(IsRangedWeaponAttack() and (Tagged('DWARF', context.Target) or Tagged('DUERGAR', context.Target) or Tagged('GNOME', context.Target))):DamageBonus(1d4,Piercing,false)"
+
+
+new entry "GSL_Base_CruelSting"
+type "PassiveData"
+using "MAG_Drowelf_PoisonAgainstEnsnared_Passive"
+data "Boosts" "IF(IsRangedWeaponAttack() and HasStatus('SG_Restrained', context.Target)):DamageBonus(1d4,Poison,false)"
+
+
 new entry "GSL_Base_KnifeUndermountain"
 type "PassiveData"
 data "Icon" "GSL_ShootFlintlock"
