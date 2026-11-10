@@ -59,9 +59,17 @@ function Rules.ModCount(state, mode)
     return count
 end
 
-function Rules.Capacity(state)
+-- Guns fused with a throw-and-return weapon carry this passive and hold one extra round,
+-- which each Tinkerer capacity modification multiplies with the rest of the base capacity.
+Rules.ExtraRoundPassive = "GSL_Firearm_ReturningRound_Passive"
+
+function Rules.BaseCapacity(state)
     local firearm = assert(Rules.Firearms[state.kind], "Unknown firearm kind")
-    return firearm.capacity * (1 + Rules.ModCount(state, "Capacity"))
+    return firearm.capacity + (state.extraRounds or 0)
+end
+
+function Rules.Capacity(state)
+    return Rules.BaseCapacity(state) * (1 + Rules.ModCount(state, "Capacity"))
 end
 
 function Rules.DamageDice(state)

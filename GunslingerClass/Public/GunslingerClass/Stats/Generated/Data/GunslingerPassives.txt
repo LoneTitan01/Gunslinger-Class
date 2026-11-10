@@ -399,6 +399,12 @@ data "StatsFunctorContext" "OnCast"
 data "Conditions" "context.HasContextFlag(StatsFunctorContext.OnCast) and HasUseCosts('ActionPoint',true) and HasUseCosts('SpellSlot') and TurnBased(context.Source)"
 data "StatsFunctors" "ApplyStatus(SELF,EXTRA_ATTACK_Q,100,1)"
 
+new entry "GSL_Firearm_ReturningRound_Passive"
+type "PassiveData"
+data "DisplayName" "h3000008fg0000g4000g8000g000000000001;1"
+data "Description" "h3000008fg0000g4000g8000g000000000002;1"
+data "Icon" "GSL_TinkererCapacity"
+
 new entry "GSL_Firearm_Misfire_Passive"
 type "PassiveData"
 data "Icon" "GSL_Misfire"

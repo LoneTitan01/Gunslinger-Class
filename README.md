@@ -37,6 +37,8 @@ Broken-weapon checks read the equipped gun's own status for basic shots, firearm
 | Blunderbuss | Two-handed | 2 bullets | 1d12 | Bludgeoning | 25 ft |
 | Musket | Two-handed | 1 bullet | 1d10 | Piercing | 80 ft |
 
+Firearms fused with a weapon that returns when thrown (Returning Pike, Dwarven Thrower, and the Act Two Expansion's Trickster Dagger, The Breacher and Axe of Storms) have **Returning Rounds**: they hold one extra bullet, and Tinkerer's capacity modifications multiply that larger base (a Flintlock holds 4, then 8, then 12).
+
 Weapon range values are **1350 / 750 / 2400**, respectively, using the game's shortbow scale of 1800 = 60 feet. Main-hand shooting spells use the equipped weapon's range; Tinkerer's range modification raises that gun's own Weapon range, which both targeting and the out-of-range check read; the secondary flintlock uses 13.5 metres, or a 19.5-metre override with Tinkerer's range modification. The modified secondary attack is also explicitly unlocked as a selectable action. The script also raises the secondary gun's Weapon range by the same amount, since the engine otherwise gives "out of range" Disadvantage beyond the weapon's own range. High-ground range extensions remain inherited from vanilla ranged attacks.
 
 Blunderbuss and Musket use BG3's exact `Twohanded` weapon-property token, matching Heavy and Light Crossbows. The display-style spelling `Two-Handed` is not a valid stats property.
@@ -103,7 +105,7 @@ These weapons have no base-game equivalent, so each add-on builds a new firearm 
 
 | Weapon | Firearm | Firearm ability |
 | --- | --- | --- |
-| Trickster Dagger (`CHI_MAG_WPN_HUM_Dagger_Return`) | Flintlock | Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns. |
+| Trickster Dagger (`CHI_MAG_WPN_HUM_Dagger_Return`) | Flintlock | Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns. Holds one extra round. |
 | Scimitar of Flowing Waters (`CHI_MAG_WPN_Scimitar_Water_Myrmidon_B`) | Flintlock | Grants +1 to Dexterity saving throws and Initiative, and a firearm Razor Gale. |
 | Gnomish Tinkerer Crossbow (`CHI_WPN_Crossbow_Gnomish`) | Musket | Once per short rest, Ricochet Shot bounces off its target like an Arrow of Ricochet. |
 | Dexterous Flail (`CHI_WPN_Flail_Agility`) | Blunderbuss | Your Dexterity score becomes at least 18. |
@@ -111,8 +113,8 @@ These weapons have no base-game equivalent, so each add-on builds a new firearm 
 | Kara-Turan Katana (`CHI_WPN_HUM_Katana_B`) | Musket | Shots ignore Piercing resistance. Hits made with Advantage inflict Bleeding for 2 turns. |
 | Lance Pike (`CHI_WPN_HUM_Lancespear_A`) | Blunderbuss | Grants Zephyr Flash and Zephyr Break. |
 | Ironvine Shortbow (`CHI_WPN_HUM_Shortbow_Druid_A`) | Flintlock | Reduces the critical-hit threshold by 1, and damaging hits can Poison (DC 15 Dexterity). Once per short rest, Hail of Thorns Shot deals an extra 1d10 Piercing damage on a failed Dexterity save. |
-| The Breacher (`CHI_WPN_Javelin`) | Musket | Grants Heroic Throw once per short rest. |
-| Axe of Storms (`CHI_WPN_MAG_Axe_Lightning`) | Flintlock | Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked. |
+| The Breacher (`CHI_WPN_Javelin`) | Musket | Grants Heroic Throw once per short rest, and holds one extra round. |
+| Axe of Storms (`CHI_WPN_MAG_Axe_Lightning`) | Flintlock | Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked. Holds one extra round. |
 | Firbolg Greataxe (`CHI_WPN_MAG_Battleaxe_Firbolg`) | Blunderbuss | Once per combat, a damaging shot can outline the target in Faerie Fire (DC 13 Dexterity). Grants Missile Snaring. |
 | Phasmid Longbow (`CHI_WPN_MAG_Longbow_PhantasmalKiller`) | Musket | Damaging shots can inflict Phantasmal Force (DC 14 Wisdom). Once per short rest, Menacing Shot deals an extra 1d8 damage and can Frighten. |
 | Bow of the Thunder Lord (`CHI_WPN_MAG_Longbow_Thunder`) | Musket | Grants Gushing Air once per short rest. |
@@ -224,7 +226,7 @@ Magical firearms are worth their original weapon's gold value plus half the valu
 | [Stillmaker](https://bg3.wiki/wiki/Stillmaker) | +2 | Can cast Hold Person at level 3 once per long rest. | Once per long rest, fire Hold Person (level 3) at a target. |
 | [Sword of Life Stealing](https://bg3.wiki/wiki/Sword_of_Life_Stealing) | +2 | Critical hits deal 10 Necrotic damage and grant 10 temporary HP against non-Construct, non-Undead targets. | Critical hits deal 10 additional Necrotic damage and grant 10 temporary HP against non-Construct, non-Undead targets. |
 | [The Dancing Breeze](https://bg3.wiki/wiki/The_Dancing_Breeze) | +2 | Whirlwind Attack strikes all nearby foes as a short-rest action. | Whirlwind Shot sweeps a 20-foot cone, hitting multiple creatures; once per short rest. |
-| [Blightbringer](https://bg3.wiki/wiki/Blightbringer) | +1 | +1d4 to attack and damage against Gnomes and Dwarves; critical hits Slow the target. | Gain +1d4 to attack and damage against Gnomes and Dwarves; critical hits can Slow the target. |
+| [Blightbringer](https://bg3.wiki/wiki/Blightbringer) | +1 | +1d4 to attack and damage against Gnomes, Dwarves and Duergar; critical hits Slow the target. | Gain +1d4 to attack and damage against Gnomes, Dwarves and Duergar; critical hits can Slow the target. |
 
 </details>
 
@@ -282,7 +284,7 @@ Magical firearms are worth their original weapon's gold value plus half the valu
 
 | Weapon | Enchantment | Special ability | Firearm Ability |
 | --- | --- | --- | --- |
-| [Dwarven Thrower](https://bg3.wiki/wiki/Dwarven_Thrower) | +2 | Returns when thrown; a dwarf deals +1d8 Bludgeoning damage on a throw, or +2d8 against Large or larger targets. | Dwarves deal +1d8 firearm damage with shots, or +2d8 against Large or larger targets; the returning-throw effect does not apply to firearms. |
+| [Dwarven Thrower](https://bg3.wiki/wiki/Dwarven_Thrower) | +2 | Returns when thrown; a dwarf deals +1d8 Bludgeoning damage on a throw, or +2d8 against Large or larger targets. | Dwarves deal +1d8 firearm damage with shots, or +2d8 against Large or larger targets; the returning-throw effect instead lets the firearm hold one extra round. |
 | [Incandescent Staff](https://bg3.wiki/wiki/Incandescent_Staff) | None | +1 ranged spell attack, Fire resistance, Fire Bolt at will, and Fireball at level 3 once per long rest. | Gain +1 ranged spell attack, Fire resistance and Fire Bolt at will; cast Fireball (level 3) once per long rest. |
 | [Mourning Frost](https://bg3.wiki/wiki/Mourning_Frost) | +1 | Deals +1d4 Cold damage; Cold damage gains +1, and Cold spells can Chill targets. | Shots deal +1d4 Cold damage; Cold damage gains +1, and Cold spells can Chill targets. |
 | [Staff of Cherished Necromancy](https://bg3.wiki/wiki/Staff_of_Cherished_Necromancy) | +2 | Deals +1d4 Necrotic damage; Necromancy targets have save Disadvantage; spell kills grant Life Essence until long rest. | Shots deal +1d4 Necrotic damage; Necromancy targets have Disadvantage on saves; spell kills grant Life Essence until long rest. |
@@ -359,11 +361,11 @@ Magical firearms are worth their original weapon's gold value plus half the valu
 | Weapon | Enchantment | Special ability | Firearm Ability |
 | --- | --- | --- | --- |
 | [Handmaiden's Mace](https://bg3.wiki/wiki/Handmaiden's_Mace) | +2 | Sets Strength to 18, deals +1d6 Poison damage, and can Poison targets. | Strength becomes 18; shots deal +1d6 Poison damage and can Poison targets. |
-| [The Sacred Star](https://bg3.wiki/wiki/The_Sacred_Star) | +2 | Deals +1d4 Radiant damage and applies Radiating Orb; can Turn Undead; Dawnburst Strike deals proficiency-bonus Radiant damage and can Blind nearby foes. | Shots deal +1d4 Radiant damage and apply Radiating Orb; can Turn Undead; Dawnburst Scattershot blasts a 15-foot radius, dealing proficiency-bonus Radiant damage and possibly Blinding nearby foes. |
+| [The Sacred Star](https://bg3.wiki/wiki/The_Sacred_Star) | +2 | Deals +1d4 Radiant damage and applies Radiating Orb; can Turn Undead; Dawnburst Strike deals proficiency-bonus Radiant damage and can Blind nearby foes. | Shots deal +1d4 Radiant damage and apply Radiating Orb; can Turn Undead; Dawnburst Scattershot blasts a 15-foot cone, dealing proficiency-bonus Radiant damage and possibly Blinding foes caught in it. |
 | [Foebreaker](https://bg3.wiki/wiki/Foebreaker) | +2 | Ignores resistance to Bludgeoning damage. | Shots ignore resistance to the firearm's damage type. |
 | [Halberd of Vigilance](https://bg3.wiki/wiki/Halberd_of_Vigilance) | +2 | +1 Initiative, Advantage on Perception checks, and Advantage on reaction attacks. | Gain +1 Initiative and Advantage on Perception checks; gain Advantage on firearm reaction attacks. |
 | [Hellfire Greataxe](https://bg3.wiki/wiki/Hellfire_Greataxe) | +2 | Deals +1d6 Fire damage; damage grants Heat; Hellflame Cleave is a short-rest action. | Shots deal +1d6 Fire damage and grant Heat; Hellflame Scattershot hits multiple targets in a 15-foot cone once per short rest. |
-| [Sethan](https://bg3.wiki/wiki/Sethan) | +2 | Can summon a spiritual greataxe; can Reduce a creature, lowering its weapon damage and imposing Strength-check/save Disadvantage. | Summon a spiritual blunderbuss; Reduce a creature, lowering its firearm damage and imposing Disadvantage on Strength checks and saves. |
+| [Sethan](https://bg3.wiki/wiki/Sethan) | +2 | Can summon a spiritual greataxe; can Reduce a creature, lowering its weapon damage and imposing Strength-check/save Disadvantage. | Summon a spiritual greataxe; Reduce a creature, lowering its weapon damage and imposing Disadvantage on Strength checks and saves. |
 | [Sword of Chaos](https://bg3.wiki/wiki/Sword_of_Chaos) | +2 | Deals +1d4 Necrotic damage and restores 1d6 HP when it deals damage. | Shots deal +1d4 Necrotic damage and restore 1d6 HP when they deal damage. |
 | [Fabricated Arbalest](https://bg3.wiki/wiki/Fabricated_Arbalest) | +2 | Dazzling Ray can Blind creatures in its path; Illuminating Shot can inflict Radiating Orb. | Dazzling Ray fires through a line of creatures and can Blind them; Illuminating Shot can inflict Radiating Orb. |
 | [Hellfire Engine Crossbow](https://bg3.wiki/wiki/Hellfire_Engine_Crossbow) | +2 | Can cast Lightning Arrow at level 4 once per long rest and pull a creature 30 feet closer. | Cast Lightning Arrow (level 4) once per long rest; a hit pulls a creature up to 30 feet closer. |

@@ -98,8 +98,9 @@ ATE = SourceMod(
     weapon_hash='4a6f0109d431b3d54c39a4536086647a87cae6d820ad91f7f4fb40d7211b4046',
     weapons=(
         weapon('Trickster Dagger', 'CHI_MAG_WPN_HUM_Dagger_Return', 'Flintlock', 'Rare', 2,
-               'Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns.',
-               passives='CHI_MAG_WPN_HUM_Dagger_Return_MirrorImagePassive'),
+               'Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns. '
+               'Holds one extra round.',
+               passives='CHI_MAG_WPN_HUM_Dagger_Return_MirrorImagePassive;GSL_Firearm_ReturningRound_Passive'),
         weapon('Scimitar of Flowing Waters', 'CHI_MAG_WPN_Scimitar_Water_Myrmidon_B', 'Flintlock', 'VeryRare', 2,
                'Grants +1 to Dexterity saving throws and Initiative, and a firearm Razor Gale.',
                spell_boosts='RollBonus(SavingThrow, 1, Dexterity)',
@@ -129,12 +130,14 @@ ATE = SourceMod(
                passives='MAG_WYR_Orin_Bhaalist_Dagger_ImprovedCritical_Passive;MAG_Druid_Longbow_Passive',
                action='Projectile_GSL_ATE_HailOfThornsShot_Flintlock'),
         weapon('The Breacher', 'CHI_WPN_Javelin', 'Musket', 'Rare', 2,
-               'Grants Heroic Throw once per short rest.',
-               spell_boosts='UnlockSpell(Throw_CHI_HeroicThrow)'),
+               'Grants Heroic Throw once per short rest, and holds one extra round.',
+               spell_boosts='UnlockSpell(Throw_CHI_HeroicThrow)',
+               passives='GSL_Firearm_ReturningRound_Passive'),
         weapon('Axe of Storms', 'CHI_WPN_MAG_Axe_Lightning', 'Flintlock', 'VeryRare', 2,
                'Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save '
-               'or take 2d6 Lightning damage and are Shocked.',
-               spell_boosts='UnlockSpell(Shout_CHI_Whirlwind_Lightning)'),
+               'or take 2d6 Lightning damage and are Shocked. Holds one extra round.',
+               spell_boosts='UnlockSpell(Shout_CHI_Whirlwind_Lightning)',
+               passives='GSL_Firearm_ReturningRound_Passive'),
         weapon('Firbolg Greataxe', 'CHI_WPN_MAG_Battleaxe_Firbolg', 'Blunderbuss', 'VeryRare', 2,
                'Once per combat, a damaging shot can outline the target in Faerie Fire (DC 13 Dexterity). '
                'Grants Missile Snaring.',

@@ -501,7 +501,7 @@
         <content contentuid="h2000007fg0000g4000g8000g000000000001" version="1">The Joltshooter Musket</content>
         <content contentuid="h2000007fg0000g4000g8000g000000000002" version="1">A magical flintlock whose hits generate 2 Lightning Charges.</content>
         <content contentuid="h20000081g0000g4000g8000g000000000001" version="1">Dwarven Thrower Musket</content>
-        <content contentuid="h20000081g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures.</content>
+        <content contentuid="h20000081g0000g4000g8000g000000000002" version="1">A +2 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures. Holds one extra round.</content>
         <content contentuid="h20000082g0000g4000g8000g000000000001" version="1">Incandescent Staff Musket</content>
         <content contentuid="h20000082g0000g4000g8000g000000000002" version="1">A magical musket that grants +1 to ranged spell attack rolls and Fire resistance, and lets you cast Fire Bolt at will and Fireball (level 3) once per long rest.</content>
         <content contentuid="h20000083g0000g4000g8000g000000000001" version="1">Mourning Frost Musket</content>
@@ -649,9 +649,9 @@
         <content contentuid="h30000016g0000g4000g8000g000000000001" version="1">Skinburster Blunderbuss</content>
         <content contentuid="h30000016g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that retains the Force Conduit effect.</content>
         <content contentuid="h30000017g0000g4000g8000g000000000001" version="1">Undead Bane Blunderbuss</content>
-        <content contentuid="h30000017g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Bludgeoning damage to Undead and Fiends.</content>
+        <content contentuid="h30000017g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Bludgeoning damage to Undead and Fiends. Profane Scourge can inflict Bane on them.</content>
         <content contentuid="h30000018g0000g4000g8000g000000000001" version="1">Gandrel's Aspiration Blunderbuss</content>
-        <content contentuid="h30000018g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Advantage on attacks against Monstrosities.</content>
+        <content contentuid="h30000018g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Advantage on attacks against Monstrosities. Sacred Munitions makes your shots Turn Undead for the rest of the turn.</content>
         <content contentuid="h30000019g0000g4000g8000g000000000001" version="1">Argument Solver Blunderbuss</content>
         <content contentuid="h30000019g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Poison Mist Scattershot, adding Poison damage and creating a Poison cloud.</content>
         <content contentuid="h30000020g0000g4000g8000g000000000001" version="1">Hamarhraft Blunderbuss</content>
@@ -731,7 +731,7 @@
         <content contentuid="h30000065g0000g4000g8000g000000000001" version="1">Shattered Flail Blunderbuss</content>
         <content contentuid="h30000065g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits on hostile creatures can grant Flind's Blessing and restore 1d6 hit points.</content>
         <content contentuid="h30000066g0000g4000g8000g000000000001" version="1">Twist of Fortune Blunderbuss</content>
-        <content contentuid="h30000066g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that lets you reroll up to two weapon damage dice.</content>
+        <content contentuid="h30000066g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that lets you reroll up to two weapon damage dice. Blood Money deals extra damage based on the target's gold.</content>
         <content contentuid="h30000067g0000g4000g8000g000000000001" version="1">Breaching Pikestaff Blunderbuss</content>
         <content contentuid="h30000067g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Force damage.</content>
         <content contentuid="h30000068g0000g4000g8000g000000000001" version="1">Corpsegrinder Blunderbuss</content>
@@ -741,13 +741,13 @@
         <content contentuid="h30000070g0000g4000g8000g000000000001" version="1">Rat Bat Blunderbuss</content>
         <content contentuid="h30000070g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d6 Piercing damage and grants Advantage against Beasts.</content>
         <content contentuid="h30000071g0000g4000g8000g000000000001" version="1">Soulbreaker Blunderbuss</content>
-        <content contentuid="h30000071g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage.</content>
+        <content contentuid="h30000071g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage. Soulbreaker Shot can Stun.</content>
         <content contentuid="h30000072g0000g4000g8000g000000000001" version="1">Giantbreaker Blunderbuss</content>
         <content contentuid="h30000072g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss whose hits can inflict Reeling on a target for 2 turns.</content>
         <content contentuid="h30000073g0000g4000g8000g000000000001" version="1">Handmaiden's Mace Blunderbuss</content>
         <content contentuid="h30000073g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that sets your Strength to at least 18.</content>
         <content contentuid="h30000074g0000g4000g8000g000000000001" version="1">Sacred Star Blunderbuss</content>
-        <content contentuid="h30000074g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage, inflicts Radiating Orb, and can Turn Undead on a hit.</content>
+        <content contentuid="h30000074g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage, inflicts Radiating Orb, and can Turn Undead on a hit. Dawnburst Scattershot can Blind nearby foes.</content>
         <content contentuid="h30000075g0000g4000g8000g000000000001" version="1">Foebreaker Blunderbuss</content>
         <content contentuid="h30000075g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that ignores Bludgeoning resistance.</content>
         <content contentuid="h30000076g0000g4000g8000g000000000001" version="1">Halberd of Vigilance Blunderbuss</content>
@@ -759,7 +759,7 @@
         <content contentuid="h30000080g0000g4000g8000g000000000001" version="1">Monster Slayer Glaive Blunderbuss</content>
         <content contentuid="h30000080g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that deals an extra 1d4 damage to Monstrosities and increases jump distance.</content>
         <content contentuid="h30000081g0000g4000g8000g000000000001" version="1">Moonlight Glaive Blunderbuss</content>
-        <content contentuid="h30000081g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage.</content>
+        <content contentuid="h30000081g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d4 Radiant damage. Moonlight Butterflies grants Advantage against its target.</content>
         <content contentuid="h30000082g0000g4000g8000g000000000001" version="1">Sorrow Blunderbuss</content>
         <content contentuid="h30000082g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that unlocks Sorrowful Lash as a bonus-action shot.</content>
         <content contentuid="h30000083g0000g4000g8000g000000000001" version="1">Sussur Greatsword Blunderbuss</content>
@@ -773,6 +773,20 @@
         <content contentuid="h30000087g0000g4000g8000g000000000001" version="1">Unseen Menace Blunderbuss</content>
         <content contentuid="h30000087g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that is invisible while equipped and gains Advantage on attacks; a miss makes it visible for 2 turns.</content>
         <content contentuid="h30000088g0000g4000g8000g000000000001" version="1">Artificial Leech Flintlock</content>
+        <content contentuid="h30000089g0000g4000g8000g000000000001" version="1">Soulbreaker Shot</content>
+        <content contentuid="h30000089g0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot, adding Psychic damage equal to your proficiency bonus. The target makes a Constitution saving throw or is Stunned for 2 turns. Once per short rest; costs one bullet.</content>
+        <content contentuid="h3000008ag0000g4000g8000g000000000001" version="1">Moonlight Butterflies</content>
+        <content contentuid="h3000008ag0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot, adding Psychic damage equal to your proficiency bonus and summoning moonlight butterflies around the target for 3 turns. Attacks against creatures among the butterflies have Advantage. Once per short rest; costs one bullet.</content>
+        <content contentuid="h3000008bg0000g4000g8000g000000000001" version="1">Dawnburst Scattershot</content>
+        <content contentuid="h3000008bg0000g4000g8000g000000000002" version="1">Blast a 15-foot cone, adding Radiant damage equal to your proficiency bonus. Creatures hit make a Constitution saving throw or are Blinded for 3 turns. Once per short rest.</content>
+        <content contentuid="h3000008cg0000g4000g8000g000000000001" version="1">Blood Money</content>
+        <content contentuid="h3000008cg0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot that deals extra damage equal to your proficiency bonus, increased by the target's gold, and consumes up to 300 of that gold. Once per short rest; costs one bullet.</content>
+        <content contentuid="h3000008dg0000g4000g8000g000000000001" version="1">Profane Scourge</content>
+        <content contentuid="h3000008dg0000g4000g8000g000000000002" version="1">Fire one blunderbuss shot, adding your proficiency bonus to its damage. Against Fiends and Undead it deals an extra 2d6 damage, and the target makes a Strength saving throw or is affected by Bane for 3 turns. Once per short rest; costs one bullet.</content>
+        <content contentuid="h3000008eg0000g4000g8000g000000000001" version="1">Sacred Munitions</content>
+        <content contentuid="h3000008eg0000g4000g8000g000000000002" version="1">Bless your blunderbuss. Until the end of the turn, its shots Turn Undead targets they damage for 3 turns. Once per short rest.</content>
+        <content contentuid="h3000008fg0000g4000g8000g000000000001" version="1">Returning Rounds</content>
+        <content contentuid="h3000008fg0000g4000g8000g000000000002" version="1">The weapon's returning enchantment lets this firearm hold one extra round. Each Tinkerer capacity modification also adds one extra round.</content>
         <content contentuid="h30000077g0000g4000g8000g000000000001" version="1">Ravengard's Scourger Blunderbuss</content>
         <content contentuid="h30000077g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that can cast Commander's Strike to direct an ally to make a weapon attack as a reaction.</content>
         <content contentuid="h30000077g0000g4000g8000g000000000003" version="1">The Long Arm of the Gur Blunderbuss</content>
@@ -782,7 +796,7 @@
         <content contentuid="h30000049g0000g4000g8000g000000000001" version="1">Hellfire Greataxe Blunderbuss</content>
         <content contentuid="h30000049g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that deals an extra 1d6 Fire damage, builds Heat on hits, and unlocks Gargantuan Scattershot.</content>
         <content contentuid="h30000050g0000g4000g8000g000000000001" version="1">Sethan Blunderbuss</content>
-        <content contentuid="h30000050g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss adapted from the spiritual greataxe Sethan.</content>
+        <content contentuid="h30000050g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that can summon a spiritual greataxe and Reduce a creature.</content>
         <content contentuid="h30000051g0000g4000g8000g000000000001" version="1">Fabricated Arbalest Blunderbuss</content>
         <content contentuid="h30000051g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that unlocks Sunbeam Shot and Light Tagging Shot.</content>
         <content contentuid="h30000052g0000g4000g8000g000000000001" version="1">Hellfire Engine Crossbow Blunderbuss</content>
@@ -877,11 +891,11 @@
         <content contentuid="hde3a52f8g7155g5740gb1d8g197d9d7ecbb8" version="1">Belm Flintlock</content>
         <content contentuid="h10ba7de7gb0c9g582dg8418g3793e4565533" version="1">Grants Belm's bonus attack as a firearm action.</content>
         <content contentuid="h3f3dbfeag9f29g5287gac51gede659d993fb" version="1">Blightbringer Flintlock</content>
-        <content contentuid="hbfb48a48g98f5g5854gb8d9g159ccc9ceedd" version="1">Against Gnomes and Dwarves, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
+        <content contentuid="hbfb48a48g98f5g5854gb8d9g159ccc9ceedd" version="1">Against Gnomes, Dwarves and Duergar, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
         <content contentuid="h28d647bdge4c9g551egad46g1f94a7077972" version="1">Blood-Bound Blade Musket</content>
         <content contentuid="h17c851c7g149cg5340gbda1gf69116ab2477" version="1">Preserves the bonded weapon and proficiency-to-damage effects on firearm attacks.</content>
         <content contentuid="hdd7f52b5g9556g5bd4ga5adg2edd3cb123d3" version="1">Cruel Sting Musket</content>
-        <content contentuid="h133bc97dg4440g54b6g82a0g03101511bbd8" version="1">Preserves the Ensnaring Strike and poison-against-ensnared effects for firearm attacks.</content>
+        <content contentuid="h133bc97dg4440g54b6g82a0g03101511bbd8" version="1">Shots deal an additional 1d4 Poison damage to Restrained targets. Once per short rest, Ensnaring Shot can cover its target in webs.</content>
         <content contentuid="hb7b5210cg304ag5e22gbc1cg5d8378a6103d" version="1">Duke Ravengard's Longsword Musket</content>
         <content contentuid="h0bf5a046g5bbdg573dg97b1g38d2320f6f38" version="1">Preserves the commander effects on firearm attacks.</content>
         <content contentuid="haba77670gea78g55ffga904gdc011655b3b7" version="1">Hellfire Hand Crossbow Flintlock</content>
@@ -899,7 +913,7 @@
         <content contentuid="h9f63d23fgc9b4g5b16gbfa1gdc49ed3ba905" version="1">Render of Mind and Body Flintlock</content>
         <content contentuid="h2235c4fcg59d8g5d32g9b69gd4107e43dac6" version="1">When attacking with Advantage, shots deal an additional 1d8 Psychic damage.</content>
         <content contentuid="ha7cff8fdgfd7eg56c4gaf8bgf4f49a812094" version="1">Returning Pike Blunderbuss</content>
-        <content contentuid="ha546a3f4g2dc0g5185ga75cg4c0b8b7084ce" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics.</content>
+        <content contentuid="ha546a3f4g2dc0g5185ga75cg4c0b8b7084ce" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics, and holds one extra round.</content>
         <content contentuid="h8701f074g9914g525ag9184ge4f36da20b51" version="1">Stillmaker Flintlock</content>
         <content contentuid="h7f1c7d1fg214bg5f3ag97c6gbe4cedbf7f17" version="1">Grants Hold Person as a firearm action.</content>
         <content contentuid="h1ce27a8fga120g567ag8210g64c72bae15c0" version="1">The Dancing Breeze Flintlock</content>
@@ -918,10 +932,12 @@
         <content contentuid="h957107adg27b9g5cbcgbb28g0221af3f0633" version="1">Fire a 20-foot cone shot. Each creature in the area makes a Dexterity saving throw, taking half firearm damage on a failed save and none on a success. Once per short rest.</content>
         <content contentuid="hefc6770ag7068g55ffg9a51ga01d829a7546" version="1">Ensnaring Shot</content>
         <content contentuid="h00fc74aag52f0g5512gaa2bg4b1f39c8c8b8" version="1">Fire a shot that makes thorny vines sprout around the target. On a hit, the target makes a Strength saving throw or is Ensnared for as long as you concentrate. Once per long rest.</content>
+        <content contentuid="h0936bce5g207bg5922g849eg0bc06b4eb2b7" version="1">Ensnaring Shot</content>
+        <content contentuid="hadba3406g7441g54a9gbe52g216b05ed9c85" version="1">Fire a shot wrapped in sticky webbing. On a hit, the target makes a Strength saving throw or is Webbed for up to 10 turns. Once per short rest.</content>
         <!-- END GENERATED PREREQUISITE BASE CONVERSIONS -->
         <!-- BEGIN GENERATED MOD WEAPON CONVERSIONS -->
         <content contentuid="ha6e95f57g8973g527egadbagb542079dbc7b" version="1">Trickster Dagger Flintlock</content>
-        <content contentuid="h09ab531cg12c4g502cg92f3g7caab2dd0627" version="1">Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns.</content>
+        <content contentuid="h09ab531cg12c4g502cg92f3g7caab2dd0627" version="1">Once per short rest, when a melee attack damages you, gain Mirror Image for 3 turns. Holds one extra round.</content>
         <content contentuid="h356fe32fg3c04g57bcg8cf4g39354a3b9d77" version="1">Scimitar of Flowing Waters Flintlock</content>
         <content contentuid="h8b1a582bg34efg5bbag950dge9048963b30a" version="1">Grants +1 to Dexterity saving throws and Initiative, and a firearm Razor Gale.</content>
         <content contentuid="ha90a20fcg6bd4g55a5g825bgc5a78f7b2021" version="1">Gnomish Tinkerer Crossbow Musket</content>
@@ -937,9 +953,9 @@
         <content contentuid="h25069cb7gc1b6g5aa1gb103gd7d9082b6958" version="1">Ironvine Shortbow Flintlock</content>
         <content contentuid="hb00eb196g6affg5be3g96a8ge1b91a1d9cc5" version="1">Reduces the critical-hit threshold by 1, and damaging hits can Poison (DC 15 Dexterity). Once per short rest, Hail of Thorns Shot deals an extra 1d10 Piercing damage on a failed Dexterity save.</content>
         <content contentuid="hdbd9c476g68a2g503dg9096g7ba7585556af" version="1">The Breacher Musket</content>
-        <content contentuid="hdd08c5d7g8dd5g5b5fgb170geba71e2f38f7" version="1">Grants Heroic Throw once per short rest.</content>
+        <content contentuid="hdd08c5d7g8dd5g5b5fgb170geba71e2f38f7" version="1">Grants Heroic Throw once per short rest, and holds one extra round.</content>
         <content contentuid="h20685e3eg5c53g50b1gbd3cgfd415a4a27c6" version="1">Axe of Storms Flintlock</content>
-        <content contentuid="h2aa46496g8ef1g5e24g9f96g66abdf9c49bc" version="1">Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked.</content>
+        <content contentuid="h2aa46496g8ef1g5e24g9f96g66abdf9c49bc" version="1">Grants Lightning Whirlwind: once per short rest, nearby creatures make a Strength save or take 2d6 Lightning damage and are Shocked. Holds one extra round.</content>
         <content contentuid="h902a9cd9g7ad7g5052ga42cg41425e32dcf7" version="1">Firbolg Greataxe Blunderbuss</content>
         <content contentuid="h4e9e9a9cg1b35g5e5dg8af6g82dc1b4407a3" version="1">Once per combat, a damaging shot can outline the target in Faerie Fire (DC 13 Dexterity). Grants Missile Snaring.</content>
         <content contentuid="h9b1c47f0gc288g5caeg88fege26b451766ff" version="1">Phasmid Longbow Musket</content>
@@ -1017,8 +1033,8 @@
         <content contentuid="h51f6d798gfbd4g5635g98beg9ffb3cfc4279" version="1">A +3 magical musket that deals an extra 1d4 damage to shapeshifters and polymorphed creatures and grants +2 to saving throws against spells.</content>
         <content contentuid="h41986e60ga353g5ef5gb7bdga9c8cc6e0ca5" version="1">A +2 Flintlock that grants +2 Initiative, Advantage on Perception checks, and +1d6 Necrotic damage against creatures that have not taken a turn.</content>
         <content contentuid="h7b55444bgfaf9g561bga55fgbffdb18c86af" version="1">A +3 Flintlock that grants +3 Initiative, Advantage on Perception checks, and +1d6 Necrotic damage against creatures that have not taken a turn.</content>
-        <content contentuid="hf3b82a1cg428fg55b8gabbagfc73c09370c0" version="1">Against Gnomes and Dwarves, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
-        <content contentuid="hb243ef08g2861g5c49g8a4fgb518ee864205" version="1">Against Gnomes and Dwarves, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
+        <content contentuid="hf3b82a1cg428fg55b8gabbagfc73c09370c0" version="1">Against Gnomes, Dwarves and Duergar, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
+        <content contentuid="hb243ef08g2861g5c49g8a4fgb518ee864205" version="1">Against Gnomes, Dwarves and Duergar, shots gain +1d4 to attack and damage; critical hits can Slow.</content>
         <content contentuid="h9c9eceb5g5f50g5f35gb1b5gd486ed299390" version="1">A +2 Flintlock that grants Fire and Cold resistance and lets you cast Haste at level 3 once per long rest. Grants Brace (Ranged).</content>
         <content contentuid="h320fbd6dg4ffeg50c6g9f13gaf842c21f9c3" version="1">A +3 Flintlock that grants Fire and Cold resistance and lets you cast Haste at level 3 once per long rest. Grants Brace (Ranged).</content>
         <content contentuid="h680a4272g900ag526bg98e5g7a6d60fededf" version="1">A +3 Blunderbuss that grants Draconic Elemental Weapon and improves Dragonborn breath attacks.</content>
@@ -1059,8 +1075,8 @@
         <content contentuid="h34c7fc0agbdc2g5ad4ga331gdadeeb87b317" version="1">A +2 Blunderbuss that grants Corrosive Shot, adding Acid damage equal to your proficiency bonus and creating an Acid surface.</content>
         <content contentuid="h751e9088g5f26g5191gadd2ga03380868dae" version="1">A +3 Blunderbuss that grants Corrosive Shot, adding Acid damage equal to your proficiency bonus and creating an Acid surface.</content>
         <content contentuid="h8e65eeadg907eg5d51g8d64g7ba6560d1c5f" version="1">A +3 magical musket that reduces your critical-hit threshold by 1 and adds your Proficiency Bonus to ranged weapon attack rolls when you do not have Disadvantage.</content>
-        <content contentuid="habb1a3e3g076cg560dga1acgbd6f61de1b90" version="1">Preserves the Ensnaring Strike and poison-against-ensnared effects for firearm attacks.</content>
-        <content contentuid="h46a97fd9g5af4g53f3g88e5gdbe2fa90353c" version="1">Preserves the Ensnaring Strike and poison-against-ensnared effects for firearm attacks.</content>
+        <content contentuid="habb1a3e3g076cg560dga1acgbd6f61de1b90" version="1">Shots deal an additional 1d4 Poison damage to Restrained targets. Once per short rest, Ensnaring Shot can cover its target in webs.</content>
+        <content contentuid="h46a97fd9g5af4g53f3g88e5gdbe2fa90353c" version="1">Shots deal an additional 1d4 Poison damage to Restrained targets. Once per short rest, Ensnaring Shot can cover its target in webs.</content>
         <content contentuid="h5e52e819gd543g5b15gb74egd27dd6225df8" version="1">Reduces the critical-hit threshold and grants Advantage against Obscured targets.</content>
         <content contentuid="haa8f723ag2abbg5e77g9615g8fcf581ae3e5" version="1">Replaces Whirlwind Attack with a firearm-compatible 20-foot Whirlwind Shot.</content>
         <content contentuid="h9a74a0f8g9ecdg5d00ga844gf05370cd2e31" version="1">A +2 Flintlock with Razor Gale, a 20-foot line shot that deals firearm damage plus your Proficiency Bonus to targets that fail a Dexterity save, or half damage on a success.</content>
@@ -1080,8 +1096,8 @@
         <content contentuid="hef3fe5f9g38e9g51b7gb448g57083787f3b6" version="1">A Flintlock that deals an extra 1d4 Piercing damage to Burning targets.</content>
         <content contentuid="h770e6e36g4bbag5964g9d63gaf5e426f0335" version="1">A magical Flintlock that deals an extra 1d4 Cold damage. When held off-hand, it grants +2 AC and Chills attackers that miss you for 2 turns.</content>
         <content contentuid="hb3a914e8g9d9eg5e61g9135g556d8227d177" version="1">A magical Flintlock that deals an extra 1d4 Cold damage. When held off-hand, it grants +2 AC and Chills attackers that miss you for 2 turns.</content>
-        <content contentuid="h991bbbd8g5f31g506eg8285gfb67dd3b54c2" version="1">A +2 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage.</content>
-        <content contentuid="hcfa171a0gabf4g5280g82eegdb1659d4156d" version="1">A +3 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage.</content>
+        <content contentuid="h991bbbd8g5f31g506eg8285gfb67dd3b54c2" version="1">A +2 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage. Soulbreaker Shot can Stun.</content>
+        <content contentuid="hcfa171a0gabf4g5280g82eegdb1659d4156d" version="1">A +3 Blunderbuss that grants Githyanki wielders +2 Initiative and deals an extra 1d4 Psychic damage. Soulbreaker Shot can Stun.</content>
         <content contentuid="h22d76fc8g51b0g56d4gae37g79fc8fd9a380" version="1">A +2 Blunderbuss that unlocks the Telekinetic Bolt weapon action.</content>
         <content contentuid="h644c1c7fgd9deg5c30gb148g32ccbe1bfb4b" version="1">A +3 Blunderbuss that unlocks the Telekinetic Bolt weapon action.</content>
         <content contentuid="hf22f9bc8g3a4ag5174g83cbg500e87b9deed" version="1">A +2 Flintlock that uses your spellcasting ability modifier instead of Dexterity for attack rolls.</content>
@@ -1125,7 +1141,7 @@
         <content contentuid="h3dabe288gbeb8g52ebg9e03g66600474b65a" version="1">A Flintlock whose hits grant you 2 turns of Momentum.</content>
         <content contentuid="h4380c834gd44bg51e5g921cgb4e337b67ea4" version="1">A +2 Blunderbuss that deals an extra 1d4 damage to Monstrosities and increases jump distance.</content>
         <content contentuid="ha8a7d533g77e4g5c10gb384g6b71254ccc1a" version="1">A +3 Blunderbuss that deals an extra 1d4 damage to Monstrosities and increases jump distance.</content>
-        <content contentuid="h5370fc5cg7b60g5c3dg8162g5c0f45aa19e5" version="1">A +3 Blunderbuss that deals an extra 1d6 Radiant damage.</content>
+        <content contentuid="h5370fc5cg7b60g5c3dg8162g5c0f45aa19e5" version="1">A +3 Blunderbuss that deals an extra 1d6 Radiant damage. Moonlight Butterflies grants Advantage against its target.</content>
         <content contentuid="h19652de4g1118g5c09ga3a0g38ee65e01bb2" version="1">A +2 magical musket that can Daze targets hit by your Smite spells if they fail a Constitution save.</content>
         <content contentuid="h49e6a315g705ag5767gb2e3g1cf404783890" version="1">A +3 magical musket that can Daze targets hit by your Smite spells if they fail a Constitution save.</content>
         <content contentuid="h114d4fb4g1f56g5374gbe35g72190bece41e" version="1">A +1 Flintlock that grants +2 to Initiative while equipped.</content>
@@ -1133,7 +1149,7 @@
         <content contentuid="h90abbc4ege53dg51b6gbdc5ga8c294419475" version="1">A +3 Flintlock that grants +3 to Initiative while equipped.</content>
         <content contentuid="h91f3c5e4ga5b1g5bcbgae55gda516b0bbeed" version="1">A +3 magical musket that grants +3 to spell attack rolls and spell save DC and can make your next spell cost no spell slot once per long rest.</content>
         <content contentuid="he52d6c4fg973fg56c0ga847gbe863e3e900a" version="1">Preserves the hidden and invisible attack Burning trigger and grants Scorching Ray.</content>
-        <content contentuid="h1a9659f6gc37dg57c8gba84g6def2a4a42c9" version="1">A +3 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures.</content>
+        <content contentuid="h1a9659f6gc37dg57c8gba84g6def2a4a42c9" version="1">A +3 magical musket that lets Dwarves deal an extra 1d8 damage with shots, or 2d8 against Large or larger creatures. Holds one extra round.</content>
         <content contentuid="h70c8dfc3g578dg5ee6gaf6fg15d4062498b2" version="1">Grants Belm's bonus attack as a firearm action.</content>
         <content contentuid="h361995e3ga9c7g5c9dg8a01g06666bf800c1" version="1">A +2 magical musket that grants +2 to spell attack rolls and spell save DC, and restores an expended Warlock spell slot once per long rest.</content>
         <content contentuid="h1c17d55fga617g5522g9501gc842b83c99bf" version="1">A +3 magical musket that grants +2 to spell attack rolls and spell save DC, and restores two expended Warlock spell slots once per long rest.</content>
@@ -1146,19 +1162,19 @@
         <content contentuid="hd5f60be8gbc2bg5f73g97c3gab77ded3eddb" version="1">A +3 Flintlock whose hits made with Advantage can inflict Bleeding for 2 turns.</content>
         <content contentuid="hc798d651g0c12g5e59g95c4g11e02b447e8e" version="1">A +2 musket that grants Advantage on attacks against concentrating targets and Hush You Shot.</content>
         <content contentuid="h71f35522g5448g5dfaga7d5ga32735f74e43" version="1">A +3 musket that grants Advantage on attacks against concentrating targets and Hush You Shot.</content>
-        <content contentuid="h2743d274g860bg51a7g8929g3d104a95fad7" version="1">A +3 Blunderbuss adapted from the spiritual greataxe Sethan.</content>
+        <content contentuid="h2743d274g860bg51a7g8929g3d104a95fad7" version="1">A +3 Blunderbuss that can summon a spiritual greataxe and Reduce a creature.</content>
         <content contentuid="h93fefed3gb749g5269g9435g5684f10157cc" version="1">A +2 musket that adds your Strength modifier to ranged weapon damage and grants Pushing Shot.</content>
         <content contentuid="hc40c1b6bg7a86g5ebbgae1cgbba8d1007e42" version="1">A +3 musket that adds your Strength modifier to ranged weapon damage and grants Pushing Shot.</content>
-        <content contentuid="hf144f3f0g5ff4g5366g835dg689a2ff57b8b" version="1">A +2 Blunderbuss that lets you reroll up to two weapon damage dice.</content>
-        <content contentuid="h9331de94gb127g5f16gbb8cg97c1e3fa0dba" version="1">A +3 Blunderbuss that lets you reroll up to two weapon damage dice.</content>
+        <content contentuid="hf144f3f0g5ff4g5366g835dg689a2ff57b8b" version="1">A +2 Blunderbuss that lets you reroll up to two weapon damage dice. Blood Money deals extra damage based on the target's gold.</content>
+        <content contentuid="h9331de94gb127g5f16gbb8cg97c1e3fa0dba" version="1">A +3 Blunderbuss that lets you reroll up to two weapon damage dice. Blood Money deals extra damage based on the target's gold.</content>
         <content contentuid="h7b14f536g2e24g5764gad08gee6fb640cec2" version="1">A +3 Blunderbuss that ignores Bludgeoning resistance.</content>
         <content contentuid="ha0ee6058g424bg575fgb8bfgeaebf72768ea" version="1">A +1 Flintlock whose hits inflict Ruptured for 3 turns. Grants Hunter's Mark.</content>
         <content contentuid="h5d7ff98ag2108g54dcgb925g852ab1a8beb5" version="1">A +2 Flintlock whose hits inflict Ruptured for 3 turns. Grants Hunter's Mark.</content>
         <content contentuid="h2b011bb6g0324g577ega0b8gcfead9fd7f86" version="1">A +3 Flintlock whose hits inflict Ruptured for 3 turns. Grants Hunter's Mark.</content>
         <content contentuid="h0b11840cgd388g5abeg8b29gb7b1466bec3d" version="1">A +2 Blunderbuss that grants a +1d4 bonus to attack rolls against targets that are not at full health.</content>
         <content contentuid="h8cc4e36cg6831g504cgaffegae26f299ddcc" version="1">A +3 Blunderbuss that grants a +1d4 bonus to attack rolls against targets that are not at full health.</content>
-        <content contentuid="hd7dd5fc6gdc15g5d39gb522g93ac827f8a68" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics.</content>
-        <content contentuid="hf5e36b5fga0b4g5ad1gabdfg74aceba8ade9" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics.</content>
+        <content contentuid="hd7dd5fc6gdc15g5d39gb522g93ac827f8a68" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics, and holds one extra round.</content>
+        <content contentuid="hf5e36b5fga0b4g5ad1gabdfg74aceba8ade9" version="1">Replaces throwing behavior with firearm ammunition and reload mechanics, and holds one extra round.</content>
         <content contentuid="he33a1b67ge7e2g56fagbb0bgd906a5b77d75" version="1">A +2 magical musket that can fire a Thunderous Smite round once per short rest.</content>
         <content contentuid="h40086c50g7e89g57a1gafdbgf0f98fa97534" version="1">A +3 magical musket that can fire a Thunderous Smite round once per short rest.</content>
         <content contentuid="h6253d138g377fg5701ga101ga2d79c67d3f4" version="1">A +2 magical musket that deals 7 extra damage on a critical hit. Your critical-hit threshold is reduced by 1.</content>

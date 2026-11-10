@@ -232,11 +232,27 @@ local function equipped(character, hand)
     return itemId(item), kind
 end
 
-local function itemState(data, item, kind)
-    if not data.weapons[item] then
-        data.weapons[item] = {kind = kind, ammo = Rules.Firearms[kind].capacity}
+local function extraRounds(item)
+    local ok, passives = pcall(function()
+        return Ext.Stats.Get(Ext.Entity.Get(item).Data.StatsId).PassivesOnEquip
+    end)
+    if not ok or type(passives) ~= "string" then return 0 end
+    for passive in passives:gmatch("[^;]+") do
+        if passive:match("^%s*(.-)%s*$") == Rules.ExtraRoundPassive then return 1 end
     end
-    return data.weapons[item]
+    return 0
+end
+
+local function itemState(data, item, kind)
+    local state = data.weapons[item]
+    if not state then
+        state = {kind = kind}
+        data.weapons[item] = state
+    end
+    -- Read from the gun's stats each time, so saves from before this rule pick it up.
+    state.extraRounds = extraRounds(item)
+    state.ammo = state.ammo or Rules.Capacity(state)
+    return state
 end
 
 -- Returns nil and the resource ID when the ammo entry is not populated, which happens for a few ticks after
@@ -372,8 +388,8 @@ local function refreshNow(character, restoreAmmo)
         local newItem = item and not data.weapons[item]
         local previousBoost = owner[hand .. "Boost"]
         local state = item and itemState(data, item, kind)
-        local capacityCount = state and Rules.ModCount(state, "Capacity") or 0
-        local boostAmount = state and Rules.Firearms[kind].capacity * capacityCount or 0
+        -- The gun's hand passive grants its base kind's capacity; this boost adds the rest.
+        local boostAmount = state and Rules.Capacity(state) - Rules.Firearms[kind].capacity or 0
         local boost = boostAmount > 0 and
             "ActionResource(" .. (hand == "Off" and "GunslingerOffhandFlintlockAmmo" or
                 "Gunslinger" .. kind .. "Ammo") .. "," .. boostAmount .. ",0)" or nil
