@@ -79,10 +79,6 @@ for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
     "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do
     interruptStats[name] = {Conditions = "OriginalInterruptCondition"}
 end
-local vanillaSharpshooter = "IF(Sharpshooter(context.Source)):RollBonus(RangedWeaponAttack, -5);" ..
-    "IF(Sharpshooter(context.Source)):RollBonus(RangedOffHandWeaponAttack, -5);" ..
-    "IF(Sharpshooter(context.Source)):CharacterWeaponDamage(10)"
-local passiveStats = {Sharpshooter_AllIn = {Boosts = vanillaSharpshooter}}
 for _, name in ipairs({"Projectile_GSL_DisarmingShot", "Projectile_GSL_RapidShot",
     "Projectile_GSL_HotStreak_1", "Projectile_GSL_FanningFire_1", "Projectile_GSL_ViolentShot_1"}) do
     spellStats[name] = {RequirementConditions = "OriginalGritRequirement", SpellProperties = "", SpellRoll = ""}
@@ -125,6 +121,7 @@ local function fire(name, phase, ...)
     local listener = listeners[name .. ":" .. phase]
     if listener then listener(...) end
 end
+local clock = 0
 local function ticks()
     for _ = 1, 3 do events.Tick() end
 end
@@ -159,7 +156,7 @@ Ext = {
         end,
         Get = function(name)
             if spellStats[name] then asExtenderSpell(spellStats[name]) end
-            return spellStats[name] or interruptStats[name] or weaponStats[name] or passiveStats[name]
+            return spellStats[name] or interruptStats[name] or weaponStats[name]
         end,
         Sync = function() end
     },
@@ -169,6 +166,7 @@ Ext = {
         listeners[name .. ":" .. phase] = callback
     end},
     Utils = {Print = function(message) printed[#printed + 1] = message end},
+    Timer = {MicrosecTime = function() return clock end},
     DumpExport = function() error("Unexpected runtime debug serialization") end
 }
 for _, name in ipairs({"StatsLoaded", "SessionLoaded", "Tick"}) do
@@ -352,15 +350,6 @@ for name, spell in pairs(spellStats) do
         local _, guards = spell.RequirementConditions:gsub(condition:gsub("(%W)", "%%%1"), "")
         assert(guards == 1, "Stats reload must not duplicate Broken checks for " .. name)
     end
-end
-do
-    -- Sharpshooter must keep its -5/+10 together on a gun's last bullet, when the gun loses Ammunition.
-    local boosts = passiveStats.Sharpshooter_AllIn.Boosts
-    local firearm = "(Sharpshooter(context.Source) or (IsRangedWeaponAttack() and " ..
-        "(HasPassive('GSL_Blunderbuss_MainHand',context.Source) or HasPassive('GSL_Flintlock_MainHand',context.Source) or " ..
-        "HasPassive('GSL_Musket_MainHand',context.Source)) and IsProficientWith(context.Source,GetAttackWeapon(context.Source))))"
-    local expected = vanillaSharpshooter:gsub("Sharpshooter%(context%.Source%)", function() return firearm end)
-    assert(boosts == expected, "Sharpshooter must treat an empty main-hand firearm as an ammunition weapon: " .. boosts)
 end
 for name, interrupt in pairs(interruptStats) do
     assert(interrupt.Conditions:find(brokenGuard("Main", "context.Observer"), 1, true),
@@ -1425,8 +1414,27 @@ assert(ammo("alice", "Main").Amount == 2, "Special arrows still spend no bullet 
 local function hasAmmunition(item) return entities[item].Weapon.WeaponProperties & 2 ~= 0 end
 ammo("alice", "Main").Amount = 1
 cast("Projectile_SneakAttack", 970)
-assert(ammo("alice", "Main").Amount == 0 and not hasAmmunition("reloaded"),
-    "An empty gun must not count as a weapon that fires ammunition")
+-- Damage (and Sharpshooter's +10) is checked when the bullet lands, after the cast ends.
+assert(ammo("alice", "Main").Amount == 0 and hasAmmunition("reloaded"),
+    "The last bullet's gun must keep the Ammunition property while that shot is in flight")
+fire("TurnStarted", "after", "alice")
+assert(hasAmmunition("reloaded"), "Refreshes during the shot must not clear the Ammunition property")
+clock = clock + 2999999
+ticks()
+assert(hasAmmunition("reloaded"))
+clock = clock + 1
+ticks()
+assert(not hasAmmunition("reloaded"), "An empty gun must not count as a weapon that fires ammunition")
+-- A shot from the offhand puts the empty main gun's property back until it lands, so Sharpshooter counts it.
+fire("UsingSpell", "before", "alice", "Projectile_SneakAttack", "", "", 972)
+assert(hasAmmunition("reloaded"), "An empty main gun must count as an Ammunition weapon during a shot")
+fire("CastSpellFailed", "after", "alice", "Projectile_SneakAttack", "", "", 972)
+assert(not hasAmmunition("reloaded"), "A failed shot must clear the hold at once")
+ammo("alice", "Main").Amount = 1
+cast("Projectile_SneakAttack", 973)
+clock = clock + 3000000
+ticks()
+assert(not hasAmmunition("reloaded"))
 assert(entities.reloaded.Weapon.WeaponProperties == 0x11, "Only the Ammunition property is removed")
 fire("UsingSpell", "before", "alice", "Shout_GSL_Reload_Flintlock", "", "", 971)
 ammo("alice", "Main").Amount = 3
