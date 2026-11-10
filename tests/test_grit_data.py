@@ -328,9 +328,8 @@ class GritDataTests(unittest.TestCase):
             self.assertEqual(fields['SpellContainerID'], 'Shout_GSL_MercilessShot')
             self.assertEqual(fields['UseCosts'], f'ActionPoint:1;GunslingerGrit:{grit}')
             self.assertEqual(fields['DisplayName'], f'h10000002g0000g4000g8000g00000000000{grit};1')
-            full = 'DealDamage(MainRangedWeapon,MainRangedWeaponDamageType)'
-            half = 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)'
-            damage = ';'.join([full] * (1 + grit // 2) + [half] * (grit % 2))
+            # One hit, so per-hit weapon bonuses such as Sharpshooter's +10 apply only once.
+            damage = f'DealDamage(MainRangedWeapon+{grit}d6,MainRangedWeaponDamageType)'
             self.assertEqual(fields['SpellSuccess'], damage + ';ExecuteWeaponFunctors(MainHand)')
             self.assertEqual(fields['TooltipDamageList'], damage)
             self.assertNotIn('MainRangedWeapon*', fields['TooltipDamageList'])

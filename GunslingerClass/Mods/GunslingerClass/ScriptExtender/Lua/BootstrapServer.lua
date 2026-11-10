@@ -645,6 +645,22 @@ Ext.Events.StatsLoaded:Subscribe(function()
         requireWorkingFirearm(interrupt, "Conditions", "Main", "context.Observer")
         Ext.Stats.Sync(name)
     end
+    -- Sharpshooter's Sharpshooter() check needs an Ammunition weapon in the main hand, but an empty gun loses
+    -- that property (see setLoaded). It is cleared when the last bullet's cast finishes, after the attack roll
+    -- but before the projectile lands, so that shot (and any offhand shot while the main gun is empty) took the
+    -- -5 without the +10. A main-hand firearm counts as an ammunition weapon whether or not it is loaded.
+    local sharpshooter = Ext.Stats.Get("Sharpshooter_AllIn")
+    if sharpshooter and not (sharpshooter.Boosts or ""):find("GSL_", 1, true) then
+        local guns = {}
+        for kind in pairs(Rules.Firearms) do
+            guns[#guns + 1] = "HasPassive('GSL_" .. kind .. "_MainHand',context.Source)"
+        end
+        table.sort(guns)
+        local firearm = "(Sharpshooter(context.Source) or (IsRangedWeaponAttack() and (" ..
+            table.concat(guns, " or ") .. ") and IsProficientWith(context.Source,GetAttackWeapon(context.Source))))"
+        sharpshooter.Boosts = sharpshooter.Boosts:gsub("Sharpshooter%(context%.Source%)", function() return firearm end)
+        Ext.Stats.Sync("Sharpshooter_AllIn")
+    end
 end)
 
 -- Gunshots play on the animation's cast text key (the frame the bullet leaves the gun), not through

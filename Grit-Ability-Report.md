@@ -22,7 +22,7 @@ and documented in the README.
 
 | Ability | Previous implementation | README contract | Implementation after this audit |
 |---|---|---|---|
-| Merciless Shot | Action + 2 grit applied a flat +1d8 buff; firing still needed another attack. | Action attack; spend 1-3 grit, adding half a weapon attack per point. | Linked 1/2/3-grit weapon attacks, costing one action and one bullet. Damage is built from full and half weapon-damage instances for 1.5x/2x/2.5x. No preparatory buff/action. |
+| Merciless Shot | Action + 2 grit applied a flat +1d8 buff; firing still needed another attack. | Action attack; spend 1-3 grit, adding half a weapon attack per point. | Linked 1/2/3-grit weapon attacks, costing one action and one bullet. Each deals one hit of weapon damage +1d6/2d6/3d6, so per-hit bonuses such as Sharpshooter's +10 apply once. No preparatory buff/action. |
 | Line 'em Up | Action + 2 grit; fixed 2d6 piercing, half on save; could target allies. | Half firearm damage to enemies in a 20-foot line; half again on a Dexterity save, DC 8 + Dex modifier + proficiency. | Enemy-only 6-metre line; `MainRangedWeapon/2`, or `/4` on save, using the weapon damage type and specified DC. Server wiring requires and consumes one primary-gun bullet. |
 | Rapid Shot | Bonus action + 1 grit unlocked vanilla Piercing Shot instead of firing. | One-grit bonus-action shot. | Direct firearm weapon attack with bonus action + 1 grit + 1 appropriate bullet. |
 | Bite the Bullet | Fixed 2 grit, temporary HP = 2 x proficiency. | Bonus action; spend 1-3 grit; temporary HP = spent grit x proficiency. | Three spend choices; native TemporaryHP statuses with 1/2/3 x proficiency and the shared TEMPORARY_HP stack. No invented HP functor. |

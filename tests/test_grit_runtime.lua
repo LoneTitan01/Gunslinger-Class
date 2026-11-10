@@ -79,6 +79,10 @@ for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
     "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do
     interruptStats[name] = {Conditions = "OriginalInterruptCondition"}
 end
+local vanillaSharpshooter = "IF(Sharpshooter(context.Source)):RollBonus(RangedWeaponAttack, -5);" ..
+    "IF(Sharpshooter(context.Source)):RollBonus(RangedOffHandWeaponAttack, -5);" ..
+    "IF(Sharpshooter(context.Source)):CharacterWeaponDamage(10)"
+local passiveStats = {Sharpshooter_AllIn = {Boosts = vanillaSharpshooter}}
 for _, name in ipairs({"Projectile_GSL_DisarmingShot", "Projectile_GSL_RapidShot",
     "Projectile_GSL_HotStreak_1", "Projectile_GSL_FanningFire_1", "Projectile_GSL_ViolentShot_1"}) do
     spellStats[name] = {RequirementConditions = "OriginalGritRequirement", SpellProperties = "", SpellRoll = ""}
@@ -155,7 +159,7 @@ Ext = {
         end,
         Get = function(name)
             if spellStats[name] then asExtenderSpell(spellStats[name]) end
-            return spellStats[name] or interruptStats[name] or weaponStats[name]
+            return spellStats[name] or interruptStats[name] or weaponStats[name] or passiveStats[name]
         end,
         Sync = function() end
     },
@@ -348,6 +352,15 @@ for name, spell in pairs(spellStats) do
         local _, guards = spell.RequirementConditions:gsub(condition:gsub("(%W)", "%%%1"), "")
         assert(guards == 1, "Stats reload must not duplicate Broken checks for " .. name)
     end
+end
+do
+    -- Sharpshooter must keep its -5/+10 together on a gun's last bullet, when the gun loses Ammunition.
+    local boosts = passiveStats.Sharpshooter_AllIn.Boosts
+    local firearm = "(Sharpshooter(context.Source) or (IsRangedWeaponAttack() and " ..
+        "(HasPassive('GSL_Blunderbuss_MainHand',context.Source) or HasPassive('GSL_Flintlock_MainHand',context.Source) or " ..
+        "HasPassive('GSL_Musket_MainHand',context.Source)) and IsProficientWith(context.Source,GetAttackWeapon(context.Source))))"
+    local expected = vanillaSharpshooter:gsub("Sharpshooter%(context%.Source%)", function() return firearm end)
+    assert(boosts == expected, "Sharpshooter must treat an empty main-hand firearm as an ammunition weapon: " .. boosts)
 end
 for name, interrupt in pairs(interruptStats) do
     assert(interrupt.Conditions:find(brokenGuard("Main", "context.Observer"), 1, true),

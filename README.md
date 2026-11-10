@@ -442,7 +442,7 @@ At level 3, Gunslingers choose two grit abilities, then choose one additional ab
 
 | Name | Lvl available | Description | Cost (grit and actions) |
 | --- | --- | --- | --- |
-| Merciless Shot | 3 | Make a firearm attack; each grit spent adds half the weapon's damage (1.5x, 2x or 2.5x total). | 1-3 grit; Action; 1 bullet |
+| Merciless Shot | 3 | Make a firearm attack; each grit spent adds 1d6 to the single hit. | 1-3 grit; Action; 1 bullet |
 | Line 'em Up | 3 | Deal half weapon damage to enemies and neutral creatures, but not allies, in a 20-foot line. Targets make a Dexterity save (DC 8 + Dexterity modifier + proficiency bonus) and take half damage on a successful save. | 2 grit; Action; 1 bullet |
 | Rapid Shot | 3 | Fire one additional firearm attack. | 1 grit; Bonus Action; 1 bullet |
 | Bite the Bullet | 3 | Gain temporary hit points equal to grit spent multiplied by your proficiency bonus. | Up to 3 grit; Bonus Action |
