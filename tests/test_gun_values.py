@@ -28,13 +28,12 @@ class GunValueTests(unittest.TestCase):
 
     def test_upgrade_chain_firearms_cost_one_and_a_half_times_the_previous_firearm(self) -> None:
         chains = (
-            ('WPN_GSL_Flintlock', 'WPN_GSL_Flintlock_Quickshot', 'WPN_GSL_Flintlock_RunAndGun',
-             'WPN_GSL_Flintlock_Diamond', 'WPN_GSL_Flintlock_BlackDiamond'),
-            ('WPN_GSL_Flintlock_Diamond', 'WPN_GSL_Flintlock_InfernalDiamond'),
-            ('WPN_GSL_Blunderbuss', 'WPN_GSL_Blunderbuss_InfernalIron', 'WPN_GSL_Blunderbuss_InfernalAlloy',
-             'WPN_GSL_Blunderbuss_SoulCoin', 'WPN_GSL_Blunderbuss_EnrichedInfernalIron'),
-            ('WPN_GSL_Musket', 'WPN_GSL_Musket_Silver', 'WPN_GSL_Musket_Advanced',
-             'WPN_GSL_Musket_Paralyzing', 'WPN_GSL_Musket_Mithral'),
+            ('WPN_GSL_Flintlock', 'WPN_GSL_Flintlock_Matched', 'WPN_GSL_Flintlock_Duelist',
+             'WPN_GSL_Flintlock_DiamondDuelist', 'WPN_GSL_Flintlock_BlackDiamondDuelist'),
+            ('WPN_GSL_Blunderbuss', 'WPN_GSL_Blunderbuss_Plated', 'WPN_GSL_Blunderbuss_Bloodletter',
+             'WPN_GSL_Blunderbuss_Soulbound', 'WPN_GSL_Blunderbuss_Hellplate'),
+            ('WPN_GSL_Musket', 'WPN_GSL_Musket_Sniper', 'WPN_GSL_Musket_Quarry',
+             'WPN_GSL_Musket_Pinning', 'WPN_GSL_Musket_Deadeye'),
         )
         for chain in chains:
             for previous, firearm in zip(chain, chain[1:]):
@@ -43,7 +42,7 @@ class GunValueTests(unittest.TestCase):
                         gv.item_value(firearm, self.stats),
                         gv.half_up(gv.item_value(previous, self.stats) * 1.5),
                     )
-        self.assertEqual(gv.item_value('WPN_GSL_Flintlock_BlackDiamond', self.stats), 255)
+        self.assertEqual(gv.item_value('WPN_GSL_Flintlock_BlackDiamondDuelist', self.stats), 255)
 
     def test_checked_in_values_are_current(self) -> None:
         for module in gv.MODULES:

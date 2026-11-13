@@ -57,7 +57,7 @@ local spellStats = {
     Zone_GSL_Scattershot = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Zone_GSL_Scattershot_PoisonMist = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Projectile_GSL_TestShot_OffHand = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
-    Projectile_GSL_DashAndGun_OffhandFlintlock = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
+    Projectile_GSL_TestShot_Offhand = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""},
     Projectile_GSL_ReactionShot = {RequirementConditions = "", SpellProperties = "", SpellRoll = ""}
 }
 local interruptStats = {}
@@ -76,7 +76,7 @@ local weaponStats = {
         BoostsOnEquipMainHand = "UnlockSpell(Projectile_GSL_RevitalizingShot_Blunderbuss)"}
 }
 for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
-    "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do
+    "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing", "Interrupt_GSL_ReturnFire"}) do
     interruptStats[name] = {Conditions = "OriginalInterruptCondition"}
 end
 for _, name in ipairs({"Projectile_GSL_DisarmingShot", "Projectile_GSL_RapidShot",
@@ -340,7 +340,7 @@ end
 for name, spell in pairs(spellStats) do
     if spell.SpellType ~= "Throw" then
         local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack" or
-            name == "Projectile_GSL_DashAndGun_OffhandFlintlock"
+            name == "Projectile_GSL_TestShot_Offhand"
         local condition = brokenGuard(offhand and "Off" or "Main", "context.Source")
         assert(spell.RequirementConditions:find(condition, 1, true), name .. " must check the gun's Broken status")
         if offhand then

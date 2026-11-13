@@ -177,11 +177,11 @@ class SpellDataTests(unittest.TestCase):
             elif 'MainRangedWeapon' in ' '.join(self.spell(name).get(field, '') for field in shot_fields):
                 main_hand.add(name)
         for name in ('Zone_GSL_Scattershot', 'Projectile_GSL_RapidShot', 'Projectile_GSL_DoubleOrNothingAttack',
-                     'Zone_GSL_LineEmUp', 'Shout_GSL_HailOfLead', 'Projectile_GSL_DashAndGun_Flintlock'):
+                     'Zone_GSL_LineEmUp', 'Shout_GSL_HailOfLead', 'Projectile_GSL_BloodletterShot_Blunderbuss',
+                     'Projectile_GSL_ParalyzingShot_Musket'):
             self.assertIn(name, main_hand)
         self.assertIn('GSL_OffHand_Flintlock_attack_RangeMaster', off_hand)
-        self.assertIn('Projectile_GSL_DashAndGun_OffhandFlintlock', off_hand)
-        self.assertEqual(len(off_hand), 4)
+        self.assertEqual(len(off_hand), 3)
 
         # The engine plays CastSound when the cast animation starts, before the gun fires, so gunshot spells
         # leave it empty and BootstrapServer.lua plays the firing gun's shot on the cast text key instead.
@@ -606,7 +606,7 @@ class SpellDataTests(unittest.TestCase):
                 self.assertEqual(set(handles), {'DisplayName', 'Description'})
                 for handle in handles.values():
                     self.assertTrue(localization.get(handle), handle)
-        self.assertEqual(weapons, 184)
+        self.assertEqual(weapons, 183)
 
     def test_firearm_handedness_and_animation_equipment_types(self) -> None:
         templates = ET.parse(PUBLIC / 'RootTemplates' / '_merged.lsx')
@@ -681,23 +681,11 @@ class SpellDataTests(unittest.TestCase):
             fields['SpellRoll'],
             'not SavingThrow(Ability.Dexterity,8 + context.Source.ProficiencyBonus + GetModifier(context.Source.Dexterity))',
         )
-        self.assertTrue(
-            fields['SpellSuccess'].startswith(
-                'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType);'
-            )
-        )
         self.assertEqual(
             fields['TooltipDamageList'],
             'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)',
         )
-        self.assertIn(
-            "IF(HasPassive('GSL_Blunderbuss_SoulCoin_Passive',context.Source)):DealDamage(1d4,Fire)",
-            fields['SpellSuccess'],
-        )
-        self.assertIn(
-            "IF(HasPassive('GSL_Blunderbuss_EnrichedInfernalIron_Passive',context.Source)):DealDamage(2d4,Fire)",
-            fields['SpellSuccess'],
-        )
+        self.assertEqual(fields['SpellSuccess'], 'DealDamage(MainRangedWeapon/2,MainRangedWeaponDamageType)')
         self.assertEqual(fields['SpellFail'], 'ApplyStatus(SAVED_AGAINST_HOSTILE_SPELL,100,0)')
         self.assertEqual(fields['TooltipOnSave'], '')
         for variant in ('PoisonMist', 'GargantuanScattershot', 'PunchDrunkScattershot'):
