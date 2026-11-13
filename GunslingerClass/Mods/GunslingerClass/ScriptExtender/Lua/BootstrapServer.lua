@@ -628,7 +628,7 @@ Ext.Events.StatsLoaded:Subscribe(function()
         local spell = Ext.Stats.Get(name)
         if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or
             name:match("^Zone_GSL_Scattershot") or ammoSpells[name] then
-            -- Names spell it both "OffHand" and "Offhand" (Dash and Gun), so match either.
+            -- Match both spellings, "OffHand" and "Offhand".
             local hand = name:lower():find("offhand", 1, true) and "Off" or "Main"
             requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
             if ammoSpells[name] then
@@ -653,7 +653,7 @@ Ext.Events.StatsLoaded:Subscribe(function()
         end
     end
     for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
-        "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing"}) do
+        "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing", "Interrupt_GSL_ReturnFire"}) do
         local interrupt = assert(Ext.Stats.Get(name), "Missing firearm interrupt: " .. name)
         requireWorkingFirearm(interrupt, "Conditions", "Main", "context.Observer")
         Ext.Stats.Sync(name)
@@ -669,7 +669,7 @@ local function weaponShotHand(name)
         for _, weapon in ipairs({"MainRangedWeapon", "OffhandRangedWeapon"}) do
             for _, key in ipairs({"SpellSuccess", "SpellProperties", "SpellFail"}) do
                 if dealsWeaponDamage(field(spell, key), weapon) then
-                    -- Names spell it both "OffHand" and "Offhand" (Dash and Gun).
+                    -- Match both spellings, "OffHand" and "Offhand".
                     return name:lower():find("offhand", 1, true) and "Off" or "Main"
                 end
             end

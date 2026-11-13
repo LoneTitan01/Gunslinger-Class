@@ -99,13 +99,9 @@ referenced_handles = {
     for attribute in root.findall('.//attribute[@type="TranslatedString"]')
     if attribute.get('handle')
 }
-# Vanilla text on overridden vanilla templates (Adamantine Slag, Mithral Bar);
+# Vanilla text on the overridden vanilla Mithral Bar template;
 # the game's own localization supplies these.
 vanilla_handles = {
-    'h243b5fefg45ccg4941gb979g0659b5894566',
-    'hb7944874gc894g40d6gab0bg544ac58033a7',
-    'h87bcb063g4208g4db9ga201g603b93ef3651',
-    'h5cf9448fg8ac4g4de2g8e99g77cc37a62a5e',
     'h346f3127geb65g4b0eg8bd4g4089c3760439',
     'h736916dbg0dfag419dg90dfg2388c032ff08',
 }

@@ -3785,19 +3785,18 @@ class CraftingRecipeTests(unittest.TestCase):
             ".//node[@id='GameObjects']"
         )
         upgrades = (
-            ('Flintlock', 'Quickshot', 'WPN_GSL_Flintlock', 'OBJ_Bag_BlackPowder'),
-            ('Flintlock', 'RunAndGun', 'WPN_GSL_Flintlock_Quickshot', 'OBJ_Metalbar_Gold'),
-            ('Flintlock', 'Diamond', 'WPN_GSL_Flintlock_RunAndGun', 'OBJ_Diamond'),
-            ('Flintlock', 'BlackDiamond', 'WPN_GSL_Flintlock_Diamond', 'OBJ_DiamondDark'),
-            ('Flintlock', 'InfernalDiamond', 'WPN_GSL_Flintlock_Diamond', 'QUEST_LOW_Infernal_Diamond'),
-            ('Blunderbuss', 'InfernalIron', 'WPN_GSL_Blunderbuss', 'LOOT_Misc_InfernalIron'),
-            ('Blunderbuss', 'InfernalAlloy', 'WPN_GSL_Blunderbuss_InfernalIron', 'LOOT_Misc_InfernalAlloy'),
-            ('Blunderbuss', 'SoulCoin', 'WPN_GSL_Blunderbuss_InfernalAlloy', 'LOOT_Misc_SoulCoin'),
-            ('Blunderbuss', 'EnrichedInfernalIron', 'WPN_GSL_Blunderbuss_SoulCoin', 'LOOT_Misc_InfernalIron_Enriched'),
-            ('Musket', 'Silver', 'WPN_GSL_Musket', 'OBJ_Metalbar_Silver'),
-            ('Musket', 'Advanced', 'WPN_GSL_Musket_Silver', 'OBJ_GSL_AdvancedMusketComponents'),
-            ('Musket', 'Paralyzing', 'WPN_GSL_Musket_Advanced', 'UNI_LOW_KarabasansGift_Grenade'),
-            ('Musket', 'Mithral', 'WPN_GSL_Musket_Paralyzing', 'LOOT_GEN_Metalbar_Mithral_A'),
+            ('Flintlock', 'Matched', 'WPN_GSL_Flintlock', 'OBJ_Pearl'),
+            ('Flintlock', 'Duelist', 'WPN_GSL_Flintlock_Matched', 'OBJ_Onyx'),
+            ('Flintlock', 'DiamondDuelist', 'WPN_GSL_Flintlock_Duelist', 'OBJ_Diamond'),
+            ('Flintlock', 'BlackDiamondDuelist', 'WPN_GSL_Flintlock_DiamondDuelist', 'OBJ_DiamondDark'),
+            ('Blunderbuss', 'Plated', 'WPN_GSL_Blunderbuss', 'OBJ_Metalbar_Gold'),
+            ('Blunderbuss', 'Bloodletter', 'WPN_GSL_Blunderbuss_Plated', 'OBJ_Bloodstone'),
+            ('Blunderbuss', 'Soulbound', 'WPN_GSL_Blunderbuss_Bloodletter', 'GLO_SoulCoin'),
+            ('Blunderbuss', 'Hellplate', 'WPN_GSL_Blunderbuss_Soulbound', 'OBJ_InfernalPlate'),
+            ('Musket', 'Sniper', 'WPN_GSL_Musket', 'OBJ_Metalbar_Silver'),
+            ('Musket', 'Quarry', 'WPN_GSL_Musket_Sniper', 'OBJ_ArrowOfBeastSlaying'),
+            ('Musket', 'Pinning', 'WPN_GSL_Musket_Quarry', 'UNI_LOW_KarabasansGift_Grenade'),
+            ('Musket', 'Deadeye', 'WPN_GSL_Musket_Pinning', 'LOOT_GEN_Metalbar_Mithral_A'),
         )
         map_keys: set[str] = set()
         for family, tier, source_weapon, material in upgrades:
@@ -3855,142 +3854,171 @@ class CraftingRecipeTests(unittest.TestCase):
 
         self.assertEqual(len(map_keys), len(upgrades))
 
-        component_recipe = read_entry(
-            combinations,
-            'ItemCombination',
-            'GSL_Assembly_AdvancedMusketComponents',
-        )
-        self.assertEqual(
-            [component_recipe[f'Object {slot}'] for slot in range(1, 4)],
-            ['OBJ_GSL_AssemblyKit', 'LOOT_GEN_AdamantineScrap_A', 'UND_OBJ_Runepowder_Vial'],
-        )
-        component_result = read_entry(
-            combinations,
-            'ItemCombinationResult',
-            'GSL_Assembly_AdvancedMusketComponents_1',
-        )
-        self.assertEqual(component_result['Result 1'], 'OBJ_GSL_AdvancedMusketComponents')
-        component_stats = read_entry(
-            PUBLIC / 'Stats' / 'Generated' / 'Data' / 'GunslingerObjects.txt',
-            'entry',
-            'OBJ_GSL_AdvancedMusketComponents',
-        )
-        self.assertEqual(component_stats['using'], 'LOOT_GEN_Metalbar_Mithral_A')
-        component_template = next(
-            node for node in templates
-            if node.find("attribute[@id='Name']").get('value') == 'OBJ_GSL_AdvancedMusketComponents'
-        )
-        self.assertEqual(
-            component_template.find("attribute[@id='ParentTemplateId']").get('value'),
-            'd746d7c3-ed35-4cd4-becc-6ebb3e0a7b46',
-        )
-        self.assertIn(component_stats['DisplayName'].split(';')[0], localized_ids)
-        self.assertIn(component_stats['Description'].split(';')[0], localized_ids)
-
     def test_firearm_upgrade_effects_and_granted_abilities(self) -> None:
         data_dir = PUBLIC / 'Stats' / 'Generated' / 'Data'
         weapons = data_dir / 'Weapon.txt'
         passives = data_dir / 'GunslingerPassives.txt'
         spells = data_dir / 'GunslingerSpells.txt'
+        statuses = data_dir / 'GunslingerStatuses.txt'
+        interrupts = data_dir / 'GunslingerInterrupts.txt'
+        localization = (ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').read_text(
+            encoding='utf-8')
 
-        quickshot = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_Quickshot')
-        self.assertEqual(quickshot['Rarity'], 'Uncommon')
-        self.assertIn('WeaponEnchantment(1)', quickshot['DefaultBoosts'])
-        self.assertIn('GSL_Flintlock_Upgrade_Grit', quickshot['PassivesOnEquip'])
-        grit_bonus = read_entry(passives, 'entry', 'GSL_Flintlock_Upgrade_Grit')
-        self.assertIn('ActionResource(GunslingerGrit,1,0)', grit_bonus['Boosts'])
-        quick_reload = read_entry(spells, 'entry', 'Shout_GSL_QuickReload_Flintlock')
-        self.assertEqual(quick_reload['UseCosts'], 'GunslingerGrit:1')
-        self.assertIn('RestoreResource(GunslingerFlintlockAmmo,100%,0)', quick_reload['SpellProperties'])
-        self.assertIn('UnlockSpell(Shout_GSL_Repair_Off)', quickshot['BoostsOnEquipOffHand'])
-        offhand_quick_reload = read_entry(spells, 'entry', 'Shout_GSL_QuickReload_OffhandFlintlock')
-        localization = (ROOT / 'GunslingerClass' / 'Localization' / 'English' / 'GunslingerClass.xml').read_text(encoding='utf-8')
-        for spell, label in ((quick_reload, 'Quick Reload: Main Hand'), (offhand_quick_reload, 'Quick Reload: Off Hand')):
-            handle = spell['DisplayName'].split(';')[0]
+        def localized(entry: dict[str, str], label: str) -> None:
+            handle = entry['DisplayName'].split(';')[0]
             self.assertIn(f'contentuid="{handle}" version="1">{label}<', localization)
 
-        run_and_gun = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_RunAndGun')
-        self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_Flintlock)', run_and_gun['BoostsOnEquipMainHand'])
-        self.assertIn('UnlockSpell(Shout_GSL_Repair_Main)', run_and_gun['BoostsOnEquipMainHand'])
-        self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_OffhandFlintlock)', run_and_gun['BoostsOnEquipOffHand'])
-        self.assertIn('UnlockSpell(Shout_GSL_Repair_Off)', run_and_gun['BoostsOnEquipOffHand'])
-        self.assertIn(f'contentuid="{run_and_gun["DisplayName"].split(";")[0]}" version="1">Gilded Flintlock<', localization)
-        for name, label in (('Projectile_GSL_DashAndGun_Flintlock', 'Dash and Gun: Main Hand'),
-                            ('Projectile_GSL_DashAndGun_OffhandFlintlock', 'Dash and Gun: Off Hand')):
-            handle = read_entry(spells, 'entry', name)['DisplayName'].split(';')[0]
-            self.assertIn(f'contentuid="{handle}" version="1">{label}<', localization)
-        upgrades = ('Quickshot', 'RunAndGun', 'Diamond', 'BlackDiamond', 'InfernalDiamond')
-        for index, upgrade in enumerate(upgrades):
-            with self.subTest(upgrade=upgrade):
-                weapon = read_entry(weapons, 'entry', f'WPN_GSL_Flintlock_{upgrade}')
-                main, off = weapon['BoostsOnEquipMainHand'], weapon['BoostsOnEquipOffHand']
-                for spell in ('Shout_GSL_QuickReload_Flintlock', 'Shout_GSL_Repair_Main'):
-                    self.assertIn(f'UnlockSpell({spell})', main)
-                for spell in ('Shout_GSL_QuickReload_OffhandFlintlock', 'Shout_GSL_Repair_Off'):
-                    self.assertIn(f'UnlockSpell({spell})', off)
-                if index >= 1:
-                    self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_Flintlock)', main)
-                    self.assertIn('UnlockSpell(Projectile_GSL_DashAndGun_OffhandFlintlock)', off)
-        offhand_dash = read_entry(spells, 'entry', 'Projectile_GSL_DashAndGun_OffhandFlintlock')
-        self.assertEqual(offhand_dash['UseCosts'], 'GunslingerOffhandFlintlockAmmo:1')
-        consume = read_entry(passives, 'entry', 'GSL_Flintlock_DashAndGun_Consume')
-        self.assertIn("SpellId('Projectile_GSL_DashAndGun_OffhandFlintlock')", consume['Conditions'])
-        dash_passive = read_entry(passives, 'entry', 'GSL_Flintlock_DashAndGun_Passive')
-        self.assertIn("SpellId('Shout_Dash')", dash_passive['Conditions'])
-        dash_attack = read_entry(spells, 'entry', 'Projectile_GSL_DashAndGun_Flintlock')
-        self.assertEqual(dash_attack['UseCosts'], 'GunslingerFlintlockAmmo:1')
+        chains = {
+            'Flintlock': ('Matched', 'Duelist', 'DiamondDuelist', 'BlackDiamondDuelist'),
+            'Blunderbuss': ('Plated', 'Bloodletter', 'Soulbound', 'Hellplate'),
+            'Musket': ('Sniper', 'Quarry', 'Pinning', 'Deadeye'),
+        }
+        names = {
+            'Flintlock': ('Matched Flintlock', "Duelist's Flintlock", 'Diamond Duelist', 'Black Diamond Duelist'),
+            'Blunderbuss': ('Plated Blunderbuss', 'Bloodletter', 'Soulbound Blunderbuss', 'Hellplate Blunderbuss'),
+            'Musket': ("Sniper's Musket", 'Quarry Musket', 'Pinning Musket', 'Deadeye Musket'),
+        }
+        # Abilities are cumulative: every tier keeps the earlier tiers' passives.
+        tier_passives = {
+            'Flintlock': (('GSL_Flintlock_QuickReload_Passive', 'GSL_Flintlock_PairedShots_Passive'),
+                          ('GSL_Flintlock_ReturnFire_Passive',), ('GSL_Flintlock_DuelistPrecision_Passive',),
+                          ('GSL_Flintlock_TwinStrike_Passive',)),
+            'Blunderbuss': ((), (), ('GSL_Blunderbuss_Soulbound_Passive',), ('GSL_Blunderbuss_Hellplate_Passive',)),
+            'Musket': (('GSL_Musket_Sniper_Passive',), ('GSL_Musket_Quarry_Passive',), (),
+                       ('GSL_Musket_Deadeye_Passive', 'MAG_IgnorePiercingResistance_Passive')),
+        }
+        for family, tiers in chains.items():
+            expected_passives = ['GSL_Firearm_Misfire_Passive']
+            for index, tier in enumerate(tiers):
+                with self.subTest(firearm=f'{family}_{tier}'):
+                    weapon = read_entry(weapons, 'entry', f'WPN_GSL_{family}_{tier}')
+                    self.assertEqual(weapon['Rarity'], ('Uncommon', 'Rare', 'VeryRare', 'Legendary')[index])
+                    self.assertIn(f'WeaponEnchantment({(1, 1, 2, 3)[index]})', weapon['DefaultBoosts'])
+                    expected_passives += tier_passives[family][index]
+                    self.assertEqual(weapon['PassivesOnEquip'].split(';'), expected_passives)
+                    self.assertIn('UnlockSpell(Shout_GSL_Repair_Main)', weapon['BoostsOnEquipMainHand'])
+                    self.assertIn(f'contentuid="{weapon["DisplayName"].split(";")[0]}" version="1">'
+                                  f'{names[family][index]}<', localization)
+                    if family == 'Flintlock':
+                        self.assertIn('UnlockSpell(Shout_GSL_QuickReload_Flintlock)', weapon['BoostsOnEquipMainHand'])
+                        for spell in ('Shout_GSL_QuickReload_OffhandFlintlock', 'Shout_GSL_Reload_DualFlintlock',
+                                      'Shout_GSL_Repair_Off'):
+                            self.assertIn(f'UnlockSpell({spell})', weapon['BoostsOnEquipOffHand'])
+                    if family == 'Blunderbuss':
+                        self.assertEqual(weapon['Boosts'], 'AC(1)')
+                        self.assertEqual('UnlockSpell(Projectile_GSL_BloodletterShot_Blunderbuss)' in
+                                         weapon['BoostsOnEquipMainHand'], index >= 1)
+                    if family == 'Musket':
+                        self.assertNotIn('Boosts', weapon)
+                        self.assertEqual('UnlockSpell(Target_GSL_MarkQuarry)' in weapon['BoostsOnEquipMainHand'],
+                                         index >= 1)
+                        self.assertEqual('UnlockSpell(Projectile_GSL_ParalyzingShot_Musket)' in
+                                         weapon['BoostsOnEquipMainHand'], index >= 2)
 
-        diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_Diamond')
-        self.assertIn('WeaponEnchantment(2)', diamond['DefaultBoosts'])
-        self.assertNotIn('Boosts', diamond)
-        piercing = read_entry(passives, 'entry', 'GSL_Flintlock_IgnorePiercingResistance_Passive')
-        self.assertIn('IgnoreResistance(Piercing,Resistant)', piercing['Boosts'])
-        self.assertNotIn('IsHidden', piercing.get('Properties', ''))
-        self.assertIn(f'contentuid="{piercing["DisplayName"].split(";")[0]}" version="1">Ignores Piercing Resistance<',
-                      localization)
-        for upgrade in ('Diamond', 'BlackDiamond', 'InfernalDiamond'):
-            weapon = read_entry(weapons, 'entry', f'WPN_GSL_Flintlock_{upgrade}')
-            self.assertIn('GSL_Flintlock_IgnorePiercingResistance_Passive', weapon['PassivesOnEquip'])
-            self.assertIn('ActionResource(ActionPoint,1,0)', weapon['BoostsOnEquipMainHand'])
-            self.assertNotIn('BonusActionPoint', weapon['BoostsOnEquipMainHand'])
-            self.assertIn('ActionResource(BonusActionPoint,1,0)', weapon['BoostsOnEquipOffHand'])
-            self.assertNotIn('ActionResource(ActionPoint', weapon['BoostsOnEquipOffHand'])
-        black_diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_BlackDiamond')
-        self.assertIn('CriticalHit(1)', black_diamond['DefaultBoosts'])
-        darkness = read_entry(passives, 'entry', 'GSL_Flintlock_BlackDiamond_Passive')
-        self.assertIn('Advantage(AttackRoll)', darkness['Boosts'])
-        infernal_diamond = read_entry(weapons, 'entry', 'WPN_GSL_Flintlock_InfernalDiamond')
-        self.assertIn('WeaponDamage(2d6,Fire)', infernal_diamond['DefaultBoosts'])
+        # Duelist flintlocks.
+        for name in ('Shout_GSL_QuickReload_Flintlock', 'Shout_GSL_QuickReload_OffhandFlintlock'):
+            quick_reload = read_entry(spells, 'entry', name)
+            self.assertEqual(quick_reload['UseCosts'], 'GunslingerGrit:1')
+            self.assertIn("HasPassive('GSL_Flintlock_QuickReload_Passive',context.Source)",
+                          quick_reload['RequirementConditions'])
+        self.assertEqual(read_entry(passives, 'entry', 'GSL_Flintlock_QuickReload_Passive').get('Boosts'), None)
+        paired = read_entry(passives, 'entry', 'GSL_Flintlock_PairedShots_Passive')
+        self.assertIn("not IsOffHandAttack() and HasDamageEffectFlag(DamageFlags.Hit)", paired['Conditions'])
+        self.assertIn("HasPassive('GSL_Flintlock_OffHand',context.Source)", paired['Conditions'])
+        self.assertEqual(paired['StatsFunctors'], 'ApplyStatus(GSL_PAIRED_SHOTS,100,1)')
+        self.assertIn('RollBonus(RangedOffHandWeaponAttack,1)', paired['Boosts'])
+        self.assertIn("not HasPassive('GSL_Flintlock_TwinStrike_Passive',context.Source)):"
+                      'CharacterWeaponDamage(1d4,Piercing)', paired['Boosts'])
+        twin = read_entry(passives, 'entry', 'GSL_Flintlock_TwinStrike_Passive')
+        self.assertIn("HasStatus('GSL_PAIRED_SHOTS',context.Target,context.Source)", twin['Boosts'])
+        self.assertIn('CharacterWeaponDamage(2d6,Piercing)', twin['Boosts'])
+        self.assertIn('IsOffHandAttack()', twin['Boosts'])
+        read_entry(statuses, 'entry', 'GSL_PAIRED_SHOTS')
+        return_fire = read_entry(passives, 'entry', 'GSL_Flintlock_ReturnFire_Passive')
+        self.assertEqual(return_fire['Boosts'], 'UnlockInterrupt(Interrupt_GSL_ReturnFire)')
+        reaction = read_entry(interrupts, 'entry', 'Interrupt_GSL_ReturnFire')
+        self.assertEqual(reaction['Cost'], 'ReactionActionPoint:1')
+        self.assertEqual(reaction['Properties'], 'UseSpell(OBSERVER_SOURCE,Projectile_GSL_ReactionShot,true,true,true)')
+        for condition in ('Self(context.Target,context.Observer)', 'Enemy(context.Source,context.Observer)',
+                          'IsHit()', "HasPassive('GSL_Flintlock_MainHand',context.Observer)",
+                          "HasActionResource('GunslingerFlintlockAmmo',1,0,false,false,context.Observer)",
+                          'not DistanceToEntityGreaterThan(13.5,context.ObserverPosition,context.Source)'):
+            self.assertIn(condition, reaction['Conditions'])
+        localized(reaction, 'Return Fire')
+        precision = read_entry(passives, 'entry', 'GSL_Flintlock_DuelistPrecision_Passive')
+        self.assertEqual(precision['Boosts'], 'IF(IsRangedWeaponAttack()):ReduceCriticalAttackThreshold(1)')
+        self.assertIn("IsCritical() and IsRangedWeaponAttack() and not HasStatus('GSL_DUELIST_REFUND_USED',"
+                      'context.Source)', precision['Conditions'])
+        self.assertIn('IF(not IsOffHandAttack()):RestoreResource(SELF,GunslingerFlintlockAmmo,1,0)',
+                      precision['StatsFunctors'])
+        self.assertIn('IF(IsOffHandAttack()):RestoreResource(SELF,GunslingerOffhandFlintlockAmmo,1,0)',
+                      precision['StatsFunctors'])
+        self.assertIn('ApplyStatus(SELF,GSL_DUELIST_REFUND_USED,100,1)', precision['StatsFunctors'])
 
-        fire_resistance = read_entry(passives, 'entry', 'GSL_Blunderbuss_FireResistance_Passive')
-        self.assertIn('Resistance(Fire,Resistant)', fire_resistance['Boosts'])
-        infernal_alloy = read_entry(weapons, 'entry', 'WPN_GSL_Blunderbuss_InfernalAlloy')
-        self.assertIn('WeaponDamage(1d4,Fire)', infernal_alloy['DefaultBoosts'])
-        soulfire = read_entry(weapons, 'entry', 'WPN_GSL_Blunderbuss_SoulCoin')
-        self.assertIn('WeaponDamage(1d6,Fire)', soulfire['DefaultBoosts'])
-        self.assertIn('CriticalHit(1)', soulfire['DefaultBoosts'])
+        # Bulwark blunderbusses.
+        bloodletter = read_entry(spells, 'entry', 'Projectile_GSL_BloodletterShot_Blunderbuss')
+        self.assertEqual(bloodletter['using'], 'GSL_MainHand_Blunderbuss_attack')
+        self.assertEqual(bloodletter['Cooldown'], 'OncePerShortRest')
+        self.assertNotIn('TargetRadius', bloodletter)
+        self.assertIn('ApplyStatus(SELF,GSL_BLOODLETTER_TEMP_HP,100,-1)', bloodletter['SpellSuccess'])
+        localized(bloodletter, 'Bloodletter Shot')
+        temp_hp = read_entry(statuses, 'entry', 'GSL_BLOODLETTER_TEMP_HP')
+        self.assertEqual(temp_hp['Boosts'], 'TemporaryHP(ProficiencyBonus)')
+        soulbound = read_entry(passives, 'entry', 'GSL_Blunderbuss_Soulbound_Passive')
+        self.assertIn("IF(not HasStatus('GSL_SOULBOUND_SPENT')):DownedStatus(GSL_SOULBOUND_DOWNED,5)",
+                      soulbound['Boosts'])
+        self.assertIn('not DistanceToTargetGreaterThan(3)):CharacterWeaponDamage(1d6,Bludgeoning)', soulbound['Boosts'])
+        downed = read_entry(statuses, 'entry', 'GSL_SOULBOUND_DOWNED')
+        self.assertEqual(downed['StatusType'], 'DOWNED')
+        self.assertIn('ApplyStatus(GSL_SOULBOUND_SPENT,100,-1)', downed['OnApplyFunctors'])
+        self.assertIn('RegainHitPoints(1,Guaranteed)', downed['OnApplyFunctors'])
+        self.assertEqual(read_entry(statuses, 'entry', 'GSL_SOULBOUND_SPENT')['RemoveEvents'], 'OnLongRest')
+        hellplate = read_entry(passives, 'entry', 'GSL_Blunderbuss_Hellplate_Passive')
+        self.assertIn('IF(IsRangedAttack()):DamageReduction(Piercing,Half)', hellplate['Boosts'])
+        self.assertIn('not DistanceToTargetGreaterThan(3)):ReduceCriticalAttackThreshold(1)', hellplate['Boosts'])
         scattershot = read_entry(spells, 'entry', 'Zone_GSL_Scattershot')
-        self.assertIn('DealDamage(1d4,Fire)', scattershot['SpellSuccess'])
-        enchanted_scattershot = read_entry(
-            weapons,
-            'entry',
-            'WPN_GSL_Blunderbuss_EnrichedInfernalIron',
-        )
-        self.assertIn('WeaponDamage(2d4,Fire)', enchanted_scattershot['DefaultBoosts'])
-        self.assertIn('GROUND:CreateSurface(2,2,Fire)', scattershot['SpellProperties'])
-        self.assertIn('DealDamage(2d4,Fire)', scattershot['SpellSuccess'])
+        self.assertEqual(scattershot['SpellProperties'],
+                         "IF(HasPassive('GSL_Blunderbuss_Hellplate_Passive',context.Source)):"
+                         'ApplyStatus(SELF,GSL_HELLPLATE_TEMP_HP,100,-1)')
+        self.assertEqual(read_entry(statuses, 'entry', 'GSL_HELLPLATE_TEMP_HP')['Boosts'],
+                         'TemporaryHP(ProficiencyBonus+ProficiencyBonus)')
 
-        musket_silver = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Silver')
-        self.assertIn('RollBonus(RangedWeaponAttack,2)', musket_silver['Boosts'])
-        advanced_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Advanced')
-        self.assertIn('WeaponDamage(1d4,Piercing)', advanced_musket['DefaultBoosts'])
+        # Sniper muskets.
+        sniper = read_entry(passives, 'entry', 'GSL_Musket_Sniper_Passive')
+        self.assertEqual(sniper['Boosts'],
+                         'IF(IsRangedWeaponAttack() and DistanceToTargetGreaterThan(9)):RollBonus(RangedWeaponAttack,2)')
+        mark = read_entry(spells, 'entry', 'Target_GSL_MarkQuarry')
+        self.assertEqual(mark['Cooldown'], 'OncePerShortRest')
+        self.assertEqual(mark['UseCosts'], 'BonusActionPoint:1')
+        self.assertEqual(mark['SpellProperties'], 'ApplyStatus(GSL_QUARRY,100,10)')
+        self.assertEqual(mark['TargetRadius'], '36')  # 120 feet
+        self.assertNotIn('IsConcentration', mark['SpellFlags'])
+        self.assertNotIn('ConcentrationSpellID', mark)
+        localized(mark, 'Mark Quarry')
+        read_entry(statuses, 'entry', 'GSL_QUARRY')
+        quarry = read_entry(passives, 'entry', 'GSL_Musket_Quarry_Passive')
+        self.assertIn("HasStatus('GSL_QUARRY',context.Target,context.Source)", quarry['Boosts'])
+        self.assertIn('CharacterWeaponDamage(1d6,Piercing)', quarry['Boosts'])
         paralyzing_shot = read_entry(spells, 'entry', 'Projectile_GSL_ParalyzingShot_Musket')
-        self.assertEqual(paralyzing_shot['Cooldown'], 'OncePerShortRestPerItem')
+        self.assertEqual(paralyzing_shot['Cooldown'], 'OncePerShortRest')
         self.assertIn('SavingThrow(Ability.Constitution', paralyzing_shot['SpellSuccess'])
-        self.assertIn('SG_Paralyzed', paralyzing_shot['SpellSuccess'])
-        mithral_musket = read_entry(weapons, 'entry', 'WPN_GSL_Musket_Mithral')
-        self.assertIn('WeaponDamage(1d6,Piercing)', mithral_musket['DefaultBoosts'])
-        self.assertIn('IgnoreResistance(Piercing,Resistant)', mithral_musket['DefaultBoosts'])
+        # The target is paralyzed, not the shooter (SELF), and PARALYZED is a status, not a status group.
+        self.assertIn('):ApplyStatus(PARALYZED,100,1)', paralyzing_shot['SpellSuccess'])
+        self.assertNotIn('SELF', paralyzing_shot['SpellSuccess'])
+        deadeye = read_entry(passives, 'entry', 'GSL_Musket_Deadeye_Passive')
+        self.assertIn("HasStatus('GSL_QUARRY',context.Target,context.Source)", deadeye['Boosts'])
+        self.assertIn('ReduceCriticalAttackThreshold(2)', deadeye['Boosts'])
+
+        # The replaced upgrades and their abilities are gone.
+        weapon_text = weapons.read_text(encoding='utf-8')
+        for old in ('Quickshot', 'RunAndGun', 'InfernalDiamond', 'InfernalIron', 'SoulCoin', 'Musket_Silver',
+                    'Musket_Mithral'):
+            self.assertNotIn(f'_{old}"', weapon_text)
+        for path in (passives, spells, statuses):
+            text = path.read_text(encoding='utf-8')
+            for old in ('DashAndGun', 'DASH_AND_GUN', 'Upgrade_Grit', 'BlackDiamond_Passive', 'SoulCoin_Passive',
+                        'EnrichedInfernalIron', 'SG_Paralyzed'):
+                self.assertNotIn(old, text)
 
 
 if __name__ == '__main__':

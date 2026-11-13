@@ -85,7 +85,7 @@
         <content contentuid="h47e712e3g6093g5244g9b7egbd961ca6a71a" version="1">Merciless Shot</content>
         <content contentuid="hbd9f7ccdg6efag577agb117g7e3939ef1f8d" version="1">Your next firearm attack deals extra damage.</content>
         <content contentuid="hdfef9eeag71eeg5d1eg8d24gcedc2c925e8c" version="1">Merciless Shot</content>
-        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and make a firearm attack as an action. Each grit point adds half the weapon's damage. Consumes one bullet.</content>
+        <content contentuid="h6e9afbfcg7e8ag59aega4b1ga8f436401446" version="1">Choose 1, 2, or 3 grit points and spend an action and one bullet to make a firearm attack. The shot deals an extra 1d6 damage for each grit point spent.</content>
         <content contentuid="hde7e2926g15bfg5332g8e16ga25ae7cef4c6" version="1">Line 'em Up</content>
         <content contentuid="hbce4e343g1a96g51acg800fga65933f05925" version="1">Unlocks the Line 'em Up grit ability.</content>
         <content contentuid="h754e9698ga877g5ad9gbae6g65979d3ce3a3" version="1">Line 'em Up</content>
@@ -246,13 +246,13 @@
         <content contentuid="h01d4548cgf39eg44a2gb244gf5b5ca6a4928" version="1">Disassembly Kit</content>
         <content contentuid="h0c266cf2g8b54g46f1gb989gf2e69222efc1" version="1">Gunsmith's Notes: Flintlock</content>
         <content contentuid="hc83bb250gf143g4ebfg98f1g3efe08617819" version="1">Cramped, powder-stained notes on improving a flintlock pistol.</content>
-        <content contentuid="hf8a20b3dg2c3ag4f4bgb912g4a14dc07dae5" version="1">A pistol is a promise kept at arm's length. With an Assembly Kit and the right material, it can be made to keep bigger ones. Each refinement is built upon the last.&lt;br&gt;&lt;br&gt;Smokepowder Satchel. Pack the pan with a finer grind. The lock snaps quicker, the nerve runs hotter, and reloading becomes a flick of the wrist.&lt;br&gt;&lt;br&gt;Gold Bar. Gild the frame and rebalance the grip. The pistol learns to fire on the run; a sprint and a shot become one motion.&lt;br&gt;&lt;br&gt;Diamond. Set a cut stone behind the frizzen. Its spark finds the gap in any hide, and the hand that holds it always seems to have time for one more thing.&lt;br&gt;&lt;br&gt;Then choose. A Black Diamond drinks the light around it: the pistol strikes truest from the shadows, and its killing shots come easier. An Infernal Diamond burns with the fire of the Hells, and every ball leaves the barrel aflame. The frame will bear one stone, not both.&lt;br&gt;&lt;br&gt;Enchanted steel can also be married to the lock. Daggers, short blades and light bows lend their gifts best to a pistol. What one kit joins, a Disassembly Kit can part.</content>
+        <content contentuid="hf8a20b3dg2c3ag4f4bgb912g4a14dc07dae5" version="1">A pistol is a promise kept at arm's length, and a pair of them is a conversation. With an Assembly Kit and the right material, one pistol can be made a proper partner to its twin. Each refinement is built upon the last.&lt;br&gt;&lt;br&gt;Pearl. Inlay the grip until both pistols sit alike in the hand. Reloading becomes a flick of the wrist, and when the main hand draws blood, the off hand follows it home.&lt;br&gt;&lt;br&gt;Onyx. Darken the frame with onyx. Whoever shoots at you had better not miss, because the pistol answers.&lt;br&gt;&lt;br&gt;Diamond. Set a cut stone behind the frizzen. Its spark finds the narrowest gap, and a perfect shot seems to leave the ball still in the barrel.&lt;br&gt;&lt;br&gt;Black Diamond. The final stone. When both pistols find the same target, the second shot lands like a verdict.&lt;br&gt;&lt;br&gt;Enchanted steel can also be married to the lock. Daggers, short blades and light bows lend their gifts best to a pistol. What one kit joins, a Disassembly Kit can part.</content>
         <content contentuid="h3a49c35ag54a7g41ecga7a2gc2d82abebf7b" version="1">Gunsmith's Notes: Musket</content>
         <content contentuid="h43cfd700g7f85g480dga204ge808b552a55f" version="1">Careful, measured notes on improving a long-barrelled musket.</content>
-        <content contentuid="hf59ff4dag7530g4d5dga3ffg2930bcbe1e1a" version="1">A long gun rewards patience, and so does its improvement. Bring an Assembly Kit to each step; every refinement is built upon the last.&lt;br&gt;&lt;br&gt;Silver Bar. Line the bore with silver. The ball flies straighter and finds its mark more often.&lt;br&gt;&lt;br&gt;Adamantine Slag and Rune Powder. Neither is any use alone. Join them with an Assembly Kit to make advanced components, then fit those to the silvered barrel. The shot will bite deeper.&lt;br&gt;&lt;br&gt;Karabasan's Gift. A strange device, and a dangerous one. Fit its workings to the lock, and a well-placed shot can leave a target rigid where they stand.&lt;br&gt;&lt;br&gt;Mithral Bar. The last and lightest refinement. A mithral barrel hits harder still and punches through hides that would turn ordinary lead.&lt;br&gt;&lt;br&gt;Enchanted staves, longswords, longbows and war hammers can also be bound to the stock. What one kit joins, a Disassembly Kit can part.</content>
+        <content contentuid="hf59ff4dag7530g4d5dga3ffg2930bcbe1e1a" version="1">A long gun rewards patience, and so does its improvement. Bring an Assembly Kit to each step; every refinement is built upon the last.&lt;br&gt;&lt;br&gt;Silver Bar. Line the bore with silver. The ball flies straighter the farther it has to go.&lt;br&gt;&lt;br&gt;Arrow of Beast Slaying. Strip a hunter's arrow of its charm and bind it to the sights. Mark your quarry, and the musket will not forget it.&lt;br&gt;&lt;br&gt;Karabasan's Gift. A strange device, and a dangerous one. Fit its workings to the lock, and a well-placed shot can leave a target rigid where they stand.&lt;br&gt;&lt;br&gt;Mithral Bar. The last and lightest refinement. A mithral barrel punches through hides that would turn ordinary lead, and your quarry's weak points open like doors.&lt;br&gt;&lt;br&gt;Enchanted staves, longswords, longbows and war hammers can also be bound to the stock. What one kit joins, a Disassembly Kit can part.</content>
         <content contentuid="h0d50d14egcd71g4c62ga24dg0e260b5505fb" version="1">Gunsmith's Notes: Blunderbuss</content>
         <content contentuid="ha0763de6g2664g4246gb844gd6672bfb09ed" version="1">Scorched notes on improving a blunderbuss. The edges smell of sulphur.</content>
-        <content contentuid="hc2859f6fg7c03g4f9agaa9fg675a4a7f5182" version="1">A blunderbuss is not subtle, and neither are its improvements. Every material below comes from the Hells. Wear gloves, keep an Assembly Kit close, and build each step upon the last.&lt;br&gt;&lt;br&gt;Infernal Iron. Reinforce the bell with iron from Avernus. The scatter comes out warm.&lt;br&gt;&lt;br&gt;Infernal Alloy. Refine that iron into alloy. Now the shot truly burns, and the wielder stops flinching at the heat.&lt;br&gt;&lt;br&gt;Soul Coin. Seal a soul coin into the breech, and do not listen to it. The fire grows fiercer, and killing blows come easier.&lt;br&gt;&lt;br&gt;Enriched Infernal Iron. The final reforging. Everything burns: the target, the shot, and the ground where the scatter lands.&lt;br&gt;&lt;br&gt;Enchanted greatswords, greataxes, mauls, maces, flails and heavy crossbows can be welded to the bell instead. What one kit joins, a Disassembly Kit can part.</content>
+        <content contentuid="hc2859f6fg7c03g4f9agaa9fg675a4a7f5182" version="1">A blunderbuss is not subtle, and neither are its improvements. Keep an Assembly Kit close, and build each step upon the last.&lt;br&gt;&lt;br&gt;Gold Bar. Plate the stock and bell in gold. It turns aside blows that would have found you.&lt;br&gt;&lt;br&gt;Bloodstone. Set a bloodstone beneath the bell. Once between rests, a shot can draw strength back from the wound it makes.&lt;br&gt;&lt;br&gt;Soul Coin. Seal a soul coin into the breech, and do not listen to it. Once each day it will not let you fall, and it bites harder up close.&lt;br&gt;&lt;br&gt;Infernal Plate. The final reforging, in plate from the Hells. Arrows and bolts glance off, point-blank shots find the killing spot, and every Scattershot hardens your hide.&lt;br&gt;&lt;br&gt;Enchanted greatswords, greataxes, mauls, maces, flails and heavy crossbows can be welded to the bell instead. What one kit joins, a Disassembly Kit can part.</content>
         <content contentuid="h238c2696gc297g4f35g8d5ag064cb9ef95d1" version="1">A gunsmith's kit of tools used to separate a fused firearm and magical weapon.</content>
         <content contentuid="hdeba89e0g2bbcg58b5gbb2egc2b68c62f29c" version="1">Misfired</content>
         <content contentuid="h4c6a6437gc436g5429g8a56gc54551460a5e" version="1">This firearm has misfired. Its ranged attack rolls take a -2 penalty until it is repaired, it breaks, or you take a long rest. Its Repair weapon action can now be used; Rapid Repair requires learning the Rapid Repair ability. Another critical miss with it breaks it until your next long rest.</content>
@@ -838,53 +838,76 @@
         <content contentuid="h8002c15cg70fcg50a9gacaag0935898a2fd4" version="1">Firearm attacks deal an extra 1d4 Radiant damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
         <content contentuid="h98cd80c2g8a53g5549ga7feg2cb202c59869" version="1">Firearm attacks deal an extra 1d4 Necrotic damage (2d4 with Improved Infused Rounds, 3d4 with Mastered Infused Rounds, 5d4 while Unstable).</content>
         <content contentuid="h6c13fa32g88aeg5c1bg9533gb456d7c045e8" version="1">While an infusion is active, infused rounds deal 5d4 damage of their element and each firearm attack has a 25% chance to backfire, dealing 3d4 Force damage in a 5-foot radius centered on you.</content>
-        <content contentuid="h6497dcf3gb9e0g4bacg801fgb6bc57ff8af9" version="1">Quickshot Flintlock</content>
-        <content contentuid="hb4092454g69b4g4558gb150g2e49b62c4d68" version="1">A +1 Flintlock that grants 1 additional Grit. It also grants Quick Reload, which reloads for 1 Grit instead of a bonus action.</content>
-        <content contentuid="hd4cb74c1g6343g4bf5g96d7gedebe42eea8f" version="1">Gilded Flintlock</content>
-        <content contentuid="hf5feeccfgaddbg411bgb03egce307a7305d1" version="1">A +1 Flintlock that retains Quick Reload and grants Dash and Gun: after you Dash, you can make one free attack with this Flintlock, in either hand.</content>
-        <content contentuid="h6bf7a5c8g9052g48f4g821agb25a5ecbd3d9" version="1">Diamond Flintlock</content>
-        <content contentuid="h0a50e3e5gdcd3g45a4gb6c1gcf44039d94c8" version="1">A +2 Flintlock that retains Quick Reload and Dash and Gun, ignores resistance to piercing damage, and grants one additional action in the main hand or one additional bonus action in the off hand.</content>
-        <content contentuid="h54ebbc4cg2183g4f99gb03cg067c22d99871" version="1">Umbral Flintlock</content>
-        <content contentuid="h1404fc53g68c6g41c9gb2d7g67085e4d6b48" version="1">A +3 Flintlock that retains the Diamond Flintlock's abilities, reduces the critical hit threshold by 1, and grants advantage on attacks while in dim light or darkness.</content>
-        <content contentuid="h04c548f4gdc9bg4c21g8a38gabf9049af7ca" version="1">Hellfire Flintlock</content>
-        <content contentuid="h76e4637ag1ef9g480cgaf4cg34a7fcb82291" version="1">A +3 Flintlock that retains the Diamond Flintlock's abilities and deals an additional 2d6 Fire damage with its shots.</content>
-        <content contentuid="hea372201g5d08g4a4bga5fag559e6b5a2c5b" version="1">Infernal Blunderbuss</content>
-        <content contentuid="h3fa0d41bg1268g44d6ga269g129106554a50" version="1">A +1 Blunderbuss whose shots deal 1 additional Fire damage.</content>
-        <content contentuid="hf2108699ge0b1g4b2cga201gd09f1dc2ba65" version="1">Infernal Alloy Blunderbuss</content>
-        <content contentuid="h010a0e2eg0d9bg4714ga864gac04b7f1c4e3" version="1">A +1 Blunderbuss that grants resistance to Fire damage and deals an additional 1d4 Fire damage with its shots.</content>
-        <content contentuid="hbe620da9g4b96g45ddgbf75g3cf2dbc55fea" version="1">Soulfire Blunderbuss</content>
-        <content contentuid="haec97154g6a93g4c6ega1bdg17b5117d44e2" version="1">A +2 Blunderbuss that grants resistance to Fire damage, increases its critical range by 1, and deals 1d6 Fire damage with regular shots and 1d4 Fire damage with Scattershot.</content>
-        <content contentuid="hcff77ddeg1482g469dgb672gb263f81413b6" version="1">Enriched Infernal Blunderbuss</content>
-        <content contentuid="hd76fce15g2b2dg49a1gb963g51a3343ea492" version="1">A +3 Blunderbuss that grants resistance to Fire damage, deals 2d4 Fire damage with regular shots and Scattershot, and ignites the ground with Scattershot.</content>
-        <content contentuid="h44ac3643g2e85g4da2gaaf9g99185615dc89" version="1">Silvered Musket</content>
-        <content contentuid="hd1239535gfc31g4875g8bfagdcfa6a432cfc" version="1">A +1 Musket with a +2 bonus to hit.</content>
-        <content contentuid="hb6567061g1390g40e1ga98bg5867314ba542" version="1">Advanced Musket</content>
-        <content contentuid="he9f1efaag25eeg44f6ga563g68cc341d885f" version="1">A +1 Musket with a +2 bonus to hit and an additional 1d4 piercing weapon damage.</content>
-        <content contentuid="h38b94c53gb145g45d9ga186g993a8372b9e1" version="1">Paralyzing Musket</content>
-        <content contentuid="h89879830ga8e8g4062g9d1bga9d034d6eea9" version="1">A +2 Musket with a +2 bonus to hit and an additional 1d4 piercing weapon damage. Paralyzing Shot can paralyze a target for 1 turn on a failed Constitution save; usable once per short rest.</content>
-        <content contentuid="hc9b3b62egf5efg4d83gbae0gc5f2aec01077" version="1">Mithral Musket</content>
-        <content contentuid="h0917f273g4e5ag4a9egad0dg67bb45921f43" version="1">A +3 Musket with a +2 bonus to hit, an additional 1d6 piercing weapon damage, and the ability to ignore resistance to piercing damage. It retains Paralyzing Shot.</content>
-        <content contentuid="he890a828g23b6g42efgad16g19d62d096efc" version="1">Advanced Musket Components</content>
-        <content contentuid="hae96983fgf1acg4809g9515g880b6deb9f9a" version="1">Adamantine slag and rune powder refined into advanced components for a musket.</content>
         <content contentuid="h83c28b0bgb783g4514g9e21gfa8bbfdc4ed2" version="1">Quick Reload</content>
         <content contentuid="haedbea5cg390bg4236g9dd0g74f75c125ff5" version="1">Reload your Flintlock by spending 1 Grit instead of a bonus action.</content>
         <content contentuid="h10000040g0000g4000g8000g000000000001" version="1">Quick Reload: Main Hand</content>
         <content contentuid="h10000040g0000g4000g8000g000000000002" version="1">Quick Reload: Off Hand</content>
         <content contentuid="h10000040g0000g4000g8000g000000000003" version="1">Reload your main hand Flintlock by spending 1 Grit instead of a bonus action.</content>
         <content contentuid="h10000040g0000g4000g8000g000000000004" version="1">Reload your off hand Flintlock by spending 1 Grit instead of a bonus action.</content>
-        <content contentuid="h2ab76147g40cbg4c14gb9f3gb1a2dc02ab08" version="1">Dash and Gun</content>
-        <content contentuid="hd8ffc0e7g2ab0g43f8g949dge24a511b171d" version="1">After you Dash, make one free firearm attack. This attack still expends ammunition.</content>
-        <content contentuid="h10000042g0000g4000g8000g000000000001" version="1">Ignores Piercing Resistance</content>
-        <content contentuid="h10000042g0000g4000g8000g000000000002" version="1">Piercing damage you deal ignores Resistance.</content>
-        <content contentuid="h10000041g0000g4000g8000g000000000001" version="1">Dash and Gun: Main Hand</content>
-        <content contentuid="h10000041g0000g4000g8000g000000000002" version="1">Dash and Gun: Off Hand</content>
-        <content contentuid="h10000041g0000g4000g8000g000000000003" version="1">After you Dash, make one free attack with your main hand Flintlock. This attack still expends ammunition.</content>
-        <content contentuid="h10000041g0000g4000g8000g000000000004" version="1">After you Dash, make one free attack with your off hand Flintlock. This attack still expends ammunition.</content>
         <content contentuid="h79098cedg2ba3g4b63gbb78g1525e5c9465a" version="1">Paralyzing Shot</content>
         <content contentuid="h8f05648ag511eg4921ga658g70694848780e" version="1">Fire a musket shot that deals weapon damage. On a failed Constitution saving throw, the target is Paralyzed for 1 turn. Usable once per short rest.</content>
         <content contentuid="h651bbcedg66fag4427g8082g76311936d851" version="1">Attacks with this firearm deal an extra 1d4 Bludgeoning damage while you are at or below 70% of your hit points.</content>
         <content contentuid="h651bbcedg66fag4427g8082g76311936d852" version="1">While obscured, you have Advantage on firearm attack rolls.</content>
         <content contentuid="h651bbcedg66fag4427g8082g76311936d853" version="1">Pass a DC 12 Performance check to add at least 1 or your Charisma modifier to firearm damage for 10 turns. Once per short rest per item.</content>
+        <content contentuid="h32000001g0000g4000g8000g000000000001" version="1">Matched Flintlock</content>
+        <content contentuid="h32000001g0000g4000g8000g000000000002" version="1">A +1 Flintlock balanced for dual-wielding. It grants Quick Reload and Paired Shots.</content>
+        <content contentuid="h32000002g0000g4000g8000g000000000001" version="1">Duelist's Flintlock</content>
+        <content contentuid="h32000002g0000g4000g8000g000000000002" version="1">A +1 Flintlock that retains Quick Reload and Paired Shots, and grants Return Fire.</content>
+        <content contentuid="h32000003g0000g4000g8000g000000000001" version="1">Diamond Duelist</content>
+        <content contentuid="h32000003g0000g4000g8000g000000000002" version="1">A +2 Flintlock that retains the Duelist's Flintlock's abilities and grants Duelist's Precision.</content>
+        <content contentuid="h32000004g0000g4000g8000g000000000001" version="1">Black Diamond Duelist</content>
+        <content contentuid="h32000004g0000g4000g8000g000000000002" version="1">A +3 Flintlock that retains the Diamond Duelist's abilities and grants Twin Strike.</content>
+        <content contentuid="h32000005g0000g4000g8000g000000000001" version="1">Plated Blunderbuss</content>
+        <content contentuid="h32000005g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss with gold plating that grants +1 Armour Class while wielded.</content>
+        <content contentuid="h32000006g0000g4000g8000g000000000001" version="1">Bloodletter</content>
+        <content contentuid="h32000006g0000g4000g8000g000000000002" version="1">A +1 Blunderbuss that grants +1 Armour Class while wielded and the Bloodletter Shot.</content>
+        <content contentuid="h32000007g0000g4000g8000g000000000001" version="1">Soulbound Blunderbuss</content>
+        <content contentuid="h32000007g0000g4000g8000g000000000002" version="1">A +2 Blunderbuss that retains the Bloodletter's abilities and grants Soulbound.</content>
+        <content contentuid="h32000008g0000g4000g8000g000000000001" version="1">Hellplate Blunderbuss</content>
+        <content contentuid="h32000008g0000g4000g8000g000000000002" version="1">A +3 Blunderbuss that retains the Soulbound Blunderbuss's abilities and grants Hellplate.</content>
+        <content contentuid="h32000009g0000g4000g8000g000000000001" version="1">Sniper's Musket</content>
+        <content contentuid="h32000009g0000g4000g8000g000000000002" version="1">A +1 Musket that grants Sniper.</content>
+        <content contentuid="h3200000ag0000g4000g8000g000000000001" version="1">Quarry Musket</content>
+        <content contentuid="h3200000ag0000g4000g8000g000000000002" version="1">A +1 Musket that retains Sniper and grants Mark Quarry.</content>
+        <content contentuid="h3200000bg0000g4000g8000g000000000001" version="1">Pinning Musket</content>
+        <content contentuid="h3200000bg0000g4000g8000g000000000002" version="1">A +2 Musket that retains Sniper and Mark Quarry, and grants Paralyzing Shot.</content>
+        <content contentuid="h3200000cg0000g4000g8000g000000000001" version="1">Deadeye Musket</content>
+        <content contentuid="h3200000cg0000g4000g8000g000000000002" version="1">A +3 Musket that retains the Pinning Musket's abilities, grants Deadeye and ignores Resistance to Piercing damage.</content>
+        <content contentuid="h32000010g0000g4000g8000g000000000001" version="1">Paired Shots</content>
+        <content contentuid="h32000010g0000g4000g8000g000000000002" version="1">When your main hand Flintlock hits a creature while you hold a Flintlock in each hand, your off hand Flintlock attacks against that creature gain +1 to attack rolls and deal an extra 1d4 Piercing damage until your next turn.</content>
+        <content contentuid="h32000011g0000g4000g8000g000000000001" version="1">Return Fire</content>
+        <content contentuid="h32000011g0000g4000g8000g000000000002" version="1">When an enemy within 13.5m hits you with an attack, use your reaction to shoot it with your main hand Flintlock. The shot expends ammunition.</content>
+        <content contentuid="h32000012g0000g4000g8000g000000000001" version="1">Duelist's Precision</content>
+        <content contentuid="h32000012g0000g4000g8000g000000000002" version="1">Your ranged weapon attacks score a Critical Hit on a roll of 19 or 20. Once per turn, when you score a Critical Hit with a Flintlock, that Flintlock regains the bullet it spent.</content>
+        <content contentuid="h32000013g0000g4000g8000g000000000001" version="1">Twin Strike</content>
+        <content contentuid="h32000013g0000g4000g8000g000000000002" version="1">Paired Shots deal an extra 2d6 Piercing damage instead of 1d4.</content>
+        <content contentuid="h32000014g0000g4000g8000g000000000001" version="1">Paired Shots</content>
+        <content contentuid="h32000014g0000g4000g8000g000000000002" version="1">The gunslinger's off hand Flintlock attacks against this creature gain +1 to attack rolls and deal extra Piercing damage.</content>
+        <content contentuid="h32000015g0000g4000g8000g000000000001" version="1">Duelist's Precision Spent</content>
+        <content contentuid="h32000015g0000g4000g8000g000000000002" version="1">A Critical Hit has already refunded a bullet this turn.</content>
+        <content contentuid="h32000016g0000g4000g8000g000000000001" version="1">Bloodletter Shot</content>
+        <content contentuid="h32000016g0000g4000g8000g000000000002" version="1">Fire your Blunderbuss at full range. On a hit, gain temporary hit points equal to your proficiency bonus. Usable once per short rest.</content>
+        <content contentuid="h32000017g0000g4000g8000g000000000001" version="1">Bloodletter</content>
+        <content contentuid="h32000017g0000g4000g8000g000000000002" version="1">Temporary hit points from the Bloodletter Shot.</content>
+        <content contentuid="h32000018g0000g4000g8000g000000000001" version="1">Soulbound</content>
+        <content contentuid="h32000018g0000g4000g8000g000000000002" version="1">Once per long rest, when you are reduced to 0 hit points, you drop to 1 hit point instead. Your ranged weapon attacks deal an extra 1d6 Bludgeoning damage to targets within 3m.</content>
+        <content contentuid="h32000019g0000g4000g8000g000000000001" version="1">Soulbound</content>
+        <content contentuid="h3200001ag0000g4000g8000g000000000001" version="1">Hellplate</content>
+        <content contentuid="h3200001ag0000g4000g8000g000000000002" version="1">You have Resistance to Piercing damage from ranged attacks. Your ranged weapon attacks score a Critical Hit on a roll of 19 or 20 against targets within 3m. Scattershot grants temporary hit points equal to twice your proficiency bonus.</content>
+        <content contentuid="h3200001bg0000g4000g8000g000000000001" version="1">Hellplate</content>
+        <content contentuid="h3200001bg0000g4000g8000g000000000002" version="1">Temporary hit points from Hellplate.</content>
+        <content contentuid="h3200001cg0000g4000g8000g000000000001" version="1">Sniper</content>
+        <content contentuid="h3200001cg0000g4000g8000g000000000002" version="1">Your ranged weapon attacks gain +2 to attack rolls against targets more than 9m away.</content>
+        <content contentuid="h3200001dg0000g4000g8000g000000000001" version="1">Mark Quarry</content>
+        <content contentuid="h3200001dg0000g4000g8000g000000000002" version="1">Mark a creature as your Quarry for 10 turns. Your ranged weapon attacks deal an extra 1d6 Piercing damage to your Quarry. Does not require Concentration. Usable once per short rest.</content>
+        <content contentuid="h3200001eg0000g4000g8000g000000000001" version="1">Quarry</content>
+        <content contentuid="h3200001eg0000g4000g8000g000000000002" version="1">Marked by a gunslinger. The gunslinger's ranged weapon attacks deal extra damage to this creature.</content>
+        <content contentuid="h3200001fg0000g4000g8000g000000000001" version="1">Quarry</content>
+        <content contentuid="h3200001fg0000g4000g8000g000000000002" version="1">Your ranged weapon attacks deal an extra 1d6 Piercing damage to the creature you marked with Mark Quarry.</content>
+        <content contentuid="h32000020g0000g4000g8000g000000000001" version="1">Deadeye</content>
+        <content contentuid="h32000020g0000g4000g8000g000000000002" version="1">Your ranged weapon attacks against your Quarry score a Critical Hit on a roll of 18 to 20.</content>
+        <content contentuid="h32000021g0000g4000g8000g000000000001" version="1">Soulbound Spent</content>
+        <content contentuid="h32000021g0000g4000g8000g000000000002" version="1">Soulbound has kept you standing. It recovers after a long rest.</content>
         <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->
         <content contentuid="h0b672eaeg88a4g5d54gad89g79fe4a013c83" version="1">Adamantine Scimitar (Magical variant) Flintlock</content>
         <content contentuid="habd3d189gdffcg524bg81e3ge3b18210255d" version="1">Shots ignore Piercing resistance and critically hit objects.</content>
