@@ -908,6 +908,9 @@
         <content contentuid="h32000020g0000g4000g8000g000000000002" version="1">Your ranged weapon attacks against your Quarry score a Critical Hit on a roll of 18 to 20.</content>
         <content contentuid="h32000021g0000g4000g8000g000000000001" version="1">Soulbound Spent</content>
         <content contentuid="h32000021g0000g4000g8000g000000000002" version="1">Soulbound has kept you standing. It recovers after a long rest.</content>
+        <!-- Reasons an action cannot be used (ErrorDescriptions/ConditionErrors.lsx). -->
+        <content contentuid="h9e919317g307dg4490g9b74g33ac7e480acb" version="1">No Ammo</content>
+        <content contentuid="hf47995ecgf164g4921g9805gd29878654fac" version="1">Firearm Broken</content>
         <!-- BEGIN GENERATED PREREQUISITE BASE CONVERSIONS -->
         <content contentuid="h0b672eaeg88a4g5d54gad89g79fe4a013c83" version="1">Adamantine Scimitar (Magical variant) Flintlock</content>
         <content contentuid="habd3d189gdffcg524bg81e3ge3b18210255d" version="1">Shots ignore Piercing resistance and critically hit objects.</content>

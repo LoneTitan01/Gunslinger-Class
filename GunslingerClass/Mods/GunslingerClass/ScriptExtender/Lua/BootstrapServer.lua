@@ -1,4 +1,5 @@
 local Rules = Ext.Require("GritRules.lua")
+local FirearmStats = Ext.Require("FirearmStats.lua")
 local templates = {
     ["3d8b177d-89db-4826-8068-9f2d777faf04"] = "Flintlock",
     ["a710ad68-179b-4b0e-8ef2-3b37609a3f12"] = "Flintlock",
@@ -9,8 +10,6 @@ local slots = {Main = "Ranged Main Weapon", Off = "Ranged Offhand Weapon"}
 local casts = {}
 local refreshing = {}
 local pendingRefresh = {}
--- Characters whose guns keep their Ammunition property until a shot lands: Ext.Timer.MicrosecTime when it ends.
-local shotHolds = {}
 local refreshRetries = {}
 -- Ticks to wait for an equipped gun's OnEquip ammo boost to populate before treating it as missing.
 local resourceWaitTicks = 30
@@ -344,29 +343,18 @@ end
 -- WeaponFlags.Ammunition in the Weapon component's WeaponProperties bitmask.
 local AmmunitionFlag = 2
 
--- Vanilla ranged actions (the basic ranged attack, Sneak Attack, Battle Master maneuvers, ...) have
--- WeaponTypes "Ammunition", so the engine only offers them while the held weapon has that property.
--- An empty gun drops it, so the game treats it as having no ranged weapon to fire until it is reloaded.
--- Firearm shots and reloads have no WeaponTypes and are unaffected.
--- A shot still needs the property after its cast: the attack roll is made while the gun has it, but damage
--- boosts are checked when the projectile lands, after CastedSpell. Sharpshooter only counts a main-hand
--- Ammunition weapon, so emptying the gun mid-shot left its -5 without the +10. While a shot is held (see
--- shotHolds), an empty gun keeps the property; it is cleared once the hold ends.
-local ShotHoldMicroseconds = 3000000
--- Longest a cast may hold the property if its CastedSpell/CastSpellFailed never arrives.
-local CastHoldMicroseconds = 30000000
-local function now() return Ext.Timer.MicrosecTime() end
-local function holdShot(character, duration)
-    shotHolds[character] = now() + duration
-end
-local function setLoaded(item, loaded)
+-- Guns always keep the Ammunition property, even when empty. Vanilla ranged actions (the basic ranged attack,
+-- Sneak Attack, Battle Master maneuvers, ...) have WeaponTypes "Ammunition", and special arrows and their item
+-- use checks need a held Ammunition weapon; an empty gun still counts, so arrows fire from it and Sharpshooter
+-- stays aligned. Actions that fire the gun are blocked at 0 ammo by their RequirementConditions instead (see
+-- StatsLoaded). Older versions cleared the property on empty guns, so it is restored on guns that lack it.
+local function restoreAmmunition(item)
     local entity = Ext.Entity.Get(item)
     pcall(function()
         local weapon = entity.Weapon
         local flags = weapon.WeaponProperties
-        local has = flags & AmmunitionFlag ~= 0
-        if has ~= loaded then
-            weapon.WeaponProperties = loaded and (flags | AmmunitionFlag) or (flags & ~AmmunitionFlag)
+        if flags & AmmunitionFlag == 0 then
+            weapon.WeaponProperties = flags | AmmunitionFlag
             entity:Replicate("Weapon")
         end
     end)
@@ -459,7 +447,7 @@ local function refreshNow(character, restoreAmmo)
                 state.ammo = amount
             end
         end
-        if entry then setLoaded(item, entry.Amount > 0 or shotHolds[character] ~= nil) end
+        if state then restoreAmmunition(item) end
         local repairable = state and state.misfire and not state.broken
         local rapid = repairable and Osi.HasPassive(character, "GSL_RapidRepairUnlock") == 1
         status(character, "GSL_REPAIR_MENU_" .. hand:upper(), repairable and not rapid)
@@ -496,100 +484,11 @@ local function misfireItem(character, item, broken)
     refresh(character, false)
 end
 
-local ammoSpells = {Zone_GSL_LineEmUp = true, Zone_GSL_PiercingRound = true, Shout_GSL_HailOfLead = true}
+local ammoSpells = FirearmStats.AmmoSpells
+local field = FirearmStats.Field
+local dealsWeaponDamage = FirearmStats.DealsWeaponDamage
+local shotKind = FirearmStats.ShotKind
 local rollTheBones = {"GSL_RTB_BUST", "GSL_RTB_HIT", "GSL_RTB_JACKPOT"}
-
-local function workingFirearmCondition(hand, character)
-    local slot = hand == "Off" and "RangedOffHand" or "RangedMainHand"
-    return "not HasStatus('GSL_FIREARM_ITEM_DESTROYED',GetItemInEquipmentSlot(EquipmentSlot." ..
-        slot .. "," .. character .. "))"
-end
-
-local function requireWorkingFirearm(stat, field, hand, character)
-    local condition = workingFirearmCondition(hand, character)
-    local previous = stat[field] or ""
-    if not previous:find(condition, 1, true) then
-        stat[field] = (previous ~= "" and "(" .. previous .. ") and " or "") .. condition
-    end
-end
-
--- The Script Extender returns SpellRoll as a table of groups ({Default = "...", CastOffhand = "..."}) and
--- SpellProperties/SpellSuccess as parsed functors, never as their stats text. Writing a string still works.
-local function rollText(roll)
-    if type(roll) == "string" then return roll end
-    local parts = {}
-    for _, text in pairs(roll or {}) do parts[#parts + 1] = text end
-    return table.concat(parts, ";")
-end
-
-local function field(object, key)
-    local ok, value = pcall(function() return object[key] end)
-    return ok and value or nil
-end
-
--- Returns whether any DealDamage in the functors uses the given weapon's damage (e.g. "MainRangedWeapon").
-local function dealsWeaponDamage(functors, weapon)
-    if type(functors) == "string" then return functors:find(weapon, 1, true) ~= nil end
-    local ok, found = pcall(function()
-        for _, group in pairs(functors or {}) do
-            for _, functor in pairs(field(group, "Functors") or {group}) do
-                if field(functor, "TypeId") == "DealDamage" and (field(functor, "WeaponType") == weapon or
-                    field(functor, "WeaponDamageType") == weapon .. "DamageType") then
-                    return true
-                end
-            end
-        end
-        return false
-    end)
-    return ok and found
-end
-
--- Returns whether a non-thrown spell fires the main-hand and/or off-hand ranged weapon. Besides the
--- attack roll, this catches saving-throw shots that deal ranged weapon damage (Hail of Thorns, Conjure Barrage).
-local function rangedShotHands(spell)
-    if spell.SpellType == "Throw" then return false, false end
-    local roll = rollText(spell.SpellRoll)
-    local main = roll:find("AttackType.RangedWeaponAttack", 1, true) ~= nil
-    local off = roll:find("AttackType.RangedOffHandWeaponAttack", 1, true) ~= nil
-    if not main and (roll == "" or roll:find("SavingThrow", 1, true)) then
-        main = dealsWeaponDamage(spell.SpellSuccess, "MainRangedWeapon") or
-            dealsWeaponDamage(spell.SpellProperties, "MainRangedWeapon")
-    end
-    return main, off
-end
-
--- Returns the requirement condition for a shot from the given hand: a held gun must work and be loaded.
-local function firearmShotCondition(hand)
-    local ready, equippedGun = {}, {}
-    for kind in pairs(Rules.Firearms) do
-        if hand == "Main" or kind == "Flintlock" then
-            local passive = "HasPassive('GSL_" .. kind .. (hand == "Off" and "_OffHand" or "_MainHand") .. "',context.Source)"
-            local ammo = hand == "Off" and "GunslingerOffhandFlintlockAmmo" or "Gunslinger" .. kind .. "Ammo"
-            equippedGun[#equippedGun + 1] = passive
-            ready[#ready + 1] = "(" .. passive .. " and HasActionResource('" .. ammo .. "',1,0))"
-        end
-    end
-    return "(not (" .. table.concat(equippedGun, " or ") .. ") or (" ..
-        workingFirearmCondition(hand, "context.Source") .. " and (" .. table.concat(ready, " or ") .. ")))"
-end
-
-local function addRequirement(spell, condition)
-    local previous = spell.RequirementConditions or ""
-    if previous:find(condition, 1, true) then return end
-    spell.RequirementConditions = (previous ~= "" and "(" .. previous .. ") and " or "") .. condition
-end
-
--- Returns the hand whose gun a spell fires and whether the shot spends a bullet, or nil if it fires no gun.
-local function shotKind(name, spell)
-    if ammoSpells[name] then return "Main", true end
-    if name:find("GSL_", 1, true) then return nil end
-    local mainShot, offShot = rangedShotHands(spell)
-    if not (mainShot or offShot) then return nil end
-    -- Spells rolling both hands (e.g. Projectile_MainHandAttack) are main-hand shots; their CastOffhand[...]
-    -- section is the bundled dual-wield shot, which firearms disable. Special arrows (Projectile_ArrowOf*,
-    -- Barbed Arrow, Arrow of Many Targets' ricochets) are the ammunition fired, so they spend no bullet.
-    return mainShot and "Main" or "Off", not name:find("Arrow", 1, true)
-end
 
 -- Per-spell cache of the hand that pays a bullet (false: none). It is filled on first cast, not at
 -- StatsLoaded: Lua state is rebuilt on every save load, but the stats (and StatsLoaded) are not always reloaded.
@@ -609,55 +508,9 @@ Ext.Events.StatsLoaded:Subscribe(function()
     for _, name in ipairs(Ext.Stats.GetStats("Weapon")) do
         local kind = name:match("^WPN_GSL_(%a+)")
         local root = kind and Rules.Firearms[kind] and Ext.Stats.Get(name).RootTemplate
-        if root and root ~= "" then
-            templates[root:lower()] = kind
-            local weapon = Ext.Stats.Get(name)
-            -- Fused guns can override their base gun's equipment boosts.
-            for _, hand in ipairs(kind == "Flintlock" and {"Main", "Off"} or {"Main"}) do
-                local field = "BoostsOnEquip" .. hand .. "Hand"
-                local unlock = "UnlockSpell(Shout_GSL_Repair_" .. hand .. ")"
-                local boosts = weapon[field] or ""
-                if not boosts:find(unlock, 1, true) then
-                    weapon[field] = (boosts ~= "" and boosts .. ";" or "") .. unlock
-                end
-            end
-            Ext.Stats.Sync(name)
-        end
+        if root and root ~= "" then templates[root:lower()] = kind end
     end
-    for _, name in ipairs(Ext.Stats.GetStats("SpellData")) do
-        local spell = Ext.Stats.Get(name)
-        if name:match("^GSL_.*_attack") or name:match("^Projectile_GSL_") or
-            name:match("^Zone_GSL_Scattershot") or ammoSpells[name] then
-            -- Match both spellings, "OffHand" and "Offhand".
-            local hand = name:lower():find("offhand", 1, true) and "Off" or "Main"
-            requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
-            if ammoSpells[name] then
-                local ready = {}
-                for kind in pairs(Rules.Firearms) do
-                    local passive = "HasPassive('GSL_" .. kind .. "_MainHand',context.Source)"
-                    ready[#ready + 1] = "(" .. passive .. " and HasActionResource('Gunslinger" .. kind .. "Ammo',1,0))"
-                end
-                addRequirement(spell, "(" .. table.concat(ready, " or ") .. ")")
-            end
-            Ext.Stats.Sync(name)
-        elseif not name:find("GSL_", 1, true) then
-            local hand, spends = shotKind(name, spell)
-            if hand then
-                if spends then
-                    addRequirement(spell, firearmShotCondition(hand))
-                else
-                    requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
-                end
-                Ext.Stats.Sync(name)
-            end
-        end
-    end
-    for _, name in ipairs({"Interrupt_GSL_HairTrigger", "Interrupt_GSL_CloseCall",
-        "Interrupt_GSL_QuickOnTheDraw", "Interrupt_GSL_DoubleOrNothing", "Interrupt_GSL_ReturnFire"}) do
-        local interrupt = assert(Ext.Stats.Get(name), "Missing firearm interrupt: " .. name)
-        requireWorkingFirearm(interrupt, "Conditions", "Main", "context.Observer")
-        Ext.Stats.Sync(name)
-    end
+    FirearmStats.Apply("server")
 end)
 
 -- Gunshots play on the animation's cast text key (the frame the bullet leaves the gun), not through
@@ -735,13 +588,6 @@ Ext.Events.Tick:Subscribe(function()
     for _, shot in ipairs(shots) do playGunshot(shot.character, shot.spell, shot.textKey) end
 end)
 
--- Returns whether a spell fires a gun: a Gunslinger gunshot or area shot, or a native ranged shot.
-local function firesGun(name)
-    if ammoSpells[name] or weaponShotHand(name) then return true end
-    local spell = not name:find("GSL_", 1, true) and Ext.Stats.Get(name)
-    return spell and shotKind(name, spell) ~= nil or false
-end
-
 Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell, _, _, action)
     -- Grit Recovery triggers once per attack; a new attack re-arms it.
     if Osi.HasActiveStatus(character, "GSL_GRIT_RECOVERY_SPENT") == 1 then
@@ -749,11 +595,6 @@ Ext.Osiris.RegisterListener("UsingSpell", 5, "before", function(character, spell
     end
     if Osi.HasActiveStatus(character, "GSL_HOT_STREAK_ADVANCED") == 1 then
         Osi.RemoveStatus(character, "GSL_HOT_STREAK_ADVANCED")
-    end
-    if database().owners[character] and firesGun(spell) then
-        holdShot(character, CastHoldMicroseconds)
-        -- An empty main gun gets its property back, so an offhand shot also counts for Sharpshooter.
-        if not spell:find("GSL_", 1, true) then refresh(character, false) end
     end
     if not spell:find("GSL_", 1, true) then return end
     if not textKeyGunshots then playGunshot(character, spell) end
@@ -801,8 +642,6 @@ local function spendShot(character, spell)
 end
 
 Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell, _, _, action)
-    -- The projectile is still in flight, so the guns keep their Ammunition property a little longer.
-    if shotHolds[character] and firesGun(spell) then holdShot(character, ShotHoldMicroseconds) end
     local cast = casts[character]
     if cast and cast.spell == spell and cast.action == action then
         if spell == "Projectile_GSL_DoubleOrNothing" then
@@ -846,8 +685,6 @@ Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(character, spell
 end)
 
 Ext.Osiris.RegisterListener("CastSpellFailed", 5, "after", function(character, spell, _, _, action)
-    -- No projectile was fired.
-    if firesGun(spell) then shotHolds[character] = nil end
     local cast = casts[character]
     if cast and cast.action == action then
         clearShotStatuses(character, spell)
@@ -974,10 +811,9 @@ Ext.Osiris.RegisterListener("Unequipped", 2, "before", function(item, character)
         end
     end
     local state = database().weapons[item]
-    -- A gun that leaves the hand gets its Ammunition property back, so it is never stuck "empty" elsewhere.
     if state then
         applyItem(item, state)
-        setLoaded(item, true)
+        restoreAmmunition(item)
     end
 end)
 Ext.Osiris.RegisterListener("Unequipped", 2, "after", function(_, character)
@@ -1026,16 +862,6 @@ Ext.Events.Tick:Subscribe(function()
             if not respecInProgress[character] and Osi.HasPassive(character, fortunePassive) == 1 and
                 Osi.HasPassive(character, luckPassive) == 1 then
                 reportPersistentLuck(character)
-            end
-        end
-    end
-    if next(shotHolds) then
-        local time = now()
-        for character, ends in pairs(shotHolds) do
-            if time >= ends then
-                shotHolds[character] = nil
-                -- Clears the Ammunition property of a gun the shot emptied.
-                if database().owners[character] then pendingRefresh[character] = pendingRefresh[character] or 0 end
             end
         end
     end
@@ -1102,7 +928,7 @@ Ext.Osiris.RegisterListener("LongRestFinished", 0, "after", function()
         Rules.LongRest(state)
         if Ext.Entity.Get(item) then
             applyItem(item, state)
-            setLoaded(item, true)
+            restoreAmmunition(item)
         end
     end
     save(data)
@@ -1114,7 +940,6 @@ Ext.Events.SessionLoaded:Subscribe(function()
     casts = {}
     pendingGunshots = {}
     pendingRefresh = {}
-    shotHolds = {}
     pendingLastWord = {}
     recentAttackers = {}
     pendingAttackTargets = {}

@@ -1,6 +1,6 @@
 # In-Game Testing Checklist
 
-Features that pass the local data tests (`python -B -m unittest discover -s tests`, the Lua tests and `validate_xml.py`) but still need to be checked in Baldur's Gate 3. Rebuild with `python stage_packages.py --divine` before testing.
+Features that pass the local data tests (`python -B -m unittest discover -s tests`, the Lua tests and `validate_xml.py`) but still need to be checked in Baldur's Gate 3. Rebuild with `python build.py --divine` before testing.
 
 Mark each item `[x]` when it works, or add a note under it describing what went wrong.
 
@@ -24,7 +24,7 @@ Mark each item `[x]` when it works, or add a note under it describing what went 
 - [x] **Off-hand Flintlock:** a native off-hand ranged attack spends only the off-hand Flintlock's bullet and leaves the main-hand gun's ammo unchanged.
 - [ ] **Hail of Thorns and Conjure Barrage:** each spends exactly one bullet per cast, even when Conjure Barrage hits several targets.
 - [ ] **Volley and Slashing Flourish:** note how many bullets Volley (Hunter) and Slashing Flourish (College of Swords) spend. Expected is one per target attacked; report if this feels wrong.
-- [x] **Special arrows:** Arrows of Slaying, Arrow of Fire, Ice, Lightning, Acid, Darkness, Detonation, Piercing, Antimagic, Wraith's Embrace, Barbed Arrow and Arrow of Many Targets (including its ricochets) fired from a gun do not spend a bullet and can be used at 0 ammo. A broken gun still cannot fire them.
+- [ ] **Special arrows:** Arrows of Slaying, Arrow of Fire, Ice, Lightning, Acid, Darkness, Detonation, Piercing, Antimagic, Wraith's Embrace, Barbed Arrow and Arrow of Many Targets (including its ricochets) fired from a gun do not spend a bullet and deal damage, **including from an empty gun**. With both Flintlocks empty, and again with an empty Blunderbuss or Musket: fire an arrow from the inventory and through Shared Actions, and check for an attack roll and damage. Sneak Attack, the basic ranged attack and Battle Master maneuvers stay greyed out on the empty gun. A broken gun still cannot fire arrows. With a bow or crossbow equipped, arrows still work.
 - [x] **Broken gun:** with the main-hand gun broken, Sneak Attack, Battle Master maneuvers and other native ranged attacks are unavailable, while a working off-hand Flintlock can still make off-hand shots.
 - [x] **Bows unaffected:** with a bow or crossbow equipped instead of a gun, all of the above work normally and are not blocked by Gunslinger ammo.
 

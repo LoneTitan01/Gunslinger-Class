@@ -1,7 +1,7 @@
 # Ignore examples Folder
 examples/
 
-# Packaging staging output (stage_packages.py)
+# Packaging staging output (build.py)
 Main_Staging/
 5e_Compat_Staging/
 Weapon_Compat_Staging/

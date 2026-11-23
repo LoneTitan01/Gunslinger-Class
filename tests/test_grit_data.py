@@ -52,6 +52,12 @@ class GritDataTests(unittest.TestCase):
             'OnDamage functors default to the damaged creature, so grit must target SELF',
         )
 
+    def test_firearm_checks_use_the_attacking_weapon(self) -> None:
+        data = ROOT / 'GunslingerClass' / 'Public'
+        offenders = [str(path.relative_to(ROOT)) for path in data.rglob('*.txt')
+                     if 'GetActiveWeapon' in path.read_text(encoding='utf-8', errors='ignore')]
+        self.assertEqual(offenders, [], 'GetActiveWeapon() is always the main hand; use GetAttackWeapon()')
+
     def test_grit_recovery_triggers_on_any_kill_once_per_attack(self) -> None:
         fields = self.entries['GSL_GritRecovery'].fields
         conditions = fields['Conditions']
@@ -59,6 +65,8 @@ class GritDataTests(unittest.TestCase):
         kill, crit = conditions.split(' and ', 1)[1][1:-1].split(' or ', 1)
         self.assertEqual(kill, '(IsKillingBlow() and not Item())', 'any kill counts, not only firearm kills')
         self.assertIn('IsCritical()', crit)
+        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", crit,
+                      'GetAttackWeapon() is the main hand; off-hand Flintlock crits must check the attacking gun')
         self.assertNotIn('IsKillingBlow', crit)
         self.assertEqual(
             fields['StatsFunctors'],
@@ -128,7 +136,7 @@ class GritDataTests(unittest.TestCase):
         remove, start_ready, chain_ready = passive['StatsFunctors'].split(';')
         self.assertTrue(remove.startswith('IF(not IsMiss() and not (SpellId('))
         self.assertTrue(remove.endswith('RemoveStatus(SELF,GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE)'))
-        for part in ('HasHPLessThan(1)', "IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", 'and not (SpellId('):
+        for part in ('HasHPLessThan(1)', "IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", 'and not (SpellId('):
             self.assertIn(part, start_ready)
         self.assertTrue(start_ready.endswith('ApplyStatus(SELF,GSL_NO_ONE_WALKS_AWAY_START_READY,100,1)'))
         self.assertIn("HasStatus('GSL_NO_ONE_WALKS_AWAY_CHAIN_ACTIVE',context.Source)", chain_ready)
@@ -227,7 +235,7 @@ class GritDataTests(unittest.TestCase):
                 self.assertEqual(
                     status['Boosts'],
                     f'UnlockSpell(Projectile_GSL_HotStreak_{tier});'
-                    "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())):"
+                    "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())):"
                     f'CharacterWeaponDamage({tier}d4)',
                 )
                 self.assertEqual(status['StackId'], 'GSL_HOT_STREAK_SHOT')
@@ -282,7 +290,7 @@ class GritDataTests(unittest.TestCase):
             advance['Conditions'],
             "HasStatus('GSL_HOT_STREAK',context.Source) and "
             "not HasStatus('GSL_HOT_STREAK_ADVANCED',context.Source) and "
-            "IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon()) and "
+            "IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon()) and "
             "not (IsMiss() or IsCriticalMiss())",
         )
         self.assertNotIn('SpellId(', advance['Conditions'])
@@ -431,7 +439,7 @@ class GritDataTests(unittest.TestCase):
 
     def test_smart_shooting_adds_intelligence_to_firearm_attack_and_damage(self) -> None:
         boosts = self.fields('GSL_ArcaneGunsman_SmartShooting')['Boosts'].split(';')
-        firearm = "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())):"
+        firearm = "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())):"
         self.assertEqual(boosts, [firearm + 'RollBonus(Attack,IntelligenceModifier)',
                                   firearm + 'DamageBonus(max(0,IntelligenceModifier))'])
 
@@ -781,7 +789,7 @@ class GritDataTests(unittest.TestCase):
         self.assertNotIn('RollBonus(Attack,1d8)', noon)
         self.assertNotIn('RollBonus(SavingThrow,1d8)', noon)
         self.assertIn("HasStatus('GSL_HIGH_NOON_MARK',context.Target,context.Source)", noon)
-        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", noon)
+        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", noon)
         luck = self.entries['Interrupt_GSL_DesperadosLuck'].fields['Conditions']
         self.assertIn("not HasPassive('GSL_Desperado_DesperadosFortuneUnlock',context.Observer)", luck)
         # Killing-blow flags aren't set before damage, so death saves use vanilla DownedStatus replacements.
@@ -983,7 +991,7 @@ class GritDataTests(unittest.TestCase):
         self.assertEqual(self.fields('GSL_GunslingersDraw')['Boosts'], 'Initiative(3)')
         deadeye = self.fields('GSL_Deadeye')
         self.assertEqual(deadeye['StatsFunctorContext'], 'OnDamage')
-        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", deadeye['Conditions'])
+        self.assertIn("IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", deadeye['Conditions'])
         self.assertIn('IsCritical()', deadeye['Conditions'])
         self.assertEqual(deadeye['StatsFunctors'], 'DealDamage(5d10,Piercing)')
 
@@ -1196,7 +1204,7 @@ class GritDataTests(unittest.TestCase):
         self.assertEqual(interrupt['Cost'], 'GunslingerGrit:2')
         self.assertNotIn('IsAbleToReact(context.Observer)', interrupt['Conditions'])
         for condition in ('Self(context.Source,context.Observer)',
-                          "IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())", 'HasDamageEffectFlag(DamageFlags.Hit)'):
+                          "IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())", 'HasDamageEffectFlag(DamageFlags.Hit)'):
             self.assertIn(condition, interrupt['Conditions'])
         self.assertIn('GSL_CHEAT_DEATHS_ODDS_REFUND', interrupt['Properties'])
         for removed in ('Shout_GSL_HotHand', 'GSL_HOT_HAND_READY'):

@@ -19,6 +19,8 @@ Ext = {
         if file == "FortuneChooserOwned.lua" then
             return function(owned) chooserOwned = owned end
         end
+        -- Tested with the server stats in test_grit_runtime.lua.
+        if file == "FirearmStats.lua" then return {Apply = function() end} end
         assert(file == "FortuneChooserDiagnostic.lua")
         return dofile("GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\" .. file)
     end,
@@ -43,7 +45,7 @@ Ext = {
     Utils = {Print = function() error("Debug output must not run") end},
     IO = {SaveFile = function() error("Debug file writes must not run") end}
 }
-for _, name in ipairs({"SessionLoaded", "Tick"}) do
+for _, name in ipairs({"SessionLoaded", "StatsLoaded", "Tick"}) do
     Ext.Events[name] = {Subscribe = function(_, callback) events[name] = callback end}
 end
 dofile("GunslingerClass\\Mods\\GunslingerClass\\ScriptExtender\\Lua\\BootstrapClient.lua")
