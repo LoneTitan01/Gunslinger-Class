@@ -1344,7 +1344,7 @@ class CraftingRecipeTests(unittest.TestCase):
         )
         self.assertEqual(
             attack_damage_passive['Boosts'],
-            "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetActiveWeapon())):WeaponEnchantment(1)",
+            "IF(IsRangedWeaponAttack() and IsWeaponOfProficiencyGroup('Slings',GetAttackWeapon())):WeaponEnchantment(1)",
         )
 
         intransigent = read_entry(weapon_stats, 'entry', 'WPN_GSL_Musket_Intransigent')
