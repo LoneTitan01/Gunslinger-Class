@@ -411,7 +411,10 @@ local function readyFor(name, hand)
 end
 local function notReady(name) return not spellStats[name].RequirementConditions:find("GunslingerFirearmReady", 1, true) end
 assert(readyChecks("Projectile_GSL_Bloodletting_Flintlock") == 0, "Bloodletting pays its bullet through UseCosts")
-assert(readyChecks("Zone_GSL_LineEmUp") == 3, "A stats reload must not duplicate ammo requirements")
+assert(readyFor("Zone_GSL_LineEmUp", "Main"), "A stats reload must not duplicate ammo requirements")
+for _, name in ipairs({"Zone_GSL_LineEmUp", "Zone_GSL_PiercingRound", "Shout_GSL_HailOfLead"}) do
+    assert(readyChecks(name) == 0, name .. " checks its ammo through GunslingerFirearmReady (reason \"No Ammo\")")
+end
 assert(spellStats.Zone_GSL_LineEmUp.RequirementConditions:find("Character()", 1, true))
 local special = spellStats.Projectile_PiercingShot
 assert(special.RequirementConditions:find("OriginalRequirement", 1, true))
@@ -875,8 +878,7 @@ assert(lastWordShots == 2, "Stale attackers from earlier ticks are ignored")
 Osi.RemoveStatus("alice", "GSL_LASTWORD_PENDING")
 Osi.UseSpell = useSpell
 for _, name in ipairs({"Zone_GSL_PiercingRound", "Shout_GSL_HailOfLead"}) do
-    local _, count = spellStats[name].RequirementConditions:gsub("HasActionResource%('Gunslinger", "")
-    assert(count == 3, name .. " must need main-hand ammunition")
+    assert(readyFor(name, "Main"), name .. " must need main-hand ammunition")
     assert(spellStats[name].RequirementConditions:find(brokenGuard("Main", "context.Source"), 1, true))
 end
 local function shot(spell, action, ...)

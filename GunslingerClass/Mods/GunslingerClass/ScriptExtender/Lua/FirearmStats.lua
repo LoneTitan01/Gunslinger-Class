@@ -126,12 +126,8 @@ local function applySpell(name, spell)
         local hand = name:lower():find("offhand", 1, true) and "Off" or "Main"
         requireWorkingFirearm(spell, "RequirementConditions", hand, "context.Source")
         if ammoSpells[name] then
-            local ready = {}
-            for kind in pairs(Rules.Firearms) do
-                local passive = "HasPassive('GSL_" .. kind .. "_MainHand',context.Source)"
-                ready[#ready + 1] = "(" .. passive .. " and HasActionResource('Gunslinger" .. kind .. "Ammo',1,0))"
-            end
-            addRequirement(spell, "(" .. table.concat(ready, " or ") .. ")")
+            -- These already require a gun in the main hand (their stats), so the "No Ammo" check suffices.
+            addRequirement(spell, firearmShotCondition("Main"))
         end
         return true
     end
