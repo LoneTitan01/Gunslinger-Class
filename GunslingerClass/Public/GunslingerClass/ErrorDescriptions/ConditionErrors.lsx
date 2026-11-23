@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="8" revision="0" build="0"/>
+    <region id="ConditionErrors">
+        <node id="root">
+            <children>
+                <node id="ConditionErrors">
+                    <attribute id="DisplayName" type="TranslatedString" handle="h9e919317g307dg4490g9b74g33ac7e480acb" version="1"/>
+                    <attribute id="ErrorDescriptionType" type="uint8" value="0"/>
+                    <attribute id="Identifier" type="FixedString" value="GSL_NoAmmo"/>
+                    <attribute id="UUID" type="guid" value="1154dc1c-4bff-4d30-bc71-e5ef0697042f"/>
+                </node>
+                <node id="ConditionErrors">
+                    <attribute id="DisplayName" type="TranslatedString" handle="hf47995ecgf164g4921g9805gd29878654fac" version="1"/>
+                    <attribute id="ErrorDescriptionType" type="uint8" value="0"/>
+                    <attribute id="Identifier" type="FixedString" value="GSL_FirearmBroken"/>
+                    <attribute id="UUID" type="guid" value="dafa1333-9b53-402f-8dca-85f627906b7e"/>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>

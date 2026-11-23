@@ -8,12 +8,12 @@ Weapon_Compat_Staging/GunslingerClass_EO_WeaponCopiesCompat   -> Packages/Gunsli
 Weapon_Compat_Staging/GunslingerClass_JWL_WeaponCopiesCompat  -> Packages/GunslingerClass_JWL_WeaponCopiesCompat.pak
 
 Usage:
-    python stage_packages.py [--divine PATH_TO_Divine.exe | --no-divine] [--no-pack] [--skip-validation] [--no-weapon-compat]
+    python build.py [--divine PATH_TO_Divine.exe | --no-divine] [--no-pack] [--skip-validation] [--no-weapon-compat]
 
 Compatibility add-ons for Act Two Expansion, Community Library, Encounters
 Overhaul, and JWL Soul Smithing are staged and built as well by default. Use --no-weapon-compat to omit them.
 
-By default Divine.exe is found through the divine setting in stage_packages.yaml
+By default Divine.exe is found through the divine setting in build.yaml
 (override with --divine): localization is converted to .loca, Content banks, root
 templates, tags, MultiEffectInfos and book text to .lsf, effect sources to .lsfx, and all staging folders are packed into Packages/*.pak
 and compressed into matching Packages/*.zip archives (unless --no-pack).
@@ -90,7 +90,7 @@ def read_settings(path):
 
 
 def configured_divine():
-    """Divine.exe location from stage_packages.yaml."""
+    """Divine.exe location from build.yaml."""
     if not settings_file.is_file():
         fail(f'Missing settings file: {settings_file.name} (it must set divine: <path to Divine.exe>)')
     value = read_settings(settings_file).get('divine')

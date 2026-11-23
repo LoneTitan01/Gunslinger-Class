@@ -1,0 +1,43 @@
+-- Gunslinger Class: whether the gun held in a hand is not broken. Special arrows and Gunslinger abilities require
+-- it (FirearmStats.lua). It passes when that hand is empty, and otherwise fails with the reason "Firearm Broken".
+function GunslingerFirearmWorking(offHand)
+    local offHand = offHand or false
+    local slot = EquipmentSlot.RangedMainHand
+    if offHand then
+        slot = EquipmentSlot.RangedOffHand
+    end
+    local broken = HasStatus('GSL_FIREARM_ITEM_DESTROYED', GetItemInEquipmentSlot(slot, context.Source)).Result
+    return ConditionResult(not broken, {ConditionError("GSL_FirearmBroken")})
+end
+
+-- Gunslinger Class: whether the Gunslinger gun held in a hand can fire. Shots that spend a bullet require it
+-- (FirearmStats.lua). It passes when that hand holds no Gunslinger gun, so bows and crossbows are unaffected,
+-- and otherwise fails with its own reason (ErrorDescriptions/ConditionErrors.lsx) instead of the raw checks.
+-- The gun kinds and ammo resources match GritRules.lua (Rules.Firearms); only the Flintlock fits the off hand.
+function GunslingerFirearmReady(offHand)
+    local offHand = offHand or false
+    local entity = context.Source
+    local ammo = nil
+    if offHand then
+        if HasPassive('GSL_Flintlock_OffHand', entity).Result then
+            ammo = 'GunslingerOffhandFlintlockAmmo'
+        end
+    elseif HasPassive('GSL_Flintlock_MainHand', entity).Result then
+        ammo = 'GunslingerFlintlockAmmo'
+    elseif HasPassive('GSL_Blunderbuss_MainHand', entity).Result then
+        ammo = 'GunslingerBlunderbussAmmo'
+    elseif HasPassive('GSL_Musket_MainHand', entity).Result then
+        ammo = 'GunslingerMusketAmmo'
+    end
+    if ammo == nil then
+        return ConditionResult(true)
+    end
+    local slot = EquipmentSlot.RangedMainHand
+    if offHand then
+        slot = EquipmentSlot.RangedOffHand
+    end
+    if HasStatus('GSL_FIREARM_ITEM_DESTROYED', GetItemInEquipmentSlot(slot, entity)).Result then
+        return ConditionResult(false, {ConditionError("GSL_FirearmBroken")})
+    end
+    return ConditionResult(HasActionResource(ammo, 1, 0, false, false, entity).Result, {ConditionError("GSL_NoAmmo")})
+end

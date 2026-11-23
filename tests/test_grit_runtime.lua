@@ -43,13 +43,28 @@ local spellStats = {
     Projectile_SneakAttack = {RequirementConditions = "", SpellType = "Projectile",
         SpellProperties = "GROUND:DealDamage(MainRangedWeapon);;CastOffhand[GROUND:DealDamage(OffhandRangedWeapon)]",
         SpellRoll = "Attack(AttackType.RangedWeaponAttack)"},
+    -- Swashbuckler's ranged Rakish Sneak Attack replaces Sneak Attack and inherits it ("using").
+    Projectile_SneakAttack_Rakish = {RequirementConditions = "HasActionResource('SneakAttack_Charge',1,0,false,false,context.Source)",
+        SpellType = "Projectile", SpellProperties = "GROUND:DealDamage(MainRangedWeapon)",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack)", WeaponTypes = {"Ammunition"}},
     Projectile_HailOfThorns = {RequirementConditions = "", SpellProperties = "",
         SpellRoll = "not SavingThrow(Ability.Dexterity, SourceSpellDC())",
         SpellSuccess = "TARGET:IF(Attack(AttackType.RangedWeaponAttack)):DealDamage(MainRangedWeapon, MainRangedWeaponDamageType)"},
     Zone_ConjureBarrage_Ranged = {RequirementConditions = "", SpellProperties = "", SpellType = "Zone",
         SpellRoll = "not SavingThrow(Ability.Dexterity, SourceSpellDC())",
         SpellSuccess = "DealDamage(2d8+MainRangedWeapon, MainRangedWeaponDamageType)"},
-    Projectile_ArrowOfFire = {RequirementConditions = "", SpellType = "Projectile",
+    -- An arrow whose roll shotKind does not recognise must still be usable from an empty gun.
+    Projectile_ArrowOfIlmater = {RequirementConditions = "", SpellType = "Projectile", SpellProperties = "",
+        SpellRoll = "", WeaponTypes = {"Ammunition"}},
+    -- Shared Actions' quiver copies an arrow spell ("using Projectile_ArrowOfFire"), inheriting its WeaponTypes.
+    SA_Arrow_OBJ_ArrowOfFire_15 = {RequirementConditions = "", SpellType = "Projectile", WeaponTypes = {"Ammunition"},
+        SpellProperties = "GROUND:DealDamage(MainRangedWeapon)", SpellRoll = "Attack(AttackType.RangedWeaponAttack)"},
+    -- An action needing an Ammunition weapon that shot detection does not recognise.
+    Shout_AmmunitionStance = {RequirementConditions = "", SpellType = "Shout", SpellProperties = "", SpellRoll = "",
+        WeaponTypes = {"Ammunition"}},
+    Projectile_MainHandAttackWithAmmo = {RequirementConditions = "", SpellType = "Projectile", SpellProperties = "",
+        SpellRoll = "Attack(AttackType.RangedWeaponAttack)", WeaponTypes = {"Ammunition"}},
+    Projectile_ArrowOfFire = {RequirementConditions = "", SpellType = "Projectile", WeaponTypes = {"Melee", "Ammunition"},
         SpellProperties = "GROUND:DealDamage(MainRangedWeapon);;CastOffhand[GROUND:DealDamage(OffhandRangedWeapon)]",
         SpellRoll = "Attack(AttackType.RangedWeaponAttack);CastOffhand[Attack(AttackType.RangedOffHandWeaponAttack)]"},
     Throw_ThrowRangedWeapon = {RequirementConditions = "", SpellProperties = "", SpellType = "Throw", SpellRoll = "",
@@ -302,7 +317,16 @@ gun("second")
 inventory.alice["Ranged Main Weapon"] = "first"
 inventory.alice["Ranged Offhand Weapon"] = "second"
 dofile(root .. "BootstrapServer.lua")
+-- A stat that cannot be read is reported, and does not stop the other stats getting their requirements.
+spellStats.Projectile_Broken = setmetatable({}, {__index = function() error("unreadable") end})
 events.StatsLoaded()
+spellStats.Projectile_Broken = nil
+local summary, warning
+for _, message in ipairs(printed) do
+    summary = summary or message:match("^%[Gunslinger%] Firearm requirements added to %d+ stats %(server%)%.$")
+    warning = warning or message:find("1 stats could not be edited (server); first: Projectile_Broken", 1, true)
+end
+assert(summary and warning, "The server reports how many stats it edited and which one failed")
 events.StatsLoaded()
 for name, weapon in pairs(weaponStats) do
     for _, hand in ipairs(name:find("Flintlock", 1, true) and {"Main", "Off"} or {"Main"}) do
@@ -333,7 +357,11 @@ end
 assert(repairAvailable("alice", "Main") and repairAvailable("alice", "Off") and
     not repairUsable("alice", "Main") and not repairUsable("alice", "Off"),
     "Equipped working guns must grant Repair but cannot use it")
+-- The caster's own checks use the GunslingerFirearmWorking script ("Firearm Broken"); interrupts keep the raw check.
 local function brokenGuard(hand, character)
+    if character == "context.Source" then
+        return "GunslingerFirearmWorking(" .. (hand == "Off" and "true" or "false") .. ")"
+    end
     return "not HasStatus('GSL_FIREARM_ITEM_DESTROYED',GetItemInEquipmentSlot(EquipmentSlot." ..
         (hand == "Off" and "RangedOffHand" or "RangedMainHand") .. "," .. character .. "))"
 end
@@ -342,6 +370,10 @@ for name, spell in pairs(spellStats) do
         local offhand = name:find("OffHand", 1, true) or name == "Projectile_OffhandAttack" or
             name == "Projectile_GSL_TestShot_Offhand"
         local condition = brokenGuard(offhand and "Off" or "Main", "context.Source")
+        -- Shots that spend a bullet check the Broken status inside GunslingerFirearmReady, with its own reason.
+        if spell.RequirementConditions:find("GunslingerFirearmReady(", 1, true) then
+            condition = "GunslingerFirearmReady(" .. (offhand and "true" or "false") .. ")"
+        end
         assert(spell.RequirementConditions:find(condition, 1, true), name .. " must check the gun's Broken status")
         if offhand then
             assert(not spell.RequirementConditions:find(brokenGuard("Main", "context.Source"), 1, true),
@@ -370,25 +402,45 @@ local function readyChecks(name)
     local _, count = spellStats[name].RequirementConditions:gsub("HasActionResource%('Gunslinger", "")
     return count
 end
+-- Native shots need GunslingerFirearmReady (a script condition with its own failure reason) for the hand fired.
+local function readyFor(name, hand)
+    local _, count = spellStats[name].RequirementConditions:gsub(
+        "GunslingerFirearmReady%(" .. (hand == "Off" and "true" or "false") .. "%)", "")
+    local _, any = spellStats[name].RequirementConditions:gsub("GunslingerFirearmReady%(", "")
+    return count == 1 and any == 1
+end
+local function notReady(name) return not spellStats[name].RequirementConditions:find("GunslingerFirearmReady", 1, true) end
 assert(readyChecks("Projectile_GSL_Bloodletting_Flintlock") == 0, "Bloodletting pays its bullet through UseCosts")
 assert(readyChecks("Zone_GSL_LineEmUp") == 3, "A stats reload must not duplicate ammo requirements")
 assert(spellStats.Zone_GSL_LineEmUp.RequirementConditions:find("Character()", 1, true))
 local special = spellStats.Projectile_PiercingShot
 assert(special.RequirementConditions:find("OriginalRequirement", 1, true))
-assert(special.RequirementConditions:find("(not (", 1, true), "Ordinary bows must retain their normal requirements")
-assert(readyChecks("Projectile_PiercingShot") == 3, "Native actions must not duplicate ammo requirements on stats reload")
-assert(readyChecks("Projectile_SneakAttack") == 3, "The Sneak Attack action needs a loaded main-hand gun")
+assert(readyFor("Projectile_PiercingShot", "Main"), "Native actions must not duplicate ammo requirements on stats reload")
+assert(readyFor("Projectile_SneakAttack", "Main"), "The Sneak Attack action needs a loaded main-hand gun")
+assert(readyFor("Projectile_SneakAttack_Rakish", "Main") and spellStats.Projectile_SneakAttack_Rakish.RequirementConditions:find(
+    "(HasActionResource('SneakAttack_Charge',1,0,false,false,context.Source)) and ", 1, true),
+    "Rakish Sneak Attack needs a loaded main-hand gun and keeps its own requirement")
 local basic = spellStats.Projectile_MainHandAttack
-assert(basic.RequirementConditions:find("_MainHand'", 1, true) and not basic.RequirementConditions:find("_OffHand'", 1, true),
-    "Shots rolling both hands are gated on the main-hand gun")
-assert(spellStats.Projectile_OffhandAttack.RequirementConditions:find("GunslingerOffhandFlintlockAmmo", 1, true),
-    "Off-hand shots need a loaded off-hand gun")
+assert(readyFor("Projectile_MainHandAttack", "Main"), "Shots rolling both hands are gated on the main-hand gun")
+assert(readyFor("Projectile_OffhandAttack", "Off"), "Off-hand shots need a loaded off-hand gun")
 for _, name in ipairs({"Projectile_HailOfThorns", "Zone_ConjureBarrage_Ranged"}) do
-    assert(readyChecks(name) == 3, name .. " fires the gun without an attack roll and needs a bullet")
+    assert(readyFor(name, "Main"), name .. " fires the gun without an attack roll and needs a bullet")
 end
-assert(readyChecks("Throw_ThrowRangedWeapon") == 0, "Throwing a gun does not need a bullet")
+assert(notReady("Throw_ThrowRangedWeapon"), "Throwing a gun does not need a bullet")
 assert(not spellStats.Projectile_ArrowOfFire.RequirementConditions:find("HasActionResource", 1, true),
     "Special arrows are the ammunition fired and must not need a bullet")
+-- Guns always keep the Ammunition property, so arrows keep their vanilla weapon requirement and only gain the
+-- broken-gun guard, whether or not their roll is recognised as a shot (Shared Actions' copies included).
+for _, name in ipairs({"Projectile_ArrowOfFire", "Projectile_ArrowOfIlmater", "SA_Arrow_OBJ_ArrowOfFire_15"}) do
+    local arrow = spellStats[name]
+    assert(arrow.WeaponTypes[#arrow.WeaponTypes] == "Ammunition", name .. " keeps its vanilla weapon requirement")
+    assert(notReady(name), name .. " is the ammunition fired and needs no bullet")
+    assert(arrow.RequirementConditions:find(brokenGuard("Main", "context.Source"), 1, true),
+        name .. " cannot be fired from a broken gun")
+end
+assert(readyFor("Projectile_MainHandAttackWithAmmo", "Main"), "Ammunition shots that are not arrows need a bullet")
+assert(readyFor("Shout_AmmunitionStance", "Main"),
+    "Every other action needing an Ammunition weapon needs a loaded gun, since an empty gun still counts as one")
 fire("Equipped", "after", "first", "alice")
 ticks()
 assert(variables.Firearms.weapons.first.kind == "Flintlock", "Fused Flintlocks must track ammunition and firearm state")
@@ -564,9 +616,10 @@ assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF_RAPID") == 1, "Rapid Re
 assert(Osi.HasActiveStatus("alice", "GSL_REPAIR_MENU_OFF") == 0)
 local function firearmUsable(name, character)
     local condition = spellStats[name].RequirementConditions
-    local slot = condition:match("GetItemInEquipmentSlot%(EquipmentSlot%.(%w+),context%.Source%)")
-    assert(slot, "Attack must check the physical gun")
-    local hand = slot == "RangedOffHand" and "Off" or "Main"
+    -- GunslingerFirearmWorking(offHand) checks the gun in that ranged slot.
+    local offHand = condition:match("GunslingerFirearmWorking%((%a+)%)")
+    assert(offHand, "Attack must check the physical gun")
+    local hand = offHand == "true" and "Off" or "Main"
     local item = inventory[character][hand == "Off" and "Ranged Offhand Weapon" or "Ranged Main Weapon"]
     return Osi.HasActiveStatus(item, "GSL_FIREARM_ITEM_DESTROYED") == 0
 end
@@ -1410,39 +1463,22 @@ cast("Projectile_SneakAttack", 960)
 assert(ammo("alice", "Main").Amount == 2, "Sneak Attack must spend a bullet after a save load without StatsLoaded")
 cast("Projectile_ArrowOfFire", 961)
 assert(ammo("alice", "Main").Amount == 2, "Special arrows still spend no bullet after a save load")
--- An empty gun loses the Ammunition weapon property, so vanilla WeaponTypes "Ammunition" actions are disabled.
+-- Guns keep the Ammunition property even when empty: arrows fire from them and Sharpshooter stays aligned.
 local function hasAmmunition(item) return entities[item].Weapon.WeaponProperties & 2 ~= 0 end
 ammo("alice", "Main").Amount = 1
 cast("Projectile_SneakAttack", 970)
--- Damage (and Sharpshooter's +10) is checked when the bullet lands, after the cast ends.
-assert(ammo("alice", "Main").Amount == 0 and hasAmmunition("reloaded"),
-    "The last bullet's gun must keep the Ammunition property while that shot is in flight")
+assert(ammo("alice", "Main").Amount == 0 and hasAmmunition("reloaded"), "The emptied gun keeps the Ammunition property")
 fire("TurnStarted", "after", "alice")
-assert(hasAmmunition("reloaded"), "Refreshes during the shot must not clear the Ammunition property")
-clock = clock + 2999999
 ticks()
-assert(hasAmmunition("reloaded"))
-clock = clock + 1
-ticks()
-assert(not hasAmmunition("reloaded"), "An empty gun must not count as a weapon that fires ammunition")
--- A shot from the offhand puts the empty main gun's property back until it lands, so Sharpshooter counts it.
-fire("UsingSpell", "before", "alice", "Projectile_SneakAttack", "", "", 972)
-assert(hasAmmunition("reloaded"), "An empty main gun must count as an Ammunition weapon during a shot")
-fire("CastSpellFailed", "after", "alice", "Projectile_SneakAttack", "", "", 972)
-assert(not hasAmmunition("reloaded"), "A failed shot must clear the hold at once")
-ammo("alice", "Main").Amount = 1
-cast("Projectile_SneakAttack", 973)
-clock = clock + 3000000
-ticks()
-assert(not hasAmmunition("reloaded"))
-assert(entities.reloaded.Weapon.WeaponProperties == 0x11, "Only the Ammunition property is removed")
-fire("UsingSpell", "before", "alice", "Shout_GSL_Reload_Flintlock", "", "", 971)
-ammo("alice", "Main").Amount = 3
-fire("CastedSpell", "after", "alice", "Shout_GSL_Reload_Flintlock", "", "", 971)
-assert(hasAmmunition("reloaded"), "Reloading restores the Ammunition property")
-ammo("alice", "Main").Amount = 0
+assert(hasAmmunition("reloaded") and entities.reloaded.Weapon.WeaponProperties == 0x13,
+    "An empty gun keeps the Ammunition property and its other properties")
+cast("SA_Arrow_OBJ_ArrowOfFire_15", 980)
+assert(ammo("alice", "Main").Amount == 0 and hasAmmunition("reloaded"), "An arrow from an empty gun spends no bullet")
+-- Older versions cleared the property on empty guns; it is restored.
+entities.reloaded.Weapon.WeaponProperties = 0x11
 fire("TurnStarted", "after", "alice")
-assert(not hasAmmunition("reloaded"))
+assert(entities.reloaded.Weapon.WeaponProperties == 0x13, "A gun saved without the Ammunition property gets it back")
+entities.reloaded.Weapon.WeaponProperties = 0x11
 fire("Unequipped", "before", "reloaded", "alice")
 inventory.alice["Ranged Main Weapon"] = nil
 fire("Unequipped", "after", "reloaded", "alice")

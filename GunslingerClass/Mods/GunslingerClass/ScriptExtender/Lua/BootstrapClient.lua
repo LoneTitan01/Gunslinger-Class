@@ -8,6 +8,9 @@ local heartbeatTicks = 0
 local pollTicks = 6
 
 Ext.Require("FortuneChooserDiagnostic.lua")
+-- The hotbar greys actions out from the client's own copy of the stats, so the firearm requirements go there too.
+local FirearmStats = Ext.Require("FirearmStats.lua")
+Ext.Events.StatsLoaded:Subscribe(function() FirearmStats.Apply("client") end)
 local updateChooserOwned = Ext.Require("FortuneChooserOwned.lua")
 
 local function ownsFortune(handle)
